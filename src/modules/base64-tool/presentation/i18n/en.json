@@ -1,0 +1,10 @@
+{
+  "name": "Base64 Encoder/Decoder",
+  "description": "Encode and decode text to Base64.",
+  "title": "Base64 Encoder / Decoder",
+  "input": "Input",
+  "output": "Output",
+  "encode": "Encode",
+  "decode": "Decode",
+  "error": "Invalid Base64 input"
+}

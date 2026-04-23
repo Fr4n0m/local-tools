@@ -1,0 +1,23 @@
+{
+  "appTitle": "LocalTools",
+  "searchPlaceholder": "Search tools...",
+  "privacy": "Everything runs locally in your browser. No uploads, no tracking.",
+  "language": "Language",
+  "theme": "Theme",
+  "light": "Light",
+  "dark": "Dark",
+  "emptySearch": "No tools match your search.",
+  "menu": "Menu",
+  "categories": {
+    "files-media": "Files & Media",
+    "data-encoding": "Data & Encoding",
+    "text-code": "Text & Code",
+    "advanced": "Advanced Utilities"
+  },
+  "buttons": {
+    "clear": "Clear",
+    "copy": "Copy",
+    "download": "Download",
+    "generate": "Generate"
+  }
+}

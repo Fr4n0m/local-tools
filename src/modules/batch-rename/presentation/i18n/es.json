@@ -1,0 +1,10 @@
+{
+  "name": "Simulador de Renombrado Masivo",
+  "description": "Previsualiza renombrados sin tocar archivos.",
+  "title": "Simulador de Renombrado Masivo",
+  "input": "Nombres de archivo (uno por línea)",
+  "search": "Texto a buscar",
+  "replace": "Reemplazar por",
+  "preview": "Previsualizar",
+  "result": "Resultado de la previsualización"
+}

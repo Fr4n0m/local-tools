@@ -1,0 +1,10 @@
+{
+  "name": "Codificador/Decodificador URL",
+  "description": "Escapa y desescapa contenido URL.",
+  "title": "Codificador / Decodificador URL",
+  "input": "Entrada",
+  "output": "Salida",
+  "encode": "Codificar URL",
+  "decode": "Decodificar URL",
+  "error": "Cadena URL codificada inválida"
+}

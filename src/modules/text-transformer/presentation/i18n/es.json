@@ -1,0 +1,11 @@
+{
+  "name": "Transformador de Texto",
+  "description": "Aplica transformaciones rápidas de texto.",
+  "title": "Transformador de Texto",
+  "input": "Texto de entrada",
+  "output": "Texto de salida",
+  "upper": "Mayúsculas",
+  "lower": "Minúsculas",
+  "capitalize": "Capitalizar",
+  "trim": "Recortar"
+}

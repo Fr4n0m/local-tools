@@ -1,0 +1,11 @@
+{
+  "name": "Conversor de Imágenes",
+  "description": "Convierte imágenes 100% en el navegador.",
+  "title": "Conversor de Imágenes",
+  "inputLabel": "Selecciona imagen",
+  "formatLabel": "Formato de salida",
+  "qualityLabel": "Calidad JPEG/WebP",
+  "convert": "Convertir",
+  "empty": "Selecciona una imagen para empezar.",
+  "done": "Archivo listo para descargar"
+}

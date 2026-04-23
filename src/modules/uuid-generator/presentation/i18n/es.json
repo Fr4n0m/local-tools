@@ -1,0 +1,8 @@
+{
+  "name": "Generador UUID",
+  "description": "Genera UUID v4 al instante.",
+  "title": "Generador UUID",
+  "amount": "Cantidad",
+  "generate": "Generar UUIDs",
+  "result": "UUIDs generados"
+}

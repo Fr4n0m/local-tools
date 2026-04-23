@@ -1,0 +1,10 @@
+{
+  "name": "JSON Formatter & Validator",
+  "description": "Format and validate JSON instantly.",
+  "title": "JSON Formatter & Validator",
+  "input": "Input JSON",
+  "output": "Formatted output",
+  "format": "Format JSON",
+  "valid": "Valid JSON",
+  "invalid": "Invalid JSON"
+}

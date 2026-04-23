@@ -1,0 +1,9 @@
+{
+  "name": "Generador de Favicons",
+  "description": "Genera tamaños de favicon desde una imagen.",
+  "title": "Generador de Favicons",
+  "inputLabel": "Selecciona imagen origen",
+  "generate": "Generar set de favicons",
+  "empty": "Sube una imagen para generar tamaños.",
+  "result": "Tamaños generados"
+}

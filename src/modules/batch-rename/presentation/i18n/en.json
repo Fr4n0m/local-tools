@@ -1,0 +1,10 @@
+{
+  "name": "Batch Rename Simulator",
+  "description": "Preview rename operations without touching files.",
+  "title": "Batch Rename Simulator",
+  "input": "File names (one per line)",
+  "search": "Search text",
+  "replace": "Replace with",
+  "preview": "Preview",
+  "result": "Preview result"
+}

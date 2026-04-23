@@ -1,0 +1,10 @@
+{
+  "name": "Codificador/Decodificador Base64",
+  "description": "Codifica y decodifica texto en Base64.",
+  "title": "Codificador / Decodificador Base64",
+  "input": "Entrada",
+  "output": "Salida",
+  "encode": "Codificar",
+  "decode": "Decodificar",
+  "error": "Entrada Base64 inválida"
+}

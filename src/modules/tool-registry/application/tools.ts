@@ -1,0 +1,103 @@
+import {
+  IconBrackets,
+  IconFileTypePng,
+  IconForms,
+  IconLanguage,
+  IconLink,
+  IconPhoto,
+  IconRegex,
+  IconVariable,
+} from "@tabler/icons-react";
+
+import { Base64Tool } from "@/modules/base64-tool/presentation/components/base64-tool";
+import base64En from "@/modules/base64-tool/presentation/i18n/en.json";
+import base64Es from "@/modules/base64-tool/presentation/i18n/es.json";
+import { BatchRenameTool } from "@/modules/batch-rename/presentation/components/batch-rename-tool";
+import batchEn from "@/modules/batch-rename/presentation/i18n/en.json";
+import batchEs from "@/modules/batch-rename/presentation/i18n/es.json";
+import { FaviconGeneratorTool } from "@/modules/favicon-generator/presentation/components/favicon-generator-tool";
+import faviconEn from "@/modules/favicon-generator/presentation/i18n/en.json";
+import faviconEs from "@/modules/favicon-generator/presentation/i18n/es.json";
+import { ImageConverterTool } from "@/modules/image-converter/presentation/components/image-converter-tool";
+import imageEn from "@/modules/image-converter/presentation/i18n/en.json";
+import imageEs from "@/modules/image-converter/presentation/i18n/es.json";
+import { JsonFormatterTool } from "@/modules/json-formatter/presentation/components/json-formatter-tool";
+import jsonEn from "@/modules/json-formatter/presentation/i18n/en.json";
+import jsonEs from "@/modules/json-formatter/presentation/i18n/es.json";
+import { TextTransformerTool } from "@/modules/text-transformer/presentation/components/text-transformer-tool";
+import textEn from "@/modules/text-transformer/presentation/i18n/en.json";
+import textEs from "@/modules/text-transformer/presentation/i18n/es.json";
+import type { Tool } from "@/modules/tool-registry/domain/tool";
+import { UrlEncoderTool } from "@/modules/url-encoder/presentation/components/url-encoder-tool";
+import urlEn from "@/modules/url-encoder/presentation/i18n/en.json";
+import urlEs from "@/modules/url-encoder/presentation/i18n/es.json";
+import { UuidGeneratorTool } from "@/modules/uuid-generator/presentation/components/uuid-generator-tool";
+import uuidEn from "@/modules/uuid-generator/presentation/i18n/en.json";
+import uuidEs from "@/modules/uuid-generator/presentation/i18n/es.json";
+
+export const tools: Tool[] = [
+  {
+    id: "image-converter",
+    category: "files-media",
+    icon: IconPhoto,
+    component: ImageConverterTool,
+    name: { en: imageEn.name, es: imageEs.name },
+    description: { en: imageEn.description, es: imageEs.description },
+  },
+  {
+    id: "favicon-generator",
+    category: "files-media",
+    icon: IconFileTypePng,
+    component: FaviconGeneratorTool,
+    name: { en: faviconEn.name, es: faviconEs.name },
+    description: { en: faviconEn.description, es: faviconEs.description },
+  },
+  {
+    id: "json-formatter",
+    category: "data-encoding",
+    icon: IconBrackets,
+    component: JsonFormatterTool,
+    name: { en: jsonEn.name, es: jsonEs.name },
+    description: { en: jsonEn.description, es: jsonEs.description },
+  },
+  {
+    id: "base64-tool",
+    category: "data-encoding",
+    icon: IconForms,
+    component: Base64Tool,
+    name: { en: base64En.name, es: base64Es.name },
+    description: { en: base64En.description, es: base64Es.description },
+  },
+  {
+    id: "url-encoder",
+    category: "data-encoding",
+    icon: IconLink,
+    component: UrlEncoderTool,
+    name: { en: urlEn.name, es: urlEs.name },
+    description: { en: urlEn.description, es: urlEs.description },
+  },
+  {
+    id: "text-transformer",
+    category: "text-code",
+    icon: IconLanguage,
+    component: TextTransformerTool,
+    name: { en: textEn.name, es: textEs.name },
+    description: { en: textEn.description, es: textEs.description },
+  },
+  {
+    id: "uuid-generator",
+    category: "text-code",
+    icon: IconVariable,
+    component: UuidGeneratorTool,
+    name: { en: uuidEn.name, es: uuidEs.name },
+    description: { en: uuidEn.description, es: uuidEs.description },
+  },
+  {
+    id: "batch-rename",
+    category: "advanced",
+    icon: IconRegex,
+    component: BatchRenameTool,
+    name: { en: batchEn.name, es: batchEs.name },
+    description: { en: batchEn.description, es: batchEs.description },
+  },
+];

@@ -1,26 +1,75 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-background: #e9d8a6;
+  --color-foreground: #001219;
+  --color-primary: #0a9396;
+  --color-secondary: #94d2bd;
+  --color-accent: #ee9b00;
+  --color-muted: #94d2bd;
+  --color-border: #005f73;
+  --color-destructive: #bb3e03;
+}
+
+.dark {
+  --color-background: #001219;
+  --color-foreground: #e9d8a6;
+  --color-primary: #0a9396;
+  --color-secondary: #005f73;
+  --color-accent: #ee9b00;
+  --color-muted: #005f73;
+  --color-border: #0a9396;
+  --color-destructive: #ae2012;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--color-background);
+  --color-foreground: var(--color-foreground);
+  --color-primary: var(--color-primary);
+  --color-secondary: var(--color-secondary);
+  --color-accent: var(--color-accent);
+  --color-muted: var(--color-muted);
+  --color-border: var(--color-border);
+  --color-destructive: var(--color-destructive);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  border-color: var(--color-border);
+}
+
+html,
+body {
+  min-height: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+}
+
+.neu-button {
+  color: #090909;
+  padding: 0.7em 1.7em;
+  font-size: 0.95rem;
+  border-radius: 0.5em;
+  background: #e8e8e8;
+  cursor: pointer;
+  border: 1px solid #e8e8e8;
+  transition: all 0.3s;
+  box-shadow:
+    6px 6px 12px #c5c5c5,
+    -6px -6px 12px #ffffff;
+}
+
+.neu-button:active {
+  color: #666;
+  box-shadow:
+    inset 4px 4px 12px #c5c5c5,
+    inset -4px -4px 12px #ffffff;
+}
+
+.neu-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
 }

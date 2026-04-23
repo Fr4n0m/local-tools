@@ -1,0 +1,675 @@
+# 🧰 LocalTools
+
+LocalTools is a client-side developer toolbox that provides fast, private, and useful utilities that run entirely in the browser.
+
+---
+
+## Product Positioning
+
+LocalTools is:
+
+- A private developer toolbox
+- A browser-based utility hub
+- A fast, lightweight, no-backend solution
+
+### SEO Title
+
+LocalTools – Developer Toolbox (Private & Browser-Based Tools)
+
+### Core Value
+
+- All tools run locally in your browser
+- No uploads
+- No tracking
+- Full privacy by design
+
+---
+
+## Core Principles
+
+- 100% client-side processing
+- No backend
+- No database
+- No authentication
+- No AI integration
+- Privacy-first design
+- Lightweight and fast
+- Modular and scalable architecture
+
+---
+
+## Tech Stack
+
+- Next.js (App Router)
+- React
+- TypeScript
+- Tailwind CSS
+- shadcn/ui
+- Tabler Icons
+- pnpm
+
+### Rules
+
+- Use App Router (/app)
+- Prefer Server Components by default
+- Use "use client" only when necessary
+- Keep everything lightweight
+- Avoid unnecessary dependencies
+
+---
+
+## Application Structure
+
+The app is a single-page toolbox.
+
+### Layout
+
+- Sidebar (left) → tool list
+- Top bar → search + controls
+- Main area → active tool
+
+### Rules
+
+- No routing per tool
+- No page reloads
+- Instant switching
+- State must feel app-like
+
+---
+
+## URL State (Tool Selection)
+
+The selected tool must be reflected in the URL using query parameters.
+
+Example:
+
+/?tool=json-formatter
+
+### Behavior
+
+- Selecting a tool updates the URL
+- Loading the app reads the tool from the URL
+- Invalid tool → fallback to default
+- No page reloads
+
+### Rules
+
+- Do not create routes per tool
+- Use query params only
+- Keep UI and URL in sync
+
+---
+
+## Tool Registry System
+
+All tools must be registered in a central registry.
+
+Tool structure:
+
+type Tool = {
+  id: string
+  name: string
+  description: string
+  component: React.ComponentType
+}
+
+Registry:
+
+export const tools: Tool[] = [...]
+
+### Rules
+
+- Sidebar is generated from registry
+- Search uses registry
+- Add tool = register once
+- No duplication
+
+---
+
+## Initial Tools (V1)
+
+- image converter
+- favicon generator
+- json formatter & validator
+- base64 encoder / decoder
+- url encoder / decoder
+- text transformer
+- uuid generator
+- batch rename (simulation)
+
+---
+
+## Tool Design Guidelines
+
+All tools must:
+
+- Be simple and focused
+- Run fully client-side
+- Provide instant feedback
+- Avoid unnecessary dependencies
+- Have minimal UI
+- Follow architecture rules
+
+---
+
+## Tool Categories
+
+### Files & Media
+- image converter
+- favicon generator
+
+### Data & Encoding
+- json formatter
+- base64 tool
+- url encoder
+
+### Text & Code
+- text transformer
+- uuid generator
+
+### Advanced Utilities
+- batch rename
+
+---
+
+## File Handling & Privacy
+
+All file processing must happen 100% in the browser.
+
+### Input
+
+- Drag & Drop
+- File input
+
+### Processing
+
+- Use browser APIs:
+  - File
+  - Blob
+  - ArrayBuffer
+  - Canvas
+
+- Never send files to a server
+
+### Output
+
+- Generate files in memory
+- Allow direct download
+
+### Privacy Guarantee
+
+- All data stays in the browser
+- No uploads
+- No external processing
+- No tracking of file content
+
+This must be visible in the UI.
+
+---
+
+## Tracking & Analytics
+
+Tracking is strictly forbidden.
+
+Do not:
+
+- use Google Analytics
+- add tracking scripts
+- collect usage data
+- send data to external services
+
+---
+
+## Internationalization (i18n)
+
+Languages:
+
+- English (en)
+- Spanish (es)
+
+### Language priority
+
+1. localStorage
+2. navigator.language
+3. fallback → English
+
+### Requirements
+
+- Language selector must exist
+- Switching must be instant
+- All text must come from JSON
+- No hardcoded strings
+
+---
+
+## Modular Translations
+
+Translations must follow module structure.
+
+Example:
+
+src/modules/image-converter/presentation/i18n/en.json  
+src/modules/image-converter/presentation/i18n/es.json  
+
+Shared:
+
+src/shared/presentation/i18n/en.json  
+src/shared/presentation/i18n/es.json  
+
+### Rules
+
+- Each module owns its translations
+- No global monolithic JSON
+- Always implement both languages
+
+---
+
+## State Management
+
+Use React only:
+
+- useState
+- useReducer
+- useContext (only when necessary)
+
+Do not use:
+
+- Redux
+- Zustand
+- MobX
+- Recoil
+
+---
+
+## Tool State Persistence
+
+Tools must be stateless.
+
+Do not persist:
+
+- tool inputs
+- tool outputs
+
+Allowed persistence:
+
+- language
+- theme
+- selected tool
+
+---
+
+## Search System
+
+Search must be advanced.
+
+### Features
+
+- real-time filtering
+- partial matches
+- case-insensitive
+- search by name and description
+
+Optional:
+
+- fuzzy matching
+
+---
+
+## Import / Export
+
+Do not implement import/export functionality.
+
+---
+
+## Architecture
+
+Use Pragmatic Hexagonal Architecture.
+
+### Layers
+
+- domain → pure logic
+- application → use cases
+- infrastructure → browser APIs
+- presentation → React UI
+
+### Rules
+
+- No business logic in UI
+- Domain must be pure
+- Infrastructure wraps browser APIs
+- React is presentation only
+
+---
+
+## Engineering Principles
+
+- SOLID
+- DRY
+- KISS
+- Separation of Concerns
+- Composition over inheritance
+- Readable code over clever code
+
+---
+
+## Dependency Policy
+
+- Prefer native APIs
+- Avoid external libraries
+- Only add dependencies when necessary
+
+---
+
+## UI System
+
+- Tailwind CSS
+- shadcn/ui
+
+### Rules
+
+- No other UI libraries
+- Keep UI clean and minimal
+
+---
+
+## Icons
+
+- Use Tabler Icons only
+- Do not mix icon libraries
+
+---
+
+## Theming
+
+Support:
+
+- Light mode
+- Dark mode
+
+### Priority
+
+1. user choice (localStorage)
+2. system preference
+3. fallback → light
+
+### Rules
+
+- Use Tailwind + CSS variables
+- No hardcoded colors
+
+---
+
+## Design System
+
+The application must use a consistent and well-defined color system.
+
+### Color Palette
+
+Primary palette:
+
+- Ink Black → #001219
+- Dark Teal → #005f73
+- Dark Cyan → #0a9396
+- Pearl Aqua → #94d2bd
+- Wheat → #e9d8a6
+- Golden Orange → #ee9b00
+- Burnt Caramel → #ca6702
+- Rusty Spice → #bb3e03
+- Oxidized Iron → #ae2012
+- Brown Red → #9b2226
+
+### Design Intent
+
+- Dark tones → base UI and structure
+- Teal/cyan tones → primary actions and interactive elements
+- Light tones → backgrounds and contrast
+- Warm tones (orange/red) → highlights, warnings, and accents
+
+---
+
+## Theming
+
+The application must support both **light mode** and **dark mode**.
+
+### Implementation
+
+- Use Tailwind CSS with CSS variables
+- Do not hardcode colors in components
+- All colors must be mapped to semantic tokens
+
+---
+
+## Semantic Color Tokens
+
+Do not use raw palette colors directly in components.
+
+Instead, define semantic tokens such as:
+
+- background
+- foreground
+- primary
+- secondary
+- accent
+- muted
+- border
+- destructive
+
+---
+
+## Example Token Mapping
+
+### Light Mode
+
+- background → Wheat (#e9d8a6)
+- foreground → Ink Black (#001219)
+- primary → Dark Cyan (#0a9396)
+- secondary → Pearl Aqua (#94d2bd)
+- accent → Golden Orange (#ee9b00)
+- muted → Pearl Aqua (#94d2bd)
+- border → Dark Teal (#005f73)
+- destructive → Rusty Spice (#bb3e03)
+
+---
+
+### Dark Mode
+
+- background → Ink Black (#001219)
+- foreground → Wheat (#e9d8a6)
+- primary → Dark Cyan (#0a9396)
+- secondary → Dark Teal (#005f73)
+- accent → Golden Orange (#ee9b00)
+- muted → Dark Teal (#005f73)
+- border → Dark Cyan (#0a9396)
+- destructive → Oxidized Iron (#ae2012)
+
+---
+
+## CSS Variables Example
+
+:root {
+  --color-background: #e9d8a6;
+  --color-foreground: #001219;
+  --color-primary: #0a9396;
+  --color-secondary: #94d2bd;
+  --color-accent: #ee9b00;
+  --color-muted: #94d2bd;
+  --color-border: #005f73;
+  --color-destructive: #bb3e03;
+}
+
+.dark {
+  --color-background: #001219;
+  --color-foreground: #e9d8a6;
+  --color-primary: #0a9396;
+  --color-secondary: #005f73;
+  --color-accent: #ee9b00;
+  --color-muted: #005f73;
+  --color-border: #0a9396;
+  --color-destructive: #ae2012;
+}
+
+---
+
+## Styling Rules
+
+- Always use semantic tokens (e.g. bg-background, text-foreground)
+- Never use raw hex values in components
+- Never use Tailwind default color classes (e.g. text-blue-500)
+- Keep color usage consistent across the app
+
+---
+
+## Responsive Behavior
+
+### Desktop
+
+- Sidebar visible
+
+### Mobile
+
+- Hamburger menu
+- Sidebar becomes drawer
+- Mobile-first UX
+
+---
+
+## Import Aliases
+
+Use @/ for src.
+
+Example:
+
+@/modules/...  
+@/shared/...  
+
+---
+
+## Folder Structure
+
+src/
+  app/
+  modules/
+    tool/
+      domain/
+      application/
+      infrastructure/
+      presentation/
+        components/
+        i18n/
+  shared/
+
+---
+
+## Testing
+
+### Stack
+
+- Vitest
+- React Testing Library
+
+### Scope
+
+- Focus on domain and application logic
+- Minimal UI testing
+
+### Rules
+
+- Prefer pure functions
+- Keep tests simple
+
+### E2E
+
+Do not include initially.
+
+---
+
+## Code Quality Tooling
+
+- ESLint
+- Prettier
+- Husky
+- lint-staged
+
+### Pre-commit
+
+- lint
+- format
+- lightweight tests
+
+---
+
+## Continuous Integration
+
+Do not use GitHub Actions.
+
+---
+
+## Commit Convention
+
+Use conventional commits:
+
+- feat:
+- fix:
+- refactor:
+- test:
+- chore:
+
+---
+
+## Performance & Quality
+
+Use:
+
+- React DevTools
+- Lighthouse
+
+### Goals
+
+- high performance
+- minimal re-renders
+- accessibility
+
+---
+
+## Implementation Philosophy
+
+- Build from scratch when possible
+- Keep logic simple
+- Avoid over-engineering
+
+---
+
+## Client-side Persistence
+
+Use localStorage only for:
+
+- language
+- theme
+- selected tool
+
+---
+
+## UX Requirements
+
+- Fast
+- Instant interactions
+- No reloads
+- Native-app feel
+
+I need you use this button for general buttons like our first button, make a custom component or whatever: /* From Uiverse.io by ke1221 */ 
+button {
+  color: #090909;
+  padding: 0.7em 1.7em;
+  font-size: 18px;
+  border-radius: 0.5em;
+  background: #e8e8e8;
+  cursor: pointer;
+  border: 1px solid #e8e8e8;
+  transition: all 0.3s;
+  box-shadow: 6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff;
+}
+
+button:active {
+  color: #666;
+  box-shadow: inset 4px 4px 12px #c5c5c5, inset -4px -4px 12px #ffffff;
+}

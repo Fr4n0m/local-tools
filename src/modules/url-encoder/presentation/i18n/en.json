@@ -1,0 +1,10 @@
+{
+  "name": "URL Encoder/Decoder",
+  "description": "Escape and unescape URL content.",
+  "title": "URL Encoder / Decoder",
+  "input": "Input",
+  "output": "Output",
+  "encode": "Encode URL",
+  "decode": "Decode URL",
+  "error": "Invalid encoded URL string"
+}

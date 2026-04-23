@@ -1,0 +1,11 @@
+{
+  "name": "Text Transformer",
+  "description": "Apply quick text transformations.",
+  "title": "Text Transformer",
+  "input": "Input text",
+  "output": "Output text",
+  "upper": "Uppercase",
+  "lower": "Lowercase",
+  "capitalize": "Capitalize",
+  "trim": "Trim"
+}

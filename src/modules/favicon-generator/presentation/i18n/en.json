@@ -1,0 +1,9 @@
+{
+  "name": "Favicon Generator",
+  "description": "Generate favicon sizes from one image.",
+  "title": "Favicon Generator",
+  "inputLabel": "Select source image",
+  "generate": "Generate favicon set",
+  "empty": "Upload an image to generate sizes.",
+  "result": "Generated sizes"
+}
