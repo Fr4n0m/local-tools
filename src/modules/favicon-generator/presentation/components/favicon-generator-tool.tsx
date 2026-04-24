@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import en from "@/modules/favicon-generator/presentation/i18n/en.json";
 import es from "@/modules/favicon-generator/presentation/i18n/es.json";
+import { copyTextToClipboard } from "@/shared/lib/clipboard";
 import { createZipBlob } from "@/shared/lib/zip";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import type { Language } from "@/shared/presentation/i18n";
@@ -25,6 +26,65 @@ export function FaviconGeneratorTool({ language }: Props) {
   const [file, setFile] = useState<File | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [generated, setGenerated] = useState<GeneratedIcon[]>([]);
+
+  const projectName = useMemo(() => {
+    if (!file) {
+      return "LocalTools";
+    }
+    const lastDot = file.name.lastIndexOf(".");
+    return lastDot > 0 ? file.name.slice(0, lastDot) : file.name;
+  }, [file]);
+
+  const manifestContent = useMemo(() => {
+    if (generated.length === 0) {
+      return "";
+    }
+
+    const icons = generated.map((icon) => ({
+      src: `favicon-${icon.size}.png`,
+      sizes: `${icon.size}x${icon.size}`,
+      type: "image/png",
+    }));
+
+    return JSON.stringify(
+      {
+        name: projectName,
+        short_name: projectName,
+        start_url: ".",
+        display: "standalone",
+        background_color: "#ffffff",
+        theme_color: "#0a9396",
+        icons,
+      },
+      null,
+      2,
+    );
+  }, [generated, projectName]);
+
+  const htmlSnippet = useMemo(() => {
+    if (generated.length === 0) {
+      return "";
+    }
+
+    const links = generated
+      .slice()
+      .sort((a, b) => a.size - b.size)
+      .map(
+        (icon) =>
+          `<link rel=\"icon\" type=\"image/png\" sizes=\"${icon.size}x${icon.size}\" href=\"/favicon-${icon.size}.png\" />`,
+      );
+
+    const apple = generated.find((icon) => icon.size === 180);
+    if (apple) {
+      links.push(
+        `<link rel=\"apple-touch-icon\" href=\"/favicon-${apple.size}.png\" />`,
+      );
+    }
+
+    links.push(`<link rel=\"manifest\" href=\"/site.webmanifest\" />`);
+
+    return links.join("\n");
+  }, [generated]);
 
   useEffect(() => {
     return () => {
@@ -100,6 +160,22 @@ export function FaviconGeneratorTool({ language }: Props) {
     anchor.download = "favicons.zip";
     anchor.click();
     URL.revokeObjectURL(zipUrl);
+  };
+
+  const onDownloadManifest = () => {
+    if (!manifestContent) {
+      return;
+    }
+
+    const blob = new Blob([manifestContent], {
+      type: "application/manifest+json",
+    });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = "site.webmanifest";
+    anchor.click();
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -180,6 +256,51 @@ export function FaviconGeneratorTool({ language }: Props) {
                 <span>PNG</span>
               </a>
             ))}
+          </div>
+          <div className="grid gap-4 lg:grid-cols-2">
+            <div className="space-y-2 rounded-md border bg-background/40 p-3">
+              <p className="text-sm">{text.manifest}</p>
+              <textarea
+                className="h-40 w-full rounded-md border bg-background/60 p-3 text-xs"
+                readOnly
+                value={manifestContent}
+              />
+              <ToolActions
+                actions={[
+                  {
+                    label: text.copyManifest,
+                    onClick: () => {
+                      void copyTextToClipboard(manifestContent);
+                    },
+                    disabled: manifestContent.length === 0,
+                  },
+                  {
+                    label: text.downloadManifest,
+                    onClick: onDownloadManifest,
+                    disabled: manifestContent.length === 0,
+                  },
+                ]}
+              />
+            </div>
+            <div className="space-y-2 rounded-md border bg-background/40 p-3">
+              <p className="text-sm">{text.snippet}</p>
+              <textarea
+                className="h-40 w-full rounded-md border bg-background/60 p-3 text-xs"
+                readOnly
+                value={htmlSnippet}
+              />
+              <ToolActions
+                actions={[
+                  {
+                    label: text.copySnippet,
+                    onClick: () => {
+                      void copyTextToClipboard(htmlSnippet);
+                    },
+                    disabled: htmlSnippet.length === 0,
+                  },
+                ]}
+              />
+            </div>
           </div>
         </div>
       )}

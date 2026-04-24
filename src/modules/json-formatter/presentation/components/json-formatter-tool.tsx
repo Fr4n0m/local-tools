@@ -19,9 +19,11 @@ export function JsonFormatterTool({ language }: Props) {
   const [output, setOutput] = useState("");
   const [isValid, setIsValid] = useState<boolean | null>(null);
   const [errorText, setErrorText] = useState("");
+  const [minify, setMinify] = useState(false);
+  const [sortKeys, setSortKeys] = useState(false);
 
   const onFormat = () => {
-    const result = formatJsonUseCase(input);
+    const result = formatJsonUseCase(input, { minify, sortKeys });
     if (result.ok) {
       setOutput(result.value);
       setIsValid(true);
@@ -73,11 +75,31 @@ export function JsonFormatterTool({ language }: Props) {
               setOutput("");
               setIsValid(null);
               setErrorText("");
+              setMinify(false);
+              setSortKeys(false);
             },
             disabled: input.length === 0 && output.length === 0,
           },
         ]}
       />
+      <div className="grid gap-3 md:grid-cols-2">
+        <label className="flex items-center gap-2 rounded-md border bg-background/40 p-3 text-sm">
+          <input
+            checked={minify}
+            onChange={(event) => setMinify(event.target.checked)}
+            type="checkbox"
+          />
+          <span>{text.minify}</span>
+        </label>
+        <label className="flex items-center gap-2 rounded-md border bg-background/40 p-3 text-sm">
+          <input
+            checked={sortKeys}
+            onChange={(event) => setSortKeys(event.target.checked)}
+            type="checkbox"
+          />
+          <span>{text.sortKeys}</span>
+        </label>
+      </div>
       {isValid !== null ? (
         <p className="text-sm">
           {isValid

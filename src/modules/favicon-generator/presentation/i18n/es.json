@@ -7,5 +7,10 @@
   "dropHint": "Arrastra y suelta una imagen aquí o usa el selector",
   "currentFile": "Archivo actual",
   "empty": "Sube una imagen para generar tamaños.",
-  "result": "Tamaños generados"
+  "result": "Tamaños generados",
+  "manifest": "Web Manifest",
+  "snippet": "Snippet HTML",
+  "copyManifest": "Copiar manifest",
+  "downloadManifest": "Descargar manifest",
+  "copySnippet": "Copiar snippet"
 }

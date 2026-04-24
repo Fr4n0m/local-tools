@@ -1,3 +1,5 @@
+import { parse, type ParseError } from "jsonc-parser";
+
 type JsonFormatSuccess = { ok: true; value: string };
 type JsonFormatError = {
   ok: false;
@@ -7,6 +9,11 @@ type JsonFormatError = {
     line: number | null;
     column: number | null;
   };
+};
+
+export type JsonFormatOptions = {
+  minify?: boolean;
+  sortKeys?: boolean;
 };
 
 function parseErrorPosition(message: string): {
@@ -65,10 +72,35 @@ function positionToLineColumn(input: string, position: number | null) {
   return { line, column };
 }
 
-export function formatJson(input: string): JsonFormatSuccess | JsonFormatError {
+function sortJsonValue(value: unknown): unknown {
+  if (Array.isArray(value)) {
+    return value.map(sortJsonValue);
+  }
+
+  if (value && typeof value === "object") {
+    const entries = Object.entries(value as Record<string, unknown>).sort(
+      ([a], [b]) => a.localeCompare(b),
+    );
+
+    return Object.fromEntries(
+      entries.map(([key, entryValue]) => [key, sortJsonValue(entryValue)]),
+    );
+  }
+
+  return value;
+}
+
+export function formatJson(
+  input: string,
+  options: JsonFormatOptions = {},
+): JsonFormatSuccess | JsonFormatError {
   try {
     const parsed = JSON.parse(input);
-    return { ok: true, value: JSON.stringify(parsed, null, 2) };
+    const value = options.sortKeys ? sortJsonValue(parsed) : parsed;
+    return {
+      ok: true,
+      value: JSON.stringify(value, null, options.minify ? 0 : 2),
+    };
   } catch (error) {
     const message =
       error instanceof Error ? error.message : "Invalid JSON syntax";
@@ -89,4 +121,3 @@ export function formatJson(input: string): JsonFormatSuccess | JsonFormatError {
     };
   }
 }
-import { parse, type ParseError } from "jsonc-parser";

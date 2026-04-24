@@ -5,6 +5,8 @@
   "input": "Input JSON",
   "output": "Formatted output",
   "format": "Format JSON",
+  "minify": "Minify output",
+  "sortKeys": "Sort object keys",
   "valid": "Valid JSON",
   "invalid": "Invalid JSON",
   "invalidAt": "Invalid JSON at line {line}, column {column}",

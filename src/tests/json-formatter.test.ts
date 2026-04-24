@@ -12,6 +12,32 @@ describe("formatJsonUseCase", () => {
     }
   });
 
+  it("minifies output", () => {
+    const result = formatJsonUseCase('{"a":1,"b":2}', { minify: true });
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value).toBe('{"a":1,"b":2}');
+    }
+  });
+
+  it("sorts keys recursively", () => {
+    const result = formatJsonUseCase('{"z":1,"a":{"d":2,"b":1}}', {
+      sortKeys: true,
+    });
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value).toContain('"a": {');
+      expect(result.value.indexOf('"a"')).toBeLessThan(
+        result.value.indexOf('"z"'),
+      );
+      expect(result.value.indexOf('"b"')).toBeLessThan(
+        result.value.indexOf('"d"'),
+      );
+    }
+  });
+
   it("fails for invalid JSON", () => {
     const result = formatJsonUseCase('{"a":}');
 

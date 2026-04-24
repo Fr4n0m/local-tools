@@ -7,5 +7,10 @@
   "dropHint": "Drag and drop an image here or use file picker",
   "currentFile": "Current file",
   "empty": "Upload an image to generate sizes.",
-  "result": "Generated sizes"
+  "result": "Generated sizes",
+  "manifest": "Web Manifest",
+  "snippet": "HTML snippet",
+  "copyManifest": "Copy manifest",
+  "downloadManifest": "Download manifest",
+  "copySnippet": "Copy snippet"
 }
