@@ -5,6 +5,11 @@
   "input": "File names (one per line)",
   "search": "Search text",
   "replace": "Replace with",
+  "prefix": "Prefix",
+  "suffix": "Suffix (before extension)",
+  "sequence": "Add sequence",
+  "startNumber": "Start number",
+  "padWidth": "Number padding",
   "preview": "Preview",
   "result": "Preview result"
 }

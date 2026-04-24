@@ -5,6 +5,11 @@
   "input": "Nombres de archivo (uno por línea)",
   "search": "Texto a buscar",
   "replace": "Reemplazar por",
+  "prefix": "Prefijo",
+  "suffix": "Sufijo (antes de la extensión)",
+  "sequence": "Añadir numeración",
+  "startNumber": "Número inicial",
+  "padWidth": "Relleno numérico",
   "preview": "Previsualizar",
   "result": "Resultado de la previsualización"
 }

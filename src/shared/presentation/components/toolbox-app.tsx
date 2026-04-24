@@ -66,35 +66,35 @@ function getCategoryStyles(category: string) {
   if (category === "files-media") {
     return {
       heading: "text-info",
-      active: "bg-info/85 border-info text-strong-foreground",
+      active: "bg-accent border-accent text-sidebar-foreground",
       inactive:
-        "bg-sidebar/12 border-info/35 text-sidebar-foreground hover:bg-info/20",
+        "bg-sidebar/10 border-sidebar-foreground/20 text-sidebar-foreground hover:bg-sidebar-foreground/10",
     };
   }
 
   if (category === "data-encoding") {
     return {
       heading: "text-accent",
-      active: "bg-accent/90 border-accent text-strong-foreground",
+      active: "bg-accent border-accent text-sidebar-foreground",
       inactive:
-        "bg-sidebar/12 border-accent/35 text-sidebar-foreground hover:bg-accent/20",
+        "bg-sidebar/10 border-sidebar-foreground/20 text-sidebar-foreground hover:bg-sidebar-foreground/10",
     };
   }
 
   if (category === "text-code") {
     return {
       heading: "text-warning",
-      active: "bg-warning/90 border-warning text-strong-foreground",
+      active: "bg-accent border-accent text-sidebar-foreground",
       inactive:
-        "bg-sidebar/12 border-warning/35 text-sidebar-foreground hover:bg-warning/20",
+        "bg-sidebar/10 border-sidebar-foreground/20 text-sidebar-foreground hover:bg-sidebar-foreground/10",
     };
   }
 
   return {
-    heading: "text-destructive",
-    active: "bg-destructive/90 border-destructive text-strong-foreground",
+    heading: "text-highlight",
+    active: "bg-accent border-accent text-sidebar-foreground",
     inactive:
-      "bg-sidebar/12 border-destructive/35 text-sidebar-foreground hover:bg-destructive/20",
+      "bg-sidebar/10 border-sidebar-foreground/20 text-sidebar-foreground hover:bg-sidebar-foreground/10",
   };
 }
 
@@ -239,7 +239,7 @@ export function ToolboxApp() {
                 >
                   <IconMenu2 size={18} />
                 </button>
-                <h1 className="text-2xl font-bold text-accent">
+                <h1 className="text-2xl font-bold text-primary">
                   {text.appTitle}
                 </h1>
               </div>

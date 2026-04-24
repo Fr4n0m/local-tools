@@ -1,37 +1,43 @@
 @import "tailwindcss";
 
 :root {
-  --color-background: #e9d8a6;
-  --color-foreground: #001219;
-  --color-primary: #0a9396;
-  --color-secondary: #94d2bd;
-  --color-accent: #ee9b00;
-  --color-muted: #94d2bd;
-  --color-border: #005f73;
-  --color-destructive: #bb3e03;
-  --color-panel: #94d2bd;
-  --color-sidebar: #005f73;
-  --color-sidebar-foreground: #e9d8a6;
-  --color-info: #0a9396;
-  --color-warning: #ca6702;
-  --color-highlight: #9b2226;
+  --color-background: #f8f9fa;
+  --color-foreground: #212529;
+  --color-primary: #343a40;
+  --color-secondary: #e9ecef;
+  --color-accent: #495057;
+  --color-muted: #dee2e6;
+  --color-border: #ced4da;
+  --color-destructive: #212529;
+  --color-panel: #e9ecef;
+  --color-sidebar: #212529;
+  --color-sidebar-foreground: #f8f9fa;
+  --color-info: #495057;
+  --color-warning: #6c757d;
+  --color-highlight: #343a40;
+  --color-strong-foreground: #212529;
+  --color-canvas-start: #f8f9fa;
+  --color-canvas-end: #dee2e6;
 }
 
 .dark {
-  --color-background: #001219;
-  --color-foreground: #e9d8a6;
-  --color-primary: #0a9396;
-  --color-secondary: #005f73;
-  --color-accent: #ee9b00;
-  --color-muted: #005f73;
-  --color-border: #0a9396;
-  --color-destructive: #ae2012;
-  --color-panel: #005f73;
-  --color-sidebar: #005f73;
-  --color-sidebar-foreground: #e9d8a6;
-  --color-info: #94d2bd;
-  --color-warning: #ee9b00;
-  --color-highlight: #ae2012;
+  --color-background: #212529;
+  --color-foreground: #f8f9fa;
+  --color-primary: #dee2e6;
+  --color-secondary: #343a40;
+  --color-accent: #495057;
+  --color-muted: #495057;
+  --color-border: #6c757d;
+  --color-destructive: #dee2e6;
+  --color-panel: #343a40;
+  --color-sidebar: #212529;
+  --color-sidebar-foreground: #f8f9fa;
+  --color-info: #ced4da;
+  --color-warning: #adb5bd;
+  --color-highlight: #f8f9fa;
+  --color-strong-foreground: #f8f9fa;
+  --color-canvas-start: #212529;
+  --color-canvas-end: #343a40;
 }
 
 @theme inline {
@@ -49,6 +55,9 @@
   --color-info: var(--color-info);
   --color-warning: var(--color-warning);
   --color-highlight: var(--color-highlight);
+  --color-strong-foreground: var(--color-strong-foreground);
+  --color-canvas-start: var(--color-canvas-start);
+  --color-canvas-end: var(--color-canvas-end);
 }
 
 * {
@@ -66,53 +75,48 @@ body {
 }
 
 body {
-  background:
-    radial-gradient(
-      circle at 12% 8%,
-      color-mix(in srgb, var(--color-accent) 24%, transparent) 0%,
-      transparent 35%
-    ),
-    radial-gradient(
-      circle at 88% 18%,
-      color-mix(in srgb, var(--color-info) 20%, transparent) 0%,
-      transparent 40%
-    ),
-    linear-gradient(
-      160deg,
-      var(--color-background) 0%,
-      color-mix(in srgb, var(--color-panel) 35%, var(--color-background)) 100%
-    );
+  background: linear-gradient(
+    160deg,
+    var(--color-canvas-start) 0%,
+    var(--color-canvas-end) 100%
+  );
   color: var(--color-foreground);
   font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
 }
 
 .neu-button {
-  color: var(--color-foreground);
+  color: var(--color-strong-foreground);
   padding: 0.7em 1.7em;
   font-size: 0.95rem;
   border-radius: 0.5em;
   background: color-mix(
     in srgb,
-    var(--color-panel) 62%,
-    var(--color-background)
+    var(--color-background) 78%,
+    var(--color-panel)
   );
   cursor: pointer;
-  border: 1px solid
-    color-mix(in srgb, var(--color-border) 70%, var(--color-panel));
+  border: 1px solid var(--color-border);
   transition: all 0.3s;
   box-shadow:
-    6px 6px 12px color-mix(in srgb, var(--color-sidebar) 30%, transparent),
-    -6px -6px 12px color-mix(in srgb, var(--color-background) 70%, white);
+    0 6px 14px color-mix(in srgb, #000000 16%, transparent),
+    inset 0 1px 0 color-mix(in srgb, #ffffff 30%, transparent);
 }
 
 .neu-button:active {
-  color: color-mix(in srgb, var(--color-foreground) 75%, var(--color-sidebar));
-  box-shadow:
-    inset 4px 4px 12px color-mix(in srgb, var(--color-sidebar) 30%, transparent),
-    inset -4px -4px 12px color-mix(in srgb, var(--color-background) 70%, white);
+  color: color-mix(
+    in srgb,
+    var(--color-strong-foreground) 70%,
+    var(--color-accent)
+  );
+  box-shadow: inset 0 2px 10px color-mix(in srgb, #000000 30%, transparent);
 }
 
 .neu-button:disabled {
   cursor: not-allowed;
   opacity: 0.65;
+}
+
+.neu-button--compact {
+  padding: 0.6em 1.2em;
+  font-size: 0.9rem;
 }
