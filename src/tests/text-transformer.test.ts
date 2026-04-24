@@ -18,4 +18,18 @@ describe("textTransformerUseCase", () => {
   it("trims edges", () => {
     expect(textTransformerUseCase.trim("  hi  ")).toBe("hi");
   });
+
+  it("removes all spaces", () => {
+    expect(textTransformerUseCase.removeSpaces(" a  b\n c ")).toBe("abc");
+  });
+
+  it("normalizes spaces", () => {
+    expect(textTransformerUseCase.normalizeSpaces(" a  b\n c ")).toBe("a b c");
+  });
+
+  it("slugifies text", () => {
+    expect(textTransformerUseCase.slugify("  Hola, Mundo Ñ  ")).toBe(
+      "hola-mundo-n",
+    );
+  });
 });

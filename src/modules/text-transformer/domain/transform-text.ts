@@ -17,3 +17,22 @@ export function capitalize(input: string): string {
 export function trim(input: string): string {
   return input.trim();
 }
+
+export function removeSpaces(input: string): string {
+  return input.replace(/\s+/g, "");
+}
+
+export function normalizeSpaces(input: string): string {
+  return input.replace(/\s+/g, " ").trim();
+}
+
+export function slugify(input: string): string {
+  return normalizeSpaces(input)
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+}

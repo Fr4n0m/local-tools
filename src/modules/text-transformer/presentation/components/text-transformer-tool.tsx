@@ -52,6 +52,23 @@ export function TextTransformerTool({ language }: Props) {
             disabled: input.trim().length === 0,
           },
           {
+            label: text.removeSpaces,
+            onClick: () =>
+              setOutput(textTransformerUseCase.removeSpaces(input)),
+            disabled: input.trim().length === 0,
+          },
+          {
+            label: text.normalizeSpaces,
+            onClick: () =>
+              setOutput(textTransformerUseCase.normalizeSpaces(input)),
+            disabled: input.trim().length === 0,
+          },
+          {
+            label: text.slugify,
+            onClick: () => setOutput(textTransformerUseCase.slugify(input)),
+            disabled: input.trim().length === 0,
+          },
+          {
             label: sharedText.buttons.copy,
             onClick: () => {
               void copyTextToClipboard(output);

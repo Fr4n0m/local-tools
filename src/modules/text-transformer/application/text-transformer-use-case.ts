@@ -1,6 +1,9 @@
 import {
   capitalize,
   lowercase,
+  normalizeSpaces,
+  removeSpaces,
+  slugify,
   trim,
   uppercase,
 } from "@/modules/text-transformer/domain/transform-text";
@@ -10,4 +13,7 @@ export const textTransformerUseCase = {
   lowercase,
   capitalize,
   trim,
+  removeSpaces,
+  normalizeSpaces,
+  slugify,
 };
