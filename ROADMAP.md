@@ -37,6 +37,9 @@ Progreso P0 ya ejecutado:
 Progreso P1 ya ejecutado:
 
 - Soporte de `drag & drop` en `image converter` y `favicon generator`.
+- Descarga ZIP en `favicon generator` (client-side).
+- Feedback de error JSON con linea/columna.
+- Acciones compartidas (`copiar`/`limpiar`) añadidas tambien en `batch rename`.
 
 ## 2. Objetivo de producto (MVP)
 
@@ -140,3 +143,6 @@ Orden recomendado para el siguiente bloque de trabajo:
 3. Homogeneizar UI compartida (acciones copiar/limpiar/descargar).
 4. Mejorar accesibilidad teclado/aria del drawer y controles.
 5. Cerrar P0 con validacion final (`lint` + `test` + `build`).
+6. Añadir preview antes/despues en `image converter`.
+7. Añadir `manifest` + snippet HTML en `favicon generator`.
+8. Implementar minify y ordenado de claves en JSON formatter.

@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import en from "@/modules/favicon-generator/presentation/i18n/en.json";
 import es from "@/modules/favicon-generator/presentation/i18n/es.json";
+import { createZipBlob } from "@/shared/lib/zip";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import type { Language } from "@/shared/presentation/i18n";
 import { sharedMessages } from "@/shared/presentation/i18n";
@@ -13,6 +14,7 @@ type Props = { language: Language };
 type GeneratedIcon = {
   size: number;
   url: string;
+  blob: Blob;
 };
 
 const sizes = [16, 32, 48, 64, 128, 180, 192, 256, 512];
@@ -68,7 +70,7 @@ export function FaviconGeneratorTool({ language }: Props) {
       if (!blob) {
         continue;
       }
-      icons.push({ size, url: URL.createObjectURL(blob) });
+      icons.push({ size, url: URL.createObjectURL(blob), blob });
     }
 
     setGenerated(icons);
@@ -79,6 +81,25 @@ export function FaviconGeneratorTool({ language }: Props) {
       return;
     }
     setFile(nextFile);
+  };
+
+  const onDownloadZip = async () => {
+    if (generated.length === 0) {
+      return;
+    }
+
+    const zipBlob = await createZipBlob(
+      generated.map((icon) => ({
+        name: `favicon-${icon.size}.png`,
+        blob: icon.blob,
+      })),
+    );
+    const zipUrl = URL.createObjectURL(zipBlob);
+    const anchor = document.createElement("a");
+    anchor.href = zipUrl;
+    anchor.download = "favicons.zip";
+    anchor.click();
+    URL.revokeObjectURL(zipUrl);
   };
 
   return (
@@ -121,6 +142,13 @@ export function FaviconGeneratorTool({ language }: Props) {
               void onGenerate();
             },
             disabled: !file,
+          },
+          {
+            label: sharedText.buttons.download,
+            onClick: () => {
+              void onDownloadZip();
+            },
+            disabled: generated.length === 0,
           },
           {
             label: sharedText.buttons.clear,

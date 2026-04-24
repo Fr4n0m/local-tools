@@ -18,16 +18,27 @@ export function JsonFormatterTool({ language }: Props) {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [isValid, setIsValid] = useState<boolean | null>(null);
+  const [errorText, setErrorText] = useState("");
 
   const onFormat = () => {
     const result = formatJsonUseCase(input);
     if (result.ok) {
       setOutput(result.value);
       setIsValid(true);
+      setErrorText("");
       return;
     }
     setOutput("");
     setIsValid(false);
+    if (result.error.line !== null && result.error.column !== null) {
+      setErrorText(
+        text.invalidAt
+          .replace("{line}", String(result.error.line))
+          .replace("{column}", String(result.error.column)),
+      );
+      return;
+    }
+    setErrorText(text.invalidUnknown);
   };
 
   return (
@@ -61,13 +72,18 @@ export function JsonFormatterTool({ language }: Props) {
               setInput("");
               setOutput("");
               setIsValid(null);
+              setErrorText("");
             },
             disabled: input.length === 0 && output.length === 0,
           },
         ]}
       />
       {isValid !== null ? (
-        <p className="text-sm">{isValid ? text.valid : text.invalid}</p>
+        <p className="text-sm">
+          {isValid
+            ? text.valid
+            : `${text.invalid}${errorText ? `. ${errorText}` : ""}`}
+        </p>
       ) : null}
       <label className="block space-y-2">
         <span className="text-sm">{text.output}</span>

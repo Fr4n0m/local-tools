@@ -5,17 +5,24 @@ import { useMemo, useState } from "react";
 import { batchRenamePreviewUseCase } from "@/modules/batch-rename/application/batch-rename-preview-use-case";
 import en from "@/modules/batch-rename/presentation/i18n/en.json";
 import es from "@/modules/batch-rename/presentation/i18n/es.json";
+import { copyTextToClipboard } from "@/shared/lib/clipboard";
+import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import type { Language } from "@/shared/presentation/i18n";
+import { sharedMessages } from "@/shared/presentation/i18n";
 
 type Props = { language: Language };
 
 export function BatchRenameTool({ language }: Props) {
   const text = useMemo(() => (language === "es" ? es : en), [language]);
+  const sharedText = sharedMessages[language];
   const [names, setNames] = useState("");
   const [searchValue, setSearchValue] = useState("");
   const [replaceValue, setReplaceValue] = useState("");
 
   const preview = batchRenamePreviewUseCase(names, searchValue, replaceValue);
+  const previewText = preview
+    .map((item) => `${item.original} => ${item.renamed}`)
+    .join("\n");
 
   return (
     <div className="space-y-4">
@@ -46,6 +53,29 @@ export function BatchRenameTool({ language }: Props) {
           />
         </label>
       </div>
+      <ToolActions
+        actions={[
+          {
+            label: sharedText.buttons.copy,
+            onClick: () => {
+              void copyTextToClipboard(previewText);
+            },
+            disabled: preview.length === 0,
+          },
+          {
+            label: sharedText.buttons.clear,
+            onClick: () => {
+              setNames("");
+              setSearchValue("");
+              setReplaceValue("");
+            },
+            disabled:
+              names.length === 0 &&
+              searchValue.length === 0 &&
+              replaceValue.length === 0,
+          },
+        ]}
+      />
       <div className="space-y-2">
         <p className="text-sm">{text.result}</p>
         <div className="max-h-72 overflow-auto rounded-md border bg-background/40 p-3">

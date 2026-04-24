@@ -6,5 +6,7 @@
   "output": "Formatted output",
   "format": "Format JSON",
   "valid": "Valid JSON",
-  "invalid": "Invalid JSON"
+  "invalid": "Invalid JSON",
+  "invalidAt": "Invalid JSON at line {line}, column {column}",
+  "invalidUnknown": "Invalid JSON syntax"
 }

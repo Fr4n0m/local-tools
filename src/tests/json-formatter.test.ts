@@ -16,5 +16,10 @@ describe("formatJsonUseCase", () => {
     const result = formatJsonUseCase('{"a":}');
 
     expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.error.line).toBe(1);
+      expect(result.error.column).toBe(6);
+      expect(result.error.position).toBe(5);
+    }
   });
 });
