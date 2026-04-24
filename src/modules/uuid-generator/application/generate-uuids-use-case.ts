@@ -1,5 +1,17 @@
-import { generateUuids } from "@/modules/uuid-generator/domain/generate-uuids";
+import {
+  formatUuidValue,
+  generateUuids,
+} from "@/modules/uuid-generator/domain/generate-uuids";
 
-export function generateUuidsUseCase(amount: number): string[] {
-  return generateUuids(amount);
+type GenerateUuidOptions = {
+  stripHyphens?: boolean;
+};
+
+export function generateUuidsUseCase(
+  amount: number,
+  options: GenerateUuidOptions = {},
+): string[] {
+  return generateUuids(amount).map((value) =>
+    formatUuidValue(value, options.stripHyphens ?? false),
+  );
 }

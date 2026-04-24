@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import en from "@/modules/favicon-generator/presentation/i18n/en.json";
 import es from "@/modules/favicon-generator/presentation/i18n/es.json";
 import { copyTextToClipboard } from "@/shared/lib/clipboard";
+import { downloadTextFile } from "@/shared/lib/download";
 import { createZipBlob } from "@/shared/lib/zip";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import type { Language } from "@/shared/presentation/i18n";
@@ -166,16 +167,11 @@ export function FaviconGeneratorTool({ language }: Props) {
     if (!manifestContent) {
       return;
     }
-
-    const blob = new Blob([manifestContent], {
-      type: "application/manifest+json",
-    });
-    const url = URL.createObjectURL(blob);
-    const anchor = document.createElement("a");
-    anchor.href = url;
-    anchor.download = "site.webmanifest";
-    anchor.click();
-    URL.revokeObjectURL(url);
+    downloadTextFile(
+      manifestContent,
+      "site.webmanifest",
+      "application/manifest+json",
+    );
   };
 
   return (

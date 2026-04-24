@@ -3,6 +3,8 @@
   "description": "Genera UUID v4 al instante.",
   "title": "Generador UUID",
   "amount": "Cantidad",
+  "stripHyphens": "Quitar guiones",
   "generate": "Generar UUIDs",
-  "result": "UUIDs generados"
+  "result": "UUIDs generados",
+  "download": "Descargar TXT"
 }

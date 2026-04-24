@@ -3,6 +3,8 @@
   "description": "Generate UUID v4 values instantly.",
   "title": "UUID Generator",
   "amount": "Amount",
+  "stripHyphens": "Remove hyphens",
   "generate": "Generate UUIDs",
-  "result": "Generated UUIDs"
+  "result": "Generated UUIDs",
+  "download": "Download TXT"
 }
