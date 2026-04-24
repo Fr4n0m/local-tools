@@ -66,7 +66,7 @@ function getCategoryStyles(category: string) {
   if (category === "files-media") {
     return {
       heading: "text-info",
-      active: "bg-info/85 border-info text-sidebar-foreground",
+      active: "bg-info/85 border-info text-strong-foreground",
       inactive:
         "bg-sidebar/12 border-info/35 text-sidebar-foreground hover:bg-info/20",
     };
@@ -75,7 +75,7 @@ function getCategoryStyles(category: string) {
   if (category === "data-encoding") {
     return {
       heading: "text-accent",
-      active: "bg-accent/90 border-accent text-sidebar-foreground",
+      active: "bg-accent/90 border-accent text-strong-foreground",
       inactive:
         "bg-sidebar/12 border-accent/35 text-sidebar-foreground hover:bg-accent/20",
     };
@@ -84,7 +84,7 @@ function getCategoryStyles(category: string) {
   if (category === "text-code") {
     return {
       heading: "text-warning",
-      active: "bg-warning/90 border-warning text-sidebar-foreground",
+      active: "bg-warning/90 border-warning text-strong-foreground",
       inactive:
         "bg-sidebar/12 border-warning/35 text-sidebar-foreground hover:bg-warning/20",
     };
@@ -92,24 +92,28 @@ function getCategoryStyles(category: string) {
 
   return {
     heading: "text-destructive",
-    active: "bg-destructive/90 border-destructive text-sidebar-foreground",
+    active: "bg-destructive/90 border-destructive text-strong-foreground",
     inactive:
       "bg-sidebar/12 border-destructive/35 text-sidebar-foreground hover:bg-destructive/20",
   };
 }
 
 export function ToolboxApp() {
-  const [language, setLanguage] = useState<Language>(() =>
-    typeof window === "undefined" ? "en" : resolveInitialLanguage(),
-  );
-  const [theme, setTheme] = useState<Theme>(() =>
-    typeof window === "undefined" ? "light" : readInitialTheme(),
-  );
-  const [selectedToolId, setSelectedToolId] = useState<ToolId>(() =>
-    typeof window === "undefined" ? tools[0].id : getInitialToolId(),
-  );
+  const [language, setLanguage] = useState<Language>("en");
+  const [theme, setTheme] = useState<Theme>("light");
+  const [selectedToolId, setSelectedToolId] = useState<ToolId>(tools[0].id);
   const [search, setSearch] = useState("");
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => {
+      setLanguage(resolveInitialLanguage());
+      setTheme(readInitialTheme());
+      setSelectedToolId(getInitialToolId());
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", theme === "dark");
@@ -221,7 +225,7 @@ export function ToolboxApp() {
           </div>
         ) : null}
 
-        <main className="flex-1 p-4 md:p-6">
+        <main className="flex-1 bg-background p-4 md:p-6">
           <header className="mb-6 space-y-4">
             <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-3">
@@ -273,19 +277,19 @@ export function ToolboxApp() {
               />
               <input
                 aria-label={text.searchPlaceholder}
-                className="w-full rounded-md border border-border/70 bg-panel/35 py-3 pl-10 pr-4"
+                className="w-full rounded-md border border-border/60 bg-background py-3 pl-10 pr-4"
                 placeholder={text.searchPlaceholder}
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
               />
             </div>
 
-            <Card className="border-warning/55 bg-warning/18 p-3 text-sm">
+            <Card className="border-accent/60 bg-accent/14 p-3 text-sm">
               {text.privacy}
             </Card>
           </header>
 
-          <section className="rounded-xl border border-border/70 bg-panel/20 p-4 md:p-6">
+          <section className="rounded-xl border border-border/60 bg-background/90 p-4 md:p-6">
             <SelectedToolComponent language={language} />
           </section>
         </main>
