@@ -5,11 +5,13 @@
   "inputLabel": "Selecciona imagen",
   "formatLabel": "Formato de salida",
   "qualityLabel": "Calidad JPEG/WebP",
-  "convert": "Convertir",
-  "dropHint": "Arrastra y suelta una imagen aquí o usa el selector",
+  "convert": "Convertir selección",
+  "convertBatch": "Convertir todo (ZIP)",
+  "dropHint": "Arrastra y suelta archivos de imagen aquí o usa el selector",
   "currentFile": "Archivo actual",
+  "selectedCount": "Archivos seleccionados: {count}",
   "originalPreview": "Vista previa original",
   "convertedPreview": "Vista previa convertida",
-  "empty": "Selecciona una imagen para empezar.",
+  "empty": "Selecciona archivos de imagen para empezar.",
   "done": "Archivo listo para descargar"
 }

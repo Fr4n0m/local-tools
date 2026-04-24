@@ -5,6 +5,8 @@ import { useEffect, useMemo, useState } from "react";
 
 import en from "@/modules/image-converter/presentation/i18n/en.json";
 import es from "@/modules/image-converter/presentation/i18n/es.json";
+import { downloadBlob } from "@/shared/lib/download";
+import { createZipBlob } from "@/shared/lib/zip";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import type { Language } from "@/shared/presentation/i18n";
 import { sharedMessages } from "@/shared/presentation/i18n";
@@ -15,7 +17,7 @@ type OutputFormat = "image/png" | "image/jpeg" | "image/webp";
 export function ImageConverterTool({ language }: Props) {
   const text = useMemo(() => (language === "es" ? es : en), [language]);
   const sharedText = sharedMessages[language];
-  const [file, setFile] = useState<File | null>(null);
+  const [files, setFiles] = useState<File[]>([]);
   const [isDragging, setIsDragging] = useState(false);
   const [format, setFormat] = useState<OutputFormat>("image/png");
   const [quality, setQuality] = useState(0.9);
@@ -33,11 +35,7 @@ export function ImageConverterTool({ language }: Props) {
     };
   }, [downloadUrl, originalPreviewUrl]);
 
-  const onConvert = async () => {
-    if (!file) {
-      return;
-    }
-
+  const convertFileToBlob = async (file: File): Promise<Blob | null> => {
     const image = new Image();
     const sourceUrl = URL.createObjectURL(file);
     image.src = sourceUrl;
@@ -59,7 +57,7 @@ export function ImageConverterTool({ language }: Props) {
 
     const context = canvas.getContext("2d");
     if (!context) {
-      return;
+      return null;
     }
 
     context.drawImage(image, 0, 0);
@@ -68,6 +66,15 @@ export function ImageConverterTool({ language }: Props) {
       canvas.toBlob(resolve, format, quality);
     });
 
+    return blob;
+  };
+
+  const onConvert = async () => {
+    if (files.length === 0) {
+      return;
+    }
+
+    const blob = await convertFileToBlob(files[0]);
     if (!blob) {
       return;
     }
@@ -79,15 +86,47 @@ export function ImageConverterTool({ language }: Props) {
     setDownloadUrl(URL.createObjectURL(blob));
   };
 
-  const onDropFile = (nextFile: File | null) => {
-    if (!nextFile || !nextFile.type.startsWith("image/")) {
+  const onConvertBatch = async () => {
+    if (files.length <= 1) {
       return;
     }
+
+    const converted = await Promise.all(
+      files.map(async (file) => {
+        const blob = await convertFileToBlob(file);
+        if (!blob) {
+          return null;
+        }
+        const dotIndex = file.name.lastIndexOf(".");
+        const basename =
+          dotIndex > 0 ? file.name.slice(0, dotIndex) : file.name;
+        const ext = format.split("/")[1];
+        return {
+          name: `${basename}.${ext}`,
+          blob,
+        };
+      }),
+    );
+
+    const zipBlob = await createZipBlob(
+      converted.filter((item): item is { name: string; blob: Blob } => !!item),
+    );
+    downloadBlob(zipBlob, "converted-images.zip");
+  };
+
+  const onDropFiles = (nextFiles: File[]) => {
+    const validFiles = nextFiles.filter((nextFile) =>
+      nextFile.type.startsWith("image/"),
+    );
+    if (validFiles.length === 0) {
+      return;
+    }
+
     if (originalPreviewUrl) {
       URL.revokeObjectURL(originalPreviewUrl);
     }
-    setOriginalPreviewUrl(URL.createObjectURL(nextFile));
-    setFile(nextFile);
+    setOriginalPreviewUrl(URL.createObjectURL(validFiles[0]));
+    setFiles(validFiles);
   };
 
   return (
@@ -105,19 +144,27 @@ export function ImageConverterTool({ language }: Props) {
           onDrop={(event) => {
             event.preventDefault();
             setIsDragging(false);
-            onDropFile(event.dataTransfer.files?.[0] ?? null);
+            onDropFiles(Array.from(event.dataTransfer.files ?? []));
           }}
         >
           <input
             className="w-full rounded-md border bg-background/60 p-3"
             type="file"
+            multiple
             accept="image/*"
-            onChange={(event) => onDropFile(event.target.files?.[0] ?? null)}
+            onChange={(event) =>
+              onDropFiles(Array.from(event.target.files ?? []))
+            }
           />
           <p className="mt-2 text-xs">{text.dropHint}</p>
-          {file ? (
+          {files.length > 0 ? (
             <p className="mt-1 text-xs">
-              {text.currentFile}: {file.name}
+              {text.currentFile}: {files[0].name}
+            </p>
+          ) : null}
+          {files.length > 1 ? (
+            <p className="mt-1 text-xs">
+              {text.selectedCount.replace("{count}", String(files.length))}
             </p>
           ) : null}
         </div>
@@ -155,7 +202,14 @@ export function ImageConverterTool({ language }: Props) {
             onClick: () => {
               void onConvert();
             },
-            disabled: !file,
+            disabled: files.length === 0,
+          },
+          {
+            label: text.convertBatch,
+            onClick: () => {
+              void onConvertBatch();
+            },
+            disabled: files.length <= 1,
           },
           {
             label: sharedText.buttons.clear,
@@ -166,15 +220,15 @@ export function ImageConverterTool({ language }: Props) {
               if (originalPreviewUrl) {
                 URL.revokeObjectURL(originalPreviewUrl);
               }
-              setFile(null);
+              setFiles([]);
               setDownloadUrl("");
               setOriginalPreviewUrl("");
             },
-            disabled: !file && !downloadUrl,
+            disabled: files.length === 0 && !downloadUrl,
           },
         ]}
       />
-      {file || downloadUrl ? (
+      {files.length > 0 || downloadUrl ? (
         <div className="grid gap-4 md:grid-cols-2">
           <div className="space-y-2 rounded-md border bg-background/50 p-3">
             <p className="text-sm">{text.originalPreview}</p>
@@ -208,7 +262,7 @@ export function ImageConverterTool({ language }: Props) {
         <a
           className="inline-block rounded-md border px-4 py-2"
           href={downloadUrl}
-          download={`converted.${format.split("/")[1]}`}
+          download={`converted-${files[0]?.name ?? "image"}.${format.split("/")[1]}`}
         >
           {text.done}
         </a>

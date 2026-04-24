@@ -5,11 +5,13 @@
   "inputLabel": "Select image",
   "formatLabel": "Output format",
   "qualityLabel": "JPEG/WebP quality",
-  "convert": "Convert",
-  "dropHint": "Drag and drop an image here or use file picker",
+  "convert": "Convert selected",
+  "convertBatch": "Convert all (ZIP)",
+  "dropHint": "Drag and drop image files here or use file picker",
   "currentFile": "Current file",
+  "selectedCount": "Selected files: {count}",
   "originalPreview": "Original preview",
   "convertedPreview": "Converted preview",
-  "empty": "Pick an image to start.",
+  "empty": "Pick image files to start.",
   "done": "File ready for download"
 }
