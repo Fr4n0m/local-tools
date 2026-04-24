@@ -62,6 +62,42 @@ function getInitialToolId(): ToolId {
   return tools[0].id;
 }
 
+function getCategoryStyles(category: string) {
+  if (category === "files-media") {
+    return {
+      heading: "text-info",
+      active: "bg-info/85 border-info text-sidebar-foreground",
+      inactive:
+        "bg-sidebar/12 border-info/35 text-sidebar-foreground hover:bg-info/20",
+    };
+  }
+
+  if (category === "data-encoding") {
+    return {
+      heading: "text-accent",
+      active: "bg-accent/90 border-accent text-sidebar-foreground",
+      inactive:
+        "bg-sidebar/12 border-accent/35 text-sidebar-foreground hover:bg-accent/20",
+    };
+  }
+
+  if (category === "text-code") {
+    return {
+      heading: "text-warning",
+      active: "bg-warning/90 border-warning text-sidebar-foreground",
+      inactive:
+        "bg-sidebar/12 border-warning/35 text-sidebar-foreground hover:bg-warning/20",
+    };
+  }
+
+  return {
+    heading: "text-destructive",
+    active: "bg-destructive/90 border-destructive text-sidebar-foreground",
+    inactive:
+      "bg-sidebar/12 border-destructive/35 text-sidebar-foreground hover:bg-destructive/20",
+  };
+}
+
 export function ToolboxApp() {
   const [language, setLanguage] = useState<Language>(() =>
     typeof window === "undefined" ? "en" : resolveInitialLanguage(),
@@ -149,7 +185,7 @@ export function ToolboxApp() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <div className="flex min-h-screen">
-        <aside className="hidden w-80 border-r border-border bg-secondary/20 p-4 md:block">
+        <aside className="hidden w-80 border-r border-border/75 bg-sidebar text-sidebar-foreground p-4 md:block">
           <Sidebar
             language={language}
             onSelectTool={setSelectedToolId}
@@ -166,7 +202,7 @@ export function ToolboxApp() {
           >
             <aside
               aria-label={text.menu}
-              className="h-full w-80 border-r border-border bg-background p-4"
+              className="h-full w-80 border-r border-border/75 bg-sidebar text-sidebar-foreground p-4"
               id="mobile-sidebar"
               onClick={(event) => event.stopPropagation()}
               aria-modal="true"
@@ -192,18 +228,20 @@ export function ToolboxApp() {
                 <button
                   aria-controls="mobile-sidebar"
                   aria-expanded={isMobileSidebarOpen}
-                  className="rounded-md border p-2 md:hidden"
+                  className="rounded-md border border-border/70 bg-panel/35 p-2 md:hidden"
                   onClick={() => setIsMobileSidebarOpen(true)}
                   type="button"
                   aria-label={text.menu}
                 >
                   <IconMenu2 size={18} />
                 </button>
-                <h1 className="text-2xl font-bold">{text.appTitle}</h1>
+                <h1 className="text-2xl font-bold text-accent">
+                  {text.appTitle}
+                </h1>
               </div>
               <div className="flex items-center gap-2">
                 <select
-                  className="rounded-md border bg-background px-3 py-2 text-sm"
+                  className="rounded-md border border-border/70 bg-panel/35 px-3 py-2 text-sm"
                   value={language}
                   onChange={(event) =>
                     setLanguage(event.target.value as Language)
@@ -214,7 +252,7 @@ export function ToolboxApp() {
                   <option value="es">ES</option>
                 </select>
                 <button
-                  className="rounded-md border p-2"
+                  className="rounded-md border border-border/70 bg-panel/35 p-2"
                   onClick={() => setTheme(theme === "light" ? "dark" : "light")}
                   type="button"
                   aria-label={text.theme}
@@ -235,17 +273,19 @@ export function ToolboxApp() {
               />
               <input
                 aria-label={text.searchPlaceholder}
-                className="w-full rounded-md border bg-background/60 py-3 pl-10 pr-4"
+                className="w-full rounded-md border border-border/70 bg-panel/35 py-3 pl-10 pr-4"
                 placeholder={text.searchPlaceholder}
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
               />
             </div>
 
-            <Card className="p-3 text-sm">{text.privacy}</Card>
+            <Card className="border-warning/55 bg-warning/18 p-3 text-sm">
+              {text.privacy}
+            </Card>
           </header>
 
-          <section className="rounded-xl border border-border bg-secondary/10 p-4 md:p-6">
+          <section className="rounded-xl border border-border/70 bg-panel/20 p-4 md:p-6">
             <SelectedToolComponent language={language} />
           </section>
         </main>
@@ -289,18 +329,19 @@ function Sidebar({
     <div className="space-y-4">
       {Object.entries(grouped).map(([category, categoryTools]) => (
         <div className="space-y-2" key={category}>
-          <p className="text-xs font-semibold uppercase tracking-wide text-foreground/70">
+          <p
+            className={`text-xs font-semibold uppercase tracking-wide ${getCategoryStyles(category).heading}`}
+          >
             {text.categories[category as keyof typeof text.categories]}
           </p>
           <div className="space-y-2">
             {categoryTools.map((tool) => {
               const Icon = tool.icon;
               const isActive = tool.id === selectedToolId;
+              const styles = getCategoryStyles(tool.category);
               return (
                 <button
-                  className={`w-full rounded-md border p-3 text-left text-sm transition ${
-                    isActive ? "bg-primary text-background" : "bg-background/30"
-                  }`}
+                  className={`w-full rounded-md border p-3 text-left text-sm transition ${isActive ? styles.active : styles.inactive}`}
                   key={tool.id}
                   onClick={() => onSelectTool(tool.id)}
                   type="button"
