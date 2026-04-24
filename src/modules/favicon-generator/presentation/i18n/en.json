@@ -4,6 +4,8 @@
   "title": "Favicon Generator",
   "inputLabel": "Select source image",
   "generate": "Generate favicon set",
+  "dropHint": "Drag and drop an image here or use file picker",
+  "currentFile": "Current file",
   "empty": "Upload an image to generate sizes.",
   "result": "Generated sizes"
 }

@@ -15,6 +15,7 @@ export function ImageConverterTool({ language }: Props) {
   const text = useMemo(() => (language === "es" ? es : en), [language]);
   const sharedText = sharedMessages[language];
   const [file, setFile] = useState<File | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
   const [format, setFormat] = useState<OutputFormat>("image/png");
   const [quality, setQuality] = useState(0.9);
   const [downloadUrl, setDownloadUrl] = useState<string>("");
@@ -73,17 +74,44 @@ export function ImageConverterTool({ language }: Props) {
     setDownloadUrl(URL.createObjectURL(blob));
   };
 
+  const onDropFile = (nextFile: File | null) => {
+    if (!nextFile || !nextFile.type.startsWith("image/")) {
+      return;
+    }
+    setFile(nextFile);
+  };
+
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">{text.title}</h2>
       <label className="block space-y-2">
         <span className="text-sm">{text.inputLabel}</span>
-        <input
-          className="w-full rounded-md border bg-background/50 p-3"
-          type="file"
-          accept="image/*"
-          onChange={(event) => setFile(event.target.files?.[0] ?? null)}
-        />
+        <div
+          className={`rounded-md border p-3 ${isDragging ? "bg-secondary/40" : "bg-background/50"}`}
+          onDragOver={(event) => {
+            event.preventDefault();
+            setIsDragging(true);
+          }}
+          onDragLeave={() => setIsDragging(false)}
+          onDrop={(event) => {
+            event.preventDefault();
+            setIsDragging(false);
+            onDropFile(event.dataTransfer.files?.[0] ?? null);
+          }}
+        >
+          <input
+            className="w-full rounded-md border bg-background/60 p-3"
+            type="file"
+            accept="image/*"
+            onChange={(event) => onDropFile(event.target.files?.[0] ?? null)}
+          />
+          <p className="mt-2 text-xs">{text.dropHint}</p>
+          {file ? (
+            <p className="mt-1 text-xs">
+              {text.currentFile}: {file.name}
+            </p>
+          ) : null}
+        </div>
       </label>
       <div className="grid gap-4 md:grid-cols-2">
         <label className="block space-y-2">

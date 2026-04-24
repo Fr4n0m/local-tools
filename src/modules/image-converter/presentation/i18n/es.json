@@ -6,6 +6,8 @@
   "formatLabel": "Formato de salida",
   "qualityLabel": "Calidad JPEG/WebP",
   "convert": "Convertir",
+  "dropHint": "Arrastra y suelta una imagen aquí o usa el selector",
+  "currentFile": "Archivo actual",
   "empty": "Selecciona una imagen para empezar.",
   "done": "Archivo listo para descargar"
 }

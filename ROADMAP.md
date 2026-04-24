@@ -34,6 +34,10 @@ Progreso P0 ya ejecutado:
 - Hardening de herramientas de archivos con limpieza de `ObjectURL` en convertidor y favicon.
 - Estilo global de foco visible para navegacion por teclado.
 
+Progreso P1 ya ejecutado:
+
+- Soporte de `drag & drop` en `image converter` y `favicon generator`.
+
 ## 2. Objetivo de producto (MVP)
 
 Entregar una toolbox privada, rapida y 100% client-side con UX de app nativa, calidad de codigo mantenible y base lista para escalar nuevas herramientas sin romper arquitectura.

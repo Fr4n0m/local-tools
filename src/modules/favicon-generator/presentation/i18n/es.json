@@ -4,6 +4,8 @@
   "title": "Generador de Favicons",
   "inputLabel": "Selecciona imagen origen",
   "generate": "Generar set de favicons",
+  "dropHint": "Arrastra y suelta una imagen aquí o usa el selector",
+  "currentFile": "Archivo actual",
   "empty": "Sube una imagen para generar tamaños.",
   "result": "Tamaños generados"
 }
