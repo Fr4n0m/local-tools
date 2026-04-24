@@ -1,10 +1,12 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import en from "@/modules/favicon-generator/presentation/i18n/en.json";
 import es from "@/modules/favicon-generator/presentation/i18n/es.json";
+import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import type { Language } from "@/shared/presentation/i18n";
+import { sharedMessages } from "@/shared/presentation/i18n";
 
 type Props = { language: Language };
 
@@ -17,19 +19,35 @@ const sizes = [16, 32, 48, 64, 128, 180, 192, 256, 512];
 
 export function FaviconGeneratorTool({ language }: Props) {
   const text = useMemo(() => (language === "es" ? es : en), [language]);
+  const sharedText = sharedMessages[language];
   const [file, setFile] = useState<File | null>(null);
   const [generated, setGenerated] = useState<GeneratedIcon[]>([]);
+
+  useEffect(() => {
+    return () => {
+      generated.forEach((icon) => URL.revokeObjectURL(icon.url));
+    };
+  }, [generated]);
 
   const onGenerate = async () => {
     if (!file) {
       return;
     }
 
+    generated.forEach((icon) => URL.revokeObjectURL(icon.url));
+
     const image = new Image();
-    image.src = URL.createObjectURL(file);
+    const sourceUrl = URL.createObjectURL(file);
+    image.src = sourceUrl;
     await new Promise<void>((resolve, reject) => {
-      image.onload = () => resolve();
-      image.onerror = () => reject(new Error("image-load-error"));
+      image.onload = () => {
+        URL.revokeObjectURL(sourceUrl);
+        resolve();
+      };
+      image.onerror = () => {
+        URL.revokeObjectURL(sourceUrl);
+        reject(new Error("image-load-error"));
+      };
     });
 
     const icons: GeneratedIcon[] = [];
@@ -67,9 +85,26 @@ export function FaviconGeneratorTool({ language }: Props) {
           onChange={(event) => setFile(event.target.files?.[0] ?? null)}
         />
       </label>
-      <button className="neu-button" onClick={onGenerate} type="button">
-        {text.generate}
-      </button>
+      <ToolActions
+        actions={[
+          {
+            label: text.generate,
+            onClick: () => {
+              void onGenerate();
+            },
+            disabled: !file,
+          },
+          {
+            label: sharedText.buttons.clear,
+            onClick: () => {
+              generated.forEach((icon) => URL.revokeObjectURL(icon.url));
+              setFile(null);
+              setGenerated([]);
+            },
+            disabled: !file && generated.length === 0,
+          },
+        ]}
+      />
       {generated.length === 0 ? (
         <p className="text-sm">{text.empty}</p>
       ) : (

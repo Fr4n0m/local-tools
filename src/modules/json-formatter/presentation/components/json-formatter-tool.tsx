@@ -5,12 +5,16 @@ import { useMemo, useState } from "react";
 import { formatJsonUseCase } from "@/modules/json-formatter/application/format-json-use-case";
 import en from "@/modules/json-formatter/presentation/i18n/en.json";
 import es from "@/modules/json-formatter/presentation/i18n/es.json";
+import { copyTextToClipboard } from "@/shared/lib/clipboard";
+import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import type { Language } from "@/shared/presentation/i18n";
+import { sharedMessages } from "@/shared/presentation/i18n";
 
 type Props = { language: Language };
 
 export function JsonFormatterTool({ language }: Props) {
   const text = useMemo(() => (language === "es" ? es : en), [language]);
+  const sharedText = sharedMessages[language];
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [isValid, setIsValid] = useState<boolean | null>(null);
@@ -37,9 +41,31 @@ export function JsonFormatterTool({ language }: Props) {
           onChange={(event) => setInput(event.target.value)}
         />
       </label>
-      <button className="neu-button" onClick={onFormat} type="button">
-        {text.format}
-      </button>
+      <ToolActions
+        actions={[
+          {
+            label: text.format,
+            onClick: onFormat,
+            disabled: input.trim().length === 0,
+          },
+          {
+            label: sharedText.buttons.copy,
+            onClick: () => {
+              void copyTextToClipboard(output);
+            },
+            disabled: output.trim().length === 0,
+          },
+          {
+            label: sharedText.buttons.clear,
+            onClick: () => {
+              setInput("");
+              setOutput("");
+              setIsValid(null);
+            },
+            disabled: input.length === 0 && output.length === 0,
+          },
+        ]}
+      />
       {isValid !== null ? (
         <p className="text-sm">{isValid ? text.valid : text.invalid}</p>
       ) : null}

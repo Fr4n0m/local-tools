@@ -5,12 +5,16 @@ import { useMemo, useState } from "react";
 import { textTransformerUseCase } from "@/modules/text-transformer/application/text-transformer-use-case";
 import en from "@/modules/text-transformer/presentation/i18n/en.json";
 import es from "@/modules/text-transformer/presentation/i18n/es.json";
+import { copyTextToClipboard } from "@/shared/lib/clipboard";
+import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import type { Language } from "@/shared/presentation/i18n";
+import { sharedMessages } from "@/shared/presentation/i18n";
 
 type Props = { language: Language };
 
 export function TextTransformerTool({ language }: Props) {
   const text = useMemo(() => (language === "es" ? es : en), [language]);
+  const sharedText = sharedMessages[language];
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
 
@@ -25,36 +29,45 @@ export function TextTransformerTool({ language }: Props) {
           onChange={(event) => setInput(event.target.value)}
         />
       </label>
-      <div className="flex flex-wrap gap-3">
-        <button
-          className="neu-button"
-          onClick={() => setOutput(textTransformerUseCase.uppercase(input))}
-          type="button"
-        >
-          {text.upper}
-        </button>
-        <button
-          className="neu-button"
-          onClick={() => setOutput(textTransformerUseCase.lowercase(input))}
-          type="button"
-        >
-          {text.lower}
-        </button>
-        <button
-          className="neu-button"
-          onClick={() => setOutput(textTransformerUseCase.capitalize(input))}
-          type="button"
-        >
-          {text.capitalize}
-        </button>
-        <button
-          className="neu-button"
-          onClick={() => setOutput(textTransformerUseCase.trim(input))}
-          type="button"
-        >
-          {text.trim}
-        </button>
-      </div>
+      <ToolActions
+        actions={[
+          {
+            label: text.upper,
+            onClick: () => setOutput(textTransformerUseCase.uppercase(input)),
+            disabled: input.trim().length === 0,
+          },
+          {
+            label: text.lower,
+            onClick: () => setOutput(textTransformerUseCase.lowercase(input)),
+            disabled: input.trim().length === 0,
+          },
+          {
+            label: text.capitalize,
+            onClick: () => setOutput(textTransformerUseCase.capitalize(input)),
+            disabled: input.trim().length === 0,
+          },
+          {
+            label: text.trim,
+            onClick: () => setOutput(textTransformerUseCase.trim(input)),
+            disabled: input.trim().length === 0,
+          },
+          {
+            label: sharedText.buttons.copy,
+            onClick: () => {
+              void copyTextToClipboard(output);
+            },
+            disabled: output.trim().length === 0,
+          },
+          {
+            label: sharedText.buttons.clear,
+            onClick: () => {
+              setInput("");
+              setOutput("");
+            },
+            disabled: input.length === 0 && output.length === 0,
+          },
+        ]}
+      />
       <label className="block space-y-2">
         <span className="text-sm">{text.output}</span>
         <textarea

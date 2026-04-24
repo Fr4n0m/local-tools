@@ -1,20 +1,31 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import en from "@/modules/image-converter/presentation/i18n/en.json";
 import es from "@/modules/image-converter/presentation/i18n/es.json";
+import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import type { Language } from "@/shared/presentation/i18n";
+import { sharedMessages } from "@/shared/presentation/i18n";
 
 type Props = { language: Language };
 type OutputFormat = "image/png" | "image/jpeg" | "image/webp";
 
 export function ImageConverterTool({ language }: Props) {
   const text = useMemo(() => (language === "es" ? es : en), [language]);
+  const sharedText = sharedMessages[language];
   const [file, setFile] = useState<File | null>(null);
   const [format, setFormat] = useState<OutputFormat>("image/png");
   const [quality, setQuality] = useState(0.9);
   const [downloadUrl, setDownloadUrl] = useState<string>("");
+
+  useEffect(() => {
+    return () => {
+      if (downloadUrl) {
+        URL.revokeObjectURL(downloadUrl);
+      }
+    };
+  }, [downloadUrl]);
 
   const onConvert = async () => {
     if (!file) {
@@ -22,11 +33,18 @@ export function ImageConverterTool({ language }: Props) {
     }
 
     const image = new Image();
-    image.src = URL.createObjectURL(file);
+    const sourceUrl = URL.createObjectURL(file);
+    image.src = sourceUrl;
 
     await new Promise<void>((resolve, reject) => {
-      image.onload = () => resolve();
-      image.onerror = () => reject(new Error("image-load-error"));
+      image.onload = () => {
+        URL.revokeObjectURL(sourceUrl);
+        resolve();
+      };
+      image.onerror = () => {
+        URL.revokeObjectURL(sourceUrl);
+        reject(new Error("image-load-error"));
+      };
     });
 
     const canvas = document.createElement("canvas");
@@ -93,9 +111,28 @@ export function ImageConverterTool({ language }: Props) {
           />
         </label>
       </div>
-      <button className="neu-button" onClick={onConvert} type="button">
-        {text.convert}
-      </button>
+      <ToolActions
+        actions={[
+          {
+            label: text.convert,
+            onClick: () => {
+              void onConvert();
+            },
+            disabled: !file,
+          },
+          {
+            label: sharedText.buttons.clear,
+            onClick: () => {
+              if (downloadUrl) {
+                URL.revokeObjectURL(downloadUrl);
+              }
+              setFile(null);
+              setDownloadUrl("");
+            },
+            disabled: !file && !downloadUrl,
+          },
+        ]}
+      />
       {downloadUrl ? (
         <a
           className="inline-block rounded-md border px-4 py-2"

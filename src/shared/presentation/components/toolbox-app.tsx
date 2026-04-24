@@ -105,6 +105,26 @@ export function ToolboxApp() {
     return () => window.removeEventListener("popstate", onPopState);
   }, []);
 
+  useEffect(() => {
+    if (!isMobileSidebarOpen) {
+      return;
+    }
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsMobileSidebarOpen(false);
+      }
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [isMobileSidebarOpen]);
+
   const text = sharedMessages[language];
 
   const filteredTools = useMemo(() => {
@@ -142,10 +162,15 @@ export function ToolboxApp() {
           <div
             className="fixed inset-0 z-40 bg-black/40 md:hidden"
             onClick={() => setIsMobileSidebarOpen(false)}
+            role="presentation"
           >
             <aside
+              aria-label={text.menu}
               className="h-full w-80 border-r border-border bg-background p-4"
+              id="mobile-sidebar"
               onClick={(event) => event.stopPropagation()}
+              aria-modal="true"
+              role="dialog"
             >
               <Sidebar
                 language={language}
@@ -165,6 +190,8 @@ export function ToolboxApp() {
             <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-3">
                 <button
+                  aria-controls="mobile-sidebar"
+                  aria-expanded={isMobileSidebarOpen}
                   className="rounded-md border p-2 md:hidden"
                   onClick={() => setIsMobileSidebarOpen(true)}
                   type="button"
@@ -207,6 +234,7 @@ export function ToolboxApp() {
                 size={17}
               />
               <input
+                aria-label={text.searchPlaceholder}
                 className="w-full rounded-md border bg-background/60 py-3 pl-10 pr-4"
                 placeholder={text.searchPlaceholder}
                 value={search}

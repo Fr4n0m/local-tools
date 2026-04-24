@@ -5,12 +5,16 @@ import { useMemo, useState } from "react";
 import { base64UseCase } from "@/modules/base64-tool/application/base64-use-case";
 import en from "@/modules/base64-tool/presentation/i18n/en.json";
 import es from "@/modules/base64-tool/presentation/i18n/es.json";
+import { copyTextToClipboard } from "@/shared/lib/clipboard";
+import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import type { Language } from "@/shared/presentation/i18n";
+import { sharedMessages } from "@/shared/presentation/i18n";
 
 type Props = { language: Language };
 
 export function Base64Tool({ language }: Props) {
   const text = useMemo(() => (language === "es" ? es : en), [language]);
+  const sharedText = sharedMessages[language];
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
 
@@ -34,14 +38,35 @@ export function Base64Tool({ language }: Props) {
           onChange={(event) => setInput(event.target.value)}
         />
       </label>
-      <div className="flex flex-wrap gap-3">
-        <button className="neu-button" onClick={onEncode} type="button">
-          {text.encode}
-        </button>
-        <button className="neu-button" onClick={onDecode} type="button">
-          {text.decode}
-        </button>
-      </div>
+      <ToolActions
+        actions={[
+          {
+            label: text.encode,
+            onClick: onEncode,
+            disabled: input.trim().length === 0,
+          },
+          {
+            label: text.decode,
+            onClick: onDecode,
+            disabled: input.trim().length === 0,
+          },
+          {
+            label: sharedText.buttons.copy,
+            onClick: () => {
+              void copyTextToClipboard(output);
+            },
+            disabled: output.trim().length === 0,
+          },
+          {
+            label: sharedText.buttons.clear,
+            onClick: () => {
+              setInput("");
+              setOutput("");
+            },
+            disabled: input.length === 0 && output.length === 0,
+          },
+        ]}
+      />
       <label className="block space-y-2">
         <span className="text-sm">{text.output}</span>
         <textarea

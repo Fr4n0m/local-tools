@@ -1,3 +1,12 @@
+export function normalizeUuidAmount(amount: number): number {
+  if (!Number.isFinite(amount)) {
+    return 1;
+  }
+
+  return Math.min(100, Math.max(1, Math.floor(amount)));
+}
+
 export function generateUuids(amount: number): string[] {
-  return Array.from({ length: amount }, () => crypto.randomUUID());
+  const safeAmount = normalizeUuidAmount(amount);
+  return Array.from({ length: safeAmount }, () => crypto.randomUUID());
 }

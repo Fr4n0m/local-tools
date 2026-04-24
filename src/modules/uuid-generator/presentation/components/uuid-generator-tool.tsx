@@ -5,18 +5,21 @@ import { useMemo, useState } from "react";
 import { generateUuidsUseCase } from "@/modules/uuid-generator/application/generate-uuids-use-case";
 import en from "@/modules/uuid-generator/presentation/i18n/en.json";
 import es from "@/modules/uuid-generator/presentation/i18n/es.json";
+import { copyTextToClipboard } from "@/shared/lib/clipboard";
+import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import type { Language } from "@/shared/presentation/i18n";
+import { sharedMessages } from "@/shared/presentation/i18n";
 
 type Props = { language: Language };
 
 export function UuidGeneratorTool({ language }: Props) {
   const text = useMemo(() => (language === "es" ? es : en), [language]);
+  const sharedText = sharedMessages[language];
   const [amount, setAmount] = useState(5);
   const [result, setResult] = useState<string[]>([]);
 
   const onGenerate = () => {
-    const safeAmount = Math.min(100, Math.max(1, amount));
-    setResult(generateUuidsUseCase(safeAmount));
+    setResult(generateUuidsUseCase(amount));
   };
 
   return (
@@ -33,9 +36,30 @@ export function UuidGeneratorTool({ language }: Props) {
           onChange={(event) => setAmount(Number(event.target.value || 1))}
         />
       </label>
-      <button className="neu-button" onClick={onGenerate} type="button">
-        {text.generate}
-      </button>
+      <ToolActions
+        actions={[
+          {
+            label: text.generate,
+            onClick: onGenerate,
+            disabled: Number.isNaN(amount),
+          },
+          {
+            label: sharedText.buttons.copy,
+            onClick: () => {
+              void copyTextToClipboard(result.join("\n"));
+            },
+            disabled: result.length === 0,
+          },
+          {
+            label: sharedText.buttons.clear,
+            onClick: () => {
+              setAmount(5);
+              setResult([]);
+            },
+            disabled: amount === 5 && result.length === 0,
+          },
+        ]}
+      />
       <div className="space-y-2">
         <p className="text-sm">{text.result}</p>
         <textarea
