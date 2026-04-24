@@ -40,6 +40,7 @@ Progreso P1 ya ejecutado:
 - Descarga ZIP en `favicon generator` (client-side).
 - Feedback de error JSON con linea/columna.
 - Acciones compartidas (`copiar`/`limpiar`) añadidas tambien en `batch rename`.
+- Preview antes/despues en `image converter`.
 
 ## 2. Objetivo de producto (MVP)
 

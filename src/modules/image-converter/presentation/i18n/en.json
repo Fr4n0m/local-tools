@@ -8,6 +8,8 @@
   "convert": "Convert",
   "dropHint": "Drag and drop an image here or use file picker",
   "currentFile": "Current file",
+  "originalPreview": "Original preview",
+  "convertedPreview": "Converted preview",
   "empty": "Pick an image to start.",
   "done": "File ready for download"
 }

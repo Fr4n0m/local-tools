@@ -8,6 +8,8 @@
   "convert": "Convertir",
   "dropHint": "Arrastra y suelta una imagen aquí o usa el selector",
   "currentFile": "Archivo actual",
+  "originalPreview": "Vista previa original",
+  "convertedPreview": "Vista previa convertida",
   "empty": "Selecciona una imagen para empezar.",
   "done": "Archivo listo para descargar"
 }

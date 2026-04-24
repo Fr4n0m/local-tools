@@ -1,5 +1,6 @@
 "use client";
 
+import NextImage from "next/image";
 import { useEffect, useMemo, useState } from "react";
 
 import en from "@/modules/image-converter/presentation/i18n/en.json";
@@ -19,14 +20,18 @@ export function ImageConverterTool({ language }: Props) {
   const [format, setFormat] = useState<OutputFormat>("image/png");
   const [quality, setQuality] = useState(0.9);
   const [downloadUrl, setDownloadUrl] = useState<string>("");
+  const [originalPreviewUrl, setOriginalPreviewUrl] = useState("");
 
   useEffect(() => {
     return () => {
       if (downloadUrl) {
         URL.revokeObjectURL(downloadUrl);
       }
+      if (originalPreviewUrl) {
+        URL.revokeObjectURL(originalPreviewUrl);
+      }
     };
-  }, [downloadUrl]);
+  }, [downloadUrl, originalPreviewUrl]);
 
   const onConvert = async () => {
     if (!file) {
@@ -78,6 +83,10 @@ export function ImageConverterTool({ language }: Props) {
     if (!nextFile || !nextFile.type.startsWith("image/")) {
       return;
     }
+    if (originalPreviewUrl) {
+      URL.revokeObjectURL(originalPreviewUrl);
+    }
+    setOriginalPreviewUrl(URL.createObjectURL(nextFile));
     setFile(nextFile);
   };
 
@@ -154,13 +163,47 @@ export function ImageConverterTool({ language }: Props) {
               if (downloadUrl) {
                 URL.revokeObjectURL(downloadUrl);
               }
+              if (originalPreviewUrl) {
+                URL.revokeObjectURL(originalPreviewUrl);
+              }
               setFile(null);
               setDownloadUrl("");
+              setOriginalPreviewUrl("");
             },
             disabled: !file && !downloadUrl,
           },
         ]}
       />
+      {file || downloadUrl ? (
+        <div className="grid gap-4 md:grid-cols-2">
+          <div className="space-y-2 rounded-md border bg-background/50 p-3">
+            <p className="text-sm">{text.originalPreview}</p>
+            {originalPreviewUrl ? (
+              <NextImage
+                alt={text.originalPreview}
+                className="max-h-56 w-full rounded-md object-contain"
+                height={320}
+                src={originalPreviewUrl}
+                unoptimized
+                width={320}
+              />
+            ) : null}
+          </div>
+          <div className="space-y-2 rounded-md border bg-background/50 p-3">
+            <p className="text-sm">{text.convertedPreview}</p>
+            {downloadUrl ? (
+              <NextImage
+                alt={text.convertedPreview}
+                className="max-h-56 w-full rounded-md object-contain"
+                height={320}
+                src={downloadUrl}
+                unoptimized
+                width={320}
+              />
+            ) : null}
+          </div>
+        </div>
+      ) : null}
       {downloadUrl ? (
         <a
           className="inline-block rounded-md border px-4 py-2"
