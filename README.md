@@ -74,6 +74,12 @@ Este proyecto está abierto a mejoras. Si quieres contribuir:
 
 Las PRs bien definidas y con buen contexto se revisan más rápido.
 
+### ☕ Apoya el proyecto
+
+Si LocalTools te resulta útil, puedes invitarme a un café:
+
+- https://buymeacoffee.com/fran11799
+
 ---
 
 <a id="en"></a>
@@ -137,6 +143,12 @@ Contributions are welcome:
 - Add or adjust tests when tool logic changes.
 
 Well-scoped PRs with context get reviewed faster.
+
+### ☕ Support the project
+
+If LocalTools helps you, you can support it here:
+
+- https://buymeacoffee.com/fran11799
 
 ---
 
