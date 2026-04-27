@@ -313,6 +313,19 @@ export function ToolboxApp() {
                 onChange={(event) => setSearch(event.target.value)}
               />
             </div>
+
+            <details className="rounded-md border border-border/60 bg-panel/35 px-3 py-2 text-sm">
+              <summary className="cursor-pointer select-none font-medium">
+                {text.privacyTitle}
+              </summary>
+              <p className="mt-2 text-foreground/80">{text.privacy}</p>
+              <ul className="mt-2 list-disc space-y-1 pl-5 text-foreground/80">
+                <li>{text.privacyItems.local}</li>
+                <li>{text.privacyItems.upload}</li>
+                <li>{text.privacyItems.tracking}</li>
+                <li>{text.privacyItems.auth}</li>
+              </ul>
+            </details>
           </header>
 
           <section className="rounded-lg border border-border/50 bg-background p-4 md:p-6">

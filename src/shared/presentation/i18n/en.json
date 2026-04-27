@@ -2,6 +2,13 @@
   "appTitle": "LocalTools",
   "searchPlaceholder": "Search tools...",
   "privacy": "Everything runs locally in your browser. No uploads, no tracking.",
+  "privacyTitle": "Privacy checklist",
+  "privacyItems": {
+    "local": "All processing runs in your browser",
+    "upload": "No file uploads or external processing",
+    "tracking": "No analytics or user tracking",
+    "auth": "No account or login required"
+  },
   "language": "Language",
   "theme": "Theme",
   "density": "Density",

@@ -2,6 +2,13 @@
   "appTitle": "LocalTools",
   "searchPlaceholder": "Buscar herramientas...",
   "privacy": "Todo se ejecuta localmente en tu navegador. Sin subidas, sin tracking.",
+  "privacyTitle": "Checklist de privacidad",
+  "privacyItems": {
+    "local": "Todo el procesamiento se hace en tu navegador",
+    "upload": "Sin subidas de archivos ni procesamiento externo",
+    "tracking": "Sin analítica ni seguimiento de usuarios",
+    "auth": "Sin cuentas ni inicio de sesión"
+  },
   "language": "Idioma",
   "theme": "Tema",
   "density": "Densidad",
