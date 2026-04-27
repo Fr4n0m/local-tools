@@ -141,11 +141,52 @@ export function BatchRenameTool({ language }: Props) {
       />
       <ToolField label={text.result}>
         <div className="max-h-72 overflow-auto rounded-md border bg-background/40 p-3">
-          {preview.map((item) => (
-            <p className="text-sm" key={`${item.original}-${item.renamed}`}>
-              {item.original} =&gt; {item.renamed}
-            </p>
-          ))}
+          {preview.length > 0 ? (
+            <div aria-label={text.result} role="table">
+              <div
+                className="mb-1.5 grid grid-cols-2 gap-4 border-b border-border/50 pb-1.5"
+                role="row"
+              >
+                <span
+                  className="text-xs font-semibold uppercase tracking-wide text-foreground/50"
+                  role="columnheader"
+                >
+                  {text.before}
+                </span>
+                <span
+                  className="text-xs font-semibold uppercase tracking-wide text-foreground/50"
+                  role="columnheader"
+                >
+                  {text.after}
+                </span>
+              </div>
+              {preview.map((item) => {
+                const changed = item.original !== item.renamed;
+                return (
+                  <div
+                    className="grid grid-cols-2 gap-4 py-1"
+                    key={`${item.original}-${item.renamed}`}
+                    role="row"
+                  >
+                    <span
+                      className={`truncate text-sm ${changed ? "text-foreground/50" : "text-foreground/70"}`}
+                      role="cell"
+                      title={item.original}
+                    >
+                      {item.original}
+                    </span>
+                    <span
+                      className={`truncate text-sm font-medium ${changed ? "text-primary" : "text-foreground/50"}`}
+                      role="cell"
+                      title={item.renamed}
+                    >
+                      {item.renamed}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          ) : null}
         </div>
       </ToolField>
     </ToolSection>

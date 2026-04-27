@@ -13,6 +13,7 @@ import {
   ToolFileDrop,
   ToolSection,
   ToolSelect,
+  ToolSlider,
 } from "@/shared/presentation/components/tool-form";
 import type { Language } from "@/shared/presentation/i18n";
 import { sharedMessages } from "@/shared/presentation/i18n";
@@ -156,27 +157,24 @@ export function ImageConverterTool({ language }: Props) {
       <div className="grid gap-4 md:grid-cols-2">
         <ToolField label={text.formatLabel}>
           <ToolSelect
+            options={[
+              { value: "image/png", label: "PNG" },
+              { value: "image/jpeg", label: "JPEG" },
+              { value: "image/webp", label: "WEBP" },
+            ]}
             value={format}
-            onChange={(event) => setFormat(event.target.value as OutputFormat)}
-          >
-            <option value="image/png">PNG</option>
-            <option value="image/jpeg">JPEG</option>
-            <option value="image/webp">WEBP</option>
-          </ToolSelect>
+            onChange={(val) => setFormat(val as OutputFormat)}
+          />
         </ToolField>
         <ToolField label={text.qualityLabel}>
-          <input
-            className="w-full"
-            type="range"
-            min={0.1}
+          <ToolSlider
+            displayValue={`${qualityPercent}%`}
             max={1}
+            min={0.1}
             step={0.05}
             value={quality}
-            onChange={(event) => setQuality(Number(event.target.value))}
+            onChange={setQuality}
           />
-          <p className="text-xs" role="status" aria-live="polite">
-            {qualityPercent}%
-          </p>
         </ToolField>
       </div>
       <ToolActions

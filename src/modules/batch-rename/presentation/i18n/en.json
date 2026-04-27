@@ -11,5 +11,7 @@
   "startNumber": "Start number",
   "padWidth": "Number padding",
   "preview": "Preview",
-  "result": "Preview result"
+  "result": "Preview result",
+  "before": "Before",
+  "after": "After"
 }

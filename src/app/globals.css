@@ -128,6 +128,66 @@ body {
   accent-color: var(--color-primary);
 }
 
+.tool-shell input[type="range"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: color-mix(
+    in oklab,
+    var(--color-border),
+    var(--color-secondary) 50%
+  );
+  border: none !important;
+  padding: 0 !important;
+  cursor: pointer;
+  outline: none;
+}
+
+.tool-shell input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  border: 2.5px solid var(--color-background);
+  box-shadow: 0 0 0 1.5px var(--color-border);
+  cursor: pointer;
+  transition: box-shadow 0.15s;
+}
+
+.tool-shell input[type="range"]::-webkit-slider-thumb:hover {
+  box-shadow: 0 0 0 3px
+    color-mix(in oklab, var(--color-accent), transparent 55%);
+}
+
+.tool-shell input[type="range"]:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 3px
+    color-mix(in oklab, var(--color-accent), transparent 45%);
+}
+
+.tool-shell input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  border: 2.5px solid var(--color-background);
+  box-shadow: 0 0 0 1.5px var(--color-border);
+  cursor: pointer;
+  transition: box-shadow 0.15s;
+}
+
+.tool-shell input[type="range"]::-moz-range-track {
+  height: 6px;
+  border-radius: 3px;
+  background: color-mix(
+    in oklab,
+    var(--color-border),
+    var(--color-secondary) 50%
+  );
+}
+
 .tool-shell [data-tool-actions] {
   gap: 0.5rem;
 }

@@ -8,6 +8,7 @@ import {
   ToolOutputBlock,
   ToolSection,
   ToolSelect,
+  ToolSlider,
   ToolTextarea,
   ToolToggleField,
 } from "@/shared/presentation/components/tool-form";
@@ -31,18 +32,109 @@ describe("tool-form", () => {
     expect(screen.getByText("Toggle label")).toBeInTheDocument();
   });
 
-  it("renders select and textarea wrappers", () => {
+  it("renders select dropdown and textarea wrappers", () => {
+    const onChange = vi.fn();
+
     render(
       <>
-        <ToolSelect value="png" onChange={() => undefined}>
-          <option value="png">PNG</option>
-        </ToolSelect>
+        <ToolSelect
+          options={[
+            { value: "png", label: "PNG" },
+            { value: "jpeg", label: "JPEG" },
+          ]}
+          value="png"
+          onChange={onChange}
+        />
         <ToolTextarea value="content" onChange={() => undefined} />
       </>,
     );
 
-    expect(screen.getByDisplayValue("PNG")).toBeInTheDocument();
+    expect(screen.getByText("PNG")).toBeInTheDocument();
     expect(screen.getByDisplayValue("content")).toBeInTheDocument();
+  });
+
+  it("opens dropdown and selects option on click", () => {
+    const onChange = vi.fn();
+
+    render(
+      <ToolSelect
+        options={[
+          { value: "png", label: "PNG" },
+          { value: "jpeg", label: "JPEG" },
+        ]}
+        value="png"
+        onChange={onChange}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: /png/i }));
+    expect(screen.getByRole("option", { name: "JPEG" })).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("option", { name: "JPEG" }));
+    expect(onChange).toHaveBeenCalledWith("jpeg");
+  });
+
+  it("closes dropdown on Escape key", () => {
+    render(
+      <ToolSelect
+        options={[
+          { value: "a", label: "Option A" },
+          { value: "b", label: "Option B" },
+        ]}
+        value="a"
+        onChange={() => undefined}
+      />,
+    );
+
+    const trigger = screen.getByRole("button");
+    fireEvent.click(trigger);
+    expect(
+      screen.getByRole("option", { name: "Option B" }),
+    ).toBeInTheDocument();
+
+    fireEvent.keyDown(trigger, { key: "Escape" });
+    expect(
+      screen.queryByRole("option", { name: "Option B" }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("navigates options with arrow keys and selects with Enter", () => {
+    const onChange = vi.fn();
+
+    render(
+      <ToolSelect
+        options={[
+          { value: "a", label: "Option A" },
+          { value: "b", label: "Option B" },
+          { value: "c", label: "Option C" },
+        ]}
+        value="a"
+        onChange={onChange}
+      />,
+    );
+
+    const trigger = screen.getByRole("button");
+    fireEvent.keyDown(trigger, { key: "ArrowDown" });
+    fireEvent.keyDown(trigger, { key: "ArrowDown" });
+    fireEvent.keyDown(trigger, { key: "Enter" });
+
+    expect(onChange).toHaveBeenCalledWith("b");
+  });
+
+  it("renders slider with display value", () => {
+    render(
+      <ToolSlider
+        displayValue="90%"
+        max={1}
+        min={0}
+        step={0.1}
+        value={0.9}
+        onChange={() => undefined}
+      />,
+    );
+
+    expect(screen.getByText("90%")).toBeInTheDocument();
+    expect(screen.getByRole("slider")).toBeInTheDocument();
   });
 
   it("renders output block with label and value", () => {
