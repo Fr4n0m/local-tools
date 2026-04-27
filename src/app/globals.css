@@ -83,3 +83,66 @@ body {
   color: var(--color-foreground);
   font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
 }
+
+.density-compact main {
+  padding: 0.875rem;
+}
+
+@media (min-width: 768px) {
+  .density-compact main {
+    padding: 1.25rem;
+  }
+}
+
+.density-compact header {
+  margin-bottom: 1rem;
+}
+
+.density-compact section {
+  padding: 0.875rem;
+}
+
+.density-compact aside > div {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+.density-compact aside button {
+  padding-top: 0.375rem;
+  padding-bottom: 0.375rem;
+}
+
+.density-compact h2 {
+  font-size: 1.15rem;
+  line-height: 1.35;
+}
+
+.density-compact label > span,
+.density-compact .text-sm {
+  font-size: 0.8125rem;
+}
+
+.density-compact
+  input:not([type="range"]):not([type="checkbox"]):not([type="radio"]),
+.density-compact textarea,
+.density-compact select {
+  padding: 0.55rem 0.7rem;
+}
+
+.density-compact textarea.h-44 {
+  height: 9rem;
+}
+
+.density-compact .space-y-4 > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 0.75rem;
+}
+
+.density-compact .gap-4 {
+  gap: 0.75rem;
+}
+
+.density-compact button.h-8 {
+  height: 1.75rem;
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
+}

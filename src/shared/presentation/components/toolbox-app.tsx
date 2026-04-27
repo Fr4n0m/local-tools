@@ -18,6 +18,7 @@ function isToolId(value: string): value is ToolId {
 }
 
 type Theme = "light" | "dark";
+type Density = "comfortable" | "compact";
 
 function readInitialTheme(): Theme {
   if (typeof window === "undefined") {
@@ -32,6 +33,15 @@ function readInitialTheme(): Theme {
   return window.matchMedia("(prefers-color-scheme: dark)").matches
     ? "dark"
     : "light";
+}
+
+function readInitialDensity(): Density {
+  if (typeof window === "undefined") {
+    return "comfortable";
+  }
+
+  const storedDensity = window.localStorage.getItem("localtools.density");
+  return storedDensity === "compact" ? "compact" : "comfortable";
 }
 
 function readToolFromUrl(): ToolId | null {
@@ -100,6 +110,7 @@ function getCategoryStyles(category: string) {
 export function ToolboxApp() {
   const [language, setLanguage] = useState<Language>("en");
   const [theme, setTheme] = useState<Theme>("light");
+  const [density, setDensity] = useState<Density>("comfortable");
   const [selectedToolId, setSelectedToolId] = useState<ToolId>(tools[0].id);
   const [search, setSearch] = useState("");
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
@@ -108,6 +119,7 @@ export function ToolboxApp() {
     const frame = window.requestAnimationFrame(() => {
       setLanguage(resolveInitialLanguage());
       setTheme(readInitialTheme());
+      setDensity(readInitialDensity());
       setSelectedToolId(getInitialToolId());
     });
 
@@ -123,6 +135,10 @@ export function ToolboxApp() {
     document.documentElement.lang = language;
     window.localStorage.setItem("localtools.language", language);
   }, [language]);
+
+  useEffect(() => {
+    window.localStorage.setItem("localtools.density", density);
+  }, [density]);
 
   useEffect(() => {
     window.localStorage.setItem("localtools.tool", selectedToolId);
@@ -186,7 +202,9 @@ export function ToolboxApp() {
   const SelectedToolComponent = selectedTool.component;
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div
+      className={`min-h-screen bg-background text-foreground ${density === "compact" ? "density-compact" : ""}`}
+    >
       <div className="flex min-h-screen">
         <aside className="hidden w-72 border-r border-border/60 bg-sidebar text-sidebar-foreground md:block">
           <Sidebar
@@ -254,6 +272,19 @@ export function ToolboxApp() {
                   <option value="en">EN</option>
                   <option value="es">ES</option>
                 </select>
+                <button
+                  className="rounded-md border border-border/60 bg-background px-3 py-2 text-xs font-medium"
+                  onClick={() =>
+                    setDensity(
+                      density === "comfortable" ? "compact" : "comfortable",
+                    )
+                  }
+                  type="button"
+                  aria-label={text.density}
+                  title={`${text.density}: ${density === "compact" ? text.compact : text.comfortable}`}
+                >
+                  {density === "compact" ? text.compact : text.comfortable}
+                </button>
                 <button
                   className="rounded-md border border-border/60 bg-background p-2"
                   onClick={() => setTheme(theme === "light" ? "dark" : "light")}
