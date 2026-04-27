@@ -193,6 +193,7 @@ export function FaviconGeneratorTool({ language }: Props) {
           }}
         >
           <input
+            aria-label={text.inputLabel}
             className="w-full rounded-md border bg-background/60 p-3"
             type="file"
             accept="image/*"

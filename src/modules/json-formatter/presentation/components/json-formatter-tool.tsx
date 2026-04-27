@@ -21,6 +21,7 @@ export function JsonFormatterTool({ language }: Props) {
   const [errorText, setErrorText] = useState("");
   const [minify, setMinify] = useState(false);
   const [sortKeys, setSortKeys] = useState(false);
+  const statusId = "json-formatter-status";
 
   const onFormat = () => {
     const result = formatJsonUseCase(input, { minify, sortKeys });
@@ -49,6 +50,8 @@ export function JsonFormatterTool({ language }: Props) {
       <label className="block space-y-2">
         <span className="text-sm">{text.input}</span>
         <textarea
+          aria-describedby={statusId}
+          aria-invalid={isValid === false}
           className="h-52 w-full rounded-md border bg-background/50 p-3"
           value={input}
           onChange={(event) => setInput(event.target.value)}
@@ -101,7 +104,7 @@ export function JsonFormatterTool({ language }: Props) {
         </label>
       </div>
       {isValid !== null ? (
-        <p className="text-sm">
+        <p className="text-sm" id={statusId} role="status" aria-live="polite">
           {isValid
             ? text.valid
             : `${text.invalid}${errorText ? `. ${errorText}` : ""}`}

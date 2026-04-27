@@ -23,6 +23,7 @@ export function ImageConverterTool({ language }: Props) {
   const [quality, setQuality] = useState(0.9);
   const [downloadUrl, setDownloadUrl] = useState<string>("");
   const [originalPreviewUrl, setOriginalPreviewUrl] = useState("");
+  const qualityPercent = Math.round(quality * 100);
 
   useEffect(() => {
     return () => {
@@ -148,6 +149,7 @@ export function ImageConverterTool({ language }: Props) {
           }}
         >
           <input
+            aria-label={text.inputLabel}
             className="w-full rounded-md border bg-background/60 p-3"
             type="file"
             multiple
@@ -193,6 +195,9 @@ export function ImageConverterTool({ language }: Props) {
             value={quality}
             onChange={(event) => setQuality(Number(event.target.value))}
           />
+          <p className="text-xs" role="status" aria-live="polite">
+            {qualityPercent}%
+          </p>
         </label>
       </div>
       <ToolActions
