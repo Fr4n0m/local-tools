@@ -18,6 +18,8 @@
   "dark": "Oscuro",
   "emptySearch": "No hay herramientas para esa búsqueda.",
   "menu": "Menú",
+  "skipToContent": "Saltar al contenido principal",
+  "toolsNavigation": "Navegación de herramientas",
   "categories": {
     "files-media": "Archivos y Multimedia",
     "data-encoding": "Datos y Codificación",

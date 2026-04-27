@@ -205,6 +205,9 @@ export function ToolboxApp() {
     <div
       className={`min-h-screen bg-background text-foreground ${density === "compact" ? "density-compact" : ""}`}
     >
+      <a className="skip-link" href="#main-content">
+        {text.skipToContent}
+      </a>
       <div className="flex min-h-screen">
         <aside className="hidden w-72 border-r border-border/60 bg-sidebar text-sidebar-foreground md:block">
           <Sidebar
@@ -242,7 +245,11 @@ export function ToolboxApp() {
           </div>
         ) : null}
 
-        <main className="flex-1 bg-background p-4 md:p-8">
+        <main
+          className="flex-1 bg-background p-4 md:p-8"
+          id="main-content"
+          tabIndex={-1}
+        >
           <header className="mb-6 space-y-3">
             <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-3">
@@ -369,7 +376,7 @@ function Sidebar({
   }
 
   return (
-    <div className="space-y-6 px-3 py-5">
+    <nav aria-label={text.toolsNavigation} className="space-y-6 px-3 py-5">
       {Object.entries(grouped).map(([category, categoryTools]) => (
         <div className="space-y-2" key={category}>
           <p
@@ -384,15 +391,17 @@ function Sidebar({
               const styles = getCategoryStyles(tool.category);
               return (
                 <button
+                  aria-pressed={isActive}
                   className={`flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-sm transition ${isActive ? styles.active : styles.inactive}`}
                   key={tool.id}
                   onClick={() => onSelectTool(tool.id)}
                   type="button"
                 >
                   <span
+                    aria-hidden
                     className={`h-1.5 w-1.5 rounded-full ${isActive ? styles.marker : "bg-transparent"}`}
                   />
-                  <span className="shrink-0">
+                  <span aria-hidden className="shrink-0">
                     <Icon size={15} />
                   </span>
                   <span className="font-medium">{tool.name[language]}</span>
@@ -402,6 +411,6 @@ function Sidebar({
           </div>
         </div>
       ))}
-    </div>
+    </nav>
   );
 }

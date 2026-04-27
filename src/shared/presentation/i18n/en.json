@@ -18,6 +18,8 @@
   "dark": "Dark",
   "emptySearch": "No tools match your search.",
   "menu": "Menu",
+  "skipToContent": "Skip to main content",
+  "toolsNavigation": "Tools navigation",
   "categories": {
     "files-media": "Files & Media",
     "data-encoding": "Data & Encoding",
