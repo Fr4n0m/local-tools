@@ -14,7 +14,7 @@ type Props = {
 
 export function ToolActions({ actions }: Props) {
   return (
-    <div className="flex flex-wrap gap-3">
+    <div className="flex flex-wrap gap-3" data-tool-actions>
       {actions.map((action) => (
         <Button
           disabled={action.disabled}

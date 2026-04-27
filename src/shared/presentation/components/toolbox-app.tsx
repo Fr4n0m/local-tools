@@ -328,7 +328,7 @@ export function ToolboxApp() {
             </details>
           </header>
 
-          <section className="rounded-lg border border-border/50 bg-background p-4 md:p-6">
+          <section className="tool-shell rounded-lg border border-border/50 bg-background p-4 md:p-6">
             <SelectedToolComponent language={language} />
           </section>
         </main>

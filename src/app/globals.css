@@ -84,6 +84,55 @@ body {
   font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
 }
 
+.tool-shell label > span,
+.tool-shell .text-sm {
+  letter-spacing: 0.01em;
+}
+
+.tool-shell
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+.tool-shell select,
+.tool-shell textarea {
+  width: 100%;
+  border-radius: 0.5rem;
+  border: 1px solid color-mix(in oklab, var(--color-border), transparent 15%);
+  background-color: color-mix(
+    in oklab,
+    var(--color-background),
+    var(--color-secondary) 18%
+  );
+  padding: 0.7rem 0.8rem;
+}
+
+.tool-shell textarea {
+  line-height: 1.45;
+}
+
+.tool-shell input[type="checkbox"] {
+  accent-color: var(--color-primary);
+}
+
+.tool-shell [data-tool-actions] {
+  gap: 0.5rem;
+}
+
+.tool-shell [data-tool-actions] button {
+  border-color: color-mix(in oklab, var(--color-border), transparent 10%);
+  background-color: color-mix(
+    in oklab,
+    var(--color-background),
+    var(--color-secondary) 12%
+  );
+}
+
+.tool-shell [data-tool-actions] button:hover {
+  background-color: color-mix(
+    in oklab,
+    var(--color-background),
+    var(--color-secondary) 30%
+  );
+}
+
 .density-compact main {
   padding: 0.875rem;
 }
