@@ -5,7 +5,6 @@ import { useEffect, useMemo, useState } from "react";
 
 import { tools } from "@/modules/tool-registry/application/tools";
 import type { ToolId } from "@/modules/tool-registry/domain/tool";
-import { Card } from "@/shared/presentation/components/ui/card";
 import {
   resolveInitialLanguage,
   sharedMessages,
@@ -65,36 +64,36 @@ function getInitialToolId(): ToolId {
 function getCategoryStyles(category: string) {
   if (category === "files-media") {
     return {
-      heading: "text-info",
-      active: "bg-accent border-accent text-sidebar-foreground",
-      inactive:
-        "bg-sidebar/10 border-sidebar-foreground/20 text-sidebar-foreground hover:bg-sidebar-foreground/10",
+      heading: "text-sidebar-foreground/45",
+      active: "text-sidebar-foreground",
+      inactive: "text-sidebar-foreground/72 hover:text-sidebar-foreground",
+      marker: "bg-sidebar-foreground",
     };
   }
 
   if (category === "data-encoding") {
     return {
-      heading: "text-accent",
-      active: "bg-accent border-accent text-sidebar-foreground",
-      inactive:
-        "bg-sidebar/10 border-sidebar-foreground/20 text-sidebar-foreground hover:bg-sidebar-foreground/10",
+      heading: "text-sidebar-foreground/45",
+      active: "text-sidebar-foreground",
+      inactive: "text-sidebar-foreground/72 hover:text-sidebar-foreground",
+      marker: "bg-sidebar-foreground",
     };
   }
 
   if (category === "text-code") {
     return {
-      heading: "text-warning",
-      active: "bg-accent border-accent text-sidebar-foreground",
-      inactive:
-        "bg-sidebar/10 border-sidebar-foreground/20 text-sidebar-foreground hover:bg-sidebar-foreground/10",
+      heading: "text-sidebar-foreground/45",
+      active: "text-sidebar-foreground",
+      inactive: "text-sidebar-foreground/72 hover:text-sidebar-foreground",
+      marker: "bg-sidebar-foreground",
     };
   }
 
   return {
-    heading: "text-highlight",
-    active: "bg-accent border-accent text-sidebar-foreground",
-    inactive:
-      "bg-sidebar/10 border-sidebar-foreground/20 text-sidebar-foreground hover:bg-sidebar-foreground/10",
+    heading: "text-sidebar-foreground/45",
+    active: "text-sidebar-foreground",
+    inactive: "text-sidebar-foreground/72 hover:text-sidebar-foreground",
+    marker: "bg-sidebar-foreground",
   };
 }
 
@@ -189,7 +188,7 @@ export function ToolboxApp() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <div className="flex min-h-screen">
-        <aside className="hidden w-80 border-r border-border/75 bg-sidebar text-sidebar-foreground p-4 md:block">
+        <aside className="hidden w-72 border-r border-border/60 bg-sidebar text-sidebar-foreground md:block">
           <Sidebar
             language={language}
             onSelectTool={setSelectedToolId}
@@ -206,7 +205,7 @@ export function ToolboxApp() {
           >
             <aside
               aria-label={text.menu}
-              className="h-full w-80 border-r border-border/75 bg-sidebar text-sidebar-foreground p-4"
+              className="h-full w-72 border-r border-border/60 bg-sidebar text-sidebar-foreground"
               id="mobile-sidebar"
               onClick={(event) => event.stopPropagation()}
               aria-modal="true"
@@ -225,14 +224,14 @@ export function ToolboxApp() {
           </div>
         ) : null}
 
-        <main className="flex-1 bg-background p-4 md:p-6">
-          <header className="mb-6 space-y-4">
+        <main className="flex-1 bg-background p-4 md:p-8">
+          <header className="mb-6 space-y-3">
             <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-3">
                 <button
                   aria-controls="mobile-sidebar"
                   aria-expanded={isMobileSidebarOpen}
-                  className="rounded-md border border-border/70 bg-panel/35 p-2 md:hidden"
+                  className="rounded-md border border-border/60 bg-panel/40 p-2 md:hidden"
                   onClick={() => setIsMobileSidebarOpen(true)}
                   type="button"
                   aria-label={text.menu}
@@ -245,7 +244,7 @@ export function ToolboxApp() {
               </div>
               <div className="flex items-center gap-2">
                 <select
-                  className="rounded-md border border-border/70 bg-panel/35 px-3 py-2 text-sm"
+                  className="rounded-md border border-border/60 bg-background px-3 py-2 text-sm"
                   value={language}
                   onChange={(event) =>
                     setLanguage(event.target.value as Language)
@@ -256,7 +255,7 @@ export function ToolboxApp() {
                   <option value="es">ES</option>
                 </select>
                 <button
-                  className="rounded-md border border-border/70 bg-panel/35 p-2"
+                  className="rounded-md border border-border/60 bg-background p-2"
                   onClick={() => setTheme(theme === "light" ? "dark" : "light")}
                   type="button"
                   aria-label={text.theme}
@@ -277,19 +276,15 @@ export function ToolboxApp() {
               />
               <input
                 aria-label={text.searchPlaceholder}
-                className="w-full rounded-md border border-border/60 bg-background py-3 pl-10 pr-4"
+                className="w-full rounded-md border border-border/60 bg-background py-2.5 pl-10 pr-4"
                 placeholder={text.searchPlaceholder}
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
               />
             </div>
-
-            <Card className="border-accent/60 bg-accent/14 p-3 text-sm">
-              {text.privacy}
-            </Card>
           </header>
 
-          <section className="rounded-xl border border-border/60 bg-background/90 p-4 md:p-6">
+          <section className="rounded-lg border border-border/50 bg-background p-4 md:p-6">
             <SelectedToolComponent language={language} />
           </section>
         </main>
@@ -330,33 +325,33 @@ function Sidebar({
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6 px-3 py-5">
       {Object.entries(grouped).map(([category, categoryTools]) => (
         <div className="space-y-2" key={category}>
           <p
-            className={`text-xs font-semibold uppercase tracking-wide ${getCategoryStyles(category).heading}`}
+            className={`px-2 text-[11px] font-semibold uppercase tracking-[0.12em] ${getCategoryStyles(category).heading}`}
           >
             {text.categories[category as keyof typeof text.categories]}
           </p>
-          <div className="space-y-2">
+          <div className="space-y-0.5">
             {categoryTools.map((tool) => {
               const Icon = tool.icon;
               const isActive = tool.id === selectedToolId;
               const styles = getCategoryStyles(tool.category);
               return (
                 <button
-                  className={`w-full rounded-md border p-3 text-left text-sm transition ${isActive ? styles.active : styles.inactive}`}
+                  className={`flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-sm transition ${isActive ? styles.active : styles.inactive}`}
                   key={tool.id}
                   onClick={() => onSelectTool(tool.id)}
                   type="button"
                 >
-                  <div className="mb-1 flex items-center gap-2 font-medium">
-                    <Icon size={16} />
-                    {tool.name[language]}
-                  </div>
-                  <p className="text-xs opacity-90">
-                    {tool.description[language]}
-                  </p>
+                  <span
+                    className={`h-1.5 w-1.5 rounded-full ${isActive ? styles.marker : "bg-transparent"}`}
+                  />
+                  <span className="shrink-0">
+                    <Icon size={15} />
+                  </span>
+                  <span className="font-medium">{tool.name[language]}</span>
                 </button>
               );
             })}
