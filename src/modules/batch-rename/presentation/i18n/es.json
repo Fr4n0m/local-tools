@@ -11,5 +11,7 @@
   "startNumber": "Número inicial",
   "padWidth": "Relleno numérico",
   "preview": "Previsualizar",
-  "result": "Resultado de la previsualización"
+  "result": "Resultado de la previsualización",
+  "before": "Antes",
+  "after": "Después"
 }

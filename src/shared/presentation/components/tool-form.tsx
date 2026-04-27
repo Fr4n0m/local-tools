@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { IconChevronDown } from "@tabler/icons-react";
 
 import { cn } from "@/shared/lib/utils";
 
@@ -86,14 +87,192 @@ export function ToolInput({ className, ...props }: ToolInputProps) {
   );
 }
 
-type ToolSelectProps = React.SelectHTMLAttributes<HTMLSelectElement>;
+export type ToolSelectOption = { value: string; label: string };
 
-export function ToolSelect({ className, ...props }: ToolSelectProps) {
+type ToolSelectProps = {
+  value: string;
+  options: ToolSelectOption[];
+  onChange: (value: string) => void;
+  className?: string;
+  size?: "sm" | "md";
+  "aria-label"?: string;
+};
+
+export function ToolSelect({
+  value,
+  options,
+  onChange,
+  className,
+  size = "md",
+  "aria-label": ariaLabel,
+}: ToolSelectProps) {
+  const [open, setOpen] = React.useState(false);
+  const [highlighted, setHighlighted] = React.useState(-1);
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  const listboxId = React.useId();
+  const selectedIndex = options.findIndex((opt) => opt.value === value);
+  const selectedOption = options[selectedIndex] ?? options[0];
+
+  React.useEffect(() => {
+    if (!open) return;
+    const onMouseDown = (e: MouseEvent) => {
+      if (!containerRef.current?.contains(e.target as Node)) {
+        setOpen(false);
+        setHighlighted(-1);
+      }
+    };
+    document.addEventListener("mousedown", onMouseDown);
+    return () => document.removeEventListener("mousedown", onMouseDown);
+  }, [open]);
+
+  const openDropdown = () => {
+    setHighlighted(selectedIndex >= 0 ? selectedIndex : 0);
+    setOpen(true);
+  };
+
+  const closeDropdown = () => {
+    setHighlighted(-1);
+    setOpen(false);
+  };
+
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    if (!open) {
+      if (e.key === "Enter" || e.key === " " || e.key === "ArrowDown") {
+        e.preventDefault();
+        openDropdown();
+      }
+      return;
+    }
+    if (e.key === "Escape" || e.key === "Tab") {
+      closeDropdown();
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setHighlighted((h) => Math.min(h + 1, options.length - 1));
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setHighlighted((h) => Math.max(h - 1, 0));
+    } else if (e.key === "Home") {
+      e.preventDefault();
+      setHighlighted(0);
+    } else if (e.key === "End") {
+      e.preventDefault();
+      setHighlighted(options.length - 1);
+    } else if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      if (highlighted >= 0) {
+        onChange(options[highlighted].value);
+        closeDropdown();
+      }
+    }
+  };
+
+  const paddingClass = size === "sm" ? "px-2.5 py-2" : "px-3 py-3";
+
   return (
-    <select
-      className={cn("w-full rounded-md border bg-background/40 p-3", className)}
-      {...props}
-    />
+    <div className={cn("relative", className)} ref={containerRef}>
+      <button
+        aria-activedescendant={
+          open && highlighted >= 0
+            ? `${listboxId}-opt-${highlighted}`
+            : undefined
+        }
+        aria-controls={open ? listboxId : undefined}
+        aria-expanded={open}
+        aria-haspopup="listbox"
+        aria-label={ariaLabel}
+        className={cn(
+          "flex w-full items-center justify-between gap-2 rounded-md border bg-background/40 text-sm",
+          paddingClass,
+        )}
+        onClick={() => (open ? closeDropdown() : openDropdown())}
+        onKeyDown={onKeyDown}
+        type="button"
+      >
+        <span>{selectedOption?.label}</span>
+        <IconChevronDown
+          aria-hidden
+          className={cn(
+            "shrink-0 text-foreground/60 transition-transform duration-150",
+            open && "rotate-180",
+          )}
+          size={14}
+        />
+      </button>
+      {open ? (
+        <div
+          className="absolute left-0 top-full z-50 mt-1 w-full overflow-hidden rounded-md border bg-background shadow-lg"
+          id={listboxId}
+          role="listbox"
+        >
+          {options.map((option, index) => (
+            <button
+              aria-selected={option.value === value}
+              className={cn(
+                "w-full px-3 py-2.5 text-left text-sm transition-colors",
+                index === highlighted
+                  ? "bg-secondary/60"
+                  : "hover:bg-secondary/30",
+                option.value === value
+                  ? "font-medium text-primary"
+                  : "text-foreground",
+              )}
+              id={`${listboxId}-opt-${index}`}
+              key={option.value}
+              onClick={() => {
+                onChange(option.value);
+                setOpen(false);
+              }}
+              onMouseEnter={() => setHighlighted(index)}
+              role="option"
+              type="button"
+            >
+              {option.label}
+            </button>
+          ))}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+type ToolSliderProps = {
+  value: number;
+  min: number;
+  max: number;
+  step: number;
+  displayValue: string;
+  onChange: (value: number) => void;
+  className?: string;
+};
+
+export function ToolSlider({
+  value,
+  min,
+  max,
+  step,
+  displayValue,
+  onChange,
+  className,
+}: ToolSliderProps) {
+  return (
+    <div className={cn("flex items-center gap-3", className)}>
+      <input
+        className="flex-1"
+        max={max}
+        min={min}
+        onChange={(e) => onChange(Number(e.target.value))}
+        step={step}
+        type="range"
+        value={value}
+      />
+      <span
+        aria-live="polite"
+        className="w-10 shrink-0 text-right text-sm tabular-nums text-foreground/70"
+        role="status"
+      >
+        {displayValue}
+      </span>
+    </div>
   );
 }
 

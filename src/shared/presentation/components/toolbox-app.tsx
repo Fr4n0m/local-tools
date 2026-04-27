@@ -1,6 +1,8 @@
 "use client";
 
 import { IconMenu2, IconMoon, IconSearch, IconSun } from "@tabler/icons-react";
+
+import { ToolSelect } from "@/shared/presentation/components/tool-form";
 import { useEffect, useMemo, useState } from "react";
 
 import { tools } from "@/modules/tool-registry/application/tools";
@@ -272,17 +274,17 @@ export function ToolboxApp() {
                 </h1>
               </div>
               <div className="flex items-center gap-2">
-                <select
-                  className="rounded-md border border-border/60 bg-background px-3 py-2 text-sm"
-                  value={language}
-                  onChange={(event) =>
-                    setLanguage(event.target.value as Language)
-                  }
+                <ToolSelect
                   aria-label={text.language}
-                >
-                  <option value="en">EN</option>
-                  <option value="es">ES</option>
-                </select>
+                  className="w-24"
+                  options={[
+                    { value: "en", label: "EN" },
+                    { value: "es", label: "ES" },
+                  ]}
+                  size="sm"
+                  value={language}
+                  onChange={(val) => setLanguage(val as Language)}
+                />
                 <button
                   className="rounded-md border border-border/60 bg-background px-3 py-2 text-xs font-medium"
                   onClick={() =>

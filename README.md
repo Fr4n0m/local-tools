@@ -63,6 +63,11 @@ pnpm test
 pnpm build
 ```
 
+### 🏗️ Arquitectura y guía de herramientas
+
+- Arquitectura: [docs/architecture.md](docs/architecture.md)
+- Cómo añadir una tool: [docs/add-tool-guide.md](docs/add-tool-guide.md)
+
 ### 🤝 Contribuciones
 
 Este proyecto está abierto a mejoras. Si quieres contribuir:
@@ -132,6 +137,11 @@ pnpm lint
 pnpm test
 pnpm build
 ```
+
+### 🏗️ Architecture and tool guide
+
+- Architecture: [docs/architecture.md](docs/architecture.md)
+- How to add a tool: [docs/add-tool-guide.md](docs/add-tool-guide.md)
 
 ### 🤝 Contributing
 
