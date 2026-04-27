@@ -7,6 +7,13 @@ import en from "@/modules/batch-rename/presentation/i18n/en.json";
 import es from "@/modules/batch-rename/presentation/i18n/es.json";
 import { copyTextToClipboard } from "@/shared/lib/clipboard";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
+import {
+  ToolField,
+  ToolInput,
+  ToolSection,
+  ToolTextarea,
+  ToolToggleField,
+} from "@/shared/presentation/components/tool-form";
 import type { Language } from "@/shared/presentation/i18n";
 import { sharedMessages } from "@/shared/presentation/i18n";
 
@@ -36,65 +43,52 @@ export function BatchRenameTool({ language }: Props) {
     .join("\n");
 
   return (
-    <div className="space-y-4">
-      <h2 className="text-xl font-semibold">{text.title}</h2>
-      <label className="block space-y-2">
-        <span className="text-sm">{text.input}</span>
-        <textarea
-          className="h-36 w-full rounded-md border bg-background/50 p-3"
+    <ToolSection title={text.title}>
+      <ToolField label={text.input}>
+        <ToolTextarea
+          className="h-36"
           value={names}
           onChange={(event) => setNames(event.target.value)}
         />
-      </label>
+      </ToolField>
       <div className="grid gap-4 md:grid-cols-2">
-        <label className="block space-y-2">
-          <span className="text-sm">{text.search}</span>
-          <input
-            className="w-full rounded-md border bg-background/50 p-3"
+        <ToolField label={text.search}>
+          <ToolInput
             value={searchValue}
             onChange={(event) => setSearchValue(event.target.value)}
           />
-        </label>
-        <label className="block space-y-2">
-          <span className="text-sm">{text.replace}</span>
-          <input
-            className="w-full rounded-md border bg-background/50 p-3"
+        </ToolField>
+        <ToolField label={text.replace}>
+          <ToolInput
             value={replaceValue}
             onChange={(event) => setReplaceValue(event.target.value)}
           />
-        </label>
+        </ToolField>
       </div>
       <div className="grid gap-4 md:grid-cols-2">
-        <label className="block space-y-2">
-          <span className="text-sm">{text.prefix}</span>
-          <input
-            className="w-full rounded-md border bg-background/50 p-3"
+        <ToolField label={text.prefix}>
+          <ToolInput
             value={prefix}
             onChange={(event) => setPrefix(event.target.value)}
           />
-        </label>
-        <label className="block space-y-2">
-          <span className="text-sm">{text.suffix}</span>
-          <input
-            className="w-full rounded-md border bg-background/50 p-3"
+        </ToolField>
+        <ToolField label={text.suffix}>
+          <ToolInput
             value={suffix}
             onChange={(event) => setSuffix(event.target.value)}
           />
-        </label>
+        </ToolField>
       </div>
       <div className="grid gap-4 md:grid-cols-3">
-        <label className="flex items-center gap-2 rounded-md border bg-background/40 p-3 text-sm md:col-span-1">
+        <ToolToggleField className="md:col-span-1" label={text.sequence}>
           <input
             checked={addSequence}
             onChange={(event) => setAddSequence(event.target.checked)}
             type="checkbox"
           />
-          <span>{text.sequence}</span>
-        </label>
-        <label className="block space-y-2">
-          <span className="text-sm">{text.startNumber}</span>
-          <input
-            className="w-full rounded-md border bg-background/50 p-3"
+        </ToolToggleField>
+        <ToolField label={text.startNumber}>
+          <ToolInput
             min={0}
             type="number"
             value={startNumber}
@@ -102,17 +96,15 @@ export function BatchRenameTool({ language }: Props) {
               setStartNumber(Number(event.target.value || 0))
             }
           />
-        </label>
-        <label className="block space-y-2">
-          <span className="text-sm">{text.padWidth}</span>
-          <input
-            className="w-full rounded-md border bg-background/50 p-3"
+        </ToolField>
+        <ToolField label={text.padWidth}>
+          <ToolInput
             min={1}
             type="number"
             value={padWidth}
             onChange={(event) => setPadWidth(Number(event.target.value || 1))}
           />
-        </label>
+        </ToolField>
       </div>
       <ToolActions
         actions={[
@@ -147,8 +139,7 @@ export function BatchRenameTool({ language }: Props) {
           },
         ]}
       />
-      <div className="space-y-2">
-        <p className="text-sm">{text.result}</p>
+      <ToolField label={text.result}>
         <div className="max-h-72 overflow-auto rounded-md border bg-background/40 p-3">
           {preview.map((item) => (
             <p className="text-sm" key={`${item.original}-${item.renamed}`}>
@@ -156,7 +147,7 @@ export function BatchRenameTool({ language }: Props) {
             </p>
           ))}
         </div>
-      </div>
-    </div>
+      </ToolField>
+    </ToolSection>
   );
 }

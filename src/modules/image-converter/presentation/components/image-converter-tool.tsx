@@ -8,6 +8,12 @@ import es from "@/modules/image-converter/presentation/i18n/es.json";
 import { downloadBlob } from "@/shared/lib/download";
 import { createZipBlob } from "@/shared/lib/zip";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
+import {
+  ToolField,
+  ToolFileDrop,
+  ToolSection,
+  ToolSelect,
+} from "@/shared/presentation/components/tool-form";
 import type { Language } from "@/shared/presentation/i18n";
 import { sharedMessages } from "@/shared/presentation/i18n";
 
@@ -18,7 +24,6 @@ export function ImageConverterTool({ language }: Props) {
   const text = useMemo(() => (language === "es" ? es : en), [language]);
   const sharedText = sharedMessages[language];
   const [files, setFiles] = useState<File[]>([]);
-  const [isDragging, setIsDragging] = useState(false);
   const [format, setFormat] = useState<OutputFormat>("image/png");
   const [quality, setQuality] = useState(0.9);
   const [downloadUrl, setDownloadUrl] = useState<string>("");
@@ -131,61 +136,35 @@ export function ImageConverterTool({ language }: Props) {
   };
 
   return (
-    <div className="space-y-4">
-      <h2 className="text-xl font-semibold">{text.title}</h2>
-      <label className="block space-y-2">
-        <span className="text-sm">{text.inputLabel}</span>
-        <div
-          className={`rounded-md border p-3 ${isDragging ? "bg-secondary/40" : "bg-background/50"}`}
-          onDragOver={(event) => {
-            event.preventDefault();
-            setIsDragging(true);
-          }}
-          onDragLeave={() => setIsDragging(false)}
-          onDrop={(event) => {
-            event.preventDefault();
-            setIsDragging(false);
-            onDropFiles(Array.from(event.dataTransfer.files ?? []));
-          }}
-        >
-          <input
-            aria-label={text.inputLabel}
-            className="w-full rounded-md border bg-background/60 p-3"
-            type="file"
-            multiple
-            accept="image/*"
-            onChange={(event) =>
-              onDropFiles(Array.from(event.target.files ?? []))
-            }
-          />
-          <p className="mt-2 text-xs">{text.dropHint}</p>
-          {files.length > 0 ? (
-            <p className="mt-1 text-xs">
-              {text.currentFile}: {files[0].name}
-            </p>
-          ) : null}
-          {files.length > 1 ? (
-            <p className="mt-1 text-xs">
-              {text.selectedCount.replace("{count}", String(files.length))}
-            </p>
-          ) : null}
-        </div>
-      </label>
+    <ToolSection title={text.title}>
+      <ToolFileDrop
+        accept="image/*"
+        currentFileText={
+          files.length > 0 ? `${text.currentFile}: ${files[0].name}` : null
+        }
+        dropHint={text.dropHint}
+        extraText={
+          files.length > 1
+            ? text.selectedCount.replace("{count}", String(files.length))
+            : null
+        }
+        inputAriaLabel={text.inputLabel}
+        label={text.inputLabel}
+        multiple
+        onSelectFiles={onDropFiles}
+      />
       <div className="grid gap-4 md:grid-cols-2">
-        <label className="block space-y-2">
-          <span className="text-sm">{text.formatLabel}</span>
-          <select
-            className="w-full rounded-md border bg-background/50 p-3"
+        <ToolField label={text.formatLabel}>
+          <ToolSelect
             value={format}
             onChange={(event) => setFormat(event.target.value as OutputFormat)}
           >
             <option value="image/png">PNG</option>
             <option value="image/jpeg">JPEG</option>
             <option value="image/webp">WEBP</option>
-          </select>
-        </label>
-        <label className="block space-y-2">
-          <span className="text-sm">{text.qualityLabel}</span>
+          </ToolSelect>
+        </ToolField>
+        <ToolField label={text.qualityLabel}>
           <input
             className="w-full"
             type="range"
@@ -198,7 +177,7 @@ export function ImageConverterTool({ language }: Props) {
           <p className="text-xs" role="status" aria-live="polite">
             {qualityPercent}%
           </p>
-        </label>
+        </ToolField>
       </div>
       <ToolActions
         actions={[
@@ -274,6 +253,6 @@ export function ImageConverterTool({ language }: Props) {
       ) : (
         <p className="text-sm">{text.empty}</p>
       )}
-    </div>
+    </ToolSection>
   );
 }

@@ -8,6 +8,11 @@ import { copyTextToClipboard } from "@/shared/lib/clipboard";
 import { downloadTextFile } from "@/shared/lib/download";
 import { createZipBlob } from "@/shared/lib/zip";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
+import {
+  ToolFileDrop,
+  ToolSection,
+  ToolTextarea,
+} from "@/shared/presentation/components/tool-form";
 import type { Language } from "@/shared/presentation/i18n";
 import { sharedMessages } from "@/shared/presentation/i18n";
 
@@ -25,7 +30,6 @@ export function FaviconGeneratorTool({ language }: Props) {
   const text = useMemo(() => (language === "es" ? es : en), [language]);
   const sharedText = sharedMessages[language];
   const [file, setFile] = useState<File | null>(null);
-  const [isDragging, setIsDragging] = useState(false);
   const [generated, setGenerated] = useState<GeneratedIcon[]>([]);
 
   const projectName = useMemo(() => {
@@ -137,8 +141,11 @@ export function FaviconGeneratorTool({ language }: Props) {
     setGenerated(icons);
   };
 
-  const onDropFile = (nextFile: File | null) => {
-    if (!nextFile || !nextFile.type.startsWith("image/")) {
+  const onDropFiles = (nextFiles: File[]) => {
+    const nextFile = nextFiles.find((candidate) =>
+      candidate.type.startsWith("image/"),
+    );
+    if (!nextFile) {
       return;
     }
     setFile(nextFile);
@@ -175,38 +182,15 @@ export function FaviconGeneratorTool({ language }: Props) {
   };
 
   return (
-    <div className="space-y-4">
-      <h2 className="text-xl font-semibold">{text.title}</h2>
-      <label className="block space-y-2">
-        <span className="text-sm">{text.inputLabel}</span>
-        <div
-          className={`rounded-md border p-3 ${isDragging ? "bg-secondary/40" : "bg-background/50"}`}
-          onDragOver={(event) => {
-            event.preventDefault();
-            setIsDragging(true);
-          }}
-          onDragLeave={() => setIsDragging(false)}
-          onDrop={(event) => {
-            event.preventDefault();
-            setIsDragging(false);
-            onDropFile(event.dataTransfer.files?.[0] ?? null);
-          }}
-        >
-          <input
-            aria-label={text.inputLabel}
-            className="w-full rounded-md border bg-background/60 p-3"
-            type="file"
-            accept="image/*"
-            onChange={(event) => onDropFile(event.target.files?.[0] ?? null)}
-          />
-          <p className="mt-2 text-xs">{text.dropHint}</p>
-          {file ? (
-            <p className="mt-1 text-xs">
-              {text.currentFile}: {file.name}
-            </p>
-          ) : null}
-        </div>
-      </label>
+    <ToolSection title={text.title}>
+      <ToolFileDrop
+        accept="image/*"
+        currentFileText={file ? `${text.currentFile}: ${file.name}` : null}
+        dropHint={text.dropHint}
+        inputAriaLabel={text.inputLabel}
+        label={text.inputLabel}
+        onSelectFiles={onDropFiles}
+      />
       <ToolActions
         actions={[
           {
@@ -257,8 +241,8 @@ export function FaviconGeneratorTool({ language }: Props) {
           <div className="grid gap-4 lg:grid-cols-2">
             <div className="space-y-2 rounded-md border bg-background/40 p-3">
               <p className="text-sm">{text.manifest}</p>
-              <textarea
-                className="h-40 w-full rounded-md border bg-background/60 p-3 text-xs"
+              <ToolTextarea
+                className="h-40 bg-background/60 text-xs"
                 readOnly
                 value={manifestContent}
               />
@@ -281,8 +265,8 @@ export function FaviconGeneratorTool({ language }: Props) {
             </div>
             <div className="space-y-2 rounded-md border bg-background/40 p-3">
               <p className="text-sm">{text.snippet}</p>
-              <textarea
-                className="h-40 w-full rounded-md border bg-background/60 p-3 text-xs"
+              <ToolTextarea
+                className="h-40 bg-background/60 text-xs"
                 readOnly
                 value={htmlSnippet}
               />
@@ -301,6 +285,6 @@ export function FaviconGeneratorTool({ language }: Props) {
           </div>
         </div>
       )}
-    </div>
+    </ToolSection>
   );
 }

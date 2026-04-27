@@ -8,6 +8,13 @@ import es from "@/modules/uuid-generator/presentation/i18n/es.json";
 import { copyTextToClipboard } from "@/shared/lib/clipboard";
 import { downloadTextFile } from "@/shared/lib/download";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
+import {
+  ToolField,
+  ToolOutputBlock,
+  ToolSection,
+  ToolToggleField,
+  ToolInput,
+} from "@/shared/presentation/components/tool-form";
 import type { Language } from "@/shared/presentation/i18n";
 import { sharedMessages } from "@/shared/presentation/i18n";
 
@@ -26,27 +33,23 @@ export function UuidGeneratorTool({ language }: Props) {
   };
 
   return (
-    <div className="space-y-4">
-      <h2 className="text-xl font-semibold">{text.title}</h2>
-      <label className="block space-y-2">
-        <span className="text-sm">{text.amount}</span>
-        <input
-          className="w-full rounded-md border bg-background/50 p-3"
+    <ToolSection title={text.title}>
+      <ToolField label={text.amount}>
+        <ToolInput
           type="number"
           min={1}
           max={100}
           value={amount}
           onChange={(event) => setAmount(Number(event.target.value || 1))}
         />
-      </label>
-      <label className="flex items-center gap-2 rounded-md border bg-background/40 p-3 text-sm">
+      </ToolField>
+      <ToolToggleField label={text.stripHyphens}>
         <input
           checked={stripHyphens}
           onChange={(event) => setStripHyphens(event.target.checked)}
           type="checkbox"
         />
-        <span>{text.stripHyphens}</span>
-      </label>
+      </ToolToggleField>
       <ToolActions
         actions={[
           {
@@ -79,14 +82,7 @@ export function UuidGeneratorTool({ language }: Props) {
           },
         ]}
       />
-      <div className="space-y-2">
-        <p className="text-sm">{text.result}</p>
-        <textarea
-          className="h-56 w-full rounded-md border bg-background/50 p-3"
-          readOnly
-          value={output}
-        />
-      </div>
-    </div>
+      <ToolOutputBlock className="pt-1" label={text.result} value={output} />
+    </ToolSection>
   );
 }

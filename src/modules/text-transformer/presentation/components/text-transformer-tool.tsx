@@ -7,6 +7,12 @@ import en from "@/modules/text-transformer/presentation/i18n/en.json";
 import es from "@/modules/text-transformer/presentation/i18n/es.json";
 import { copyTextToClipboard } from "@/shared/lib/clipboard";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
+import {
+  ToolField,
+  ToolOutputBlock,
+  ToolSection,
+  ToolTextarea,
+} from "@/shared/presentation/components/tool-form";
 import type { Language } from "@/shared/presentation/i18n";
 import { sharedMessages } from "@/shared/presentation/i18n";
 
@@ -19,16 +25,14 @@ export function TextTransformerTool({ language }: Props) {
   const [output, setOutput] = useState("");
 
   return (
-    <div className="space-y-4">
-      <h2 className="text-xl font-semibold">{text.title}</h2>
-      <label className="block space-y-2">
-        <span className="text-sm">{text.input}</span>
-        <textarea
-          className="h-40 w-full rounded-md border bg-background/50 p-3"
+    <ToolSection title={text.title}>
+      <ToolField label={text.input}>
+        <ToolTextarea
+          className="h-40"
           value={input}
           onChange={(event) => setInput(event.target.value)}
         />
-      </label>
+      </ToolField>
       <ToolActions
         actions={[
           {
@@ -85,14 +89,7 @@ export function TextTransformerTool({ language }: Props) {
           },
         ]}
       />
-      <label className="block space-y-2">
-        <span className="text-sm">{text.output}</span>
-        <textarea
-          className="h-40 w-full rounded-md border bg-background/50 p-3"
-          readOnly
-          value={output}
-        />
-      </label>
-    </div>
+      <ToolOutputBlock className="pt-1" label={text.output} value={output} />
+    </ToolSection>
   );
 }

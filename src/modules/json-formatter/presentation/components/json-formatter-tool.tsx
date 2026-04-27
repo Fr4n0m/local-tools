@@ -7,6 +7,13 @@ import en from "@/modules/json-formatter/presentation/i18n/en.json";
 import es from "@/modules/json-formatter/presentation/i18n/es.json";
 import { copyTextToClipboard } from "@/shared/lib/clipboard";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
+import {
+  ToolField,
+  ToolOutputBlock,
+  ToolSection,
+  ToolTextarea,
+  ToolToggleField,
+} from "@/shared/presentation/components/tool-form";
 import type { Language } from "@/shared/presentation/i18n";
 import { sharedMessages } from "@/shared/presentation/i18n";
 
@@ -45,18 +52,16 @@ export function JsonFormatterTool({ language }: Props) {
   };
 
   return (
-    <div className="space-y-4">
-      <h2 className="text-xl font-semibold">{text.title}</h2>
-      <label className="block space-y-2">
-        <span className="text-sm">{text.input}</span>
-        <textarea
+    <ToolSection title={text.title}>
+      <ToolField label={text.input}>
+        <ToolTextarea
           aria-describedby={statusId}
           aria-invalid={isValid === false}
-          className="h-52 w-full rounded-md border bg-background/50 p-3"
+          className="h-52"
           value={input}
           onChange={(event) => setInput(event.target.value)}
         />
-      </label>
+      </ToolField>
       <ToolActions
         actions={[
           {
@@ -86,22 +91,20 @@ export function JsonFormatterTool({ language }: Props) {
         ]}
       />
       <div className="grid gap-3 md:grid-cols-2">
-        <label className="flex items-center gap-2 rounded-md border bg-background/40 p-3 text-sm">
+        <ToolToggleField label={text.minify}>
           <input
             checked={minify}
             onChange={(event) => setMinify(event.target.checked)}
             type="checkbox"
           />
-          <span>{text.minify}</span>
-        </label>
-        <label className="flex items-center gap-2 rounded-md border bg-background/40 p-3 text-sm">
+        </ToolToggleField>
+        <ToolToggleField label={text.sortKeys}>
           <input
             checked={sortKeys}
             onChange={(event) => setSortKeys(event.target.checked)}
             type="checkbox"
           />
-          <span>{text.sortKeys}</span>
-        </label>
+        </ToolToggleField>
       </div>
       {isValid !== null ? (
         <p className="text-sm" id={statusId} role="status" aria-live="polite">
@@ -110,14 +113,7 @@ export function JsonFormatterTool({ language }: Props) {
             : `${text.invalid}${errorText ? `. ${errorText}` : ""}`}
         </p>
       ) : null}
-      <label className="block space-y-2">
-        <span className="text-sm">{text.output}</span>
-        <textarea
-          className="h-52 w-full rounded-md border bg-background/50 p-3"
-          readOnly
-          value={output}
-        />
-      </label>
-    </div>
+      <ToolOutputBlock className="pt-1" label={text.output} value={output} />
+    </ToolSection>
   );
 }
