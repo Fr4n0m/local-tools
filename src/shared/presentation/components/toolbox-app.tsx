@@ -74,35 +74,39 @@ function getInitialToolId(): ToolId {
 function getCategoryStyles(category: string) {
   if (category === "files-media") {
     return {
-      heading: "text-sidebar-foreground/45",
+      heading: "text-sidebar-foreground/68",
       active: "text-sidebar-foreground",
-      inactive: "text-sidebar-foreground/72 hover:text-sidebar-foreground",
+      inactive:
+        "text-sidebar-foreground/88 hover:text-sidebar-foreground focus-visible:text-sidebar-foreground",
       marker: "bg-sidebar-foreground",
     };
   }
 
   if (category === "data-encoding") {
     return {
-      heading: "text-sidebar-foreground/45",
+      heading: "text-sidebar-foreground/68",
       active: "text-sidebar-foreground",
-      inactive: "text-sidebar-foreground/72 hover:text-sidebar-foreground",
+      inactive:
+        "text-sidebar-foreground/88 hover:text-sidebar-foreground focus-visible:text-sidebar-foreground",
       marker: "bg-sidebar-foreground",
     };
   }
 
   if (category === "text-code") {
     return {
-      heading: "text-sidebar-foreground/45",
+      heading: "text-sidebar-foreground/68",
       active: "text-sidebar-foreground",
-      inactive: "text-sidebar-foreground/72 hover:text-sidebar-foreground",
+      inactive:
+        "text-sidebar-foreground/88 hover:text-sidebar-foreground focus-visible:text-sidebar-foreground",
       marker: "bg-sidebar-foreground",
     };
   }
 
   return {
-    heading: "text-sidebar-foreground/45",
+    heading: "text-sidebar-foreground/68",
     active: "text-sidebar-foreground",
-    inactive: "text-sidebar-foreground/72 hover:text-sidebar-foreground",
+    inactive:
+      "text-sidebar-foreground/88 hover:text-sidebar-foreground focus-visible:text-sidebar-foreground",
     marker: "bg-sidebar-foreground",
   };
 }
@@ -392,7 +396,7 @@ function Sidebar({
               return (
                 <button
                   aria-pressed={isActive}
-                  className={`flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-sm transition ${isActive ? styles.active : styles.inactive}`}
+                  className={`flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-sm transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sidebar-foreground ${isActive ? styles.active : styles.inactive}`}
                   key={tool.id}
                   onClick={() => onSelectTool(tool.id)}
                   type="button"
