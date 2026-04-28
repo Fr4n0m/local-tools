@@ -5,6 +5,7 @@ import {
   IconLanguage,
   IconLink,
   IconPhoto,
+  IconQrcode,
   IconRegex,
   IconVariable,
 } from "@tabler/icons-react";
@@ -28,6 +29,9 @@ import { TextTransformerTool } from "@/modules/text-transformer/presentation/com
 import textEn from "@/modules/text-transformer/presentation/i18n/en.json";
 import textEs from "@/modules/text-transformer/presentation/i18n/es.json";
 import type { Tool } from "@/modules/tool-registry/domain/tool";
+import { QrGeneratorTool } from "@/modules/qr-generator/presentation/components/qr-generator-tool";
+import qrEn from "@/modules/qr-generator/presentation/i18n/en.json";
+import qrEs from "@/modules/qr-generator/presentation/i18n/es.json";
 import { UrlEncoderTool } from "@/modules/url-encoder/presentation/components/url-encoder-tool";
 import urlEn from "@/modules/url-encoder/presentation/i18n/en.json";
 import urlEs from "@/modules/url-encoder/presentation/i18n/es.json";
@@ -67,6 +71,14 @@ export const tools: Tool[] = [
     component: Base64Tool,
     name: { en: base64En.name, es: base64Es.name },
     description: { en: base64En.description, es: base64Es.description },
+  },
+  {
+    id: "qr-generator",
+    category: "data-encoding",
+    icon: IconQrcode,
+    component: QrGeneratorTool,
+    name: { en: qrEn.name, es: qrEs.name },
+    description: { en: qrEn.description, es: qrEs.description },
   },
   {
     id: "url-encoder",

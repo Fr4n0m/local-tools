@@ -35,6 +35,7 @@ LocalTools es una toolbox privada para desarrolladores que funciona 100% en el n
 - Generador de Favicons
 - Formateador y Validador JSON
 - Codificador/Decodificador Base64
+- Generador de QR
 - Codificador/Decodificador URL
 - Transformador de Texto
 - Generador UUID
@@ -116,6 +117,7 @@ LocalTools is a private developer toolbox that runs 100% in the browser. All pro
 - Favicon Generator
 - JSON Formatter & Validator
 - Base64 Encoder/Decoder
+- QR Code Generator
 - URL Encoder/Decoder
 - Text Transformer
 - UUID Generator

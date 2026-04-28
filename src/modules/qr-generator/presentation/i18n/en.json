@@ -1,0 +1,24 @@
+{
+  "name": "QR Code Generator",
+  "description": "Generate QR codes in-browser and export PNG/SVG.",
+  "title": "QR Code Generator",
+  "type": "Content type",
+  "types": {
+    "url": "URL",
+    "text": "Text",
+    "wifi": "WiFi"
+  },
+  "urlValue": "URL",
+  "textValue": "Text",
+  "wifiSsid": "WiFi SSID",
+  "wifiPassword": "WiFi password",
+  "wifiEncryption": "Encryption",
+  "wifiHidden": "Hidden network",
+  "size": "QR size",
+  "generate": "Generate QR",
+  "downloadPng": "Download PNG",
+  "downloadSvg": "Download SVG",
+  "preview": "Preview",
+  "empty": "Fill the required fields to generate a QR code.",
+  "invalid": "Please provide valid content to generate a QR code."
+}

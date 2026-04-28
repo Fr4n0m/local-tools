@@ -8,6 +8,7 @@ export type ToolId =
   | "favicon-generator"
   | "json-formatter"
   | "base64-tool"
+  | "qr-generator"
   | "url-encoder"
   | "text-transformer"
   | "uuid-generator"
