@@ -1,0 +1,13 @@
+{
+  "name": "Explorador de Acordes",
+  "description": "Explora notas de acordes por raíz y tipo.",
+  "title": "Explorador de Acordes",
+  "root": "Nota raíz",
+  "type": "Tipo de acorde",
+  "major": "Mayor",
+  "minor": "Menor",
+  "maj7": "Maj7",
+  "min7": "Min7",
+  "dom7": "Dom7",
+  "result": "Notas"
+}

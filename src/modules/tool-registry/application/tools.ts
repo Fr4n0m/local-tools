@@ -30,6 +30,9 @@ import batchEs from "@/modules/batch-rename/presentation/i18n/es.json";
 import { CarouselGeneratorTool } from "@/modules/carousel-generator/presentation/components/carousel-generator-tool";
 import carouselEn from "@/modules/carousel-generator/presentation/i18n/en.json";
 import carouselEs from "@/modules/carousel-generator/presentation/i18n/es.json";
+import { ChordExplorerTool } from "@/modules/chord-explorer/presentation/components/chord-explorer-tool";
+import chordEn from "@/modules/chord-explorer/presentation/i18n/en.json";
+import chordEs from "@/modules/chord-explorer/presentation/i18n/es.json";
 import { FaviconGeneratorTool } from "@/modules/favicon-generator/presentation/components/favicon-generator-tool";
 import faviconEn from "@/modules/favicon-generator/presentation/i18n/en.json";
 import faviconEs from "@/modules/favicon-generator/presentation/i18n/es.json";
@@ -335,6 +338,14 @@ export const tools: Tool[] = [
     component: CarouselGeneratorTool,
     name: { en: carouselEn.name, es: carouselEs.name },
     description: { en: carouselEn.description, es: carouselEs.description },
+  },
+  {
+    id: "chord-explorer",
+    category: "advanced",
+    icon: IconVariable,
+    component: ChordExplorerTool,
+    name: { en: chordEn.name, es: chordEs.name },
+    description: { en: chordEn.description, es: chordEs.description },
   },
   {
     id: "batch-rename",

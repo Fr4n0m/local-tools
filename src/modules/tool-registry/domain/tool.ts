@@ -17,6 +17,7 @@ export type ToolId =
   | "progressive-blur"
   | "liquid-glass"
   | "loader-maker"
+  | "chord-explorer"
   | "favicon-generator"
   | "json-formatter"
   | "contrast-checker"
