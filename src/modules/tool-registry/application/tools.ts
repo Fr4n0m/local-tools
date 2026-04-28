@@ -48,6 +48,9 @@ import heicEs from "@/modules/heic-to-jpg/presentation/i18n/es.json";
 import { PdfToImagesTool } from "@/modules/pdf-to-images/presentation/components/pdf-to-images-tool";
 import pdfEn from "@/modules/pdf-to-images/presentation/i18n/en.json";
 import pdfEs from "@/modules/pdf-to-images/presentation/i18n/es.json";
+import { PdfCompressorTool } from "@/modules/pdf-compressor/presentation/components/pdf-compressor-tool";
+import pdfCompressorEn from "@/modules/pdf-compressor/presentation/i18n/en.json";
+import pdfCompressorEs from "@/modules/pdf-compressor/presentation/i18n/es.json";
 import { SvgToFileTool } from "@/modules/svg-to-file/presentation/components/svg-to-file-tool";
 import svgEn from "@/modules/svg-to-file/presentation/i18n/en.json";
 import svgEs from "@/modules/svg-to-file/presentation/i18n/es.json";
@@ -174,6 +177,17 @@ export const tools: Tool[] = [
     component: PdfToImagesTool,
     name: { en: pdfEn.name, es: pdfEs.name },
     description: { en: pdfEn.description, es: pdfEs.description },
+  },
+  {
+    id: "pdf-compressor",
+    category: "files-media",
+    icon: IconFileTypePdf,
+    component: PdfCompressorTool,
+    name: { en: pdfCompressorEn.name, es: pdfCompressorEs.name },
+    description: {
+      en: pdfCompressorEn.description,
+      es: pdfCompressorEs.description,
+    },
   },
   {
     id: "json-formatter",

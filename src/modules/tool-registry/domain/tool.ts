@@ -9,6 +9,7 @@ export type ToolId =
   | "heic-to-jpg"
   | "svg-to-file"
   | "pdf-to-images"
+  | "pdf-compressor"
   | "avatar-generator"
   | "custom-timer"
   | "carousel-generator"

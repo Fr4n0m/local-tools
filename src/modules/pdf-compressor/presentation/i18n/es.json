@@ -1,0 +1,13 @@
+{
+  "name": "Comprimir PDFs",
+  "description": "Comprime PDFs localmente re-codificando páginas.",
+  "title": "Comprimir PDFs",
+  "input": "Archivo PDF",
+  "dropHint": "Suelta un PDF o selecciónalo.",
+  "scale": "Escala de render",
+  "quality": "Calidad JPEG",
+  "compress": "Comprimir PDF",
+  "download": "Descargar PDF comprimido",
+  "invalid": "Archivo PDF inválido.",
+  "done": "Compresión finalizada."
+}
