@@ -24,6 +24,9 @@ import faviconEs from "@/modules/favicon-generator/presentation/i18n/es.json";
 import { ContrastCheckerTool } from "@/modules/contrast-checker/presentation/components/contrast-checker-tool";
 import contrastEn from "@/modules/contrast-checker/presentation/i18n/en.json";
 import contrastEs from "@/modules/contrast-checker/presentation/i18n/es.json";
+import { ImageCompressorTool } from "@/modules/image-compressor/presentation/components/image-compressor-tool";
+import imageCompressorEn from "@/modules/image-compressor/presentation/i18n/en.json";
+import imageCompressorEs from "@/modules/image-compressor/presentation/i18n/es.json";
 import { ImageConverterTool } from "@/modules/image-converter/presentation/components/image-converter-tool";
 import imageEn from "@/modules/image-converter/presentation/i18n/en.json";
 import imageEs from "@/modules/image-converter/presentation/i18n/es.json";
@@ -55,6 +58,17 @@ export const tools: Tool[] = [
     component: ImageConverterTool,
     name: { en: imageEn.name, es: imageEs.name },
     description: { en: imageEn.description, es: imageEs.description },
+  },
+  {
+    id: "image-compressor",
+    category: "files-media",
+    icon: IconPhoto,
+    component: ImageCompressorTool,
+    name: { en: imageCompressorEn.name, es: imageCompressorEs.name },
+    description: {
+      en: imageCompressorEn.description,
+      es: imageCompressorEs.description,
+    },
   },
   {
     id: "favicon-generator",

@@ -1,0 +1,16 @@
+{
+  "name": "Compresor de Imágenes",
+  "description": "Comprime imágenes localmente y descarga resultados optimizados.",
+  "title": "Compresor de Imágenes",
+  "inputLabel": "Selecciona imágenes",
+  "qualityLabel": "Calidad de compresión",
+  "compress": "Comprimir selección",
+  "compressBatch": "Comprimir todo (ZIP)",
+  "dropHint": "Arrastra y suelta archivos de imagen aquí o usa el selector",
+  "currentFile": "Archivo actual",
+  "selectedCount": "Archivos seleccionados: {count}",
+  "originalPreview": "Vista previa original",
+  "compressedPreview": "Vista previa comprimida",
+  "empty": "Selecciona archivos de imagen para empezar.",
+  "done": "Archivo comprimido listo para descargar"
+}

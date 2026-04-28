@@ -1,0 +1,16 @@
+{
+  "name": "Image Compressor",
+  "description": "Compress image files locally and download optimized results.",
+  "title": "Image Compressor",
+  "inputLabel": "Select images",
+  "qualityLabel": "Compression quality",
+  "compress": "Compress selected",
+  "compressBatch": "Compress all (ZIP)",
+  "dropHint": "Drag and drop image files here or use file picker",
+  "currentFile": "Current file",
+  "selectedCount": "Selected files: {count}",
+  "originalPreview": "Original preview",
+  "compressedPreview": "Compressed preview",
+  "empty": "Pick image files to start.",
+  "done": "Compressed file ready for download"
+}
