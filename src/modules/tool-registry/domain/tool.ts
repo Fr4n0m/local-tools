@@ -19,6 +19,7 @@ export type ToolId =
   | "qr-generator"
   | "url-encoder"
   | "data-to-markdown"
+  | "llms-txt"
   | "text-transformer"
   | "placeholder-text"
   | "uuid-generator"

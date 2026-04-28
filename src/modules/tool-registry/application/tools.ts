@@ -5,6 +5,7 @@ import {
   IconFileTypePng,
   IconFileTypePdf,
   IconForms,
+  IconFileText,
   IconLanguage,
   IconLink,
   IconPhoto,
@@ -52,6 +53,9 @@ import imageCompressorEs from "@/modules/image-compressor/presentation/i18n/es.j
 import { ImageConverterTool } from "@/modules/image-converter/presentation/components/image-converter-tool";
 import imageEn from "@/modules/image-converter/presentation/i18n/en.json";
 import imageEs from "@/modules/image-converter/presentation/i18n/es.json";
+import { LlmsTxtTool } from "@/modules/llms-txt/presentation/components/llms-txt-tool";
+import llmsEn from "@/modules/llms-txt/presentation/i18n/en.json";
+import llmsEs from "@/modules/llms-txt/presentation/i18n/es.json";
 import { JsonFormatterTool } from "@/modules/json-formatter/presentation/components/json-formatter-tool";
 import jsonEn from "@/modules/json-formatter/presentation/i18n/en.json";
 import jsonEs from "@/modules/json-formatter/presentation/i18n/es.json";
@@ -204,6 +208,14 @@ export const tools: Tool[] = [
     component: DataToMarkdownTool,
     name: { en: dataToMdEn.name, es: dataToMdEs.name },
     description: { en: dataToMdEn.description, es: dataToMdEs.description },
+  },
+  {
+    id: "llms-txt",
+    category: "text-code",
+    icon: IconFileText,
+    component: LlmsTxtTool,
+    name: { en: llmsEn.name, es: llmsEs.name },
+    description: { en: llmsEn.description, es: llmsEs.description },
   },
   {
     id: "text-transformer",

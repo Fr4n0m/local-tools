@@ -1,0 +1,15 @@
+{
+  "name": "llms.txt Generator",
+  "description": "Generate a clean llms.txt file for your project.",
+  "title": "llms.txt Generator",
+  "projectName": "Project name",
+  "projectUrl": "Project URL",
+  "summary": "Short summary",
+  "docsUrl": "Docs URL",
+  "sourceUrl": "Source URL",
+  "license": "License",
+  "rules": "Guidance rules (one per line)",
+  "output": "llms.txt output",
+  "generate": "Generate llms.txt",
+  "sampleRule": "Keep answers aligned with official docs."
+}
