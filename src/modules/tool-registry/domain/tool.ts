@@ -13,6 +13,7 @@ export type ToolId =
   | "custom-timer"
   | "carousel-generator"
   | "focus-reader"
+  | "mesh-gradient"
   | "favicon-generator"
   | "json-formatter"
   | "contrast-checker"

@@ -69,6 +69,9 @@ import imageEs from "@/modules/image-converter/presentation/i18n/es.json";
 import { LlmsTxtTool } from "@/modules/llms-txt/presentation/components/llms-txt-tool";
 import llmsEn from "@/modules/llms-txt/presentation/i18n/en.json";
 import llmsEs from "@/modules/llms-txt/presentation/i18n/es.json";
+import { MeshGradientTool } from "@/modules/mesh-gradient/presentation/components/mesh-gradient-tool";
+import meshEn from "@/modules/mesh-gradient/presentation/i18n/en.json";
+import meshEs from "@/modules/mesh-gradient/presentation/i18n/es.json";
 import { JsonFormatterTool } from "@/modules/json-formatter/presentation/components/json-formatter-tool";
 import jsonEn from "@/modules/json-formatter/presentation/i18n/en.json";
 import jsonEs from "@/modules/json-formatter/presentation/i18n/es.json";
@@ -245,6 +248,14 @@ export const tools: Tool[] = [
     component: FocusReaderTool,
     name: { en: focusEn.name, es: focusEs.name },
     description: { en: focusEn.description, es: focusEs.description },
+  },
+  {
+    id: "mesh-gradient",
+    category: "advanced",
+    icon: IconColorSwatch,
+    component: MeshGradientTool,
+    name: { en: meshEn.name, es: meshEs.name },
+    description: { en: meshEn.description, es: meshEs.description },
   },
   {
     id: "llms-txt",
