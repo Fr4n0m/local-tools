@@ -40,6 +40,9 @@ import svgEs from "@/modules/svg-to-file/presentation/i18n/es.json";
 import { ContrastCheckerTool } from "@/modules/contrast-checker/presentation/components/contrast-checker-tool";
 import contrastEn from "@/modules/contrast-checker/presentation/i18n/en.json";
 import contrastEs from "@/modules/contrast-checker/presentation/i18n/es.json";
+import { DataToMarkdownTool } from "@/modules/data-to-markdown/presentation/components/data-to-markdown-tool";
+import dataToMdEn from "@/modules/data-to-markdown/presentation/i18n/en.json";
+import dataToMdEs from "@/modules/data-to-markdown/presentation/i18n/es.json";
 import { ColorRangeTool } from "@/modules/color-range/presentation/components/color-range-tool";
 import colorRangeEn from "@/modules/color-range/presentation/i18n/en.json";
 import colorRangeEs from "@/modules/color-range/presentation/i18n/es.json";
@@ -193,6 +196,14 @@ export const tools: Tool[] = [
     component: UrlEncoderTool,
     name: { en: urlEn.name, es: urlEs.name },
     description: { en: urlEn.description, es: urlEs.description },
+  },
+  {
+    id: "data-to-markdown",
+    category: "text-code",
+    icon: IconBrackets,
+    component: DataToMarkdownTool,
+    name: { en: dataToMdEn.name, es: dataToMdEs.name },
+    description: { en: dataToMdEn.description, es: dataToMdEs.description },
   },
   {
     id: "text-transformer",

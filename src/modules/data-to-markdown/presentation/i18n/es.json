@@ -1,0 +1,14 @@
+{
+  "name": "Datos a Markdown",
+  "description": "Convierte CSV o arrays JSON en tablas Markdown.",
+  "title": "Datos a Markdown",
+  "input": "Datos de entrada",
+  "format": "Formato de entrada",
+  "csv": "CSV",
+  "json": "JSON",
+  "convert": "Convertir",
+  "output": "Salida Markdown",
+  "invalid": "No se pudo parsear la entrada como datos tabulares.",
+  "placeholderCsv": "nombre,rol\nFran,Developer",
+  "placeholderJson": "[{\"nombre\":\"Fran\",\"rol\":\"Developer\"}]"
+}
