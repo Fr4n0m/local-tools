@@ -1,0 +1,13 @@
+{
+  "name": "Compress PDFs",
+  "description": "Compress PDF files locally by re-encoding pages.",
+  "title": "Compress PDFs",
+  "input": "PDF file",
+  "dropHint": "Drop a PDF or select one.",
+  "scale": "Render scale",
+  "quality": "JPEG quality",
+  "compress": "Compress PDF",
+  "download": "Download compressed PDF",
+  "invalid": "Invalid PDF file.",
+  "done": "Compression finished."
+}
