@@ -7,6 +7,7 @@ export type ToolId =
   | "image-converter"
   | "favicon-generator"
   | "json-formatter"
+  | "contrast-checker"
   | "base64-tool"
   | "qr-generator"
   | "url-encoder"

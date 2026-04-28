@@ -1,0 +1,17 @@
+{
+  "name": "Contrast Checker",
+  "description": "Check WCAG contrast ratio for text accessibility.",
+  "title": "Contrast Checker",
+  "foreground": "Text color",
+  "background": "Background color",
+  "sample": "Preview text",
+  "ratio": "Contrast ratio",
+  "invalid": "Please enter valid HEX colors.",
+  "wcag": "WCAG result",
+  "aaNormal": "AA normal text",
+  "aaLarge": "AA large text",
+  "aaaNormal": "AAA normal text",
+  "aaaLarge": "AAA large text",
+  "pass": "Pass",
+  "fail": "Fail"
+}
