@@ -1,0 +1,12 @@
+{
+  "name": "Test de Colores",
+  "description": "Prueba múltiples pares de paleta para contraste WCAG.",
+  "title": "Test de Colores",
+  "inputLabel": "Un color por línea",
+  "inputPlaceholder": "#14213d\n#fca311\n#ffffff",
+  "analyze": "Analizar colores",
+  "empty": "Añade al menos dos colores hex válidos.",
+  "results": "Resultados de contraste",
+  "ratio": "Ratio",
+  "aa": "AA normal"
+}

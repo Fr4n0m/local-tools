@@ -11,6 +11,7 @@ export type ToolId =
   | "favicon-generator"
   | "json-formatter"
   | "contrast-checker"
+  | "test-colors"
   | "color-range"
   | "base64-tool"
   | "qr-generator"

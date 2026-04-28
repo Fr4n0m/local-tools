@@ -9,6 +9,7 @@ import {
   IconPhoto,
   IconQrcode,
   IconTextPlus,
+  IconPalette,
   IconVectorSpline,
   IconRegex,
   IconVariable,
@@ -47,6 +48,9 @@ import jsonEs from "@/modules/json-formatter/presentation/i18n/es.json";
 import { TextTransformerTool } from "@/modules/text-transformer/presentation/components/text-transformer-tool";
 import textEn from "@/modules/text-transformer/presentation/i18n/en.json";
 import textEs from "@/modules/text-transformer/presentation/i18n/es.json";
+import { TestColorsTool } from "@/modules/test-colors/presentation/components/test-colors-tool";
+import testColorsEn from "@/modules/test-colors/presentation/i18n/en.json";
+import testColorsEs from "@/modules/test-colors/presentation/i18n/es.json";
 import { PlaceholderTextTool } from "@/modules/placeholder-text/presentation/components/placeholder-text-tool";
 import placeholderEn from "@/modules/placeholder-text/presentation/i18n/en.json";
 import placeholderEs from "@/modules/placeholder-text/presentation/i18n/es.json";
@@ -120,6 +124,14 @@ export const tools: Tool[] = [
     component: ContrastCheckerTool,
     name: { en: contrastEn.name, es: contrastEs.name },
     description: { en: contrastEn.description, es: contrastEs.description },
+  },
+  {
+    id: "test-colors",
+    category: "data-encoding",
+    icon: IconPalette,
+    component: TestColorsTool,
+    name: { en: testColorsEn.name, es: testColorsEs.name },
+    description: { en: testColorsEn.description, es: testColorsEs.description },
   },
   {
     id: "color-range",
