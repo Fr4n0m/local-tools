@@ -1,0 +1,12 @@
+{
+  "name": "Test Colors",
+  "description": "Test multiple palette pairs for WCAG contrast.",
+  "title": "Test Colors",
+  "inputLabel": "One color per line",
+  "inputPlaceholder": "#14213d\n#fca311\n#ffffff",
+  "analyze": "Analyze colors",
+  "empty": "Add at least two valid hex colors.",
+  "results": "Contrast results",
+  "ratio": "Ratio",
+  "aa": "AA normal"
+}
