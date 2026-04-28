@@ -1,0 +1,14 @@
+{
+  "name": "SVG to File",
+  "description": "Export SVG source as SVG or PNG locally.",
+  "title": "SVG to File",
+  "svgInput": "SVG source",
+  "filename": "File name",
+  "width": "Width (px)",
+  "height": "Height (px)",
+  "preview": "Preview",
+  "exportSvg": "Download SVG",
+  "exportPng": "Download PNG",
+  "invalidSvg": "Invalid SVG. It must start with <svg> and end with </svg>.",
+  "empty": "Paste an SVG to preview and export."
+}

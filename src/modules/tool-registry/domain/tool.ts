@@ -7,6 +7,7 @@ export type ToolId =
   | "image-converter"
   | "image-compressor"
   | "heic-to-jpg"
+  | "svg-to-file"
   | "favicon-generator"
   | "json-formatter"
   | "contrast-checker"

@@ -1,0 +1,14 @@
+{
+  "name": "SVG a Archivo",
+  "description": "Exporta código SVG como SVG o PNG localmente.",
+  "title": "SVG a Archivo",
+  "svgInput": "Código SVG",
+  "filename": "Nombre de archivo",
+  "width": "Ancho (px)",
+  "height": "Alto (px)",
+  "preview": "Vista previa",
+  "exportSvg": "Descargar SVG",
+  "exportPng": "Descargar PNG",
+  "invalidSvg": "SVG inválido. Debe empezar con <svg> y terminar con </svg>.",
+  "empty": "Pega un SVG para previsualizar y exportar."
+}

@@ -9,6 +9,7 @@ import {
   IconPhoto,
   IconQrcode,
   IconTextPlus,
+  IconVectorSpline,
   IconRegex,
   IconVariable,
 } from "@tabler/icons-react";
@@ -25,6 +26,9 @@ import faviconEs from "@/modules/favicon-generator/presentation/i18n/es.json";
 import { HeicToJpgTool } from "@/modules/heic-to-jpg/presentation/components/heic-to-jpg-tool";
 import heicEn from "@/modules/heic-to-jpg/presentation/i18n/en.json";
 import heicEs from "@/modules/heic-to-jpg/presentation/i18n/es.json";
+import { SvgToFileTool } from "@/modules/svg-to-file/presentation/components/svg-to-file-tool";
+import svgEn from "@/modules/svg-to-file/presentation/i18n/en.json";
+import svgEs from "@/modules/svg-to-file/presentation/i18n/es.json";
 import { ContrastCheckerTool } from "@/modules/contrast-checker/presentation/components/contrast-checker-tool";
 import contrastEn from "@/modules/contrast-checker/presentation/i18n/en.json";
 import contrastEs from "@/modules/contrast-checker/presentation/i18n/es.json";
@@ -92,6 +96,14 @@ export const tools: Tool[] = [
     component: FaviconGeneratorTool,
     name: { en: faviconEn.name, es: faviconEs.name },
     description: { en: faviconEn.description, es: faviconEs.description },
+  },
+  {
+    id: "svg-to-file",
+    category: "files-media",
+    icon: IconVectorSpline,
+    component: SvgToFileTool,
+    name: { en: svgEn.name, es: svgEs.name },
+    description: { en: svgEn.description, es: svgEs.description },
   },
   {
     id: "json-formatter",
