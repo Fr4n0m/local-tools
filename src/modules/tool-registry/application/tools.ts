@@ -27,6 +27,9 @@ import avatarEs from "@/modules/avatar-generator/presentation/i18n/es.json";
 import { BatchRenameTool } from "@/modules/batch-rename/presentation/components/batch-rename-tool";
 import batchEn from "@/modules/batch-rename/presentation/i18n/en.json";
 import batchEs from "@/modules/batch-rename/presentation/i18n/es.json";
+import { CarouselGeneratorTool } from "@/modules/carousel-generator/presentation/components/carousel-generator-tool";
+import carouselEn from "@/modules/carousel-generator/presentation/i18n/en.json";
+import carouselEs from "@/modules/carousel-generator/presentation/i18n/es.json";
 import { FaviconGeneratorTool } from "@/modules/favicon-generator/presentation/components/favicon-generator-tool";
 import faviconEn from "@/modules/favicon-generator/presentation/i18n/en.json";
 import faviconEs from "@/modules/favicon-generator/presentation/i18n/es.json";
@@ -266,6 +269,14 @@ export const tools: Tool[] = [
     component: UuidGeneratorTool,
     name: { en: uuidEn.name, es: uuidEs.name },
     description: { en: uuidEn.description, es: uuidEs.description },
+  },
+  {
+    id: "carousel-generator",
+    category: "advanced",
+    icon: IconForms,
+    component: CarouselGeneratorTool,
+    name: { en: carouselEn.name, es: carouselEs.name },
+    description: { en: carouselEn.description, es: carouselEs.description },
   },
   {
     id: "batch-rename",

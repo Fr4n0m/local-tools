@@ -1,0 +1,11 @@
+{
+  "name": "Crear Carruseles",
+  "description": "Genera un snippet ligero de carrusel HTML/CSS/JS.",
+  "title": "Crear Carruseles",
+  "imageUrls": "URLs de imagen (una por línea)",
+  "autoplayMs": "Intervalo autoplay (ms)",
+  "showDots": "Mostrar puntos",
+  "generate": "Generar carrusel",
+  "output": "Salida HTML",
+  "placeholder": "https://picsum.photos/id/1015/1200/800"
+}
