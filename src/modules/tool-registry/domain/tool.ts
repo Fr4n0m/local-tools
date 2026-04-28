@@ -10,6 +10,7 @@ export type ToolId =
   | "favicon-generator"
   | "json-formatter"
   | "contrast-checker"
+  | "color-range"
   | "base64-tool"
   | "qr-generator"
   | "url-encoder"
