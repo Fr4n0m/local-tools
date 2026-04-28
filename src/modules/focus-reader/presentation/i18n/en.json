@@ -1,0 +1,10 @@
+{
+  "name": "Focus Reader",
+  "description": "Read long text in a distraction-free view.",
+  "title": "Focus Reader",
+  "input": "Text",
+  "focus": "Focus mode",
+  "readTime": "Estimated read time",
+  "minutes": "min",
+  "placeholder": "Paste an article or long text..."
+}

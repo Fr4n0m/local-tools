@@ -12,6 +12,7 @@ export type ToolId =
   | "avatar-generator"
   | "custom-timer"
   | "carousel-generator"
+  | "focus-reader"
   | "favicon-generator"
   | "json-formatter"
   | "contrast-checker"

@@ -36,6 +36,9 @@ import faviconEs from "@/modules/favicon-generator/presentation/i18n/es.json";
 import { FetchColorsTool } from "@/modules/fetch-colors/presentation/components/fetch-colors-tool";
 import fetchColorsEn from "@/modules/fetch-colors/presentation/i18n/en.json";
 import fetchColorsEs from "@/modules/fetch-colors/presentation/i18n/es.json";
+import { FocusReaderTool } from "@/modules/focus-reader/presentation/components/focus-reader-tool";
+import focusEn from "@/modules/focus-reader/presentation/i18n/en.json";
+import focusEs from "@/modules/focus-reader/presentation/i18n/es.json";
 import { HeicToJpgTool } from "@/modules/heic-to-jpg/presentation/components/heic-to-jpg-tool";
 import heicEn from "@/modules/heic-to-jpg/presentation/i18n/en.json";
 import heicEs from "@/modules/heic-to-jpg/presentation/i18n/es.json";
@@ -234,6 +237,14 @@ export const tools: Tool[] = [
     component: DataToMarkdownTool,
     name: { en: dataToMdEn.name, es: dataToMdEs.name },
     description: { en: dataToMdEn.description, es: dataToMdEs.description },
+  },
+  {
+    id: "focus-reader",
+    category: "text-code",
+    icon: IconTextPlus,
+    component: FocusReaderTool,
+    name: { en: focusEn.name, es: focusEs.name },
+    description: { en: focusEn.description, es: focusEs.description },
   },
   {
     id: "llms-txt",
