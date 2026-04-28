@@ -13,6 +13,7 @@ export type ToolId =
   | "json-formatter"
   | "contrast-checker"
   | "test-colors"
+  | "fetch-colors"
   | "color-range"
   | "base64-tool"
   | "qr-generator"

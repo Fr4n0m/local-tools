@@ -1,0 +1,11 @@
+{
+  "name": "Extraer Colores",
+  "description": "Extrae colores dominantes desde una imagen.",
+  "title": "Extraer Colores",
+  "inputLabel": "Archivo de imagen",
+  "dropHint": "Suelta una imagen o selecciónala.",
+  "maxColors": "Máximo de colores",
+  "extract": "Extraer paleta",
+  "empty": "Selecciona una imagen para extraer colores.",
+  "invalid": "Archivo de imagen inválido."
+}
