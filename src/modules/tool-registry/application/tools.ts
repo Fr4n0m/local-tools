@@ -1,5 +1,6 @@
 import {
   IconBrackets,
+  IconContrast2,
   IconFileTypePng,
   IconForms,
   IconLanguage,
@@ -19,6 +20,9 @@ import batchEs from "@/modules/batch-rename/presentation/i18n/es.json";
 import { FaviconGeneratorTool } from "@/modules/favicon-generator/presentation/components/favicon-generator-tool";
 import faviconEn from "@/modules/favicon-generator/presentation/i18n/en.json";
 import faviconEs from "@/modules/favicon-generator/presentation/i18n/es.json";
+import { ContrastCheckerTool } from "@/modules/contrast-checker/presentation/components/contrast-checker-tool";
+import contrastEn from "@/modules/contrast-checker/presentation/i18n/en.json";
+import contrastEs from "@/modules/contrast-checker/presentation/i18n/es.json";
 import { ImageConverterTool } from "@/modules/image-converter/presentation/components/image-converter-tool";
 import imageEn from "@/modules/image-converter/presentation/i18n/en.json";
 import imageEs from "@/modules/image-converter/presentation/i18n/es.json";
@@ -63,6 +67,14 @@ export const tools: Tool[] = [
     component: JsonFormatterTool,
     name: { en: jsonEn.name, es: jsonEs.name },
     description: { en: jsonEn.description, es: jsonEs.description },
+  },
+  {
+    id: "contrast-checker",
+    category: "data-encoding",
+    icon: IconContrast2,
+    component: ContrastCheckerTool,
+    name: { en: contrastEn.name, es: contrastEs.name },
+    description: { en: contrastEn.description, es: contrastEs.description },
   },
   {
     id: "base64-tool",

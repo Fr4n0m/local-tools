@@ -1,0 +1,17 @@
+{
+  "name": "Comprobador de Contraste",
+  "description": "Comprueba contraste WCAG para accesibilidad de texto.",
+  "title": "Comprobador de Contraste",
+  "foreground": "Color de texto",
+  "background": "Color de fondo",
+  "sample": "Texto de vista previa",
+  "ratio": "Ratio de contraste",
+  "invalid": "Introduce colores HEX válidos.",
+  "wcag": "Resultado WCAG",
+  "aaNormal": "AA texto normal",
+  "aaLarge": "AA texto grande",
+  "aaaNormal": "AAA texto normal",
+  "aaaLarge": "AAA texto grande",
+  "pass": "Cumple",
+  "fail": "No cumple"
+}
