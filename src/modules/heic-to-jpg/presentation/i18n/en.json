@@ -1,0 +1,17 @@
+{
+  "name": "HEIC to JPG",
+  "description": "Convert HEIC/HEIF photos to JPG locally in your browser.",
+  "title": "HEIC to JPG",
+  "inputLabel": "Select HEIC/HEIF files",
+  "qualityLabel": "JPG quality",
+  "convert": "Convert selected",
+  "convertBatch": "Convert all (ZIP)",
+  "dropHint": "Drag and drop HEIC/HEIF files here or use file picker",
+  "currentFile": "Current file",
+  "selectedCount": "Selected files: {count}",
+  "originalPreview": "Original preview",
+  "convertedPreview": "Converted preview",
+  "empty": "Pick HEIC/HEIF files to start.",
+  "done": "JPG file ready for download",
+  "unsupported": "Only HEIC/HEIF files are supported."
+}
