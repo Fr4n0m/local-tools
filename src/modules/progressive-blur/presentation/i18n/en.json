@@ -1,0 +1,9 @@
+{
+  "name": "Progressive Blur Effect",
+  "description": "Generate CSS for progressive blur overlays.",
+  "title": "Progressive Blur Effect",
+  "maxBlur": "Max blur (px)",
+  "stops": "Gradient stops",
+  "generate": "Generate CSS",
+  "output": "CSS output"
+}

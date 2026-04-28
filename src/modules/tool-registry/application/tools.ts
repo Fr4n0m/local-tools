@@ -69,9 +69,18 @@ import imageEs from "@/modules/image-converter/presentation/i18n/es.json";
 import { LlmsTxtTool } from "@/modules/llms-txt/presentation/components/llms-txt-tool";
 import llmsEn from "@/modules/llms-txt/presentation/i18n/en.json";
 import llmsEs from "@/modules/llms-txt/presentation/i18n/es.json";
+import { LiquidGlassTool } from "@/modules/liquid-glass/presentation/components/liquid-glass-tool";
+import liquidEn from "@/modules/liquid-glass/presentation/i18n/en.json";
+import liquidEs from "@/modules/liquid-glass/presentation/i18n/es.json";
+import { LoaderMakerTool } from "@/modules/loader-maker/presentation/components/loader-maker-tool";
+import loaderEn from "@/modules/loader-maker/presentation/i18n/en.json";
+import loaderEs from "@/modules/loader-maker/presentation/i18n/es.json";
 import { MeshGradientTool } from "@/modules/mesh-gradient/presentation/components/mesh-gradient-tool";
 import meshEn from "@/modules/mesh-gradient/presentation/i18n/en.json";
 import meshEs from "@/modules/mesh-gradient/presentation/i18n/es.json";
+import { ProgressiveBlurTool } from "@/modules/progressive-blur/presentation/components/progressive-blur-tool";
+import progressiveEn from "@/modules/progressive-blur/presentation/i18n/en.json";
+import progressiveEs from "@/modules/progressive-blur/presentation/i18n/es.json";
 import { JsonFormatterTool } from "@/modules/json-formatter/presentation/components/json-formatter-tool";
 import jsonEn from "@/modules/json-formatter/presentation/i18n/en.json";
 import jsonEs from "@/modules/json-formatter/presentation/i18n/es.json";
@@ -256,6 +265,33 @@ export const tools: Tool[] = [
     component: MeshGradientTool,
     name: { en: meshEn.name, es: meshEs.name },
     description: { en: meshEn.description, es: meshEs.description },
+  },
+  {
+    id: "progressive-blur",
+    category: "advanced",
+    icon: IconContrast2,
+    component: ProgressiveBlurTool,
+    name: { en: progressiveEn.name, es: progressiveEs.name },
+    description: {
+      en: progressiveEn.description,
+      es: progressiveEs.description,
+    },
+  },
+  {
+    id: "liquid-glass",
+    category: "advanced",
+    icon: IconForms,
+    component: LiquidGlassTool,
+    name: { en: liquidEn.name, es: liquidEs.name },
+    description: { en: liquidEn.description, es: liquidEs.description },
+  },
+  {
+    id: "loader-maker",
+    category: "advanced",
+    icon: IconVariable,
+    component: LoaderMakerTool,
+    name: { en: loaderEn.name, es: loaderEs.name },
+    description: { en: loaderEn.description, es: loaderEs.description },
   },
   {
     id: "llms-txt",

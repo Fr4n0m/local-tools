@@ -1,0 +1,9 @@
+{
+  "name": "Liquid Glass Effect",
+  "description": "Create frosted glass CSS blocks.",
+  "title": "Liquid Glass Effect",
+  "opacity": "Opacity",
+  "blur": "Blur (px)",
+  "generate": "Generate CSS",
+  "output": "CSS output"
+}
