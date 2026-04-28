@@ -1,0 +1,9 @@
+{
+  "name": "Efecto Liquid Glass",
+  "description": "Crea bloques CSS tipo vidrio esmerilado.",
+  "title": "Efecto Liquid Glass",
+  "opacity": "Opacidad",
+  "blur": "Blur (px)",
+  "generate": "Generar CSS",
+  "output": "Salida CSS"
+}

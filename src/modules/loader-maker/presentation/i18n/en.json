@@ -1,0 +1,13 @@
+{
+  "name": "Loader Maker",
+  "description": "Generate CSS loaders instantly.",
+  "title": "Loader Maker",
+  "type": "Type",
+  "color": "Color",
+  "size": "Size",
+  "spinner": "Spinner",
+  "dots": "Dots",
+  "pulse": "Pulse",
+  "generate": "Generate CSS",
+  "output": "CSS output"
+}

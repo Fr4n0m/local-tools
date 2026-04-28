@@ -1,0 +1,13 @@
+{
+  "name": "Creador de Loaders",
+  "description": "Genera loaders CSS al instante.",
+  "title": "Creador de Loaders",
+  "type": "Tipo",
+  "color": "Color",
+  "size": "Tamaño",
+  "spinner": "Spinner",
+  "dots": "Puntos",
+  "pulse": "Pulso",
+  "generate": "Generar CSS",
+  "output": "Salida CSS"
+}

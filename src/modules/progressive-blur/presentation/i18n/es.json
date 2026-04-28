@@ -1,0 +1,9 @@
+{
+  "name": "Efecto Blur Progresivo",
+  "description": "Genera CSS para overlays con blur progresivo.",
+  "title": "Efecto Blur Progresivo",
+  "maxBlur": "Blur máximo (px)",
+  "stops": "Paradas del gradiente",
+  "generate": "Generar CSS",
+  "output": "Salida CSS"
+}
