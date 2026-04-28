@@ -3,6 +3,7 @@ import {
   IconColorSwatch,
   IconContrast2,
   IconFileTypePng,
+  IconFileTypePdf,
   IconForms,
   IconLanguage,
   IconLink,
@@ -27,6 +28,9 @@ import faviconEs from "@/modules/favicon-generator/presentation/i18n/es.json";
 import { HeicToJpgTool } from "@/modules/heic-to-jpg/presentation/components/heic-to-jpg-tool";
 import heicEn from "@/modules/heic-to-jpg/presentation/i18n/en.json";
 import heicEs from "@/modules/heic-to-jpg/presentation/i18n/es.json";
+import { PdfToImagesTool } from "@/modules/pdf-to-images/presentation/components/pdf-to-images-tool";
+import pdfEn from "@/modules/pdf-to-images/presentation/i18n/en.json";
+import pdfEs from "@/modules/pdf-to-images/presentation/i18n/es.json";
 import { SvgToFileTool } from "@/modules/svg-to-file/presentation/components/svg-to-file-tool";
 import svgEn from "@/modules/svg-to-file/presentation/i18n/en.json";
 import svgEs from "@/modules/svg-to-file/presentation/i18n/es.json";
@@ -108,6 +112,14 @@ export const tools: Tool[] = [
     component: SvgToFileTool,
     name: { en: svgEn.name, es: svgEs.name },
     description: { en: svgEn.description, es: svgEs.description },
+  },
+  {
+    id: "pdf-to-images",
+    category: "files-media",
+    icon: IconFileTypePdf,
+    component: PdfToImagesTool,
+    name: { en: pdfEn.name, es: pdfEs.name },
+    description: { en: pdfEn.description, es: pdfEs.description },
   },
   {
     id: "json-formatter",

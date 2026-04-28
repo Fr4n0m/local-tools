@@ -1,0 +1,13 @@
+{
+  "name": "PDF a Imágenes",
+  "description": "Convierte cada página de PDF a imágenes PNG localmente.",
+  "title": "PDF a Imágenes",
+  "inputLabel": "Archivo PDF",
+  "dropHint": "Suelta un PDF o selecciónalo desde tu dispositivo.",
+  "scale": "Calidad de render",
+  "convert": "Convertir páginas",
+  "downloadZip": "Descargar ZIP",
+  "unsupported": "Archivo inválido. Selecciona un PDF.",
+  "empty": "Selecciona un PDF para empezar.",
+  "converted": "Páginas convertidas: {count}"
+}

@@ -1,0 +1,13 @@
+{
+  "name": "PDF to Images",
+  "description": "Convert each PDF page to PNG images locally.",
+  "title": "PDF to Images",
+  "inputLabel": "PDF file",
+  "dropHint": "Drop a PDF or select one from your device.",
+  "scale": "Render quality",
+  "convert": "Convert pages",
+  "downloadZip": "Download ZIP",
+  "unsupported": "Invalid file. Select a PDF.",
+  "empty": "Select a PDF to start conversion.",
+  "converted": "Pages converted: {count}"
+}
