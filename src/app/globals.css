@@ -21,23 +21,23 @@
 }
 
 .dark {
-  --color-background: #212529;
+  --color-background: #000000;
   --color-foreground: #f8f9fa;
-  --color-primary: #dee2e6;
-  --color-secondary: #343a40;
-  --color-accent: #495057;
-  --color-muted: #495057;
-  --color-border: #6c757d;
-  --color-destructive: #dee2e6;
-  --color-panel: #343a40;
-  --color-sidebar: #212529;
+  --color-primary: #ffffff;
+  --color-secondary: #0c0f12;
+  --color-accent: #8e99a3;
+  --color-muted: #111417;
+  --color-border: #22272d;
+  --color-destructive: #f8f9fa;
+  --color-panel: #0b0d0f;
+  --color-sidebar: #000000;
   --color-sidebar-foreground: #f8f9fa;
   --color-info: #ced4da;
   --color-warning: #adb5bd;
   --color-highlight: #f8f9fa;
   --color-strong-foreground: #f8f9fa;
-  --color-canvas-start: #212529;
-  --color-canvas-end: #343a40;
+  --color-canvas-start: #000000;
+  --color-canvas-end: #0a0b0d;
 }
 
 @theme inline {
@@ -118,6 +118,19 @@ body {
     var(--color-secondary) 18%
   );
   padding: 0.7rem 0.8rem;
+}
+
+.dark
+  .tool-shell
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+.dark .tool-shell select,
+.dark .tool-shell textarea {
+  border-color: color-mix(in oklab, var(--color-border), transparent 5%);
+  background-color: color-mix(
+    in oklab,
+    var(--color-background),
+    var(--color-secondary) 32%
+  );
 }
 
 .tool-shell textarea {
@@ -207,6 +220,39 @@ body {
     var(--color-background),
     var(--color-secondary) 30%
   );
+}
+
+.dark .tool-shell [data-tool-actions] button {
+  border-color: color-mix(in oklab, var(--color-border), transparent 0%);
+  background-color: color-mix(
+    in oklab,
+    var(--color-background),
+    var(--color-secondary) 22%
+  );
+  color: color-mix(in oklab, var(--color-foreground), transparent 10%);
+}
+
+.dark .tool-shell [data-tool-actions] button:hover {
+  background-color: color-mix(
+    in oklab,
+    var(--color-background),
+    var(--color-secondary) 38%
+  );
+}
+
+.dark .tool-shell input[type="range"]::-webkit-slider-thumb {
+  border-color: #050607;
+  box-shadow: 0 0 0 1px var(--color-border);
+}
+
+.dark .tool-shell input[type="range"]::-webkit-slider-thumb:hover {
+  box-shadow: 0 0 0 2px
+    color-mix(in oklab, var(--color-accent), transparent 62%);
+}
+
+.dark .tool-shell input[type="range"]::-moz-range-thumb {
+  border-color: #050607;
+  box-shadow: 0 0 0 1px var(--color-border);
 }
 
 @media (prefers-reduced-motion: reduce) {
