@@ -33,15 +33,35 @@ LocalTools es una toolbox privada para desarrolladores que funciona 100% en el n
 
 - Conversor de Imágenes
 - Compresor de Imágenes
+- Compresor de PDFs (experimental)
+- Compresor de Videos (experimental)
 - Generador de Favicons
+- SVG a Archivo
+- HEIC a JPG
+- PDF a Imágenes
+- Generador de Avatares
 - Formateador y Validador JSON
+- Compositor de Prompt JSON
 - Comprobador de Contraste (WCAG)
+- Test de Colores
+- Extraer Colores
+- Generador de Gama de Color
 - Codificador/Decodificador Base64
 - Generador de QR
 - Codificador/Decodificador URL
+- Datos a Markdown
+- Lectura Enfocada
+- Generador de Mesh Gradients
+- Efecto Blur Progresivo
+- Efecto Liquid Glass
+- Creador de Loaders
 - Transformador de Texto
 - Generador de Texto Placeholder
+- Generador de llms.txt
 - Generador UUID
+- Temporizador Personalizado
+- Crear Carruseles
+- Explorador de Acordes
 - Simulador de Renombrado Masivo
 
 ### 🛠️ Stack técnico
@@ -118,15 +138,35 @@ LocalTools is a private developer toolbox that runs 100% in the browser. All pro
 
 - Image Converter
 - Image Compressor
+- PDF Compressor (experimental)
+- Video Compressor (experimental)
 - Favicon Generator
+- SVG to File
+- HEIC to JPG
+- PDF to Images
+- Avatar Generator
 - JSON Formatter & Validator
+- JSON Prompt Composer
 - Contrast Checker (WCAG)
+- Test Colors
+- Fetch Colors
+- Color Range Generator
 - Base64 Encoder/Decoder
 - QR Code Generator
 - URL Encoder/Decoder
+- Data to Markdown
+- Focus Reader
+- Mesh Gradient Generator
+- Progressive Blur Effect
+- Liquid Glass Effect
+- Loader Maker
 - Text Transformer
 - Placeholder Text Generator
+- llms.txt Generator
 - UUID Generator
+- Custom Timer
+- Carousel Generator
+- Chord Explorer
 - Batch Rename Simulator
 
 ### 🛠️ Tech stack
