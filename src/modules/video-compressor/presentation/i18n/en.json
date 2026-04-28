@@ -1,0 +1,12 @@
+{
+  "name": "Compress Videos",
+  "description": "Experimental local video re-encoder.",
+  "title": "Compress Videos",
+  "input": "Video file",
+  "dropHint": "Drop a video or select one.",
+  "bitrate": "Target bitrate (kbps)",
+  "compress": "Compress video",
+  "download": "Download compressed video",
+  "invalid": "Invalid video file.",
+  "done": "Compression finished."
+}

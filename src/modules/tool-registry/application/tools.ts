@@ -51,6 +51,9 @@ import pdfEs from "@/modules/pdf-to-images/presentation/i18n/es.json";
 import { PdfCompressorTool } from "@/modules/pdf-compressor/presentation/components/pdf-compressor-tool";
 import pdfCompressorEn from "@/modules/pdf-compressor/presentation/i18n/en.json";
 import pdfCompressorEs from "@/modules/pdf-compressor/presentation/i18n/es.json";
+import { VideoCompressorTool } from "@/modules/video-compressor/presentation/components/video-compressor-tool";
+import videoCompressorEn from "@/modules/video-compressor/presentation/i18n/en.json";
+import videoCompressorEs from "@/modules/video-compressor/presentation/i18n/es.json";
 import { SvgToFileTool } from "@/modules/svg-to-file/presentation/components/svg-to-file-tool";
 import svgEn from "@/modules/svg-to-file/presentation/i18n/en.json";
 import svgEs from "@/modules/svg-to-file/presentation/i18n/es.json";
@@ -187,6 +190,17 @@ export const tools: Tool[] = [
     description: {
       en: pdfCompressorEn.description,
       es: pdfCompressorEs.description,
+    },
+  },
+  {
+    id: "video-compressor",
+    category: "files-media",
+    icon: IconFileTypePdf,
+    component: VideoCompressorTool,
+    name: { en: videoCompressorEn.name, es: videoCompressorEs.name },
+    description: {
+      en: videoCompressorEn.description,
+      es: videoCompressorEs.description,
     },
   },
   {
