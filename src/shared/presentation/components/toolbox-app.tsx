@@ -310,6 +310,15 @@ export function ToolboxApp() {
                     <IconSun size={18} />
                   )}
                 </button>
+                <a
+                  className="rounded-md border border-border/60 bg-background px-3 py-2 text-xs font-medium hover:bg-secondary"
+                  href="https://buymeacoffee.com/fran11799"
+                  rel="noreferrer"
+                  target="_blank"
+                  title={text.supportHint}
+                >
+                  {text.support}
+                </a>
               </div>
             </div>
 
@@ -344,6 +353,17 @@ export function ToolboxApp() {
           <section className="tool-shell rounded-lg border border-border/50 bg-background p-4 md:p-6">
             <SelectedToolComponent language={language} />
           </section>
+          <footer className="mt-4 flex items-center justify-between rounded-md border border-border/50 bg-panel/25 px-3 py-2 text-xs text-foreground/80">
+            <span>{text.supportHint}</span>
+            <a
+              className="rounded-md border border-border/60 bg-background px-2.5 py-1.5 font-medium hover:bg-secondary"
+              href="https://buymeacoffee.com/fran11799"
+              rel="noreferrer"
+              target="_blank"
+            >
+              {text.supportCta}
+            </a>
+          </footer>
         </main>
       </div>
     </div>

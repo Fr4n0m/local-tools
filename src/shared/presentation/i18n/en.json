@@ -20,6 +20,9 @@
   "menu": "Menu",
   "skipToContent": "Skip to main content",
   "toolsNavigation": "Tools navigation",
+  "support": "Support",
+  "supportCta": "Support LocalTools",
+  "supportHint": "Keep the project free and open-source",
   "categories": {
     "files-media": "Files & Media",
     "data-encoding": "Data & Encoding",
