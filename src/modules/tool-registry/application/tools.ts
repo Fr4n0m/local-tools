@@ -93,6 +93,9 @@ import progressiveEs from "@/modules/progressive-blur/presentation/i18n/es.json"
 import { JsonFormatterTool } from "@/modules/json-formatter/presentation/components/json-formatter-tool";
 import jsonEn from "@/modules/json-formatter/presentation/i18n/en.json";
 import jsonEs from "@/modules/json-formatter/presentation/i18n/es.json";
+import { JsonPromptComposerTool } from "@/modules/json-prompt-composer/presentation/components/json-prompt-composer-tool";
+import promptEn from "@/modules/json-prompt-composer/presentation/i18n/en.json";
+import promptEs from "@/modules/json-prompt-composer/presentation/i18n/es.json";
 import { TextTransformerTool } from "@/modules/text-transformer/presentation/components/text-transformer-tool";
 import textEn from "@/modules/text-transformer/presentation/i18n/en.json";
 import textEs from "@/modules/text-transformer/presentation/i18n/es.json";
@@ -210,6 +213,14 @@ export const tools: Tool[] = [
     component: JsonFormatterTool,
     name: { en: jsonEn.name, es: jsonEs.name },
     description: { en: jsonEn.description, es: jsonEs.description },
+  },
+  {
+    id: "json-prompt-composer",
+    category: "data-encoding",
+    icon: IconBrackets,
+    component: JsonPromptComposerTool,
+    name: { en: promptEn.name, es: promptEs.name },
+    description: { en: promptEn.description, es: promptEs.description },
   },
   {
     id: "contrast-checker",
