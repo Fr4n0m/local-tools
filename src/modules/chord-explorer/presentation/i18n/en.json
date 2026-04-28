@@ -1,0 +1,13 @@
+{
+  "name": "Chord Explorer",
+  "description": "Explore basic chord notes by root and type.",
+  "title": "Chord Explorer",
+  "root": "Root note",
+  "type": "Chord type",
+  "major": "Major",
+  "minor": "Minor",
+  "maj7": "Maj7",
+  "min7": "Min7",
+  "dom7": "Dom7",
+  "result": "Notes"
+}
