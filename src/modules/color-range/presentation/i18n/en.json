@@ -1,0 +1,11 @@
+{
+  "name": "Color Range Generator",
+  "description": "Build tints and shades from one base color.",
+  "title": "Color Range Generator",
+  "baseColor": "Base color",
+  "scaleName": "Scale name",
+  "steps": "Steps",
+  "copyCss": "Copy CSS variables",
+  "outputLabel": "CSS Variables",
+  "empty": "Pick a color to generate the range."
+}

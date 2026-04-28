@@ -1,0 +1,11 @@
+{
+  "name": "Generador de Gama de Color",
+  "description": "Crea tintes y sombras desde un color base.",
+  "title": "Generador de Gama de Color",
+  "baseColor": "Color base",
+  "scaleName": "Nombre de escala",
+  "steps": "Pasos",
+  "copyCss": "Copiar variables CSS",
+  "outputLabel": "Variables CSS",
+  "empty": "Elige un color para generar la gama."
+}

@@ -1,5 +1,6 @@
 import {
   IconBrackets,
+  IconColorSwatch,
   IconContrast2,
   IconFileTypePng,
   IconForms,
@@ -27,6 +28,9 @@ import heicEs from "@/modules/heic-to-jpg/presentation/i18n/es.json";
 import { ContrastCheckerTool } from "@/modules/contrast-checker/presentation/components/contrast-checker-tool";
 import contrastEn from "@/modules/contrast-checker/presentation/i18n/en.json";
 import contrastEs from "@/modules/contrast-checker/presentation/i18n/es.json";
+import { ColorRangeTool } from "@/modules/color-range/presentation/components/color-range-tool";
+import colorRangeEn from "@/modules/color-range/presentation/i18n/en.json";
+import colorRangeEs from "@/modules/color-range/presentation/i18n/es.json";
 import { ImageCompressorTool } from "@/modules/image-compressor/presentation/components/image-compressor-tool";
 import imageCompressorEn from "@/modules/image-compressor/presentation/i18n/en.json";
 import imageCompressorEs from "@/modules/image-compressor/presentation/i18n/es.json";
@@ -104,6 +108,17 @@ export const tools: Tool[] = [
     component: ContrastCheckerTool,
     name: { en: contrastEn.name, es: contrastEs.name },
     description: { en: contrastEn.description, es: contrastEs.description },
+  },
+  {
+    id: "color-range",
+    category: "data-encoding",
+    icon: IconColorSwatch,
+    component: ColorRangeTool,
+    name: { en: colorRangeEn.name, es: colorRangeEs.name },
+    description: {
+      en: colorRangeEn.description,
+      es: colorRangeEs.description,
+    },
   },
   {
     id: "base64-tool",
