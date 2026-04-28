@@ -20,6 +20,9 @@
   "menu": "Menú",
   "skipToContent": "Saltar al contenido principal",
   "toolsNavigation": "Navegación de herramientas",
+  "support": "Apoyar",
+  "supportCta": "Apoya LocalTools",
+  "supportHint": "Mantén el proyecto libre y open source",
   "categories": {
     "files-media": "Archivos y Multimedia",
     "data-encoding": "Datos y Codificación",
