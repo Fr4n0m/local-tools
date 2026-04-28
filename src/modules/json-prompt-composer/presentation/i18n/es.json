@@ -1,0 +1,12 @@
+{
+  "name": "Compositor de Prompt JSON",
+  "description": "Compone prompts estructurados en formato JSON.",
+  "title": "Compositor de Prompt JSON",
+  "role": "Rol",
+  "goal": "Objetivo",
+  "context": "Contexto",
+  "constraints": "Restricciones (una por línea)",
+  "outputFormat": "Formato de salida",
+  "generate": "Generar JSON",
+  "output": "Prompt JSON"
+}

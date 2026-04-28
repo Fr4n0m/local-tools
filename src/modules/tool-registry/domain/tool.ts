@@ -22,6 +22,7 @@ export type ToolId =
   | "chord-explorer"
   | "favicon-generator"
   | "json-formatter"
+  | "json-prompt-composer"
   | "contrast-checker"
   | "test-colors"
   | "fetch-colors"
