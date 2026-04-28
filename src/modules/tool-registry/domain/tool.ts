@@ -11,6 +11,7 @@ export type ToolId =
   | "pdf-to-images"
   | "avatar-generator"
   | "custom-timer"
+  | "carousel-generator"
   | "favicon-generator"
   | "json-formatter"
   | "contrast-checker"
