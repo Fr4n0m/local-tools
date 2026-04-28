@@ -25,6 +25,9 @@ import batchEs from "@/modules/batch-rename/presentation/i18n/es.json";
 import { FaviconGeneratorTool } from "@/modules/favicon-generator/presentation/components/favicon-generator-tool";
 import faviconEn from "@/modules/favicon-generator/presentation/i18n/en.json";
 import faviconEs from "@/modules/favicon-generator/presentation/i18n/es.json";
+import { FetchColorsTool } from "@/modules/fetch-colors/presentation/components/fetch-colors-tool";
+import fetchColorsEn from "@/modules/fetch-colors/presentation/i18n/en.json";
+import fetchColorsEs from "@/modules/fetch-colors/presentation/i18n/es.json";
 import { HeicToJpgTool } from "@/modules/heic-to-jpg/presentation/components/heic-to-jpg-tool";
 import heicEn from "@/modules/heic-to-jpg/presentation/i18n/en.json";
 import heicEs from "@/modules/heic-to-jpg/presentation/i18n/es.json";
@@ -144,6 +147,17 @@ export const tools: Tool[] = [
     component: TestColorsTool,
     name: { en: testColorsEn.name, es: testColorsEs.name },
     description: { en: testColorsEn.description, es: testColorsEs.description },
+  },
+  {
+    id: "fetch-colors",
+    category: "data-encoding",
+    icon: IconPalette,
+    component: FetchColorsTool,
+    name: { en: fetchColorsEn.name, es: fetchColorsEs.name },
+    description: {
+      en: fetchColorsEn.description,
+      es: fetchColorsEs.description,
+    },
   },
   {
     id: "color-range",

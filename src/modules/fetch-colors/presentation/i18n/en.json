@@ -1,0 +1,11 @@
+{
+  "name": "Fetch Colors",
+  "description": "Extract dominant colors from an image.",
+  "title": "Fetch Colors",
+  "inputLabel": "Image file",
+  "dropHint": "Drop an image or select one.",
+  "maxColors": "Max colors",
+  "extract": "Extract palette",
+  "empty": "Select an image to extract colors.",
+  "invalid": "Invalid image file."
+}
