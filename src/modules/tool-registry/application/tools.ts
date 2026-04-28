@@ -21,6 +21,9 @@ import batchEs from "@/modules/batch-rename/presentation/i18n/es.json";
 import { FaviconGeneratorTool } from "@/modules/favicon-generator/presentation/components/favicon-generator-tool";
 import faviconEn from "@/modules/favicon-generator/presentation/i18n/en.json";
 import faviconEs from "@/modules/favicon-generator/presentation/i18n/es.json";
+import { HeicToJpgTool } from "@/modules/heic-to-jpg/presentation/components/heic-to-jpg-tool";
+import heicEn from "@/modules/heic-to-jpg/presentation/i18n/en.json";
+import heicEs from "@/modules/heic-to-jpg/presentation/i18n/es.json";
 import { ContrastCheckerTool } from "@/modules/contrast-checker/presentation/components/contrast-checker-tool";
 import contrastEn from "@/modules/contrast-checker/presentation/i18n/en.json";
 import contrastEs from "@/modules/contrast-checker/presentation/i18n/es.json";
@@ -69,6 +72,14 @@ export const tools: Tool[] = [
       en: imageCompressorEn.description,
       es: imageCompressorEs.description,
     },
+  },
+  {
+    id: "heic-to-jpg",
+    category: "files-media",
+    icon: IconPhoto,
+    component: HeicToJpgTool,
+    name: { en: heicEn.name, es: heicEs.name },
+    description: { en: heicEn.description, es: heicEs.description },
   },
   {
     id: "favicon-generator",
