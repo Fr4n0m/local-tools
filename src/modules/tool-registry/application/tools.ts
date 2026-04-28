@@ -20,6 +20,9 @@ import {
 import { Base64Tool } from "@/modules/base64-tool/presentation/components/base64-tool";
 import base64En from "@/modules/base64-tool/presentation/i18n/en.json";
 import base64Es from "@/modules/base64-tool/presentation/i18n/es.json";
+import { AvatarGeneratorTool } from "@/modules/avatar-generator/presentation/components/avatar-generator-tool";
+import avatarEn from "@/modules/avatar-generator/presentation/i18n/en.json";
+import avatarEs from "@/modules/avatar-generator/presentation/i18n/es.json";
 import { BatchRenameTool } from "@/modules/batch-rename/presentation/components/batch-rename-tool";
 import batchEn from "@/modules/batch-rename/presentation/i18n/en.json";
 import batchEs from "@/modules/batch-rename/presentation/i18n/es.json";
@@ -80,6 +83,14 @@ import uuidEn from "@/modules/uuid-generator/presentation/i18n/en.json";
 import uuidEs from "@/modules/uuid-generator/presentation/i18n/es.json";
 
 export const tools: Tool[] = [
+  {
+    id: "avatar-generator",
+    category: "files-media",
+    icon: IconPhoto,
+    component: AvatarGeneratorTool,
+    name: { en: avatarEn.name, es: avatarEs.name },
+    description: { en: avatarEn.description, es: avatarEs.description },
+  },
   {
     id: "image-converter",
     category: "files-media",

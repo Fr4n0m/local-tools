@@ -9,6 +9,7 @@ export type ToolId =
   | "heic-to-jpg"
   | "svg-to-file"
   | "pdf-to-images"
+  | "avatar-generator"
   | "favicon-generator"
   | "json-formatter"
   | "contrast-checker"

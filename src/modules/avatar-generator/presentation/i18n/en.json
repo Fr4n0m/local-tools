@@ -1,0 +1,17 @@
+{
+  "name": "Generate Avatars",
+  "description": "Create simple avatar images from initials.",
+  "title": "Generate Avatars",
+  "nameLabel": "Name",
+  "shape": "Shape",
+  "size": "Size",
+  "circle": "Circle",
+  "rounded": "Rounded",
+  "square": "Square",
+  "background": "Background",
+  "textColor": "Text color",
+  "generate": "Generate avatar",
+  "downloadSvg": "Download SVG",
+  "downloadPng": "Download PNG",
+  "preview": "Preview"
+}
