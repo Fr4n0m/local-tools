@@ -1,0 +1,17 @@
+{
+  "name": "Placeholder Text Generator",
+  "description": "Generate dummy text quickly for layouts and UI content.",
+  "title": "Placeholder Text Generator",
+  "mode": "Text style",
+  "modes": {
+    "lorem": "Lorem Ipsum",
+    "english-ish": "English-ish",
+    "cat": "Cat gibberish"
+  },
+  "paragraphs": "Paragraphs",
+  "sentences": "Sentences per paragraph",
+  "words": "Words per sentence",
+  "generate": "Generate text",
+  "output": "Output",
+  "empty": "Generate text to see result."
+}

@@ -39,6 +39,7 @@ LocalTools es una toolbox privada para desarrolladores que funciona 100% en el n
 - Generador de QR
 - Codificador/Decodificador URL
 - Transformador de Texto
+- Generador de Texto Placeholder
 - Generador UUID
 - Simulador de Renombrado Masivo
 
@@ -122,6 +123,7 @@ LocalTools is a private developer toolbox that runs 100% in the browser. All pro
 - QR Code Generator
 - URL Encoder/Decoder
 - Text Transformer
+- Placeholder Text Generator
 - UUID Generator
 - Batch Rename Simulator
 

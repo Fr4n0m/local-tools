@@ -7,6 +7,7 @@ import {
   IconLink,
   IconPhoto,
   IconQrcode,
+  IconTextPlus,
   IconRegex,
   IconVariable,
 } from "@tabler/icons-react";
@@ -32,6 +33,9 @@ import jsonEs from "@/modules/json-formatter/presentation/i18n/es.json";
 import { TextTransformerTool } from "@/modules/text-transformer/presentation/components/text-transformer-tool";
 import textEn from "@/modules/text-transformer/presentation/i18n/en.json";
 import textEs from "@/modules/text-transformer/presentation/i18n/es.json";
+import { PlaceholderTextTool } from "@/modules/placeholder-text/presentation/components/placeholder-text-tool";
+import placeholderEn from "@/modules/placeholder-text/presentation/i18n/en.json";
+import placeholderEs from "@/modules/placeholder-text/presentation/i18n/es.json";
 import type { Tool } from "@/modules/tool-registry/domain/tool";
 import { QrGeneratorTool } from "@/modules/qr-generator/presentation/components/qr-generator-tool";
 import qrEn from "@/modules/qr-generator/presentation/i18n/en.json";
@@ -107,6 +111,17 @@ export const tools: Tool[] = [
     component: TextTransformerTool,
     name: { en: textEn.name, es: textEs.name },
     description: { en: textEn.description, es: textEs.description },
+  },
+  {
+    id: "placeholder-text",
+    category: "text-code",
+    icon: IconTextPlus,
+    component: PlaceholderTextTool,
+    name: { en: placeholderEn.name, es: placeholderEs.name },
+    description: {
+      en: placeholderEn.description,
+      es: placeholderEs.description,
+    },
   },
   {
     id: "uuid-generator",
