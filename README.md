@@ -32,6 +32,7 @@ LocalTools es una toolbox privada para desarrolladores que funciona 100% en el n
 ### 🧩 Herramientas incluidas
 
 - Conversor de Imágenes
+- Compresor de Imágenes
 - Generador de Favicons
 - Formateador y Validador JSON
 - Comprobador de Contraste (WCAG)
@@ -116,6 +117,7 @@ LocalTools is a private developer toolbox that runs 100% in the browser. All pro
 ### 🧩 Included tools
 
 - Image Converter
+- Image Compressor
 - Favicon Generator
 - JSON Formatter & Validator
 - Contrast Checker (WCAG)

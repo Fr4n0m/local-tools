@@ -5,6 +5,7 @@ import type { Language } from "@/shared/presentation/i18n";
 
 export type ToolId =
   | "image-converter"
+  | "image-compressor"
   | "favicon-generator"
   | "json-formatter"
   | "contrast-checker"
