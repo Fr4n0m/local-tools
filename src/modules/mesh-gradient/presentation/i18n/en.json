@@ -1,0 +1,11 @@
+{
+  "name": "Mesh Gradient Generator",
+  "description": "Create organic mesh gradients as CSS and SVG.",
+  "title": "Mesh Gradient Generator",
+  "stops": "Color stops",
+  "randomize": "Randomize",
+  "outputCss": "CSS output",
+  "copyCss": "Copy CSS",
+  "downloadSvg": "Download SVG",
+  "preview": "Preview"
+}
