@@ -10,6 +10,7 @@ export type ToolId =
   | "svg-to-file"
   | "pdf-to-images"
   | "avatar-generator"
+  | "custom-timer"
   | "favicon-generator"
   | "json-formatter"
   | "contrast-checker"
