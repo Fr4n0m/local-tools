@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 :root {
+  --radius-squircle: 24px;
   --color-background: #f8f9fa;
   --color-foreground: #212529;
   --color-primary: #343a40;
@@ -38,6 +39,39 @@
   --color-strong-foreground: #f8f9fa;
   --color-canvas-start: #000000;
   --color-canvas-end: #0a0b0d;
+}
+
+/* Global corner system (Apple-like rounded geometry baseline) */
+.squircle {
+  border-radius: var(--radius-squircle) !important;
+}
+
+[class*="rounded-"] {
+  border-radius: var(--radius-squircle) !important;
+}
+
+button,
+a,
+input:not([type="checkbox"]):not([type="radio"]),
+select,
+textarea,
+details,
+summary {
+  border-radius: var(--radius-squircle);
+}
+
+@supports (corner-shape: squircle) {
+  .squircle,
+  [class*="rounded-"],
+  button,
+  a,
+  input:not([type="checkbox"]):not([type="radio"]),
+  select,
+  textarea,
+  details,
+  summary {
+    corner-shape: squircle;
+  }
 }
 
 @theme inline {
