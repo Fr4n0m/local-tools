@@ -2,6 +2,7 @@ import {
   IconBrackets,
   IconColorSwatch,
   IconContrast2,
+  IconClockHour4,
   IconFileTypePng,
   IconFileTypePdf,
   IconForms,
@@ -44,6 +45,9 @@ import svgEs from "@/modules/svg-to-file/presentation/i18n/es.json";
 import { ContrastCheckerTool } from "@/modules/contrast-checker/presentation/components/contrast-checker-tool";
 import contrastEn from "@/modules/contrast-checker/presentation/i18n/en.json";
 import contrastEs from "@/modules/contrast-checker/presentation/i18n/es.json";
+import { CustomTimerTool } from "@/modules/custom-timer/presentation/components/custom-timer-tool";
+import timerEn from "@/modules/custom-timer/presentation/i18n/en.json";
+import timerEs from "@/modules/custom-timer/presentation/i18n/es.json";
 import { DataToMarkdownTool } from "@/modules/data-to-markdown/presentation/components/data-to-markdown-tool";
 import dataToMdEn from "@/modules/data-to-markdown/presentation/i18n/en.json";
 import dataToMdEs from "@/modules/data-to-markdown/presentation/i18n/es.json";
@@ -109,6 +113,14 @@ export const tools: Tool[] = [
       en: imageCompressorEn.description,
       es: imageCompressorEs.description,
     },
+  },
+  {
+    id: "custom-timer",
+    category: "advanced",
+    icon: IconClockHour4,
+    component: CustomTimerTool,
+    name: { en: timerEn.name, es: timerEs.name },
+    description: { en: timerEn.description, es: timerEs.description },
   },
   {
     id: "heic-to-jpg",

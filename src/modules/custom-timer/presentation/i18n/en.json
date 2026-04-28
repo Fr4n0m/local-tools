@@ -1,0 +1,12 @@
+{
+  "name": "Simple Custom Timer",
+  "description": "Run a local countdown timer in your browser.",
+  "title": "Simple Custom Timer",
+  "hours": "Hours",
+  "minutes": "Minutes",
+  "seconds": "Seconds",
+  "start": "Start",
+  "pause": "Pause",
+  "reset": "Reset",
+  "done": "Time is up"
+}

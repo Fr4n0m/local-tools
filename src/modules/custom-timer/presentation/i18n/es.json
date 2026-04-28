@@ -1,0 +1,12 @@
+{
+  "name": "Temporizador Personalizado",
+  "description": "Ejecuta una cuenta atrás local en tu navegador.",
+  "title": "Temporizador Personalizado",
+  "hours": "Horas",
+  "minutes": "Minutos",
+  "seconds": "Segundos",
+  "start": "Iniciar",
+  "pause": "Pausar",
+  "reset": "Reiniciar",
+  "done": "Tiempo finalizado"
+}
