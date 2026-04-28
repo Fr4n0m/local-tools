@@ -1,0 +1,17 @@
+{
+  "name": "Generador de Texto Placeholder",
+  "description": "Genera texto de relleno para maquetas y contenido UI.",
+  "title": "Generador de Texto Placeholder",
+  "mode": "Estilo de texto",
+  "modes": {
+    "lorem": "Lorem Ipsum",
+    "english-ish": "Pseudo inglés",
+    "cat": "Idioma gato"
+  },
+  "paragraphs": "Párrafos",
+  "sentences": "Frases por párrafo",
+  "words": "Palabras por frase",
+  "generate": "Generar texto",
+  "output": "Salida",
+  "empty": "Genera texto para ver el resultado."
+}

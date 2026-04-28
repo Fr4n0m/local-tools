@@ -12,6 +12,7 @@ export type ToolId =
   | "qr-generator"
   | "url-encoder"
   | "text-transformer"
+  | "placeholder-text"
   | "uuid-generator"
   | "batch-rename";
 
