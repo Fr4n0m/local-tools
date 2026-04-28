@@ -10,6 +10,7 @@ export type ToolId =
   | "svg-to-file"
   | "pdf-to-images"
   | "pdf-compressor"
+  | "video-compressor"
   | "avatar-generator"
   | "custom-timer"
   | "carousel-generator"
