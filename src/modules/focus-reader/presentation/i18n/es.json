@@ -1,0 +1,10 @@
+{
+  "name": "Lectura Enfocada",
+  "description": "Lee texto largo en una vista sin distracciones.",
+  "title": "Lectura Enfocada",
+  "input": "Texto",
+  "focus": "Modo enfoque",
+  "readTime": "Tiempo estimado de lectura",
+  "minutes": "min",
+  "placeholder": "Pega un artículo o texto largo..."
+}
