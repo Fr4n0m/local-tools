@@ -18,6 +18,7 @@ export type ToolId =
   | "base64-tool"
   | "qr-generator"
   | "url-encoder"
+  | "data-to-markdown"
   | "text-transformer"
   | "placeholder-text"
   | "uuid-generator"
