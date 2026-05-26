@@ -116,11 +116,19 @@ export function GlobalFooter() {
         <div className="site-footer__grid">
           <section className="site-footer__column">
             <AppLogo style={{ color: "#fff" }} />
-            <p className="site-footer__muted" style={{ marginTop: "8px" }}>
+            <p className="site-footer__brandline" style={{ marginTop: "6px" }}>
+              {text.footer.brandLine}
+            </p>
+            <p className="site-footer__muted" style={{ marginTop: "10px" }}>
               {text.footer.suggestTitle}
             </p>
             <div className="site-footer__actions">
-              <a className="site-footer__subscribe-link" href="#">
+              <a
+                className="site-footer__subscribe-link"
+                href={text.footer.suggestUrl}
+                rel="noreferrer"
+                target="_blank"
+              >
                 {text.footer.suggestCta}
               </a>
             </div>
@@ -164,7 +172,6 @@ export function GlobalFooter() {
         </div>
 
         <div className="site-footer__bottom">
-          <p className="site-footer__brandline">{text.footer.brandLine}</p>
           <div className="site-footer__legal">
             <a className="site-footer__legal-link" href="/privacy">
               <IconShieldLock aria-hidden size={14} />
