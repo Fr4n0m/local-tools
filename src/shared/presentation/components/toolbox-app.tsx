@@ -2,7 +2,6 @@
 
 import {
   IconChevronDown,
-  IconLanguage,
   IconLayoutRows,
   IconLayoutDistributeVertical,
   IconMenu2,
