@@ -1,0 +1,112 @@
+.site-footer {
+  width: 100%;
+  border-top: 1px solid
+    color-mix(in oklch, var(--color-border) 48%, transparent);
+  background: color-mix(in oklch, var(--color-panel) 38%, transparent);
+  padding: 1.5rem 1rem;
+  color: color-mix(in oklch, var(--color-foreground) 86%, transparent);
+}
+
+.site-footer__grid {
+  margin-inline: auto;
+  display: grid;
+  width: 100%;
+  max-width: 80rem;
+  gap: 1rem;
+}
+
+.site-footer__card {
+  display: flex;
+  min-height: 11.5rem;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 0.9rem;
+  border: 1px solid color-mix(in oklch, var(--color-border) 58%, transparent);
+  background: color-mix(in oklch, var(--color-background) 64%, transparent);
+  padding: 1rem;
+}
+
+.site-footer__title {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.site-footer__muted {
+  margin-top: 0.6rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: color-mix(in oklch, var(--color-foreground) 80%, transparent);
+}
+
+.site-footer__actions {
+  margin-top: 0.9rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.site-footer__btn {
+  display: inline-flex;
+  height: 1.85rem;
+  cursor: pointer;
+  align-items: center;
+  gap: 0.45rem;
+  border-radius: 0.55rem;
+  border: 1px solid color-mix(in oklch, var(--color-border) 62%, transparent);
+  background: var(--color-background);
+  padding-inline: 0.7rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.site-footer__btn:hover {
+  background: var(--color-secondary);
+}
+
+.site-footer__legal {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.site-footer__tags {
+  margin-top: 0.85rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem 0.75rem;
+  font-size: 0.75rem;
+}
+
+.site-footer__tag-link {
+  color: color-mix(in oklch, var(--color-foreground) 84%, transparent);
+}
+
+.site-footer__tag-link:hover {
+  color: var(--color-foreground);
+  text-decoration: underline;
+}
+
+.site-footer__newsletter {
+  margin-inline: auto;
+  margin-top: 1rem;
+  width: 100%;
+  max-width: 80rem;
+  border-radius: 0.9rem;
+  border: 1px solid color-mix(in oklch, var(--color-border) 55%, transparent);
+  background: color-mix(in oklch, var(--color-background) 58%, transparent);
+  padding: 0.8rem 1rem;
+  font-size: 0.75rem;
+  color: color-mix(in oklch, var(--color-foreground) 84%, transparent);
+}
+
+@media (min-width: 768px) {
+  .site-footer {
+    padding-inline: 2rem;
+  }
+
+  .site-footer__grid {
+    grid-template-columns: 1.2fr 1fr 1fr;
+  }
+}
