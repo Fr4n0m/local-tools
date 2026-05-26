@@ -237,7 +237,7 @@ export function ToolboxApp() {
 
   return (
     <div
-      className={`min-h-screen bg-background text-foreground ${density === "compact" ? "density-compact" : ""}`}
+      className={`min-h-screen text-foreground ${density === "compact" ? "density-compact" : ""}`}
     >
       <a className="skip-link" href="#main-content">
         {text.skipToContent}
@@ -306,7 +306,7 @@ export function ToolboxApp() {
         ) : null}
 
         <main
-          className="flex-1 bg-background p-4 md:rounded-2xl md:border md:border-border/35 dark:md:border-white/22 md:bg-background/85 md:p-8"
+          className="flex-1 p-4 md:rounded-2xl md:border md:border-border/35 dark:md:border-white/22 md:bg-background/85 md:p-8"
           id="main-content"
           tabIndex={-1}
         >
@@ -323,7 +323,7 @@ export function ToolboxApp() {
             </button>
           </header>
 
-          <section className="tool-shell rounded-lg border border-border/50 dark:border-white/22 bg-background p-4 md:p-6">
+          <section className="tool-shell rounded-lg border border-border/50 dark:border-white/22 bg-background/90 p-4 md:p-6">
             <SelectedToolComponent language={language} />
           </section>
           <aside className="mt-3 rounded-md border border-border/40 dark:border-white/22 bg-panel/20 px-3 py-2 text-xs text-foreground/75">

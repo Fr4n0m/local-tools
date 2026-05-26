@@ -1,6 +1,6 @@
 .site-footer {
   width: 100%;
-  background: var(--color-background);
+  background: transparent;
   padding: 0.75rem;
   color: #fff;
 }
