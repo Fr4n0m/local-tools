@@ -172,6 +172,31 @@ export function GlobalFooter() {
         </div>
 
         <div className="site-footer__bottom">
+          <div className="site-footer__author">
+            <span>Built for developers by</span>
+            <a
+              aria-label="Fr4n0m on Gravatar"
+              className="site-footer__author-avatar"
+              href="https://gravatar.com/fr4n0m"
+              rel="noreferrer"
+              target="_blank"
+            >
+              <img
+                alt="Fr4n0m"
+                height={20}
+                src="https://www.gravatar.com/avatar/3a7afbe8892915daf263880a9a3fac70?s=40&d=mp"
+                width={20}
+              />
+            </a>
+            <a
+              className="site-footer__author-name"
+              href="https://codebyfran.es"
+              rel="noreferrer"
+              target="_blank"
+            >
+              Fr4n0m
+            </a>
+          </div>
           <div className="site-footer__legal">
             <a className="site-footer__legal-link" href="/privacy">
               <IconShieldLock aria-hidden size={14} />
