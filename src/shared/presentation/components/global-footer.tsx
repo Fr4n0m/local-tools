@@ -136,15 +136,6 @@ export function GlobalFooter() {
             <p className="site-footer__brandline" style={{ marginTop: "6px" }}>
               {text.footer.brandLine}
             </p>
-            <a
-              className="site-footer__github-btn"
-              href={text.footer.suggestUrl}
-              rel="noreferrer"
-              target="_blank"
-            >
-              <IconBrandGithub aria-hidden size={14} />
-              {text.footer.suggestCta}
-            </a>
           </section>
 
           <section className="site-footer__column">
@@ -187,6 +178,15 @@ export function GlobalFooter() {
               >
                 <IconCoffee aria-hidden size={14} />
                 {text.supportCta}
+              </a>
+              <a
+                className="site-footer__github-btn"
+                href={text.footer.suggestUrl}
+                rel="noreferrer"
+                target="_blank"
+              >
+                <IconBrandGithub aria-hidden size={14} />
+                {text.footer.suggestCta}
               </a>
             </div>
           </section>

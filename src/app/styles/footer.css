@@ -33,7 +33,7 @@
   }
 
   .site-footer__column--right .site-footer__actions {
-    justify-content: flex-start;
+    align-items: flex-start;
   }
 }
 
@@ -46,7 +46,8 @@
 }
 
 .site-footer__column--right .site-footer__actions {
-  justify-content: flex-end;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
 .site-footer__title {
@@ -119,7 +120,6 @@
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  margin-top: 0.6rem;
   height: 1.75rem;
   padding-inline: 0.7rem;
   border-radius: 0.5rem;
