@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import "@gravatar-com/hovercards/dist/style.css";
-import { Hovercards } from "@gravatar-com/hovercards";
 import {
   IconAlertCircle,
   IconFileText,
@@ -109,13 +108,15 @@ export function GlobalFooter() {
   useEffect(() => {
     const avatar = document.getElementById("footer-gravatar-avatar");
     if (!avatar) return;
-    const hc = new Hovercards({
-      placement: "top",
-      offset: 12,
-      autoFlip: true,
-      autoShift: true,
+    void import("@gravatar-com/hovercards").then(({ Hovercards }) => {
+      const hc = new Hovercards({
+        placement: "top",
+        offset: 12,
+        autoFlip: true,
+        autoShift: true,
+      });
+      hc.attach(avatar);
     });
-    hc.attach(avatar);
   }, []);
 
   if (density === "compact") {
