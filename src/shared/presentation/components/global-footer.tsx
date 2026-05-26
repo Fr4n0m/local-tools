@@ -145,6 +145,7 @@ export function GlobalFooter() {
                     <a
                       aria-label={tool.name[language]}
                       className="aside-tool-btn site-footer__tool-link"
+                      title={tool.name[language]}
                       href={`/?tool=${tool.id}`}
                       onClick={(e) => {
                         e.preventDefault();
