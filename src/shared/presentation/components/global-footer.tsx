@@ -15,7 +15,7 @@ import {
 } from "@/shared/presentation/i18n";
 
 type Density = "comfortable" | "compact";
-const FOOTER_TOOL_COUNT = 8;
+const FOOTER_TOOL_COUNT = 6;
 const FOOTER_ROTATE_MS = 30000;
 const INITIAL_FOOTER_TOOLS = tools.slice(0, FOOTER_TOOL_COUNT);
 
@@ -197,7 +197,10 @@ export function GlobalFooter() {
               Fr4n0m
             </a>
           </div>
-          <div className="site-footer__legal">
+          <div
+            className="site-footer__legal"
+            style={{ justifyContent: "flex-end" }}
+          >
             <a className="site-footer__legal-link" href="/privacy">
               <IconShieldLock aria-hidden size={14} />
               {text.footer.privacyLink}

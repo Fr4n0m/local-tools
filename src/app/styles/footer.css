@@ -223,10 +223,4 @@
     flex-direction: row;
     justify-content: space-between;
   }
-
-  .site-footer__author {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-  }
 }
