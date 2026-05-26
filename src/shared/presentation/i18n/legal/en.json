@@ -1,0 +1,119 @@
+{
+  "lastUpdatedLabel": "Last updated",
+  "lastUpdated": "May 26, 2026",
+  "back": "Back",
+  "privacy": {
+    "title": "Privacy Policy",
+    "sections": [
+      {
+        "title": "1. What data we process",
+        "paragraphs": [
+          "LocalTools only handles the minimum data needed to run locally and keep basic security."
+        ],
+        "items": [
+          "Local preferences: language, theme, density, and selected tool stored in localStorage.",
+          "Basic browser technical data required to render the app."
+        ]
+      },
+      {
+        "title": "2. Why we use this information",
+        "paragraphs": [
+          "Local information is used only to preserve your experience on your device. It is not used for advertising profiles or cross-site tracking."
+        ]
+      },
+      {
+        "title": "3. Cookies and local storage",
+        "paragraphs": [
+          "LocalTools does not use analytics cookies or advertising cookies.",
+          "A technical hosting cookie may exist to serve the correct deployed version."
+        ]
+      },
+      {
+        "title": "4. Providers and external links",
+        "paragraphs": [
+          "The app may include external links (for example, support links). External sites have their own privacy policies."
+        ]
+      },
+      {
+        "title": "5. Security",
+        "paragraphs": [
+          "We apply reasonable technical measures to reduce unauthorized access or code tampering risks."
+        ]
+      },
+      {
+        "title": "6. Your rights",
+        "items": [
+          "Request information about data processing when applicable.",
+          "Request correction or deletion when legally applicable.",
+          "File a complaint with the competent authority."
+        ]
+      },
+      {
+        "title": "7. Contact",
+        "paragraphs": [
+          "For legal questions or reports, use the contact channel in the footer."
+        ]
+      },
+      {
+        "title": "8. Changes to this policy",
+        "paragraphs": [
+          "We may update this policy for technical or legal reasons. The current version is always published with date."
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "title": "Terms of Service",
+    "sections": [
+      {
+        "title": "1. Acceptance",
+        "paragraphs": [
+          "By using LocalTools you accept these terms. If you disagree, stop using the site."
+        ]
+      },
+      {
+        "title": "2. Permitted use",
+        "items": [
+          "Personal/professional use of client-side tools.",
+          "No illegal use, abusive automation, or unauthorized access attempts."
+        ]
+      },
+      {
+        "title": "3. User-submitted content",
+        "paragraphs": [
+          "If you submit suggestions or feedback, you declare you have rights to share that content."
+        ]
+      },
+      {
+        "title": "4. Third-party links",
+        "paragraphs": [
+          "We do not control external linked sites and do not guarantee their availability or safety."
+        ]
+      },
+      {
+        "title": "5. Security and availability",
+        "paragraphs": [
+          "We apply reasonable safeguards, but we cannot guarantee uninterrupted service or zero incidents."
+        ]
+      },
+      {
+        "title": "6. Warranty disclaimer",
+        "paragraphs": [
+          "The service is provided \"as is\" and \"as available\", within the limits of applicable law."
+        ]
+      },
+      {
+        "title": "7. Service changes",
+        "paragraphs": [
+          "We may update features or these terms at any time. Continued use means acceptance of the current version."
+        ]
+      },
+      {
+        "title": "8. Governing law and contact",
+        "paragraphs": [
+          "These terms are interpreted under the applicable law of the project owner and mandatory consumer rules."
+        ]
+      }
+    ]
+  }
+}

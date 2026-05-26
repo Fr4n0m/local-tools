@@ -10,6 +10,7 @@ import {
 
 import { ToolSelect } from "@/shared/presentation/components/tool-form";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { LegalDialog } from "@/shared/presentation/components/legal-dialog";
 
 import { tools } from "@/modules/tool-registry/application/tools";
 import type { ToolId } from "@/modules/tool-registry/domain/tool";
@@ -27,6 +28,7 @@ function isToolId(value: string): value is ToolId {
 
 type Theme = "light" | "dark";
 type Density = "comfortable" | "compact";
+type LegalDocumentType = "privacy" | "terms";
 
 function readInitialTheme(): Theme {
   if (typeof window === "undefined") {
@@ -126,6 +128,9 @@ export function ToolboxApp() {
   const [selectedToolId, setSelectedToolId] = useState<ToolId>(tools[0].id);
   const [search, setSearch] = useState("");
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  const [openLegalDoc, setOpenLegalDoc] = useState<LegalDocumentType | null>(
+    null,
+  );
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
@@ -217,6 +222,11 @@ export function ToolboxApp() {
     <div
       className={`min-h-screen bg-background text-foreground ${density === "compact" ? "density-compact" : ""}`}
     >
+      <LegalDialog
+        language={language}
+        onClose={() => setOpenLegalDoc(null)}
+        openDoc={openLegalDoc}
+      />
       <a className="skip-link" href="#main-content">
         {text.skipToContent}
       </a>
@@ -382,6 +392,28 @@ export function ToolboxApp() {
                 >
                   {text.supportCta}
                 </a>
+                <div className="flex flex-wrap gap-2 text-xs">
+                  <button
+                    className="rounded-md border border-border/60 bg-background px-2.5 py-1.5 hover:bg-secondary"
+                    onClick={() => setOpenLegalDoc("privacy")}
+                    type="button"
+                  >
+                    {text.footer.privacyLink}
+                  </button>
+                  <button
+                    className="rounded-md border border-border/60 bg-background px-2.5 py-1.5 hover:bg-secondary"
+                    onClick={() => setOpenLegalDoc("terms")}
+                    type="button"
+                  >
+                    {text.footer.termsLink}
+                  </button>
+                  <a
+                    className="rounded-md border border-border/60 bg-background px-2.5 py-1.5 hover:bg-secondary"
+                    href={text.footer.reportUrl}
+                  >
+                    {text.footer.reportLink}
+                  </a>
+                </div>
               </div>
             </div>
           </footer>

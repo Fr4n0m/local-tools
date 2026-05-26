@@ -29,6 +29,10 @@
     "tagsTitle": "Discover by tags",
     "supportTitle": "If LocalTools helps, support it",
     "brandLine": "© 2026 LocalTools. Suggestions welcome.",
+    "privacyLink": "Privacy",
+    "termsLink": "Terms",
+    "reportLink": "Report issue",
+    "reportUrl": "https://github.com/Fr4n0m/local-tools/issues/new",
     "tags": [
       "Framework",
       "Learning",

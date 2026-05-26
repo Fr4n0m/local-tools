@@ -1,0 +1,119 @@
+{
+  "lastUpdatedLabel": "Última actualización",
+  "lastUpdated": "26 de mayo de 2026",
+  "back": "Volver",
+  "privacy": {
+    "title": "Política de Privacidad",
+    "sections": [
+      {
+        "title": "1. Qué datos tratamos",
+        "paragraphs": [
+          "LocalTools recopila los mínimos datos necesarios para operar de forma local y mantener seguridad básica."
+        ],
+        "items": [
+          "Preferencias locales: idioma, tema, densidad y herramienta seleccionada guardadas en localStorage.",
+          "Datos técnicos básicos del navegador necesarios para renderizar la app."
+        ]
+      },
+      {
+        "title": "2. Para qué usamos esta información",
+        "paragraphs": [
+          "La información local se usa solo para recordar tu experiencia en el dispositivo. No se usa para perfiles publicitarios ni para seguimiento entre sitios."
+        ]
+      },
+      {
+        "title": "3. Cookies y almacenamiento local",
+        "paragraphs": [
+          "LocalTools no usa cookies de analítica ni cookies publicitarias.",
+          "Puede existir una cookie técnica del hosting para servir versiones correctas del despliegue."
+        ]
+      },
+      {
+        "title": "4. Proveedores y enlaces externos",
+        "paragraphs": [
+          "La app puede contener enlaces externos (por ejemplo, soporte). Cada sitio externo aplica sus propias políticas."
+        ]
+      },
+      {
+        "title": "5. Seguridad",
+        "paragraphs": [
+          "Aplicamos medidas técnicas razonables para reducir riesgos de acceso no autorizado o manipulación del código publicado."
+        ]
+      },
+      {
+        "title": "6. Tus derechos",
+        "items": [
+          "Solicitar información sobre tratamiento de datos cuando aplique.",
+          "Solicitar rectificación o supresión cuando corresponda legalmente.",
+          "Presentar reclamación ante la autoridad competente."
+        ]
+      },
+      {
+        "title": "7. Contacto",
+        "paragraphs": [
+          "Para dudas legales o reportes, usa el canal de contacto del footer."
+        ]
+      },
+      {
+        "title": "8. Cambios en esta política",
+        "paragraphs": [
+          "Podemos actualizar esta política por cambios técnicos o legales. Se publica siempre la versión vigente con fecha."
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "title": "Términos de Servicio",
+    "sections": [
+      {
+        "title": "1. Aceptación",
+        "paragraphs": [
+          "Al usar LocalTools aceptas estas condiciones. Si no estás de acuerdo, debes dejar de usar el sitio."
+        ]
+      },
+      {
+        "title": "2. Uso permitido",
+        "items": [
+          "Uso personal/profesional de herramientas client-side.",
+          "Prohibido uso ilícito, automatización abusiva o intentos de acceso no autorizado."
+        ]
+      },
+      {
+        "title": "3. Contenido enviado por usuarios",
+        "paragraphs": [
+          "Si envías sugerencias o feedback, declaras que tienes derecho a compartir ese contenido."
+        ]
+      },
+      {
+        "title": "4. Enlaces de terceros",
+        "paragraphs": [
+          "No controlamos sitios externos enlazados ni garantizamos su disponibilidad o seguridad."
+        ]
+      },
+      {
+        "title": "5. Seguridad y disponibilidad",
+        "paragraphs": [
+          "Aplicamos medidas razonables, pero no podemos garantizar disponibilidad continua ni ausencia total de incidencias."
+        ]
+      },
+      {
+        "title": "6. Exclusión de garantías",
+        "paragraphs": [
+          "El servicio se ofrece \"tal cual\" y \"según disponibilidad\", dentro del marco legal aplicable."
+        ]
+      },
+      {
+        "title": "7. Cambios del servicio",
+        "paragraphs": [
+          "Podemos actualizar funcionalidades o estos términos en cualquier momento. El uso continuado implica aceptación de la versión vigente."
+        ]
+      },
+      {
+        "title": "8. Ley aplicable y contacto",
+        "paragraphs": [
+          "Estas condiciones se interpretan según la normativa aplicable al titular del proyecto y normas imperativas de consumo."
+        ]
+      }
+    ]
+  }
+}
