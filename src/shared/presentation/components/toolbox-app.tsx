@@ -244,7 +244,7 @@ export function ToolboxApp() {
       </a>
       <div className="flex min-h-screen md:gap-3 md:p-3">
         <aside className="hidden w-72 shrink-0 md:block">
-          <div className="relative h-[calc(100vh-1.5rem)] overflow-hidden rounded-2xl border border-border/60 bg-sidebar text-sidebar-foreground shadow-[0_42px_90px_-36px_rgba(0,0,0,0.72),0_12px_28px_-18px_rgba(0,0,0,0.55)]">
+          <div className="relative h-[calc(100vh-1.5rem)] overflow-hidden rounded-2xl border border-border/60 dark:border-white/22 bg-sidebar text-sidebar-foreground shadow-[0_42px_90px_-36px_rgba(0,0,0,0.72),0_12px_28px_-18px_rgba(0,0,0,0.55)]">
             <Sidebar
               density={density}
               language={language}
@@ -273,7 +273,7 @@ export function ToolboxApp() {
           >
             <aside
               aria-label={text.menu}
-              className="h-full w-72 border-r border-border/60 bg-sidebar text-sidebar-foreground"
+              className="h-full w-72 border-r border-border/60 dark:border-white/22 bg-sidebar text-sidebar-foreground"
               id="mobile-sidebar"
               onClick={(event) => event.stopPropagation()}
               aria-modal="true"
@@ -306,7 +306,7 @@ export function ToolboxApp() {
         ) : null}
 
         <main
-          className="flex-1 bg-background p-4 md:rounded-2xl md:border md:border-border/35 md:bg-background/85 md:p-8"
+          className="flex-1 bg-background p-4 md:rounded-2xl md:border md:border-border/35 dark:md:border-white/22 md:bg-background/85 md:p-8"
           id="main-content"
           tabIndex={-1}
         >
@@ -314,7 +314,7 @@ export function ToolboxApp() {
             <button
               aria-controls="mobile-sidebar"
               aria-expanded={isMobileSidebarOpen}
-              className="rounded-md border border-border/60 bg-panel/40 p-2"
+              className="rounded-md border border-border/60 dark:border-white/22 bg-panel/40 p-2"
               onClick={() => setIsMobileSidebarOpen(true)}
               type="button"
               aria-label={text.menu}
@@ -323,10 +323,10 @@ export function ToolboxApp() {
             </button>
           </header>
 
-          <section className="tool-shell rounded-lg border border-border/50 bg-background p-4 md:p-6">
+          <section className="tool-shell rounded-lg border border-border/50 dark:border-white/22 bg-background p-4 md:p-6">
             <SelectedToolComponent language={language} />
           </section>
-          <aside className="mt-3 rounded-md border border-border/40 bg-panel/20 px-3 py-2 text-xs text-foreground/75">
+          <aside className="mt-3 rounded-md border border-border/40 dark:border-white/22 bg-panel/20 px-3 py-2 text-xs text-foreground/75">
             <details>
               <summary className="privacy-summary cursor-pointer select-none font-medium">
                 <span>{text.privacyTitle}</span>
