@@ -60,6 +60,10 @@
   },
   "notifications": {
     "copySuccess": "Copied to clipboard",
-    "copyError": "Could not copy to clipboard"
+    "copyError": "Could not copy to clipboard",
+    "downloadSuccess": "File downloaded",
+    "downloadError": "Download failed",
+    "processSuccess": "Done",
+    "processError": "Something went wrong"
   }
 }

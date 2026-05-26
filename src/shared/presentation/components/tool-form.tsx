@@ -1,10 +1,17 @@
 "use client";
 
 import * as React from "react";
-import { IconChevronDown, IconHexagon } from "@tabler/icons-react";
+import {
+  IconChevronDown,
+  IconHexagon,
+  IconPin,
+  IconPlus,
+  IconX,
+} from "@tabler/icons-react";
 import { HexColorPicker } from "react-colorful";
 
 import { cn } from "@/shared/lib/utils";
+import { CountUp as CountUpInline } from "@/shared/presentation/components/count-up";
 
 type ToolSectionProps = {
   title?: string;
@@ -108,11 +115,12 @@ export function ToolSwitch({
 }
 
 const RECENT_COLORS_KEY = "localtools.recent-colors";
+const SAVED_COLORS_KEY = "localtools.saved-colors";
 const RECENT_COLORS_MAX = 10;
 
-function loadRecentColors(): string[] {
+function loadColors(key: string): string[] {
   try {
-    const raw = localStorage.getItem(RECENT_COLORS_KEY);
+    const raw = localStorage.getItem(key);
     if (!raw) return [];
     const parsed = JSON.parse(raw);
     return Array.isArray(parsed)
@@ -123,15 +131,42 @@ function loadRecentColors(): string[] {
   }
 }
 
+function loadRecentColors(): string[] {
+  return loadColors(RECENT_COLORS_KEY);
+}
+
+function loadSavedColors(): string[] {
+  return loadColors(SAVED_COLORS_KEY);
+}
+
 function saveRecentColor(color: string): string[] {
   const hex = color.toLowerCase();
   const existing = loadRecentColors().filter((c) => c !== hex);
   const updated = [hex, ...existing].slice(0, RECENT_COLORS_MAX);
   try {
     localStorage.setItem(RECENT_COLORS_KEY, JSON.stringify(updated));
-    window.dispatchEvent(
-      new CustomEvent("localtools:recent-colors-change", { detail: updated }),
-    );
+    window.setTimeout(() => {
+      window.dispatchEvent(
+        new CustomEvent("localtools:recent-colors-change", { detail: updated }),
+      );
+    }, 0);
+  } catch {}
+  return updated;
+}
+
+function toggleSavedColor(color: string): string[] {
+  const hex = color.toLowerCase();
+  const existing = loadSavedColors();
+  const updated = existing.includes(hex)
+    ? existing.filter((c) => c !== hex)
+    : [hex, ...existing];
+  try {
+    localStorage.setItem(SAVED_COLORS_KEY, JSON.stringify(updated));
+    window.setTimeout(() => {
+      window.dispatchEvent(
+        new CustomEvent("localtools:saved-colors-change", { detail: updated }),
+      );
+    }, 0);
   } catch {}
   return updated;
 }
@@ -160,15 +195,22 @@ export function ToolColorPicker({
   const [recentColors, setRecentColors] = React.useState<string[]>(() =>
     typeof window === "undefined" ? [] : loadRecentColors(),
   );
+  const [savedColors, setSavedColors] = React.useState<string[]>(() =>
+    typeof window === "undefined" ? [] : loadSavedColors(),
+  );
   const rootRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
-    const onUpdate = (e: Event) => {
+    const onRecent = (e: Event) =>
       setRecentColors((e as CustomEvent<string[]>).detail);
+    const onSaved = (e: Event) =>
+      setSavedColors((e as CustomEvent<string[]>).detail);
+    window.addEventListener("localtools:recent-colors-change", onRecent);
+    window.addEventListener("localtools:saved-colors-change", onSaved);
+    return () => {
+      window.removeEventListener("localtools:recent-colors-change", onRecent);
+      window.removeEventListener("localtools:saved-colors-change", onSaved);
     };
-    window.addEventListener("localtools:recent-colors-change", onUpdate);
-    return () =>
-      window.removeEventListener("localtools:recent-colors-change", onUpdate);
   }, []);
 
   React.useEffect(() => {
@@ -182,6 +224,9 @@ export function ToolColorPicker({
     document.addEventListener("mousedown", onMouseDown);
     return () => document.removeEventListener("mousedown", onMouseDown);
   }, [open, value]);
+
+  const savedSet = new Set(savedColors);
+  const recentOnly = recentColors.filter((c) => !savedSet.has(c));
 
   return (
     <div className={cn("relative", className)} ref={rootRef}>
@@ -209,34 +254,81 @@ export function ToolColorPicker({
       </button>
 
       {open ? (
-        <div className="absolute left-0 top-full z-50 mt-1 w-56 rounded-md border bg-background p-3 shadow-lg">
+        <div
+          className="absolute left-0 top-full z-50 mt-1 w-56 rounded-md border bg-background p-3 shadow-lg"
+          onClick={(e) => e.stopPropagation()}
+        >
           <HexColorPicker color={value} onChange={onChange} />
           <input
             className="mt-2 w-full rounded-md border bg-background/40 px-2.5 py-1.5 font-mono text-xs"
             onBlur={() => onChange(normalizeHex(draft))}
             onChange={(event) => setDraft(event.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                onChange(normalizeHex(draft));
+                setOpen(false);
+                setRecentColors(saveRecentColor(normalizeHex(draft)));
+              }
+            }}
             value={draft}
           />
-          {recentColors.length > 0 ? (
+          {recentOnly.length > 0 || savedColors.length > 0 ? (
             <div className="mt-2.5 border-t pt-2.5">
               <p className="mb-1.5 text-[0.65rem] font-semibold uppercase tracking-widest opacity-40">
                 Recent
               </p>
               <div className="flex flex-wrap gap-1.5">
-                {recentColors.map((c) => (
-                  <button
-                    aria-label={c}
-                    className="h-5 w-5 rounded-md border border-border/60 dark:border-white/22 transition-transform hover:scale-110"
-                    key={c}
-                    onClick={() => {
-                      onChange(c);
-                      setDraft(c);
-                    }}
-                    style={{ backgroundColor: c }}
-                    title={c}
-                    type="button"
-                  />
-                ))}
+                {[...recentOnly, ...savedColors].map((c) => {
+                  const isSaved = savedSet.has(c);
+                  return (
+                    <div className="group/swatch relative" key={c}>
+                      <button
+                        aria-label={c}
+                        className="h-5 w-5 rounded-md border border-border/60 dark:border-white/22 transition-transform hover:scale-110"
+                        onClick={() => {
+                          onChange(c);
+                          setDraft(c);
+                        }}
+                        style={{ backgroundColor: c }}
+                        title={c}
+                        type="button"
+                      />
+                      <button
+                        aria-label={
+                          isSaved ? `Remove ${c} from saved` : `Save ${c}`
+                        }
+                        className={`absolute -right-1 -top-1 h-3 w-3 items-center justify-center rounded-full bg-background shadow ${isSaved ? "flex" : "hidden group-hover/swatch:flex"}`}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSavedColors(toggleSavedColor(c));
+                        }}
+                        style={{
+                          border: "1px solid currentColor",
+                          opacity: isSaved ? 1 : 0.7,
+                        }}
+                        title={isSaved ? "Remove from saved" : "Save color"}
+                        type="button"
+                      >
+                        {isSaved ? (
+                          <>
+                            <IconPin
+                              size={6}
+                              strokeWidth={3}
+                              className="group-hover/swatch:hidden"
+                            />
+                            <IconX
+                              size={6}
+                              strokeWidth={3}
+                              className="hidden group-hover/swatch:block"
+                            />
+                          </>
+                        ) : (
+                          <IconPlus size={6} strokeWidth={3} />
+                        )}
+                      </button>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           ) : null}
@@ -432,6 +524,17 @@ type ToolSliderProps = {
   className?: string;
 };
 
+function parseDisplayValue(
+  display: string,
+): { num: number; suffix: string; decimals: number } | null {
+  const match = display.match(/^(-?\d+(?:\.\d+)?)(.*)$/);
+  if (!match) return null;
+  const raw = match[1];
+  const suffix = match[2] ?? "";
+  const decimals = raw.includes(".") ? raw.split(".")[1].length : 0;
+  return { num: parseFloat(raw), suffix, decimals };
+}
+
 export function ToolSlider({
   value,
   min,
@@ -441,6 +544,20 @@ export function ToolSlider({
   onChange,
   className,
 }: ToolSliderProps) {
+  const parsed = parseDisplayValue(displayValue);
+  const [anim, dispatchAnim] = React.useReducer(
+    (state: { from: number; to: number }, to: number) => ({
+      from: state.to,
+      to,
+    }),
+    { from: parsed?.num ?? 0, to: parsed?.num ?? 0 },
+  );
+
+  React.useEffect(() => {
+    if (parsed) dispatchAnim(parsed.num);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [displayValue]);
+
   return (
     <div className={cn("flex items-center gap-3", className)}>
       <input
@@ -457,7 +574,18 @@ export function ToolSlider({
         className="w-10 shrink-0 text-right text-sm tabular-nums text-foreground/70"
         role="status"
       >
-        {displayValue}
+        {parsed ? (
+          <CountUpInline
+            decimals={parsed.decimals}
+            from={anim.from}
+            suffix={parsed.suffix}
+            to={anim.to}
+          />
+        ) : (
+          <span className="num-tick" key={displayValue}>
+            {displayValue}
+          </span>
+        )}
       </span>
     </div>
   );

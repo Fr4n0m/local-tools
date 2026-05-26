@@ -44,6 +44,22 @@ button,
   outline-offset: 2px;
 }
 
+@keyframes num-tick {
+  from {
+    opacity: 0;
+    transform: translateY(0.35em);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.num-tick {
+  display: inline-block;
+  animation: num-tick 0.18s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
 .skip-link {
   position: absolute;
   top: -2.5rem;

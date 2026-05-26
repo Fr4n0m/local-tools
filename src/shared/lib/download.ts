@@ -1,3 +1,7 @@
+"use client";
+
+import { notifyDownloadSuccess } from "@/shared/lib/notify";
+
 export function downloadBlob(blob: Blob, filename: string) {
   const url = URL.createObjectURL(blob);
   const anchor = document.createElement("a");
@@ -5,6 +9,7 @@ export function downloadBlob(blob: Blob, filename: string) {
   anchor.download = filename;
   anchor.click();
   URL.revokeObjectURL(url);
+  notifyDownloadSuccess(filename);
 }
 
 export function downloadTextFile(

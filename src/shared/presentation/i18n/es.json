@@ -60,6 +60,10 @@
   },
   "notifications": {
     "copySuccess": "Copiado al portapapeles",
-    "copyError": "No se pudo copiar al portapapeles"
+    "copyError": "No se pudo copiar al portapapeles",
+    "downloadSuccess": "Archivo descargado",
+    "downloadError": "Error al descargar",
+    "processSuccess": "Listo",
+    "processError": "Algo salió mal"
   }
 }

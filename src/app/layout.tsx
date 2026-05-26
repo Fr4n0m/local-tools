@@ -34,12 +34,14 @@ const ibmPlexMono = localFont({
 });
 
 const appName = "LocalTools";
+const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://localtools.app";
 const appDescription =
-  "Private browser-based developer toolbox. 100% local processing with no uploads or tracking.";
+  "Free browser-based developer toolbox — 32+ tools that run 100% locally. No uploads, no tracking, no accounts. Image converter, JSON formatter, QR code generator, Base64, UUID, color tools and more.";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(appUrl),
   title: {
-    default: `${appName} - Developer Toolbox`,
+    default: `${appName} - Free Developer Toolbox`,
     template: `%s | ${appName}`,
   },
   description: appDescription,
@@ -47,12 +49,33 @@ export const metadata: Metadata = {
   keywords: [
     "developer tools",
     "browser tools",
+    "privacy-first tools",
+    "offline tools",
+    "local processing",
+    "no upload",
     "image converter",
-    "json formatter",
-    "base64",
-    "url encoder",
-    "uuid",
-    "privacy-first",
+    "image compressor",
+    "HEIC to JPG",
+    "PDF compressor",
+    "PDF to images",
+    "video compressor",
+    "JSON formatter",
+    "JSON validator",
+    "Base64 encoder decoder",
+    "URL encoder decoder",
+    "UUID generator",
+    "QR code generator",
+    "SVG converter",
+    "favicon generator",
+    "color picker",
+    "contrast checker",
+    "mesh gradient generator",
+    "loader maker",
+    "text transformer",
+    "batch rename",
+    "markdown tools",
+    "free developer tools",
+    "open source tools",
   ],
   icons: {
     icon: [
@@ -69,18 +92,27 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
+  alternates: {
+    canonical: "/",
   },
   openGraph: {
-    title: `${appName} - Developer Toolbox`,
+    title: `${appName} - Free Developer Toolbox`,
     description: appDescription,
     type: "website",
+    url: appUrl,
     locale: "en_US",
     siteName: appName,
   },
   twitter: {
-    card: "summary",
-    title: `${appName} - Developer Toolbox`,
+    card: "summary_large_image",
+    title: `${appName} - Free Developer Toolbox`,
     description: appDescription,
+    creator: "@fr4n0m",
   },
 };
 

@@ -33,7 +33,7 @@
   }
 
   .site-footer__column--right .site-footer__actions {
-    justify-content: flex-start;
+    align-items: flex-start;
   }
 }
 
@@ -46,7 +46,8 @@
 }
 
 .site-footer__column--right .site-footer__actions {
-  justify-content: flex-end;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
 .site-footer__title {
@@ -100,6 +101,41 @@
 
 .site-footer__btn:hover {
   background: #000;
+  color: #fff;
+}
+
+.site-footer__btn--bmc {
+  background: #ffdd00;
+  border-color: #ffdd00;
+  color: #000;
+}
+
+.site-footer__btn--bmc:hover {
+  background: #e6c800;
+  border-color: #e6c800;
+  color: #000;
+}
+
+.site-footer__github-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  height: 1.75rem;
+  padding-inline: 0.7rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.site-footer__github-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
   color: #fff;
 }
 
