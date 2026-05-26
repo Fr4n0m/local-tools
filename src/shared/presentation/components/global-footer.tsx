@@ -47,9 +47,7 @@ export function GlobalFooter() {
     const storedDensity = window.localStorage.getItem("localtools.density");
     return storedDensity === "compact" ? "compact" : "comfortable";
   });
-  const [footerTools, setFooterTools] = useState<Tool[]>(() =>
-    pickRandomTools(),
-  );
+  const [footerTools, setFooterTools] = useState<Tool[]>(INITIAL_FOOTER_TOOLS);
 
   useEffect(() => {
     const onStorage = (event: StorageEvent) => {
@@ -80,6 +78,10 @@ export function GlobalFooter() {
   }, []);
 
   useEffect(() => {
+    const initTimer = window.setTimeout(() => {
+      setFooterTools(pickRandomTools());
+    }, 0);
+
     const timer = window.setInterval(() => {
       setFooterTools((previous) => {
         if (previous.length === 0) {
@@ -96,7 +98,10 @@ export function GlobalFooter() {
       });
     }, FOOTER_ROTATE_MS);
 
-    return () => window.clearInterval(timer);
+    return () => {
+      window.clearTimeout(initTimer);
+      window.clearInterval(timer);
+    };
   }, []);
 
   if (density === "compact") {
