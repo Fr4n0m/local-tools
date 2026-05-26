@@ -1,5 +1,11 @@
+.density-compact {
+  height: 100vh;
+  overflow: hidden;
+}
+
 .density-compact main {
   padding: 0.875rem;
+  overflow-y: auto;
 }
 
 @media (min-width: 768px) {
