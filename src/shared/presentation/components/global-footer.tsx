@@ -15,7 +15,7 @@ import {
 } from "@/shared/presentation/i18n";
 
 type Density = "comfortable" | "compact";
-const FOOTER_TOOL_COUNT = 6;
+const FOOTER_TOOL_COUNT = 8;
 const FOOTER_ROTATE_MS = 30000;
 const INITIAL_FOOTER_TOOLS = tools.slice(0, FOOTER_TOOL_COUNT);
 
