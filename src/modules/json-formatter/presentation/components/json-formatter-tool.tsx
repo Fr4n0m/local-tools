@@ -12,6 +12,7 @@ import {
   ToolOutputBlock,
   ToolSection,
   ToolTextarea,
+  ToolSwitch,
   ToolToggleField,
 } from "@/shared/presentation/components/tool-form";
 import type { Language } from "@/shared/presentation/i18n";
@@ -92,18 +93,10 @@ export function JsonFormatterTool({ language }: Props) {
       />
       <div className="grid gap-3 md:grid-cols-2">
         <ToolToggleField label={text.minify}>
-          <input
-            checked={minify}
-            onChange={(event) => setMinify(event.target.checked)}
-            type="checkbox"
-          />
+          <ToolSwitch checked={minify} onChange={setMinify} />
         </ToolToggleField>
         <ToolToggleField label={text.sortKeys}>
-          <input
-            checked={sortKeys}
-            onChange={(event) => setSortKeys(event.target.checked)}
-            type="checkbox"
-          />
+          <ToolSwitch checked={sortKeys} onChange={setSortKeys} />
         </ToolToggleField>
       </div>
       {isValid !== null ? (

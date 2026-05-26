@@ -15,6 +15,7 @@ import {
   ToolField,
   ToolOutputBlock,
   ToolSection,
+  ToolSwitch,
   ToolTextarea,
   ToolToggleField,
 } from "@/shared/presentation/components/tool-form";
@@ -59,11 +60,7 @@ export function CarouselGeneratorTool({ language }: Props) {
         />
       </ToolField>
       <ToolToggleField label={text.showDots}>
-        <input
-          checked={showDots}
-          onChange={(event) => setShowDots(event.target.checked)}
-          type="checkbox"
-        />
+        <ToolSwitch checked={showDots} onChange={setShowDots} />
       </ToolToggleField>
       <ToolActions
         actions={[

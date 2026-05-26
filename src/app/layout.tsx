@@ -1,5 +1,36 @@
 import type { Metadata } from "next";
+import localFont from "next/font/local";
+import { GlobalFooter } from "@/shared/presentation/components/global-footer";
 import "./globals.css";
+
+const archivo = localFont({
+  src: "./fonts/Archivo-VariableFont_wdth,wght.ttf",
+  display: "swap",
+  variable: "--font-body",
+  weight: "100 900",
+});
+
+const archivoHeading = localFont({
+  src: "./fonts/Archivo-VariableFont_wdth,wght.ttf",
+  display: "swap",
+  variable: "--font-heading",
+  weight: "100 900",
+});
+
+const ibmPlexMono = localFont({
+  src: [
+    { path: "./fonts/IBMPlexMono-Regular.ttf", weight: "400", style: "normal" },
+    { path: "./fonts/IBMPlexMono-Medium.ttf", weight: "500", style: "normal" },
+    {
+      path: "./fonts/IBMPlexMono-SemiBold.ttf",
+      weight: "600",
+      style: "normal",
+    },
+    { path: "./fonts/IBMPlexMono-Bold.ttf", weight: "700", style: "normal" },
+  ],
+  display: "swap",
+  variable: "--font-mono",
+});
 
 const appName = "LocalTools";
 const appDescription =
@@ -47,7 +78,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>{children}</body>
+      <body
+        className={`${archivo.variable} ${archivoHeading.variable} ${ibmPlexMono.variable}`}
+      >
+        {children}
+        <GlobalFooter />
+      </body>
     </html>
   );
 }

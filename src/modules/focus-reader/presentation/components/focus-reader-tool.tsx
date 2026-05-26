@@ -11,6 +11,7 @@ import es from "@/modules/focus-reader/presentation/i18n/es.json";
 import {
   ToolField,
   ToolSection,
+  ToolSwitch,
   ToolTextarea,
   ToolToggleField,
 } from "@/shared/presentation/components/tool-form";
@@ -38,11 +39,7 @@ export function FocusReaderTool({ language }: Props) {
       </ToolField>
 
       <ToolToggleField label={text.focus}>
-        <input
-          checked={focusMode}
-          onChange={(event) => setFocusMode(event.target.checked)}
-          type="checkbox"
-        />
+        <ToolSwitch checked={focusMode} onChange={setFocusMode} />
       </ToolToggleField>
 
       <p className="text-sm text-muted-foreground">

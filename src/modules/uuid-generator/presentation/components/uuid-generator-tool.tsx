@@ -12,6 +12,7 @@ import {
   ToolField,
   ToolOutputBlock,
   ToolSection,
+  ToolSwitch,
   ToolToggleField,
   ToolInput,
 } from "@/shared/presentation/components/tool-form";
@@ -44,11 +45,7 @@ export function UuidGeneratorTool({ language }: Props) {
         />
       </ToolField>
       <ToolToggleField label={text.stripHyphens}>
-        <input
-          checked={stripHyphens}
-          onChange={(event) => setStripHyphens(event.target.checked)}
-          type="checkbox"
-        />
+        <ToolSwitch checked={stripHyphens} onChange={setStripHyphens} />
       </ToolToggleField>
       <ToolActions
         actions={[

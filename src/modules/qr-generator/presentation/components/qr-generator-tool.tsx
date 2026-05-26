@@ -16,6 +16,7 @@ import {
   ToolSection,
   ToolSelect,
   ToolSlider,
+  ToolSwitch,
   ToolToggleField,
 } from "@/shared/presentation/components/tool-form";
 import type { Language } from "@/shared/presentation/i18n";
@@ -170,11 +171,7 @@ export function QrGeneratorTool({ language }: Props) {
             />
           </ToolField>
           <ToolToggleField className="md:mt-7" label={text.wifiHidden}>
-            <input
-              checked={hidden}
-              type="checkbox"
-              onChange={(event) => setHidden(event.target.checked)}
-            />
+            <ToolSwitch checked={hidden} onChange={setHidden} />
           </ToolToggleField>
         </div>
       ) : null}

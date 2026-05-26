@@ -1,16 +1,9 @@
 "use client";
 
-import {
-  IconHeart,
-  IconMenu2,
-  IconMoon,
-  IconSearch,
-  IconSun,
-} from "@tabler/icons-react";
+import { IconMenu2, IconMoon, IconSearch, IconSun } from "@tabler/icons-react";
 
 import { ToolSelect } from "@/shared/presentation/components/tool-form";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { LegalDialog } from "@/shared/presentation/components/legal-dialog";
 
 import { tools } from "@/modules/tool-registry/application/tools";
 import type { ToolId } from "@/modules/tool-registry/domain/tool";
@@ -28,7 +21,6 @@ function isToolId(value: string): value is ToolId {
 
 type Theme = "light" | "dark";
 type Density = "comfortable" | "compact";
-type LegalDocumentType = "privacy" | "terms";
 
 function readInitialTheme(): Theme {
   if (typeof window === "undefined") {
@@ -128,9 +120,6 @@ export function ToolboxApp() {
   const [selectedToolId, setSelectedToolId] = useState<ToolId>(tools[0].id);
   const [search, setSearch] = useState("");
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
-  const [openLegalDoc, setOpenLegalDoc] = useState<LegalDocumentType | null>(
-    null,
-  );
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
@@ -155,6 +144,9 @@ export function ToolboxApp() {
 
   useEffect(() => {
     window.localStorage.setItem("localtools.density", density);
+    window.dispatchEvent(
+      new CustomEvent("localtools:density-change", { detail: density }),
+    );
   }, [density]);
 
   useEffect(() => {
@@ -198,6 +190,21 @@ export function ToolboxApp() {
   }, [isMobileSidebarOpen]);
 
   const text = sharedMessages[language];
+  const toggleTheme = () => {
+    const nextTheme: Theme = theme === "light" ? "dark" : "light";
+    const documentWithTransition = document as Document & {
+      startViewTransition?: (updateCallback: () => void) => void;
+    };
+
+    if (!documentWithTransition.startViewTransition) {
+      setTheme(nextTheme);
+      return;
+    }
+
+    documentWithTransition.startViewTransition(() => {
+      setTheme(nextTheme);
+    });
+  };
 
   const filteredTools = useMemo(() => {
     const trimmedSearch = search.trim().toLowerCase();
@@ -222,24 +229,21 @@ export function ToolboxApp() {
     <div
       className={`min-h-screen bg-background text-foreground ${density === "compact" ? "density-compact" : ""}`}
     >
-      <LegalDialog
-        language={language}
-        onClose={() => setOpenLegalDoc(null)}
-        openDoc={openLegalDoc}
-      />
       <a className="skip-link" href="#main-content">
         {text.skipToContent}
       </a>
-      <div className="flex min-h-screen">
-        <aside className="hidden w-72 border-r border-border/60 bg-sidebar text-sidebar-foreground md:block">
-          <Sidebar
-            language={language}
-            search={search}
-            onSearchChange={setSearch}
-            onSelectTool={setSelectedToolId}
-            selectedToolId={selectedToolId}
-            toolsToRender={filteredTools}
-          />
+      <div className="flex min-h-screen md:gap-3 md:p-3">
+        <aside className="hidden w-72 shrink-0 md:block">
+          <div className="relative h-[calc(100vh-1.5rem)] overflow-hidden rounded-2xl border border-border/60 bg-sidebar text-sidebar-foreground shadow-[0_42px_90px_-36px_rgba(0,0,0,0.72),0_12px_28px_-18px_rgba(0,0,0,0.55)]">
+            <Sidebar
+              language={language}
+              search={search}
+              onSearchChange={setSearch}
+              onSelectTool={setSelectedToolId}
+              selectedToolId={selectedToolId}
+              toolsToRender={filteredTools}
+            />
+          </div>
         </aside>
 
         {isMobileSidebarOpen ? (
@@ -272,7 +276,7 @@ export function ToolboxApp() {
         ) : null}
 
         <main
-          className="flex-1 bg-background p-4 md:p-8"
+          className="flex-1 bg-background p-4 md:rounded-2xl md:border md:border-border/35 md:bg-background/85 md:p-8"
           id="main-content"
           tabIndex={-1}
         >
@@ -306,7 +310,7 @@ export function ToolboxApp() {
                   onChange={(val) => setLanguage(val as Language)}
                 />
                 <button
-                  className="h-9 rounded-md border border-border/60 bg-background px-3 text-xs font-medium"
+                  className="h-8 rounded-md border border-border/60 bg-background px-2.5 text-[11px] font-medium"
                   onClick={() =>
                     setDensity(
                       density === "comfortable" ? "compact" : "comfortable",
@@ -319,19 +323,19 @@ export function ToolboxApp() {
                   {density === "compact" ? text.compact : text.comfortable}
                 </button>
                 <button
-                  className="h-9 w-9 rounded-md border border-border/60 bg-background p-0"
-                  onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+                  className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-border/60 bg-background p-0"
+                  onClick={toggleTheme}
                   type="button"
                   aria-label={text.theme}
                 >
                   {theme === "light" ? (
-                    <IconMoon size={18} />
+                    <IconMoon size={16} />
                   ) : (
-                    <IconSun size={18} />
+                    <IconSun size={16} />
                   )}
                 </button>
                 <a
-                  className="inline-flex h-9 items-center rounded-md border border-border/60 bg-background px-3 text-xs font-medium hover:bg-secondary"
+                  className="inline-flex h-8 items-center rounded-md border border-border/60 bg-background px-2.5 text-[11px] font-medium hover:bg-secondary"
                   href="https://buymeacoffee.com/fran11799"
                   rel="noreferrer"
                   target="_blank"
@@ -341,8 +345,13 @@ export function ToolboxApp() {
                 </a>
               </div>
             </div>
+          </header>
 
-            <details className="rounded-md border border-border/60 bg-panel/35 px-3 py-2 text-sm">
+          <section className="tool-shell rounded-lg border border-border/50 bg-background p-4 md:p-6">
+            <SelectedToolComponent language={language} />
+          </section>
+          <aside className="mt-3 rounded-md border border-border/40 bg-panel/20 px-3 py-2 text-xs text-foreground/75">
+            <details>
               <summary className="cursor-pointer select-none font-medium">
                 {text.privacyTitle}
               </summary>
@@ -354,69 +363,7 @@ export function ToolboxApp() {
                 <li>{text.privacyItems.auth}</li>
               </ul>
             </details>
-          </header>
-
-          <section className="tool-shell rounded-lg border border-border/50 bg-background p-4 md:p-6">
-            <SelectedToolComponent language={language} />
-          </section>
-          <footer className="mt-4 rounded-md border border-border/50 bg-panel/25 p-4 text-sm text-foreground/85">
-            <div className="grid gap-5 md:grid-cols-3">
-              <div className="space-y-3">
-                <p className="font-semibold">{text.footer.suggestTitle}</p>
-                <a
-                  className="inline-flex h-10 items-center gap-2 rounded-md border border-border/60 bg-background px-3 text-xs font-semibold hover:bg-secondary"
-                  href="#"
-                >
-                  <IconHeart size={15} />
-                  {text.footer.suggestCta}
-                </a>
-                <p className="text-xs text-foreground/70">
-                  {text.footer.brandLine}
-                </p>
-              </div>
-              <div className="space-y-3">
-                <p className="font-semibold">{text.footer.tagsTitle}</p>
-                <ul className="grid grid-cols-2 gap-2 text-xs text-foreground/80">
-                  {text.footer.tags.map((tag) => (
-                    <li key={tag}>{tag}</li>
-                  ))}
-                </ul>
-              </div>
-              <div className="space-y-3">
-                <p className="font-semibold">{text.footer.supportTitle}</p>
-                <a
-                  className="inline-flex h-10 items-center rounded-md border border-border/60 bg-background px-3 text-xs font-semibold hover:bg-secondary"
-                  href="https://buymeacoffee.com/fran11799"
-                  rel="noreferrer"
-                  target="_blank"
-                >
-                  {text.supportCta}
-                </a>
-                <div className="flex flex-wrap gap-2 text-xs">
-                  <button
-                    className="rounded-md border border-border/60 bg-background px-2.5 py-1.5 hover:bg-secondary"
-                    onClick={() => setOpenLegalDoc("privacy")}
-                    type="button"
-                  >
-                    {text.footer.privacyLink}
-                  </button>
-                  <button
-                    className="rounded-md border border-border/60 bg-background px-2.5 py-1.5 hover:bg-secondary"
-                    onClick={() => setOpenLegalDoc("terms")}
-                    type="button"
-                  >
-                    {text.footer.termsLink}
-                  </button>
-                  <a
-                    className="rounded-md border border-border/60 bg-background px-2.5 py-1.5 hover:bg-secondary"
-                    href={text.footer.reportUrl}
-                  >
-                    {text.footer.reportLink}
-                  </a>
-                </div>
-              </div>
-            </div>
-          </footer>
+          </aside>
         </main>
       </div>
     </div>
@@ -454,12 +401,16 @@ function Sidebar({
     [toolsToRender],
   );
 
-  if (toolsToRender.length === 0) {
-    return <p className="text-sm">{text.emptySearch}</p>;
-  }
-
   return (
-    <nav aria-label={text.toolsNavigation} className="space-y-4 px-3 py-5">
+    <nav
+      aria-label={text.toolsNavigation}
+      className="aside-fade-mask hide-scrollbar h-full space-y-4 overflow-y-auto px-3 py-5"
+    >
+      <div className="px-1">
+        <p className="text-base font-semibold tracking-wide text-sidebar-foreground">
+          LocalTools
+        </p>
+      </div>
       <div className="relative px-1">
         <IconSearch
           className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-sidebar-foreground/65"
@@ -467,12 +418,17 @@ function Sidebar({
         />
         <input
           aria-label={text.searchPlaceholder}
-          className="h-10 w-full rounded-md border border-sidebar-foreground/20 bg-sidebar/40 py-2 pl-10 pr-3 text-sm text-sidebar-foreground placeholder:text-sidebar-foreground/55"
+          className="h-8 w-full rounded-md border border-sidebar-foreground/20 bg-sidebar/40 py-1.5 pl-10 pr-3 text-xs text-sidebar-foreground placeholder:text-sidebar-foreground/55"
           onChange={(event) => onSearchChange(event.target.value)}
           placeholder={text.searchPlaceholder}
           value={search}
         />
       </div>
+      {toolsToRender.length === 0 ? (
+        <p className="px-1 text-sm text-sidebar-foreground/85">
+          {text.emptySearch}
+        </p>
+      ) : null}
       {Object.entries(grouped).map(([category, categoryTools]) => (
         <CategorySection
           category={category}
@@ -540,7 +496,7 @@ function CategorySection({
       <div className="relative space-y-0.5" ref={rootRef}>
         <span
           aria-hidden
-          className={`pointer-events-none absolute left-2 h-1.5 w-1.5 rounded-full transition-transform duration-200 ease-out motion-reduce:transition-none ${styles.marker} ${visible ? "opacity-100" : "opacity-0"}`}
+          className={`tool-marker-dot pointer-events-none absolute left-2 h-1.5 w-1.5 transition-transform duration-200 ease-out motion-reduce:transition-none ${styles.marker} ${visible ? "opacity-100" : "opacity-0"}`}
           style={{ transform: `translateY(${markerY}px)` }}
         />
         {categoryTools.map((tool) => {
@@ -549,13 +505,13 @@ function CategorySection({
           return (
             <button
               aria-pressed={isActive}
-              className={`flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-sm transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sidebar-foreground ${isActive ? `${styles.active} bg-sidebar-foreground/14 font-semibold` : styles.inactive}`}
+              className={`aside-tool-btn group flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sidebar-foreground ${isActive ? `${styles.active} font-semibold` : styles.inactive}`}
               data-tool-id={tool.id}
               key={tool.id}
               onClick={() => onSelectTool(tool.id)}
               type="button"
             >
-              <span aria-hidden className="h-1.5 w-1.5 rounded-full" />
+              <span aria-hidden className="tool-marker-dot h-1.5 w-1.5" />
               <span aria-hidden className="shrink-0">
                 <Icon size={15} />
               </span>

@@ -1,0 +1,150 @@
+.toy-camera-wrapper {
+  --cam-main: #0b0d0f;
+  --cam-dark: #000000;
+  --cam-accent: #ffffff;
+  --cam-shutter: #e5e7eb;
+  --photo-bg: #ffffff;
+  --toy-size: 4.3em;
+  --elastic: cubic-bezier(0.68, -0.6, 0.32, 1.6);
+  position: relative;
+  width: var(--toy-size);
+  height: calc(var(--toy-size) * 0.9);
+  perspective: 1200px;
+  cursor: pointer;
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
+
+.toy-camera-body {
+  position: absolute;
+  inset: 0;
+  background: var(--cam-main);
+  border-radius: 1.1em;
+  transform-style: preserve-3d;
+  transform: translateZ(14px);
+  transition: all 0.45s var(--elastic);
+  box-shadow:
+    0 0.5em 0 var(--cam-dark),
+    0 0.9em 1.6em rgba(0, 0, 0, 0.2),
+    inset 0 0.2em 0.3em rgba(255, 255, 255, 0.2);
+  z-index: 10;
+}
+
+.toy-camera-body::before {
+  content: "";
+  position: absolute;
+  top: 20%;
+  left: 0;
+  width: 100%;
+  height: 15%;
+  background: var(--cam-accent);
+}
+
+.toy-camera-button {
+  position: absolute;
+  top: -0.55em;
+  right: 15%;
+  width: 1.1em;
+  height: 0.72em;
+  background: var(--cam-shutter);
+  border-radius: 0.3em 0.3em 0 0;
+}
+
+.toy-camera-lens {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 60%;
+  height: 65%;
+  background: #1f2937;
+  border-radius: 9999px !important;
+  transform: translate(-50%, -40%) translateZ(15px);
+  border: 0.25em solid var(--cam-dark);
+}
+
+.toy-camera-photo {
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  width: 75%;
+  height: 80%;
+  background: var(--photo-bg);
+  border-radius: 0.4em;
+  transform: translateX(-50%) translateZ(-10px) translateY(0);
+  transition: all 0.65s var(--elastic);
+  box-shadow:
+    0 0.2em 0.5em rgba(0, 0, 0, 0.1),
+    inset 0 0 0 0.2em #f1f2f6;
+  display: flex;
+  padding: 0.35em;
+  opacity: 0;
+  z-index: 1;
+}
+
+.photo-image {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 0.2em;
+  overflow: hidden;
+  background: #e5e7eb;
+}
+
+.toy-camera-wrapper:hover .toy-camera-body {
+  transform: translateZ(24px) rotateX(8deg);
+}
+
+.toy-camera-wrapper:active .toy-camera-body {
+  transform: translateZ(8px) scale(0.95);
+}
+
+.toy-camera-wrapper.is-capturing .toy-camera-body {
+  transform: translateZ(24px) translateY(-8%);
+}
+
+.toy-camera-wrapper.is-capturing .toy-camera-photo {
+  opacity: 1;
+  transform: translateX(-50%) translateZ(-24px) translateY(114%) rotate(4deg);
+  animation: photo-bounce 0.8s var(--elastic);
+}
+
+.toy-camera-wrapper.is-capturing .toy-camera-lens::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: white;
+  opacity: 0;
+  animation: lens-flash 0.35s ease-out;
+}
+
+.toy-camera-shadow {
+  position: absolute;
+  bottom: -0.8em;
+  left: 50%;
+  width: 90%;
+  height: 1.2em;
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.18) 0%, transparent 70%);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+@keyframes photo-bounce {
+  0% {
+    transform: translateX(-50%) translateZ(-24px) translateY(0);
+  }
+  100% {
+    transform: translateX(-50%) translateZ(-24px) translateY(114%) rotate(4deg);
+  }
+}
+
+@keyframes lens-flash {
+  0% {
+    opacity: 1;
+    transform: scale(0.2);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2);
+  }
+}

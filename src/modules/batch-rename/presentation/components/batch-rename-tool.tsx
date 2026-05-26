@@ -11,6 +11,7 @@ import {
   ToolField,
   ToolInput,
   ToolSection,
+  ToolSwitch,
   ToolTextarea,
   ToolToggleField,
 } from "@/shared/presentation/components/tool-form";
@@ -81,11 +82,7 @@ export function BatchRenameTool({ language }: Props) {
       </div>
       <div className="grid gap-4 md:grid-cols-3">
         <ToolToggleField className="md:col-span-1" label={text.sequence}>
-          <input
-            checked={addSequence}
-            onChange={(event) => setAddSequence(event.target.checked)}
-            type="checkbox"
-          />
+          <ToolSwitch checked={addSequence} onChange={setAddSequence} />
         </ToolToggleField>
         <ToolField label={text.startNumber}>
           <ToolInput

@@ -78,12 +78,43 @@ export function ToolToggleField({
   );
 }
 
+type ToolSwitchProps = {
+  checked: boolean;
+  onChange: (checked: boolean) => void;
+  className?: string;
+  "aria-label"?: string;
+  disabled?: boolean;
+};
+
+export function ToolSwitch({
+  checked,
+  onChange,
+  className,
+  "aria-label": ariaLabel,
+  disabled = false,
+}: ToolSwitchProps) {
+  return (
+    <input
+      aria-label={ariaLabel}
+      checked={checked}
+      className={cn("lt-liquid-switch", className)}
+      disabled={disabled}
+      onChange={(event) => onChange(event.target.checked)}
+      role="switch"
+      type="checkbox"
+    />
+  );
+}
+
 type ToolTextareaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement>;
 
 export function ToolTextarea({ className, ...props }: ToolTextareaProps) {
   return (
     <textarea
-      className={cn("w-full rounded-md border bg-background/40 p-3", className)}
+      className={cn(
+        "w-full rounded-md border bg-background/40 px-3 py-2",
+        className,
+      )}
       {...props}
     />
   );
@@ -94,7 +125,10 @@ type ToolInputProps = React.InputHTMLAttributes<HTMLInputElement>;
 export function ToolInput({ className, ...props }: ToolInputProps) {
   return (
     <input
-      className={cn("w-full rounded-md border bg-background/40 p-3", className)}
+      className={cn(
+        "w-full rounded-md border bg-background/40 px-3 py-2",
+        className,
+      )}
       {...props}
     />
   );
@@ -179,7 +213,7 @@ export function ToolSelect({
     }
   };
 
-  const sizeClass = size === "sm" ? "h-9 px-2.5" : "px-3 py-3";
+  const sizeClass = size === "sm" ? "h-8 px-2.5 text-xs" : "h-9 px-3";
 
   return (
     <div className={cn("relative", className)} ref={containerRef}>
@@ -221,7 +255,7 @@ export function ToolSelect({
             <button
               aria-selected={option.value === value}
               className={cn(
-                "w-full px-3 py-2.5 text-left text-sm transition-colors",
+                "w-full px-3 py-2 text-left text-sm transition-colors",
                 index === highlighted
                   ? "bg-secondary/60"
                   : "hover:bg-secondary/30",

@@ -24,9 +24,12 @@
   "supportCta": "Support LocalTools",
   "supportHint": "Keep the project free and open-source",
   "footer": {
-    "suggestTitle": "Know a great resource?",
-    "suggestCta": "Suggest Resource",
-    "tagsTitle": "Discover by tags",
+    "suggestTitle": "Get product updates",
+    "suggestCta": "Subscribe",
+    "logoPlaceholder": "LocalTools logo (pending)",
+    "newsletterTitle": "Newsletter signup coming soon",
+    "newsletterHint": "We will add email subscription for updates in a future release.",
+    "tagsTitle": "Explore popular tools",
     "supportTitle": "If LocalTools helps, support it",
     "brandLine": "© 2026 LocalTools. Suggestions welcome.",
     "privacyLink": "Privacy",
@@ -34,12 +37,12 @@
     "reportLink": "Report issue",
     "reportUrl": "https://github.com/Fr4n0m/local-tools/issues/new",
     "tags": [
-      "Framework",
-      "Learning",
-      "LLM",
-      "Bundle Size",
-      "Git",
-      "Design Patterns"
+      { "label": "Image Converter", "href": "/?tool=image-converter" },
+      { "label": "Image Compressor", "href": "/?tool=image-compressor" },
+      { "label": "JSON Formatter", "href": "/?tool=json-formatter" },
+      { "label": "QR Generator", "href": "/?tool=qr-generator" },
+      { "label": "UUID Generator", "href": "/?tool=uuid-generator" },
+      { "label": "Base64 Tool", "href": "/?tool=base64-tool" }
     ]
   },
   "categories": {

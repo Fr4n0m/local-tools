@@ -1,0 +1,96 @@
+:root {
+  --radius-squircle: 24px;
+  --expo-in: linear(
+    0 0%,
+    0.0085 31.26%,
+    0.0167 40.94%,
+    0.0289 48.86%,
+    0.0471 55.92%,
+    0.0717 61.99%,
+    0.1038 67.32%,
+    0.1443 72.07%,
+    0.1989 76.7%,
+    0.2659 80.89%,
+    0.3465 84.71%,
+    0.4419 88.22%,
+    0.554 91.48%,
+    0.6835 94.51%,
+    0.8316 97.34%,
+    1 100%
+  );
+  --expo-out: linear(
+    0 0%,
+    0.1684 2.66%,
+    0.3165 5.49%,
+    0.446 8.52%,
+    0.5581 11.78%,
+    0.6535 15.29%,
+    0.7341 19.11%,
+    0.8011 23.3%,
+    0.8557 27.93%,
+    0.8962 32.68%,
+    0.9283 38.01%,
+    0.9529 44.08%,
+    0.9711 51.14%,
+    0.9833 59.06%,
+    0.9915 68.74%,
+    1 100%
+  );
+  --color-background: #f8f9fa;
+  --color-foreground: #212529;
+  --color-primary: #343a40;
+  --color-secondary: #e9ecef;
+  --color-accent: #495057;
+  --color-muted: #dee2e6;
+  --color-border: #ced4da;
+  --color-destructive: #212529;
+  --color-panel: #e9ecef;
+  --color-sidebar: #000000;
+  --color-sidebar-foreground: #f8f9fa;
+  --color-info: #495057;
+  --color-warning: #6c757d;
+  --color-highlight: #343a40;
+  --color-strong-foreground: #212529;
+  --color-canvas-start: #f8f9fa;
+  --color-canvas-end: #dee2e6;
+}
+
+.dark {
+  --color-background: #000000;
+  --color-foreground: #f8f9fa;
+  --color-primary: #ffffff;
+  --color-secondary: #0c0f12;
+  --color-accent: #8e99a3;
+  --color-muted: #111417;
+  --color-border: #22272d;
+  --color-destructive: #f8f9fa;
+  --color-panel: #0b0d0f;
+  --color-sidebar: #000000;
+  --color-sidebar-foreground: #f8f9fa;
+  --color-info: #ced4da;
+  --color-warning: #adb5bd;
+  --color-highlight: #f8f9fa;
+  --color-strong-foreground: #f8f9fa;
+  --color-canvas-start: #000000;
+  --color-canvas-end: #0a0b0d;
+}
+
+@theme inline {
+  --color-background: var(--color-background);
+  --color-foreground: var(--color-foreground);
+  --color-primary: var(--color-primary);
+  --color-secondary: var(--color-secondary);
+  --color-accent: var(--color-accent);
+  --color-muted: var(--color-muted);
+  --color-border: var(--color-border);
+  --color-destructive: var(--color-destructive);
+  --color-panel: var(--color-panel);
+  --color-sidebar: var(--color-sidebar);
+  --color-sidebar-foreground: var(--color-sidebar-foreground);
+  --color-info: var(--color-info);
+  --color-warning: var(--color-warning);
+  --color-highlight: var(--color-highlight);
+  --color-strong-foreground: var(--color-strong-foreground);
+  --color-canvas-start: var(--color-canvas-start);
+  --color-canvas-end: var(--color-canvas-end);
+}

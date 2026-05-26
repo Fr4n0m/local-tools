@@ -1,0 +1,156 @@
+.tool-shell label > span,
+.tool-shell .text-sm {
+  letter-spacing: 0.01em;
+}
+
+.tool-shell
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+.tool-shell select,
+.tool-shell textarea {
+  width: 100%;
+  border-radius: 0.5rem;
+  border: 1px solid color-mix(in oklab, var(--color-border), transparent 15%);
+  background-color: color-mix(
+    in oklab,
+    var(--color-background),
+    var(--color-secondary) 18%
+  );
+  padding: 0.52rem 0.72rem;
+  font-size: 0.875rem;
+  line-height: 1.3;
+}
+
+.dark
+  .tool-shell
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+.dark .tool-shell select,
+.dark .tool-shell textarea {
+  border-color: color-mix(in oklab, var(--color-border), transparent 5%);
+  background-color: color-mix(
+    in oklab,
+    var(--color-background),
+    var(--color-secondary) 32%
+  );
+}
+
+.tool-shell textarea {
+  line-height: 1.45;
+}
+
+.tool-shell input[type="checkbox"] {
+  accent-color: var(--color-primary);
+}
+
+.tool-shell input[type="range"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: color-mix(
+    in oklab,
+    var(--color-border),
+    var(--color-secondary) 50%
+  );
+  border: none !important;
+  padding: 0 !important;
+  cursor: pointer;
+  outline: none;
+}
+
+.tool-shell input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  border: 2.5px solid var(--color-background);
+  box-shadow: 0 0 0 1.5px var(--color-border);
+  cursor: pointer;
+  transition: box-shadow 0.15s;
+}
+
+.tool-shell input[type="range"]::-webkit-slider-thumb:hover {
+  box-shadow: 0 0 0 3px
+    color-mix(in oklab, var(--color-accent), transparent 55%);
+}
+
+.tool-shell input[type="range"]:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 3px
+    color-mix(in oklab, var(--color-accent), transparent 45%);
+}
+
+.tool-shell input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  border: 2.5px solid var(--color-background);
+  box-shadow: 0 0 0 1.5px var(--color-border);
+  cursor: pointer;
+  transition: box-shadow 0.15s;
+}
+
+.tool-shell input[type="range"]::-moz-range-track {
+  height: 6px;
+  border-radius: 3px;
+  background: color-mix(
+    in oklab,
+    var(--color-border),
+    var(--color-secondary) 50%
+  );
+}
+
+.tool-shell [data-tool-actions] {
+  gap: 0.5rem;
+}
+
+.tool-shell [data-tool-actions] button {
+  border-color: color-mix(in oklab, var(--color-border), transparent 10%);
+  background-color: color-mix(
+    in oklab,
+    var(--color-background),
+    var(--color-secondary) 12%
+  );
+}
+
+.tool-shell [data-tool-actions] button:hover {
+  background-color: color-mix(
+    in oklab,
+    var(--color-background),
+    var(--color-secondary) 30%
+  );
+}
+
+.dark .tool-shell [data-tool-actions] button {
+  border-color: color-mix(in oklab, var(--color-border), transparent 0%);
+  background-color: color-mix(
+    in oklab,
+    var(--color-background),
+    var(--color-secondary) 22%
+  );
+  color: color-mix(in oklab, var(--color-foreground), transparent 10%);
+}
+
+.dark .tool-shell [data-tool-actions] button:hover {
+  background-color: color-mix(
+    in oklab,
+    var(--color-background),
+    var(--color-secondary) 38%
+  );
+}
+
+.dark .tool-shell input[type="range"]::-webkit-slider-thumb {
+  border-color: #050607;
+  box-shadow: 0 0 0 1px var(--color-border);
+}
+
+.dark .tool-shell input[type="range"]::-webkit-slider-thumb:hover {
+  box-shadow: 0 0 0 2px
+    color-mix(in oklab, var(--color-accent), transparent 62%);
+}
+
+.dark .tool-shell input[type="range"]::-moz-range-thumb {
+  border-color: #050607;
+  box-shadow: 0 0 0 1px var(--color-border);
+}

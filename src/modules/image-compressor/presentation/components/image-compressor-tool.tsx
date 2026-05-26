@@ -7,6 +7,7 @@ import en from "@/modules/image-compressor/presentation/i18n/en.json";
 import es from "@/modules/image-compressor/presentation/i18n/es.json";
 import { downloadBlob } from "@/shared/lib/download";
 import { createZipBlob } from "@/shared/lib/zip";
+import { CameraDownloadButton } from "@/shared/presentation/components/camera-download-button";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import {
   ToolField,
@@ -212,13 +213,24 @@ export function ImageCompressorTool({ language }: Props) {
       ) : null}
 
       {downloadUrl ? (
-        <a
-          className="inline-block rounded-md border px-4 py-2"
-          href={downloadUrl}
-          download={`compressed-${files[0]?.name ?? "image"}.jpg`}
-        >
-          {text.done}
-        </a>
+        <div className="flex items-center gap-4">
+          <CameraDownloadButton
+            alt={text.compressedPreview}
+            imageUrl={downloadUrl}
+            label={text.done}
+            onCapture={() => {
+              fetch(downloadUrl)
+                .then((response) => response.blob())
+                .then((blob) => {
+                  downloadBlob(
+                    blob,
+                    `compressed-${files[0]?.name ?? "image"}.jpg`,
+                  );
+                });
+            }}
+          />
+          <p className="text-sm">{text.done}</p>
+        </div>
       ) : (
         <p className="text-sm">{text.empty}</p>
       )}

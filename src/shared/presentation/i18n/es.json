@@ -24,9 +24,12 @@
   "supportCta": "Apoya LocalTools",
   "supportHint": "Mantén el proyecto libre y open source",
   "footer": {
-    "suggestTitle": "¿Conoces un recurso especial?",
-    "suggestCta": "Sugerir recurso",
-    "tagsTitle": "Descubre por etiquetas",
+    "suggestTitle": "Recibe novedades del producto",
+    "suggestCta": "Suscribirse",
+    "logoPlaceholder": "Logo de LocalTools (pendiente)",
+    "newsletterTitle": "Suscripción newsletter próximamente",
+    "newsletterHint": "Añadiremos suscripción por email para novedades en una próxima versión.",
+    "tagsTitle": "Explora herramientas populares",
     "supportTitle": "Si LocalTools te ayuda, puedes apoyarlo",
     "brandLine": "© 2026 LocalTools. Las sugerencias son bienvenidas.",
     "privacyLink": "Privacidad",
@@ -34,12 +37,12 @@
     "reportLink": "Reportar problema",
     "reportUrl": "https://github.com/Fr4n0m/local-tools/issues/new",
     "tags": [
-      "Framework",
-      "Aprender",
-      "LLM",
-      "Bundle Size",
-      "Git",
-      "Patrones de diseño"
+      { "label": "Conversor de Imágenes", "href": "/?tool=image-converter" },
+      { "label": "Compresor de Imágenes", "href": "/?tool=image-compressor" },
+      { "label": "Formateador JSON", "href": "/?tool=json-formatter" },
+      { "label": "Generador QR", "href": "/?tool=qr-generator" },
+      { "label": "Generador UUID", "href": "/?tool=uuid-generator" },
+      { "label": "Herramienta Base64", "href": "/?tool=base64-tool" }
     ]
   },
   "categories": {
