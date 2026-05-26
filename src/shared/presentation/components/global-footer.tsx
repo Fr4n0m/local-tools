@@ -5,6 +5,7 @@ import {
   IconFileText,
   IconShieldLock,
 } from "@tabler/icons-react";
+import { AppLogo } from "@/shared/presentation/components/app-logo";
 import { tools } from "@/modules/tool-registry/application/tools";
 import type { Tool } from "@/modules/tool-registry/domain/tool";
 import {
@@ -109,8 +110,10 @@ export function GlobalFooter() {
       <div className="site-footer__inner">
         <div className="site-footer__grid">
           <section className="site-footer__column">
-            <p className="site-footer__title">{text.footer.suggestTitle}</p>
-            <p className="site-footer__muted">{text.footer.logoPlaceholder}</p>
+            <AppLogo style={{ color: "#fff" }} />
+            <p className="site-footer__muted" style={{ marginTop: "8px" }}>
+              {text.footer.suggestTitle}
+            </p>
             <div className="site-footer__actions">
               <a className="site-footer__subscribe-link" href="#">
                 {text.footer.suggestCta}

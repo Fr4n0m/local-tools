@@ -8,6 +8,7 @@ import {
   IconSun,
 } from "@tabler/icons-react";
 
+import { AppLogo } from "@/shared/presentation/components/app-logo";
 import { ToolSelect } from "@/shared/presentation/components/tool-form";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
@@ -418,9 +419,7 @@ function Sidebar({
       className="aside-fade-mask hide-scrollbar h-full space-y-4 overflow-y-auto px-3 py-5"
     >
       <div className="px-1">
-        <p className="text-base font-semibold tracking-wide text-sidebar-foreground">
-          LocalTools
-        </p>
+        <AppLogo className="text-sidebar-foreground" />
       </div>
       <div className="relative px-1">
         <IconSearch
