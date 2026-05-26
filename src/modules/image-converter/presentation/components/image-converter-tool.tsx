@@ -248,17 +248,14 @@ export function ImageConverterTool({ language }: Props) {
             imageUrl={downloadUrl}
             label={text.done}
             onCapture={() => {
+              const name = `converted-${files[0]?.name ?? "image"}.${format.split("/")[1]}`;
               fetch(downloadUrl)
                 .then((response) => response.blob())
                 .then((blob) => {
-                  downloadBlob(
-                    blob,
-                    `converted-${files[0]?.name ?? "image"}.${format.split("/")[1]}`,
-                  );
+                  downloadBlob(blob, name);
                 });
             }}
           />
-          <p className="text-sm">{text.done}</p>
         </div>
       ) : (
         <p className="text-sm">{text.empty}</p>

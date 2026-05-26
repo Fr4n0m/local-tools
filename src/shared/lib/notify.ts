@@ -13,12 +13,34 @@ function resolveLanguage(): Language {
   return saved === "es" ? "es" : "en";
 }
 
+function t(key: keyof (typeof sharedMessages)["en"]["notifications"]): string {
+  return sharedMessages[resolveLanguage()].notifications[key];
+}
+
 export function notifyCopySuccess() {
-  const language = resolveLanguage();
-  sileo.success({ title: sharedMessages[language].notifications.copySuccess });
+  sileo.success({ title: t("copySuccess") });
 }
 
 export function notifyCopyError() {
-  const language = resolveLanguage();
-  sileo.error({ title: sharedMessages[language].notifications.copyError });
+  sileo.error({ title: t("copyError") });
+}
+
+export function notifyDownloadSuccess(filename?: string) {
+  sileo.success({
+    title: filename
+      ? `${filename} — ${t("downloadSuccess")}`
+      : t("downloadSuccess"),
+  });
+}
+
+export function notifyDownloadError() {
+  sileo.error({ title: t("downloadError") });
+}
+
+export function notifySuccess(message?: string) {
+  sileo.success({ title: message ?? t("processSuccess") });
+}
+
+export function notifyError(message?: string) {
+  sileo.error({ title: message ?? t("processError") });
 }

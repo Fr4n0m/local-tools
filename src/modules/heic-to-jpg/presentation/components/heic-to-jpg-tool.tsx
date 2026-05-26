@@ -12,6 +12,7 @@ import en from "@/modules/heic-to-jpg/presentation/i18n/en.json";
 import es from "@/modules/heic-to-jpg/presentation/i18n/es.json";
 import { downloadBlob } from "@/shared/lib/download";
 import { createZipBlob } from "@/shared/lib/zip";
+import { notifyError } from "@/shared/lib/notify";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import {
   ToolField,
@@ -95,6 +96,7 @@ export function HeicToJpgTool({ language }: Props) {
     );
     if (valid.length === 0) {
       setError(text.unsupported);
+      notifyError(text.unsupported);
       return;
     }
     setError("");
@@ -209,13 +211,20 @@ export function HeicToJpgTool({ language }: Props) {
       ) : null}
 
       {downloadUrl ? (
-        <a
-          className="inline-block rounded-md border px-4 py-2"
-          href={downloadUrl}
-          download={toJpgName(files[0]?.name ?? "image")}
+        <button
+          className="inline-flex items-center gap-2 rounded-md border px-4 py-2 text-sm"
+          onClick={() => {
+            const name = toJpgName(files[0]?.name ?? "image");
+            fetch(downloadUrl)
+              .then((r) => r.blob())
+              .then((blob) => {
+                downloadBlob(blob, name);
+              });
+          }}
+          type="button"
         >
           {text.done}
-        </a>
+        </button>
       ) : (
         <p className="text-sm">{text.empty}</p>
       )}

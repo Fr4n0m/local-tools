@@ -11,6 +11,7 @@ import {
 import en from "@/modules/video-compressor/presentation/i18n/en.json";
 import es from "@/modules/video-compressor/presentation/i18n/es.json";
 import { downloadBlob } from "@/shared/lib/download";
+import { notifyError } from "@/shared/lib/notify";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import {
   ToolField,
@@ -86,6 +87,7 @@ export function VideoCompressorTool({ language }: Props) {
       setResult(output);
     } catch {
       setError(text.invalid);
+      notifyError(text.invalid);
     } finally {
       URL.revokeObjectURL(url);
       setIsRunning(false);
@@ -157,7 +159,6 @@ export function VideoCompressorTool({ language }: Props) {
       />
 
       {error ? <p className="text-sm text-destructive">{error}</p> : null}
-      {result ? <p className="text-sm text-emerald-500">{text.done}</p> : null}
     </ToolSection>
   );
 }
