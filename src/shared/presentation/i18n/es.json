@@ -56,5 +56,9 @@
     "copy": "Copiar",
     "download": "Descargar",
     "generate": "Generar"
+  },
+  "notifications": {
+    "copySuccess": "Copiado al portapapeles",
+    "copyError": "No se pudo copiar al portapapeles"
   }
 }

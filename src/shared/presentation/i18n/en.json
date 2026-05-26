@@ -56,5 +56,9 @@
     "copy": "Copy",
     "download": "Download",
     "generate": "Generate"
+  },
+  "notifications": {
+    "copySuccess": "Copied to clipboard",
+    "copyError": "Could not copy to clipboard"
   }
 }

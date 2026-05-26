@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { GlobalFooter } from "@/shared/presentation/components/global-footer";
+import { NotificationHost } from "@/shared/presentation/components/notification-host";
 import "./globals.css";
 
 const archivo = localFont({
@@ -83,6 +84,7 @@ export default function RootLayout({
       >
         {children}
         <GlobalFooter />
+        <NotificationHost />
       </body>
     </html>
   );
