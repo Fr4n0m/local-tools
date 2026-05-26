@@ -119,19 +119,6 @@ export function GlobalFooter() {
             <p className="site-footer__brandline" style={{ marginTop: "6px" }}>
               {text.footer.brandLine}
             </p>
-            <p className="site-footer__muted" style={{ marginTop: "10px" }}>
-              {text.footer.suggestTitle}
-            </p>
-            <div className="site-footer__actions">
-              <a
-                className="site-footer__subscribe-link"
-                href={text.footer.suggestUrl}
-                rel="noreferrer"
-                target="_blank"
-              >
-                {text.footer.suggestCta}
-              </a>
-            </div>
           </section>
 
           <section className="site-footer__column">
@@ -144,6 +131,11 @@ export function GlobalFooter() {
                     <a
                       className="aside-tool-btn site-footer__tool-link"
                       href={`/?tool=${tool.id}`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        window.history.pushState({}, "", `/?tool=${tool.id}`);
+                        window.dispatchEvent(new PopStateEvent("popstate"));
+                      }}
                     >
                       <span aria-hidden className="shrink-0">
                         <ToolIcon size={14} />
@@ -159,6 +151,14 @@ export function GlobalFooter() {
           <section className="site-footer__column site-footer__column--right">
             <p className="site-footer__title">{text.footer.supportTitle}</p>
             <div className="site-footer__actions">
+              <a
+                className="site-footer__btn"
+                href={text.footer.suggestUrl}
+                rel="noreferrer"
+                target="_blank"
+              >
+                {text.footer.suggestCta}
+              </a>
               <a
                 className="site-footer__btn"
                 href="https://buymeacoffee.com/fran11799"
