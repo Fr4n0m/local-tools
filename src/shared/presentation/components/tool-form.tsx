@@ -158,7 +158,7 @@ export function ToolColorPicker({
       >
         <span
           aria-hidden
-          className="h-5 w-5 rounded-md border border-border/60"
+          className="h-5 w-5 rounded-md border border-border/60 dark:border-white/22"
           style={{ backgroundColor: value }}
         />
         <span className="font-mono">{value}</span>

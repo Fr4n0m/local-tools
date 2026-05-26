@@ -63,7 +63,7 @@
   --color-secondary: #0c0f12;
   --color-accent: #8e99a3;
   --color-muted: #111417;
-  --color-border: #22272d;
+  --color-border: rgba(255, 255, 255, 0.22);
   --color-destructive: #f8f9fa;
   --color-panel: #0b0d0f;
   --color-sidebar: #000000;

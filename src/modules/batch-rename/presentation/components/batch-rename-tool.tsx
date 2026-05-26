@@ -141,7 +141,7 @@ export function BatchRenameTool({ language }: Props) {
           {preview.length > 0 ? (
             <div aria-label={text.result} role="table">
               <div
-                className="mb-1.5 grid grid-cols-2 gap-4 border-b border-border/50 pb-1.5"
+                className="mb-1.5 grid grid-cols-2 gap-4 border-b border-border/50 dark:border-white/22 pb-1.5"
                 role="row"
               >
                 <span
