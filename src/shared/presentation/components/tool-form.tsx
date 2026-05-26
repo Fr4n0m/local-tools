@@ -548,7 +548,9 @@ export function ToolSlider({
         className="w-10 shrink-0 text-right text-sm tabular-nums text-foreground/70"
         role="status"
       >
-        {displayValue}
+        <span className="num-tick" key={displayValue}>
+          {displayValue}
+        </span>
       </span>
     </div>
   );
