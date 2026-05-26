@@ -2,6 +2,9 @@
 
 import {
   IconChevronDown,
+  IconLanguage,
+  IconLayoutRows,
+  IconLayoutDistributeVertical,
   IconMenu2,
   IconMoon,
   IconSearch,
@@ -9,7 +12,6 @@ import {
 } from "@tabler/icons-react";
 
 import { AppLogo } from "@/shared/presentation/components/app-logo";
-import { ToolSelect } from "@/shared/presentation/components/tool-form";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
 import { tools } from "@/modules/tool-registry/application/tools";
@@ -243,10 +245,21 @@ export function ToolboxApp() {
         <aside className="hidden w-72 shrink-0 md:block">
           <div className="relative h-[calc(100vh-1.5rem)] overflow-hidden rounded-2xl border border-border/60 bg-sidebar text-sidebar-foreground shadow-[0_42px_90px_-36px_rgba(0,0,0,0.72),0_12px_28px_-18px_rgba(0,0,0,0.55)]">
             <Sidebar
+              density={density}
               language={language}
               search={search}
+              theme={theme}
+              onDensityToggle={() =>
+                setDensity(
+                  density === "comfortable" ? "compact" : "comfortable",
+                )
+              }
+              onLanguageToggle={() =>
+                setLanguage(language === "en" ? "es" : "en")
+              }
               onSearchChange={setSearch}
               onSelectTool={setSelectedToolId}
+              onThemeToggle={toggleTheme}
               selectedToolId={selectedToolId}
               toolsToRender={filteredTools}
             />
@@ -268,13 +281,24 @@ export function ToolboxApp() {
               role="dialog"
             >
               <Sidebar
+                density={density}
                 language={language}
                 search={search}
+                theme={theme}
+                onDensityToggle={() =>
+                  setDensity(
+                    density === "comfortable" ? "compact" : "comfortable",
+                  )
+                }
+                onLanguageToggle={() =>
+                  setLanguage(language === "en" ? "es" : "en")
+                }
                 onSearchChange={setSearch}
                 onSelectTool={(toolId) => {
                   setSelectedToolId(toolId);
                   setIsMobileSidebarOpen(false);
                 }}
+                onThemeToggle={toggleTheme}
                 selectedToolId={selectedToolId}
                 toolsToRender={filteredTools}
               />
@@ -287,71 +311,17 @@ export function ToolboxApp() {
           id="main-content"
           tabIndex={-1}
         >
-          <header className="mb-6 space-y-3">
-            <div className="flex items-center justify-between gap-3">
-              <div className="flex items-center gap-3">
-                <button
-                  aria-controls="mobile-sidebar"
-                  aria-expanded={isMobileSidebarOpen}
-                  className="rounded-md border border-border/60 bg-panel/40 p-2 md:hidden"
-                  onClick={() => setIsMobileSidebarOpen(true)}
-                  type="button"
-                  aria-label={text.menu}
-                >
-                  <IconMenu2 size={18} />
-                </button>
-                <h1 className="text-2xl font-bold text-primary">
-                  {text.appTitle}
-                </h1>
-              </div>
-              <div className="flex items-center gap-2">
-                <ToolSelect
-                  aria-label={text.language}
-                  className="w-24"
-                  options={[
-                    { value: "en", label: "EN" },
-                    { value: "es", label: "ES" },
-                  ]}
-                  size="sm"
-                  value={language}
-                  onChange={(val) => setLanguage(val as Language)}
-                />
-                <button
-                  className="h-8 rounded-md border border-border/60 bg-background px-2.5 text-[11px] font-medium"
-                  onClick={() =>
-                    setDensity(
-                      density === "comfortable" ? "compact" : "comfortable",
-                    )
-                  }
-                  type="button"
-                  aria-label={text.density}
-                  title={`${text.density}: ${density === "compact" ? text.compact : text.comfortable}`}
-                >
-                  {density === "compact" ? text.compact : text.comfortable}
-                </button>
-                <button
-                  className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-border/60 bg-background p-0"
-                  onClick={toggleTheme}
-                  type="button"
-                  aria-label={text.theme}
-                >
-                  {theme === "light" ? (
-                    <IconMoon size={16} />
-                  ) : (
-                    <IconSun size={16} />
-                  )}
-                </button>
-                <a
-                  className="inline-flex h-8 items-center rounded-md border border-border/60 bg-background px-2.5 text-[11px] font-medium hover:bg-secondary"
-                  href="https://buymeacoffee.com/fran11799"
-                  rel="noreferrer"
-                  target="_blank"
-                  title={text.supportHint}
-                >
-                  {text.support}
-                </a>
-              </div>
-            </div>
+          <header className="mb-6 md:hidden">
+            <button
+              aria-controls="mobile-sidebar"
+              aria-expanded={isMobileSidebarOpen}
+              className="rounded-md border border-border/60 bg-panel/40 p-2"
+              onClick={() => setIsMobileSidebarOpen(true)}
+              type="button"
+              aria-label={text.menu}
+            >
+              <IconMenu2 size={18} />
+            </button>
           </header>
 
           <section className="tool-shell rounded-lg border border-border/50 bg-background p-4 md:p-6">
@@ -383,19 +353,29 @@ export function ToolboxApp() {
 }
 
 type SidebarProps = {
+  density: Density;
   language: Language;
   search: string;
+  theme: Theme;
+  onDensityToggle: () => void;
+  onLanguageToggle: () => void;
   onSearchChange: (value: string) => void;
+  onSelectTool: (toolId: ToolId) => void;
+  onThemeToggle: () => void;
   selectedToolId: ToolId;
   toolsToRender: typeof tools;
-  onSelectTool: (toolId: ToolId) => void;
 };
 
 function Sidebar({
+  density,
   language,
   search,
+  theme,
+  onDensityToggle,
+  onLanguageToggle,
   onSearchChange,
   onSelectTool,
+  onThemeToggle,
   selectedToolId,
   toolsToRender,
 }: SidebarProps) {
@@ -418,8 +398,40 @@ function Sidebar({
       aria-label={text.toolsNavigation}
       className="aside-fade-mask hide-scrollbar h-full space-y-4 overflow-y-auto px-3 py-5"
     >
-      <div className="px-1">
+      <div className="flex items-center justify-between px-1">
         <AppLogo className="text-sidebar-foreground" />
+        <div className="flex items-center gap-0.5 rounded-lg border border-sidebar-foreground/15 bg-sidebar-foreground/8 p-0.5">
+          <button
+            aria-label={text.language}
+            className="flex h-6 w-6 items-center justify-center rounded-md text-sidebar-foreground/70 transition-colors hover:bg-sidebar-foreground/12 hover:text-sidebar-foreground"
+            onClick={onLanguageToggle}
+            title={language === "en" ? "Switch to Spanish" : "Cambiar a inglés"}
+            type="button"
+          >
+            <IconLanguage size={13} />
+          </button>
+          <button
+            aria-label={text.density}
+            className="flex h-6 w-6 items-center justify-center rounded-md text-sidebar-foreground/70 transition-colors hover:bg-sidebar-foreground/12 hover:text-sidebar-foreground"
+            onClick={onDensityToggle}
+            title={`${text.density}: ${density === "compact" ? text.compact : text.comfortable}`}
+            type="button"
+          >
+            {density === "compact" ? (
+              <IconLayoutRows size={13} />
+            ) : (
+              <IconLayoutDistributeVertical size={13} />
+            )}
+          </button>
+          <button
+            aria-label={text.theme}
+            className="flex h-6 w-6 items-center justify-center rounded-md text-sidebar-foreground/70 transition-colors hover:bg-sidebar-foreground/12 hover:text-sidebar-foreground"
+            onClick={onThemeToggle}
+            type="button"
+          >
+            {theme === "light" ? <IconMoon size={13} /> : <IconSun size={13} />}
+          </button>
+        </div>
       </div>
       <div className="relative px-1">
         <IconSearch
