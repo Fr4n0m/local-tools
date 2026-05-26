@@ -4,6 +4,7 @@ import * as React from "react";
 import {
   IconChevronDown,
   IconHexagon,
+  IconPin,
   IconPlus,
   IconX,
 } from "@tabler/icons-react";
@@ -143,9 +144,11 @@ function saveRecentColor(color: string): string[] {
   const updated = [hex, ...existing].slice(0, RECENT_COLORS_MAX);
   try {
     localStorage.setItem(RECENT_COLORS_KEY, JSON.stringify(updated));
-    window.dispatchEvent(
-      new CustomEvent("localtools:recent-colors-change", { detail: updated }),
-    );
+    window.setTimeout(() => {
+      window.dispatchEvent(
+        new CustomEvent("localtools:recent-colors-change", { detail: updated }),
+      );
+    }, 0);
   } catch {}
   return updated;
 }
@@ -158,9 +161,11 @@ function toggleSavedColor(color: string): string[] {
     : [hex, ...existing];
   try {
     localStorage.setItem(SAVED_COLORS_KEY, JSON.stringify(updated));
-    window.dispatchEvent(
-      new CustomEvent("localtools:saved-colors-change", { detail: updated }),
-    );
+    window.setTimeout(() => {
+      window.dispatchEvent(
+        new CustomEvent("localtools:saved-colors-change", { detail: updated }),
+      );
+    }, 0);
   } catch {}
   return updated;
 }
@@ -278,7 +283,7 @@ export function ToolColorPicker({
                     <div className="group/swatch relative" key={c}>
                       <button
                         aria-label={c}
-                        className={`h-5 w-5 rounded-md border transition-transform hover:scale-110 ${isSaved ? "border-foreground/40 dark:border-white/50 ring-1 ring-foreground/20 dark:ring-white/20" : "border-border/60 dark:border-white/22"}`}
+                        className="h-5 w-5 rounded-md border border-border/60 dark:border-white/22 transition-transform hover:scale-110"
                         onClick={() => {
                           onChange(c);
                           setDraft(c);
@@ -291,20 +296,31 @@ export function ToolColorPicker({
                         aria-label={
                           isSaved ? `Remove ${c} from saved` : `Save ${c}`
                         }
-                        className="absolute -right-1 -top-1 hidden h-3 w-3 items-center justify-center rounded-full bg-background shadow group-hover/swatch:flex"
+                        className={`absolute -right-1 -top-1 h-3 w-3 items-center justify-center rounded-full bg-background shadow ${isSaved ? "flex" : "hidden group-hover/swatch:flex"}`}
                         onClick={(e) => {
                           e.stopPropagation();
                           setSavedColors(toggleSavedColor(c));
                         }}
                         style={{
                           border: "1px solid currentColor",
-                          opacity: 0.7,
+                          opacity: isSaved ? 1 : 0.7,
                         }}
                         title={isSaved ? "Remove from saved" : "Save color"}
                         type="button"
                       >
                         {isSaved ? (
-                          <IconX size={6} strokeWidth={3} />
+                          <>
+                            <IconPin
+                              size={6}
+                              strokeWidth={3}
+                              className="group-hover/swatch:hidden"
+                            />
+                            <IconX
+                              size={6}
+                              strokeWidth={3}
+                              className="hidden group-hover/swatch:block"
+                            />
+                          </>
                         ) : (
                           <IconPlus size={6} strokeWidth={3} />
                         )}
