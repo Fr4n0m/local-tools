@@ -100,6 +100,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
+  category: "technology",
   openGraph: {
     title: `${appName} - Free Developer Toolbox`,
     description: appDescription,
@@ -107,12 +108,21 @@ export const metadata: Metadata = {
     url: appUrl,
     locale: "en_US",
     siteName: appName,
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: `${appName} — Free Developer Toolbox`,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: `${appName} - Free Developer Toolbox`,
     description: appDescription,
     creator: "@fr4n0m",
+    images: ["/opengraph-image"],
   },
 };
 
