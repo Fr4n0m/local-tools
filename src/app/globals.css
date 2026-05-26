@@ -11,7 +11,7 @@
   --color-border: #ced4da;
   --color-destructive: #212529;
   --color-panel: #e9ecef;
-  --color-sidebar: #212529;
+  --color-sidebar: #000000;
   --color-sidebar-foreground: #f8f9fa;
   --color-info: #495057;
   --color-warning: #6c757d;
@@ -58,6 +58,11 @@ textarea,
 details,
 summary {
   border-radius: var(--radius-squircle);
+}
+
+button,
+[role="button"] {
+  cursor: pointer;
 }
 
 @supports (corner-shape: squircle) {

@@ -65,3 +65,8 @@ src/
 - `pnpm build`
 
 These commands must pass before shipping changes.
+
+## UI icon policy
+
+- Do not use `IconSparkles` (or sparkles variants) in this project.
+- Prefer neutral/productive iconography from Tabler Icons.

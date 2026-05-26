@@ -1,20 +1,33 @@
 "use client";
 
 import * as React from "react";
-import { IconChevronDown } from "@tabler/icons-react";
+import { IconCaretDownFilled, IconHexagon } from "@tabler/icons-react";
 
 import { cn } from "@/shared/lib/utils";
 
 type ToolSectionProps = {
   title?: string;
   className?: string;
+  titleIcon?: React.ReactNode;
   children: React.ReactNode;
 };
 
-export function ToolSection({ title, className, children }: ToolSectionProps) {
+export function ToolSection({
+  title,
+  className,
+  titleIcon,
+  children,
+}: ToolSectionProps) {
   return (
     <div className={cn("space-y-4", className)}>
-      {title ? <h2 className="text-xl font-semibold">{title}</h2> : null}
+      {title ? (
+        <h2 className="flex items-center gap-2 text-xl font-semibold">
+          <span aria-hidden className="text-foreground/75">
+            {titleIcon ?? <IconHexagon size={18} />}
+          </span>
+          <span>{title}</span>
+        </h2>
+      ) : null}
       {children}
     </div>
   );
@@ -166,7 +179,7 @@ export function ToolSelect({
     }
   };
 
-  const paddingClass = size === "sm" ? "px-2.5 py-2" : "px-3 py-3";
+  const sizeClass = size === "sm" ? "h-10 px-2.5" : "px-3 py-3";
 
   return (
     <div className={cn("relative", className)} ref={containerRef}>
@@ -182,14 +195,14 @@ export function ToolSelect({
         aria-label={ariaLabel}
         className={cn(
           "flex w-full items-center justify-between gap-2 rounded-md border bg-background/40 text-sm",
-          paddingClass,
+          sizeClass,
         )}
         onClick={() => (open ? closeDropdown() : openDropdown())}
         onKeyDown={onKeyDown}
         type="button"
       >
         <span>{selectedOption?.label}</span>
-        <IconChevronDown
+        <IconCaretDownFilled
           aria-hidden
           className={cn(
             "shrink-0 text-foreground/60 transition-transform duration-150",

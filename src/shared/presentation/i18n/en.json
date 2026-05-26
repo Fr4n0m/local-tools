@@ -23,6 +23,21 @@
   "support": "Support",
   "supportCta": "Support LocalTools",
   "supportHint": "Keep the project free and open-source",
+  "footer": {
+    "suggestTitle": "Know a great resource?",
+    "suggestCta": "Suggest Resource",
+    "tagsTitle": "Discover by tags",
+    "supportTitle": "If LocalTools helps, support it",
+    "brandLine": "© 2026 LocalTools. Suggestions welcome.",
+    "tags": [
+      "Framework",
+      "Learning",
+      "LLM",
+      "Bundle Size",
+      "Git",
+      "Design Patterns"
+    ]
+  },
   "categories": {
     "files-media": "Files & Media",
     "data-encoding": "Data & Encoding",

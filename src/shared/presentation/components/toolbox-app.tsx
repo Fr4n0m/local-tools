@@ -1,9 +1,15 @@
 "use client";
 
-import { IconMenu2, IconMoon, IconSearch, IconSun } from "@tabler/icons-react";
+import {
+  IconHeart,
+  IconMenu2,
+  IconMoon,
+  IconSearch,
+  IconSun,
+} from "@tabler/icons-react";
 
 import { ToolSelect } from "@/shared/presentation/components/tool-form";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
 import { tools } from "@/modules/tool-registry/application/tools";
 import type { ToolId } from "@/modules/tool-registry/domain/tool";
@@ -218,6 +224,8 @@ export function ToolboxApp() {
         <aside className="hidden w-72 border-r border-border/60 bg-sidebar text-sidebar-foreground md:block">
           <Sidebar
             language={language}
+            search={search}
+            onSearchChange={setSearch}
             onSelectTool={setSelectedToolId}
             selectedToolId={selectedToolId}
             toolsToRender={filteredTools}
@@ -240,6 +248,8 @@ export function ToolboxApp() {
             >
               <Sidebar
                 language={language}
+                search={search}
+                onSearchChange={setSearch}
                 onSelectTool={(toolId) => {
                   setSelectedToolId(toolId);
                   setIsMobileSidebarOpen(false);
@@ -286,7 +296,7 @@ export function ToolboxApp() {
                   onChange={(val) => setLanguage(val as Language)}
                 />
                 <button
-                  className="rounded-md border border-border/60 bg-background px-3 py-2 text-xs font-medium"
+                  className="h-10 rounded-md border border-border/60 bg-background px-3 text-xs font-medium"
                   onClick={() =>
                     setDensity(
                       density === "comfortable" ? "compact" : "comfortable",
@@ -299,7 +309,7 @@ export function ToolboxApp() {
                   {density === "compact" ? text.compact : text.comfortable}
                 </button>
                 <button
-                  className="rounded-md border border-border/60 bg-background p-2"
+                  className="h-10 w-10 rounded-md border border-border/60 bg-background p-0"
                   onClick={() => setTheme(theme === "light" ? "dark" : "light")}
                   type="button"
                   aria-label={text.theme}
@@ -311,7 +321,7 @@ export function ToolboxApp() {
                   )}
                 </button>
                 <a
-                  className="rounded-md border border-border/60 bg-background px-3 py-2 text-xs font-medium hover:bg-secondary"
+                  className="inline-flex h-10 items-center rounded-md border border-border/60 bg-background px-3 text-xs font-medium hover:bg-secondary"
                   href="https://buymeacoffee.com/fran11799"
                   rel="noreferrer"
                   target="_blank"
@@ -320,20 +330,6 @@ export function ToolboxApp() {
                   {text.support}
                 </a>
               </div>
-            </div>
-
-            <div className="relative">
-              <IconSearch
-                className="absolute left-3 top-1/2 -translate-y-1/2"
-                size={17}
-              />
-              <input
-                aria-label={text.searchPlaceholder}
-                className="w-full rounded-md border border-border/60 bg-background py-2.5 pl-10 pr-4"
-                placeholder={text.searchPlaceholder}
-                value={search}
-                onChange={(event) => setSearch(event.target.value)}
-              />
             </div>
 
             <details className="rounded-md border border-border/60 bg-panel/35 px-3 py-2 text-sm">
@@ -353,16 +349,41 @@ export function ToolboxApp() {
           <section className="tool-shell rounded-lg border border-border/50 bg-background p-4 md:p-6">
             <SelectedToolComponent language={language} />
           </section>
-          <footer className="mt-4 flex items-center justify-between rounded-md border border-border/50 bg-panel/25 px-3 py-2 text-xs text-foreground/80">
-            <span>{text.supportHint}</span>
-            <a
-              className="rounded-md border border-border/60 bg-background px-2.5 py-1.5 font-medium hover:bg-secondary"
-              href="https://buymeacoffee.com/fran11799"
-              rel="noreferrer"
-              target="_blank"
-            >
-              {text.supportCta}
-            </a>
+          <footer className="mt-4 rounded-md border border-border/50 bg-panel/25 p-4 text-sm text-foreground/85">
+            <div className="grid gap-5 md:grid-cols-3">
+              <div className="space-y-3">
+                <p className="font-semibold">{text.footer.suggestTitle}</p>
+                <a
+                  className="inline-flex h-10 items-center gap-2 rounded-md border border-border/60 bg-background px-3 text-xs font-semibold hover:bg-secondary"
+                  href="#"
+                >
+                  <IconHeart size={15} />
+                  {text.footer.suggestCta}
+                </a>
+                <p className="text-xs text-foreground/70">
+                  {text.footer.brandLine}
+                </p>
+              </div>
+              <div className="space-y-3">
+                <p className="font-semibold">{text.footer.tagsTitle}</p>
+                <ul className="grid grid-cols-2 gap-2 text-xs text-foreground/80">
+                  {text.footer.tags.map((tag) => (
+                    <li key={tag}>{tag}</li>
+                  ))}
+                </ul>
+              </div>
+              <div className="space-y-3">
+                <p className="font-semibold">{text.footer.supportTitle}</p>
+                <a
+                  className="inline-flex h-10 items-center rounded-md border border-border/60 bg-background px-3 text-xs font-semibold hover:bg-secondary"
+                  href="https://buymeacoffee.com/fran11799"
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  {text.supportCta}
+                </a>
+              </div>
+            </div>
           </footer>
         </main>
       </div>
@@ -372,6 +393,8 @@ export function ToolboxApp() {
 
 type SidebarProps = {
   language: Language;
+  search: string;
+  onSearchChange: (value: string) => void;
   selectedToolId: ToolId;
   toolsToRender: typeof tools;
   onSelectTool: (toolId: ToolId) => void;
@@ -379,6 +402,8 @@ type SidebarProps = {
 
 function Sidebar({
   language,
+  search,
+  onSearchChange,
   onSelectTool,
   selectedToolId,
   toolsToRender,
@@ -402,41 +427,111 @@ function Sidebar({
   }
 
   return (
-    <nav aria-label={text.toolsNavigation} className="space-y-6 px-3 py-5">
+    <nav aria-label={text.toolsNavigation} className="space-y-4 px-3 py-5">
+      <div className="relative px-1">
+        <IconSearch
+          className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-sidebar-foreground/65"
+          size={16}
+        />
+        <input
+          aria-label={text.searchPlaceholder}
+          className="h-10 w-full rounded-md border border-sidebar-foreground/20 bg-sidebar/40 py-2 pl-10 pr-3 text-sm text-sidebar-foreground placeholder:text-sidebar-foreground/55"
+          onChange={(event) => onSearchChange(event.target.value)}
+          placeholder={text.searchPlaceholder}
+          value={search}
+        />
+      </div>
       {Object.entries(grouped).map(([category, categoryTools]) => (
-        <div className="space-y-2" key={category}>
-          <p
-            className={`px-2 text-[11px] font-semibold uppercase tracking-[0.12em] ${getCategoryStyles(category).heading}`}
-          >
-            {text.categories[category as keyof typeof text.categories]}
-          </p>
-          <div className="space-y-0.5">
-            {categoryTools.map((tool) => {
-              const Icon = tool.icon;
-              const isActive = tool.id === selectedToolId;
-              const styles = getCategoryStyles(tool.category);
-              return (
-                <button
-                  aria-pressed={isActive}
-                  className={`flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-sm transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sidebar-foreground ${isActive ? styles.active : styles.inactive}`}
-                  key={tool.id}
-                  onClick={() => onSelectTool(tool.id)}
-                  type="button"
-                >
-                  <span
-                    aria-hidden
-                    className={`h-1.5 w-1.5 rounded-full ${isActive ? styles.marker : "bg-transparent"}`}
-                  />
-                  <span aria-hidden className="shrink-0">
-                    <Icon size={15} />
-                  </span>
-                  <span className="font-medium">{tool.name[language]}</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
+        <CategorySection
+          category={category}
+          categoryTools={categoryTools}
+          key={category}
+          language={language}
+          onSelectTool={onSelectTool}
+          selectedToolId={selectedToolId}
+          title={text.categories[category as keyof typeof text.categories]}
+        />
       ))}
     </nav>
+  );
+}
+
+type CategorySectionProps = {
+  category: string;
+  categoryTools: typeof tools;
+  language: Language;
+  onSelectTool: (toolId: ToolId) => void;
+  selectedToolId: ToolId;
+  title: string;
+};
+
+function CategorySection({
+  category,
+  categoryTools,
+  language,
+  onSelectTool,
+  selectedToolId,
+  title,
+}: CategorySectionProps) {
+  const styles = getCategoryStyles(category);
+  const rootRef = useRef<HTMLDivElement | null>(null);
+  const [markerY, setMarkerY] = useState(0);
+  const [visible, setVisible] = useState(false);
+
+  useLayoutEffect(() => {
+    const root = rootRef.current;
+    if (!root) {
+      return;
+    }
+
+    const active = root.querySelector<HTMLButtonElement>(
+      `[data-tool-id="${selectedToolId}"]`,
+    );
+
+    if (!active) {
+      setVisible(false);
+      return;
+    }
+
+    const nextY = active.offsetTop + active.offsetHeight / 2 - 3;
+    setMarkerY(nextY);
+    setVisible(true);
+  }, [categoryTools, selectedToolId]);
+
+  return (
+    <div className="space-y-2">
+      <p
+        className={`px-2 text-[11px] font-semibold uppercase tracking-[0.12em] ${styles.heading}`}
+      >
+        {title}
+      </p>
+      <div className="relative space-y-0.5" ref={rootRef}>
+        <span
+          aria-hidden
+          className={`pointer-events-none absolute left-2 h-1.5 w-1.5 rounded-full transition-transform duration-200 ease-out motion-reduce:transition-none ${styles.marker} ${visible ? "opacity-100" : "opacity-0"}`}
+          style={{ transform: `translateY(${markerY}px)` }}
+        />
+        {categoryTools.map((tool) => {
+          const Icon = tool.icon;
+          const isActive = tool.id === selectedToolId;
+          return (
+            <button
+              aria-pressed={isActive}
+              className={`flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-sm transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sidebar-foreground ${isActive ? `${styles.active} bg-sidebar-foreground/14 font-semibold` : styles.inactive}`}
+              data-tool-id={tool.id}
+              key={tool.id}
+              onClick={() => onSelectTool(tool.id)}
+              type="button"
+            >
+              <span aria-hidden className="h-1.5 w-1.5 rounded-full" />
+              <span aria-hidden className="shrink-0">
+                <Icon size={15} />
+              </span>
+              <span className="font-medium">{tool.name[language]}</span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
   );
 }
