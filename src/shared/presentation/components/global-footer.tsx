@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import "@gravatar-com/hovercards/dist/style.css";
 import {
   IconAlertCircle,
@@ -40,17 +40,25 @@ function pickReplacementTool(currentIds: string[]): Tool {
 }
 
 export function GlobalFooter() {
-  const [language, setLanguage] = useState<Language>(() =>
-    typeof window === "undefined" ? "en" : resolveInitialLanguage(),
+  type FooterState = { language: Language; density: Density };
+  const [{ language, density }, dispatchFooter] = React.useReducer(
+    (state: FooterState, patch: Partial<FooterState>) => ({
+      ...state,
+      ...patch,
+    }),
+    { language: "en" as Language, density: "comfortable" as Density },
   );
-  const [density, setDensity] = useState<Density>(() => {
-    if (typeof window === "undefined") {
-      return "comfortable";
-    }
-    const storedDensity = window.localStorage.getItem("localtools.density");
-    return storedDensity === "compact" ? "compact" : "comfortable";
-  });
   const [footerTools, setFooterTools] = useState<Tool[]>(INITIAL_FOOTER_TOOLS);
+
+  useEffect(() => {
+    dispatchFooter({
+      language: resolveInitialLanguage(),
+      density:
+        window.localStorage.getItem("localtools.density") === "compact"
+          ? "compact"
+          : "comfortable",
+    });
+  }, []);
 
   useEffect(() => {
     const onStorage = (event: StorageEvent) => {
@@ -61,15 +69,19 @@ export function GlobalFooter() {
         return;
       }
       if (event.key === "localtools.language") {
-        setLanguage(resolveInitialLanguage());
+        dispatchFooter({ language: resolveInitialLanguage() });
       }
       if (event.key === "localtools.density") {
-        setDensity(event.newValue === "compact" ? "compact" : "comfortable");
+        dispatchFooter({
+          density: event.newValue === "compact" ? "compact" : "comfortable",
+        });
       }
     };
     const onDensityChange = (event: Event) => {
       const customEvent = event as CustomEvent<Density>;
-      setDensity(customEvent.detail === "compact" ? "compact" : "comfortable");
+      dispatchFooter({
+        density: customEvent.detail === "compact" ? "compact" : "comfortable",
+      });
     };
 
     window.addEventListener("storage", onStorage);
