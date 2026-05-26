@@ -136,6 +136,15 @@ export function GlobalFooter() {
             <p className="site-footer__brandline" style={{ marginTop: "6px" }}>
               {text.footer.brandLine}
             </p>
+            <a
+              className="site-footer__github-btn"
+              href={text.footer.suggestUrl}
+              rel="noreferrer"
+              target="_blank"
+            >
+              <IconBrandGithub aria-hidden size={14} />
+              {text.footer.suggestCta}
+            </a>
           </section>
 
           <section className="site-footer__column">
@@ -171,21 +180,12 @@ export function GlobalFooter() {
             <p className="site-footer__title">{text.footer.supportTitle}</p>
             <div className="site-footer__actions">
               <a
-                className="site-footer__btn"
-                href={text.footer.suggestUrl}
-                rel="noreferrer"
-                target="_blank"
-              >
-                <IconBrandGithub aria-hidden size={13} />
-                {text.footer.suggestCta}
-              </a>
-              <a
-                className="site-footer__btn"
+                className="site-footer__btn site-footer__btn--bmc"
                 href="https://buymeacoffee.com/fran11799"
                 rel="noreferrer"
                 target="_blank"
               >
-                <IconCoffee aria-hidden size={13} />
+                <IconCoffee aria-hidden size={14} />
                 {text.supportCta}
               </a>
             </div>
