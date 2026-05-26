@@ -107,6 +107,35 @@ export function ToolSwitch({
   );
 }
 
+const RECENT_COLORS_KEY = "localtools.recent-colors";
+const RECENT_COLORS_MAX = 10;
+
+function loadRecentColors(): string[] {
+  try {
+    const raw = localStorage.getItem(RECENT_COLORS_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed)
+      ? parsed.filter((c) => typeof c === "string")
+      : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveRecentColor(color: string): string[] {
+  const hex = color.toLowerCase();
+  const existing = loadRecentColors().filter((c) => c !== hex);
+  const updated = [hex, ...existing].slice(0, RECENT_COLORS_MAX);
+  try {
+    localStorage.setItem(RECENT_COLORS_KEY, JSON.stringify(updated));
+    window.dispatchEvent(
+      new CustomEvent("localtools:recent-colors-change", { detail: updated }),
+    );
+  } catch {}
+  return updated;
+}
+
 type ToolColorPickerProps = {
   value: string;
   onChange: (value: string) => void;
@@ -128,18 +157,31 @@ export function ToolColorPicker({
 }: ToolColorPickerProps) {
   const [open, setOpen] = React.useState(false);
   const [draft, setDraft] = React.useState(value);
+  const [recentColors, setRecentColors] = React.useState<string[]>(() =>
+    typeof window === "undefined" ? [] : loadRecentColors(),
+  );
   const rootRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    const onUpdate = (e: Event) => {
+      setRecentColors((e as CustomEvent<string[]>).detail);
+    };
+    window.addEventListener("localtools:recent-colors-change", onUpdate);
+    return () =>
+      window.removeEventListener("localtools:recent-colors-change", onUpdate);
+  }, []);
 
   React.useEffect(() => {
     if (!open) return;
     const onMouseDown = (event: MouseEvent) => {
       if (!rootRef.current?.contains(event.target as Node)) {
         setOpen(false);
+        setRecentColors(saveRecentColor(value));
       }
     };
     document.addEventListener("mousedown", onMouseDown);
     return () => document.removeEventListener("mousedown", onMouseDown);
-  }, [open]);
+  }, [open, value]);
 
   return (
     <div className={cn("relative", className)} ref={rootRef}>
@@ -150,6 +192,8 @@ export function ToolColorPicker({
             const next = !s;
             if (next) {
               setDraft(value);
+            } else {
+              setRecentColors(saveRecentColor(value));
             }
             return next;
           })
@@ -173,6 +217,29 @@ export function ToolColorPicker({
             onChange={(event) => setDraft(event.target.value)}
             value={draft}
           />
+          {recentColors.length > 0 ? (
+            <div className="mt-2.5 border-t pt-2.5">
+              <p className="mb-1.5 text-[0.65rem] font-semibold uppercase tracking-widest opacity-40">
+                Recent
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                {recentColors.map((c) => (
+                  <button
+                    aria-label={c}
+                    className="h-5 w-5 rounded-md border border-border/60 dark:border-white/22 transition-transform hover:scale-110"
+                    key={c}
+                    onClick={() => {
+                      onChange(c);
+                      setDraft(c);
+                    }}
+                    style={{ backgroundColor: c }}
+                    title={c}
+                    type="button"
+                  />
+                ))}
+              </div>
+            </div>
+          ) : null}
         </div>
       ) : null}
     </div>
