@@ -11,6 +11,9 @@ importers:
       '@cmd-kit/react':
         specifier: ^1.0.0
         version: 1.0.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@gravatar-com/hovercards':
+        specifier: ^0.16.0
+        version: 0.16.0
       '@tabler/icons-react':
         specifier: ^3.41.1
         version: 3.41.1(react@19.2.4)
@@ -312,6 +315,10 @@ packages:
     peerDependenciesMeta:
       '@noble/hashes':
         optional: true
+
+  '@gravatar-com/hovercards@0.16.0':
+    resolution: {integrity: sha512-NOB73YXOUALYyqLD8SeiQkKgwrmG8wYeVz8JfqFXiH5NjAt/0iDI0pC4TL/Cqxew3XaDmGUFhXEun7mzopaaCw==}
+    engines: {node: '>=20'}
 
   '@humanfs/core@0.19.2':
     resolution: {integrity: sha512-UhXNm+CFMWcbChXywFwkmhqjs3PRCmcSa/hfBgLIb7oQ5HNb1wS0icWsGtSAUNgefHeI+eBrA8I1fxmbHsGdvA==}
@@ -3173,6 +3180,8 @@ snapshots:
       levn: 0.4.1
 
   '@exodus/bytes@1.15.0': {}
+
+  '@gravatar-com/hovercards@0.16.0': {}
 
   '@humanfs/core@0.19.2':
     dependencies:

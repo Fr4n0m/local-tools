@@ -1,5 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
+import "@gravatar-com/hovercards/dist/style.css";
+import { Hovercards } from "@gravatar-com/hovercards";
 import {
   IconAlertCircle,
   IconFileText,
@@ -104,6 +106,18 @@ export function GlobalFooter() {
     };
   }, []);
 
+  useEffect(() => {
+    const avatar = document.getElementById("footer-gravatar-avatar");
+    if (!avatar) return;
+    const hc = new Hovercards({
+      placement: "top",
+      offset: 12,
+      autoFlip: true,
+      autoShift: true,
+    });
+    hc.attach(avatar);
+  }, []);
+
   if (density === "compact") {
     return null;
   }
@@ -129,6 +143,7 @@ export function GlobalFooter() {
                 return (
                   <li key={tool.id}>
                     <a
+                      aria-label={tool.name[language]}
                       className="aside-tool-btn site-footer__tool-link"
                       href={`/?tool=${tool.id}`}
                       onClick={(e) => {
@@ -183,8 +198,10 @@ export function GlobalFooter() {
             >
               <img
                 alt="Fr4n0m"
+                data-gravatar-hash="45f9e6ff5a1ed8b109f19dc13f59c26e7d39fceb75f9344ac30ea6db18f6fbde"
                 height={20}
-                src="https://www.gravatar.com/avatar/3a7afbe8892915daf263880a9a3fac70?s=40&d=mp"
+                id="footer-gravatar-avatar"
+                src="https://www.gravatar.com/avatar/45f9e6ff5a1ed8b109f19dc13f59c26e7d39fceb75f9344ac30ea6db18f6fbde?s=40&d=mp"
                 width={20}
               />
             </a>

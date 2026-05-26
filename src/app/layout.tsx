@@ -91,9 +91,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <script async src="https://secure.gravatar.com/js/gprofiles.js" />
-      </head>
       <body
         className={`${archivo.variable} ${archivoHeading.variable} ${ibmPlexMono.variable}`}
       >
