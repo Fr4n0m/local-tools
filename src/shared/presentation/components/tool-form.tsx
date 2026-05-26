@@ -179,7 +179,7 @@ export function ToolSelect({
     }
   };
 
-  const sizeClass = size === "sm" ? "h-10 px-2.5" : "px-3 py-3";
+  const sizeClass = size === "sm" ? "h-9 px-2.5" : "px-3 py-3";
 
   return (
     <div className={cn("relative", className)} ref={containerRef}>

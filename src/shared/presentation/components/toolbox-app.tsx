@@ -296,7 +296,7 @@ export function ToolboxApp() {
                   onChange={(val) => setLanguage(val as Language)}
                 />
                 <button
-                  className="h-10 rounded-md border border-border/60 bg-background px-3 text-xs font-medium"
+                  className="h-9 rounded-md border border-border/60 bg-background px-3 text-xs font-medium"
                   onClick={() =>
                     setDensity(
                       density === "comfortable" ? "compact" : "comfortable",
@@ -309,7 +309,7 @@ export function ToolboxApp() {
                   {density === "compact" ? text.compact : text.comfortable}
                 </button>
                 <button
-                  className="h-10 w-10 rounded-md border border-border/60 bg-background p-0"
+                  className="h-9 w-9 rounded-md border border-border/60 bg-background p-0"
                   onClick={() => setTheme(theme === "light" ? "dark" : "light")}
                   type="button"
                   aria-label={text.theme}
@@ -321,7 +321,7 @@ export function ToolboxApp() {
                   )}
                 </button>
                 <a
-                  className="inline-flex h-10 items-center rounded-md border border-border/60 bg-background px-3 text-xs font-medium hover:bg-secondary"
+                  className="inline-flex h-9 items-center rounded-md border border-border/60 bg-background px-3 text-xs font-medium hover:bg-secondary"
                   href="https://buymeacoffee.com/fran11799"
                   rel="noreferrer"
                   target="_blank"
