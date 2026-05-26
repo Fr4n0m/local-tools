@@ -12,14 +12,7 @@ import {
 } from "@tabler/icons-react";
 
 import { AppLogo } from "@/shared/presentation/components/app-logo";
-import {
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-  useCallback,
-} from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
 import { tools } from "@/modules/tool-registry/application/tools";
 import type { ToolId } from "@/modules/tool-registry/domain/tool";
@@ -129,102 +122,7 @@ function getCategoryStyles(category: string) {
   };
 }
 
-const LANGUAGES: { value: Language; flag: string; label: string }[] = [
-  { value: "en", flag: "🇺🇸", label: "English" },
-  { value: "es", flag: "🇪🇸", label: "Español" },
-];
-
-function LanguageDropdown({
-  language,
-  onSelect,
-}: {
-  language: Language;
-  onSelect: (lang: Language) => void;
-}) {
-  const [open, setOpen] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const close = useCallback(() => setOpen(false), []);
-
-  useEffect(() => {
-    if (!open) return;
-    const handler = (e: MouseEvent) => {
-      if (!containerRef.current?.contains(e.target as Node)) close();
-    };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, [open, close]);
-
-  const current = LANGUAGES.find((l) => l.value === language) ?? LANGUAGES[0];
-
-  return (
-    <div ref={containerRef} style={{ position: "relative" }}>
-      <button
-        aria-expanded={open}
-        aria-haspopup="listbox"
-        className="flex h-6 w-6 items-center justify-center rounded-md text-sidebar-foreground/70 transition-colors hover:bg-sidebar-foreground/12 hover:text-sidebar-foreground"
-        onClick={() => setOpen((v) => !v)}
-        title={current.label}
-        type="button"
-      >
-        <span aria-hidden style={{ fontSize: "13px", lineHeight: 1 }}>
-          {current.flag}
-        </span>
-      </button>
-      {open && (
-        <div
-          role="listbox"
-          style={{
-            position: "absolute",
-            top: "calc(100% + 4px)",
-            left: "50%",
-            transform: "translateX(-50%)",
-            background: "#111417",
-            border: "1px solid rgba(255,255,255,0.12)",
-            borderRadius: "8px",
-            padding: "3px",
-            zIndex: 50,
-            minWidth: "110px",
-            boxShadow: "0 8px 24px rgba(0,0,0,0.5)",
-          }}
-        >
-          {LANGUAGES.map((lang) => (
-            <button
-              aria-selected={lang.value === language}
-              key={lang.value}
-              onClick={() => {
-                onSelect(lang.value);
-                close();
-              }}
-              role="option"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "7px",
-                width: "100%",
-                padding: "5px 8px",
-                borderRadius: "5px",
-                fontSize: "12px",
-                fontWeight: lang.value === language ? 600 : 400,
-                color:
-                  lang.value === language ? "#fff" : "rgba(255,255,255,0.65)",
-                background:
-                  lang.value === language
-                    ? "rgba(255,255,255,0.08)"
-                    : "transparent",
-                cursor: "pointer",
-              }}
-              type="button"
-            >
-              <span style={{ fontSize: "15px" }}>{lang.flag}</span>
-              {lang.label}
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
+const LANGUAGE_FLAGS: Record<Language, string> = { en: "🇺🇸", es: "🇪🇸" };
 
 export function ToolboxApp() {
   const [language, setLanguage] = useState<Language>("en");
@@ -503,7 +401,19 @@ function Sidebar({
       <div className="flex items-center justify-between px-1">
         <AppLogo className="text-sidebar-foreground" />
         <div className="flex items-center gap-0.5 rounded-lg bg-black p-0.5">
-          <LanguageDropdown language={language} onSelect={onLanguageSelect} />
+          <button
+            aria-label={text.language}
+            className="flex h-6 w-6 items-center justify-center rounded-md text-sidebar-foreground/70 transition-colors hover:bg-sidebar-foreground/12 hover:text-sidebar-foreground"
+            onClick={() => onLanguageSelect(language === "en" ? "es" : "en")}
+            title={
+              language === "en" ? "Switch to Español" : "Switch to English"
+            }
+            type="button"
+          >
+            <span aria-hidden style={{ fontSize: "13px", lineHeight: 1 }}>
+              {LANGUAGE_FLAGS[language]}
+            </span>
+          </button>
           <button
             aria-label={text.density}
             className="flex h-6 w-6 items-center justify-center rounded-md text-sidebar-foreground/70 transition-colors hover:bg-sidebar-foreground/12 hover:text-sidebar-foreground"
