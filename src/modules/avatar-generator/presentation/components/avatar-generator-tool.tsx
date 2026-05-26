@@ -13,6 +13,7 @@ import es from "@/modules/avatar-generator/presentation/i18n/es.json";
 import { downloadBlob, downloadTextFile } from "@/shared/lib/download";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import {
+  ToolColorPicker,
   ToolField,
   ToolInput,
   ToolSection,
@@ -114,18 +115,10 @@ export function AvatarGeneratorTool({ language }: Props) {
           />
         </ToolField>
         <ToolField label={text.background}>
-          <ToolInput
-            onChange={(e) => setBackground(e.target.value)}
-            type="color"
-            value={background}
-          />
+          <ToolColorPicker onChange={setBackground} value={background} />
         </ToolField>
         <ToolField label={text.textColor}>
-          <ToolInput
-            onChange={(e) => setTextColor(e.target.value)}
-            type="color"
-            value={textColor}
-          />
+          <ToolColorPicker onChange={setTextColor} value={textColor} />
         </ToolField>
       </div>
 

@@ -13,6 +13,7 @@ import { copyTextToClipboard } from "@/shared/lib/clipboard";
 import { downloadTextFile } from "@/shared/lib/download";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import {
+  ToolColorPicker,
   ToolOutputBlock,
   ToolSection,
 } from "@/shared/presentation/components/tool-form";
@@ -50,14 +51,12 @@ export function MeshGradientTool({ language }: Props) {
         {stops.map((stop, index) => (
           <div className="rounded-md border p-3" key={`${stop.color}-${index}`}>
             <div className="grid grid-cols-3 gap-2">
-              <input
-                className="h-10 w-full rounded-md border bg-background/40 p-1"
-                onChange={(event) => {
+              <ToolColorPicker
+                onChange={(value) => {
                   const next = [...stops];
-                  next[index] = { ...next[index], color: event.target.value };
+                  next[index] = { ...next[index], color: value };
                   setStops(next);
                 }}
-                type="color"
                 value={stop.color}
               />
               <input

@@ -11,6 +11,7 @@ import es from "@/modules/loader-maker/presentation/i18n/es.json";
 import { copyTextToClipboard } from "@/shared/lib/clipboard";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import {
+  ToolColorPicker,
   ToolField,
   ToolInput,
   ToolOutputBlock,
@@ -53,11 +54,7 @@ export function LoaderMakerTool({ language }: Props) {
           />
         </ToolField>
         <ToolField label={text.color}>
-          <ToolInput
-            onChange={(event) => setColor(event.target.value)}
-            type="color"
-            value={color}
-          />
+          <ToolColorPicker onChange={setColor} value={color} />
         </ToolField>
         <ToolField label={text.size}>
           <ToolInput

@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { IconCaretDownFilled, IconHexagon } from "@tabler/icons-react";
+import { HexColorPicker } from "react-colorful";
 
 import { cn } from "@/shared/lib/utils";
 
@@ -103,6 +104,78 @@ export function ToolSwitch({
       role="switch"
       type="checkbox"
     />
+  );
+}
+
+type ToolColorPickerProps = {
+  value: string;
+  onChange: (value: string) => void;
+  className?: string;
+};
+
+function normalizeHex(value: string): string {
+  const v = value.trim();
+  if (!/^#?[0-9a-fA-F]{6}$/.test(v)) {
+    return "#000000";
+  }
+  return v.startsWith("#") ? v.toLowerCase() : `#${v.toLowerCase()}`;
+}
+
+export function ToolColorPicker({
+  value,
+  onChange,
+  className,
+}: ToolColorPickerProps) {
+  const [open, setOpen] = React.useState(false);
+  const [draft, setDraft] = React.useState(value);
+  const rootRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    if (!open) return;
+    const onMouseDown = (event: MouseEvent) => {
+      if (!rootRef.current?.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", onMouseDown);
+    return () => document.removeEventListener("mousedown", onMouseDown);
+  }, [open]);
+
+  return (
+    <div className={cn("relative", className)} ref={rootRef}>
+      <button
+        className="flex h-9 w-full items-center gap-2 rounded-md border bg-background/40 px-2.5 text-left text-xs"
+        onClick={() =>
+          setOpen((s) => {
+            const next = !s;
+            if (next) {
+              setDraft(value);
+            }
+            return next;
+          })
+        }
+        type="button"
+      >
+        <span
+          aria-hidden
+          className="h-5 w-5 rounded-md border border-border/60"
+          style={{ backgroundColor: value }}
+        />
+        <span className="font-mono">{value}</span>
+      </button>
+
+      {open ? (
+        <div className="absolute left-0 top-full z-50 mt-1 w-56 rounded-md border bg-background p-3 shadow-lg">
+          <HexColorPicker color={value} onChange={onChange} />
+          <input
+            className="mt-2 w-full rounded-md border bg-background/40 px-2.5 py-1.5 font-mono text-xs"
+            onBlur={() => onChange(normalizeHex(draft))}
+            onChange={(event) => setDraft(event.target.value)}
+            value={draft}
+          />
+        </div>
+      ) : null}
+    </div>
   );
 }
 

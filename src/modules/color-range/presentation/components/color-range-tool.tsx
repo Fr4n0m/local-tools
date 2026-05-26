@@ -11,6 +11,7 @@ import es from "@/modules/color-range/presentation/i18n/es.json";
 import { copyTextToClipboard } from "@/shared/lib/clipboard";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import {
+  ToolColorPicker,
   ToolField,
   ToolInput,
   ToolOutputBlock,
@@ -41,12 +42,7 @@ export function ColorRangeTool({ language }: Props) {
     <ToolSection title={text.title}>
       <div className="grid gap-3 md:grid-cols-3">
         <ToolField htmlFor="color-range-base" label={text.baseColor}>
-          <ToolInput
-            id="color-range-base"
-            onChange={(event) => setBaseColor(event.target.value)}
-            type="color"
-            value={baseColor}
-          />
+          <ToolColorPicker onChange={setBaseColor} value={baseColor} />
         </ToolField>
         <ToolField htmlFor="color-range-name" label={text.scaleName}>
           <ToolInput
