@@ -248,12 +248,22 @@ export function ToolColorPicker({
       </button>
 
       {open ? (
-        <div className="absolute left-0 top-full z-50 mt-1 w-56 rounded-md border bg-background p-3 shadow-lg">
+        <div
+          className="absolute left-0 top-full z-50 mt-1 w-56 rounded-md border bg-background p-3 shadow-lg"
+          onClick={(e) => e.stopPropagation()}
+        >
           <HexColorPicker color={value} onChange={onChange} />
           <input
             className="mt-2 w-full rounded-md border bg-background/40 px-2.5 py-1.5 font-mono text-xs"
             onBlur={() => onChange(normalizeHex(draft))}
             onChange={(event) => setDraft(event.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                onChange(normalizeHex(draft));
+                setOpen(false);
+                setRecentColors(saveRecentColor(normalizeHex(draft)));
+              }
+            }}
             value={draft}
           />
           {recentOnly.length > 0 || savedColors.length > 0 ? (
