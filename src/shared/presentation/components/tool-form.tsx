@@ -256,19 +256,19 @@ export function ToolColorPicker({
             onChange={(event) => setDraft(event.target.value)}
             value={draft}
           />
-          {recentOnly.length > 0 ? (
+          {recentOnly.length > 0 || savedColors.length > 0 ? (
             <div className="mt-2.5 border-t pt-2.5">
               <p className="mb-1.5 text-[0.65rem] font-semibold uppercase tracking-widest opacity-40">
                 Recent
               </p>
               <div className="flex flex-wrap gap-1.5">
-                {recentOnly.map((c) => {
+                {[...recentOnly, ...savedColors].map((c) => {
                   const isSaved = savedSet.has(c);
                   return (
                     <div className="group/swatch relative" key={c}>
                       <button
                         aria-label={c}
-                        className="h-5 w-5 rounded-md border border-border/60 dark:border-white/22 transition-transform hover:scale-110"
+                        className={`h-5 w-5 rounded-md border transition-transform hover:scale-110 ${isSaved ? "border-foreground/40 dark:border-white/50 ring-1 ring-foreground/20 dark:ring-white/20" : "border-border/60 dark:border-white/22"}`}
                         onClick={() => {
                           onChange(c);
                           setDraft(c);
@@ -302,43 +302,6 @@ export function ToolColorPicker({
                     </div>
                   );
                 })}
-              </div>
-            </div>
-          ) : null}
-          {savedColors.length > 0 ? (
-            <div className="mt-2.5 border-t pt-2.5">
-              <p className="mb-1.5 text-[0.65rem] font-semibold uppercase tracking-widest opacity-40">
-                Saved
-              </p>
-              <div className="flex flex-wrap gap-1.5">
-                {savedColors.map((c) => (
-                  <div className="group/saved relative" key={c}>
-                    <button
-                      aria-label={c}
-                      className="h-5 w-5 rounded-md border border-border/60 dark:border-white/22 transition-transform hover:scale-110"
-                      onClick={() => {
-                        onChange(c);
-                        setDraft(c);
-                      }}
-                      style={{ backgroundColor: c }}
-                      title={c}
-                      type="button"
-                    />
-                    <button
-                      aria-label={`Remove ${c} from saved`}
-                      className="absolute -right-1 -top-1 hidden h-3 w-3 items-center justify-center rounded-full bg-background shadow group-hover/saved:flex"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setSavedColors(toggleSavedColor(c));
-                      }}
-                      style={{ border: "1px solid currentColor", opacity: 0.7 }}
-                      title="Remove from saved"
-                      type="button"
-                    >
-                      <IconX size={6} strokeWidth={3} />
-                    </button>
-                  </div>
-                ))}
               </div>
             </div>
           ) : null}
