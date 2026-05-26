@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { IconCaretDownFilled, IconHexagon } from "@tabler/icons-react";
+import { IconChevronDown, IconHexagon } from "@tabler/icons-react";
 import { HexColorPicker } from "react-colorful";
 
 import { cn } from "@/shared/lib/utils";
@@ -309,7 +309,7 @@ export function ToolSelect({
         type="button"
       >
         <span>{selectedOption?.label}</span>
-        <IconCaretDownFilled
+        <IconChevronDown
           aria-hidden
           className={cn(
             "shrink-0 text-foreground/60 transition-transform duration-150",
