@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import "@gravatar-com/hovercards/dist/style.css";
 import {
   IconAlertCircle,
+  IconBrandGithub,
+  IconCoffee,
   IconFileText,
   IconShieldLock,
 } from "@tabler/icons-react";
@@ -174,6 +176,7 @@ export function GlobalFooter() {
                 rel="noreferrer"
                 target="_blank"
               >
+                <IconBrandGithub aria-hidden size={13} />
                 {text.footer.suggestCta}
               </a>
               <a
@@ -182,6 +185,7 @@ export function GlobalFooter() {
                 rel="noreferrer"
                 target="_blank"
               >
+                <IconCoffee aria-hidden size={13} />
                 {text.supportCta}
               </a>
             </div>
