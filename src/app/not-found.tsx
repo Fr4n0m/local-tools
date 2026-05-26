@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { IconArrowLeft } from "@tabler/icons-react";
 import { AppLogo } from "@/shared/presentation/components/app-logo";
 
 export default function NotFound() {
@@ -83,19 +84,26 @@ export default function NotFound() {
             style={{
               display: "inline-flex",
               alignItems: "center",
-              gap: "0.4rem",
-              height: "2.25rem",
-              paddingInline: "1.1rem",
-              borderRadius: "0.6rem",
-              background: "var(--color-primary, #fff)",
+              gap: "0.45rem",
+              height: "2.5rem",
+              paddingInline: "1.25rem",
+              borderRadius: "0.65rem",
+              border: "1px solid rgba(255,255,255,0.18)",
+              background: "var(--color-foreground, #fff)",
               color: "var(--color-background, #000)",
               fontWeight: 700,
-              fontSize: "0.82rem",
+              fontSize: "0.85rem",
               textDecoration: "none",
               letterSpacing: "-0.01em",
+              lineHeight: 1,
             }}
           >
-            ← Back to LocalTools
+            <IconArrowLeft
+              size={15}
+              strokeWidth={2.5}
+              style={{ flexShrink: 0 }}
+            />
+            Back to LocalTools
           </Link>
         </div>
 
