@@ -1,7 +1,12 @@
 "use client";
-
-import { IconHeart } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
+import {
+  IconAlertCircle,
+  IconFileText,
+  IconShieldLock,
+} from "@tabler/icons-react";
+import { tools } from "@/modules/tool-registry/application/tools";
+import type { Tool } from "@/modules/tool-registry/domain/tool";
 import {
   resolveInitialLanguage,
   sharedMessages,
@@ -9,6 +14,26 @@ import {
 } from "@/shared/presentation/i18n";
 
 type Density = "comfortable" | "compact";
+const FOOTER_TOOL_COUNT = 6;
+const FOOTER_ROTATE_MS = 30000;
+const INITIAL_FOOTER_TOOLS = tools.slice(0, FOOTER_TOOL_COUNT);
+
+function pickRandomTools(previousIds: string[] = []): Tool[] {
+  const previousSet = new Set(previousIds);
+  const pool = tools.filter((tool) => !previousSet.has(tool.id));
+  const source = pool.length >= FOOTER_TOOL_COUNT ? pool : tools;
+  const shuffled = [...source].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, FOOTER_TOOL_COUNT);
+}
+
+function pickReplacementTool(currentIds: string[]): Tool {
+  const currentSet = new Set(currentIds);
+  const pool = tools.filter((tool) => !currentSet.has(tool.id));
+  if (pool.length === 0) {
+    return tools[Math.floor(Math.random() * tools.length)];
+  }
+  return pool[Math.floor(Math.random() * pool.length)];
+}
 
 export function GlobalFooter() {
   const [language, setLanguage] = useState<Language>(() =>
@@ -21,6 +46,9 @@ export function GlobalFooter() {
     const storedDensity = window.localStorage.getItem("localtools.density");
     return storedDensity === "compact" ? "compact" : "comfortable";
   });
+  const [footerTools, setFooterTools] = useState<Tool[]>(() =>
+    pickRandomTools(),
+  );
 
   useEffect(() => {
     const onStorage = (event: StorageEvent) => {
@@ -50,6 +78,26 @@ export function GlobalFooter() {
     };
   }, []);
 
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setFooterTools((previous) => {
+        if (previous.length === 0) {
+          return pickRandomTools();
+        }
+
+        const next = [...previous];
+        const replaceIndex = Math.floor(Math.random() * next.length);
+        const replacement = pickReplacementTool(
+          previous.map((tool) => tool.id),
+        );
+        next[replaceIndex] = replacement;
+        return next;
+      });
+    }, FOOTER_ROTATE_MS);
+
+    return () => window.clearInterval(timer);
+  }, []);
+
   if (density === "compact") {
     return null;
   }
@@ -58,69 +106,78 @@ export function GlobalFooter() {
 
   return (
     <footer className="site-footer">
-      <div className="site-footer__grid">
-        <section className="site-footer__card">
-          <div className="space-y-3">
+      <div className="site-footer__inner">
+        <div className="site-footer__grid">
+          <section className="site-footer__column">
             <p className="site-footer__title">{text.footer.suggestTitle}</p>
             <p className="site-footer__muted">{text.footer.logoPlaceholder}</p>
-          </div>
-          <div>
-            <a className="site-footer__btn" href="#newsletter-banner">
-              <IconHeart size={15} />
-              {text.footer.suggestCta}
-            </a>
-            <p className="site-footer__muted">{text.footer.brandLine}</p>
-          </div>
-        </section>
+            <div className="site-footer__actions">
+              <a className="site-footer__subscribe-link" href="#">
+                {text.footer.suggestCta}
+              </a>
+            </div>
+          </section>
 
-        <section className="site-footer__card">
-          <p className="site-footer__title">{text.footer.tagsTitle}</p>
-          <ul className="site-footer__tags">
-            {text.footer.tags.map((tag) => (
-              <li key={tag.href}>
-                <a className="site-footer__tag-link" href={tag.href}>
-                  {tag.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </section>
+          <section className="site-footer__column">
+            <p className="site-footer__title">{text.footer.tagsTitle}</p>
+            <ul className="site-footer__tags">
+              {footerTools.map((tool) => {
+                const ToolIcon = tool.icon;
+                return (
+                  <li key={tool.id}>
+                    <a
+                      className="aside-tool-btn site-footer__tool-link"
+                      href={`/?tool=${tool.id}`}
+                    >
+                      <span aria-hidden className="shrink-0">
+                        <ToolIcon size={14} />
+                      </span>
+                      <span>{tool.name[language]}</span>
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
 
-        <section className="site-footer__card">
-          <div>
+          <section className="site-footer__column">
             <p className="site-footer__title">{text.footer.supportTitle}</p>
-            <a
-              className="site-footer__btn"
-              href="https://buymeacoffee.com/fran11799"
-              rel="noreferrer"
-              target="_blank"
-            >
-              {text.supportCta}
-            </a>
-          </div>
+            <div className="site-footer__actions">
+              <a
+                className="site-footer__btn"
+                href="https://buymeacoffee.com/fran11799"
+                rel="noreferrer"
+                target="_blank"
+              >
+                {text.supportCta}
+              </a>
+            </div>
+          </section>
+        </div>
+
+        <div className="site-footer__bottom">
+          <p className="site-footer__brandline">{text.footer.brandLine}</p>
           <div className="site-footer__legal">
-            <a className="site-footer__btn" href="/privacy">
+            <a className="site-footer__legal-link" href="/privacy">
+              <IconShieldLock aria-hidden size={14} />
               {text.footer.privacyLink}
             </a>
-            <a className="site-footer__btn" href="/terms">
+            <a className="site-footer__legal-link" href="/terms">
+              <IconFileText aria-hidden size={14} />
               {text.footer.termsLink}
             </a>
             <a
-              className="site-footer__btn"
+              className="site-footer__legal-link"
               href={text.footer.reportUrl}
               rel="noreferrer"
               target="_blank"
             >
+              <IconAlertCircle aria-hidden size={14} />
               {text.footer.reportLink}
             </a>
           </div>
-        </section>
+        </div>
       </div>
-
-      <section className="site-footer__newsletter" id="newsletter-banner">
-        <p className="site-footer__title">{text.footer.newsletterTitle}</p>
-        <p className="mt-1">{text.footer.newsletterHint}</p>
-      </section>
     </footer>
   );
 }

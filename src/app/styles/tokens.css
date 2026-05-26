@@ -53,6 +53,7 @@
   --color-strong-foreground: #212529;
   --color-canvas-start: #f8f9fa;
   --color-canvas-end: #dee2e6;
+  --canvas-pattern-color: rgba(0, 0, 0, 0.08);
 }
 
 .dark {
@@ -73,6 +74,7 @@
   --color-strong-foreground: #f8f9fa;
   --color-canvas-start: #000000;
   --color-canvas-end: #0a0b0d;
+  --canvas-pattern-color: rgba(255, 255, 255, 0.08);
 }
 
 @theme inline {
@@ -93,4 +95,5 @@
   --color-strong-foreground: var(--color-strong-foreground);
   --color-canvas-start: var(--color-canvas-start);
   --color-canvas-end: var(--color-canvas-end);
+  --canvas-pattern-color: var(--canvas-pattern-color);
 }

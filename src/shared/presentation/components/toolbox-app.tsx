@@ -1,6 +1,12 @@
 "use client";
 
-import { IconMenu2, IconMoon, IconSearch, IconSun } from "@tabler/icons-react";
+import {
+  IconChevronDown,
+  IconMenu2,
+  IconMoon,
+  IconSearch,
+  IconSun,
+} from "@tabler/icons-react";
 
 import { ToolSelect } from "@/shared/presentation/components/tool-form";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
@@ -352,8 +358,13 @@ export function ToolboxApp() {
           </section>
           <aside className="mt-3 rounded-md border border-border/40 bg-panel/20 px-3 py-2 text-xs text-foreground/75">
             <details>
-              <summary className="cursor-pointer select-none font-medium">
-                {text.privacyTitle}
+              <summary className="privacy-summary cursor-pointer select-none font-medium">
+                <span>{text.privacyTitle}</span>
+                <IconChevronDown
+                  aria-hidden
+                  className="privacy-summary__icon"
+                  size={14}
+                />
               </summary>
               <p className="mt-2 text-foreground/80">{text.privacy}</p>
               <ul className="mt-2 list-disc space-y-1 pl-5 text-foreground/80">
