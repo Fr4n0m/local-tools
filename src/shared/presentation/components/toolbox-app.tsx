@@ -502,7 +502,7 @@ function Sidebar({
     >
       <div className="flex items-center justify-between px-1">
         <AppLogo className="text-sidebar-foreground" />
-        <div className="flex items-center gap-0.5 rounded-lg border border-sidebar-foreground/15 bg-sidebar-foreground/8 p-0.5">
+        <div className="flex items-center gap-0.5 rounded-lg bg-black p-0.5">
           <LanguageDropdown language={language} onSelect={onLanguageSelect} />
           <button
             aria-label={text.density}
