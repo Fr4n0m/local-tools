@@ -1,7 +1,12 @@
 "use client";
 
 import * as React from "react";
-import { IconChevronDown, IconHexagon } from "@tabler/icons-react";
+import {
+  IconChevronDown,
+  IconHexagon,
+  IconPlus,
+  IconX,
+} from "@tabler/icons-react";
 import { HexColorPicker } from "react-colorful";
 
 import { cn } from "@/shared/lib/utils";
@@ -108,11 +113,12 @@ export function ToolSwitch({
 }
 
 const RECENT_COLORS_KEY = "localtools.recent-colors";
+const SAVED_COLORS_KEY = "localtools.saved-colors";
 const RECENT_COLORS_MAX = 10;
 
-function loadRecentColors(): string[] {
+function loadColors(key: string): string[] {
   try {
-    const raw = localStorage.getItem(RECENT_COLORS_KEY);
+    const raw = localStorage.getItem(key);
     if (!raw) return [];
     const parsed = JSON.parse(raw);
     return Array.isArray(parsed)
@@ -123,6 +129,14 @@ function loadRecentColors(): string[] {
   }
 }
 
+function loadRecentColors(): string[] {
+  return loadColors(RECENT_COLORS_KEY);
+}
+
+function loadSavedColors(): string[] {
+  return loadColors(SAVED_COLORS_KEY);
+}
+
 function saveRecentColor(color: string): string[] {
   const hex = color.toLowerCase();
   const existing = loadRecentColors().filter((c) => c !== hex);
@@ -131,6 +145,21 @@ function saveRecentColor(color: string): string[] {
     localStorage.setItem(RECENT_COLORS_KEY, JSON.stringify(updated));
     window.dispatchEvent(
       new CustomEvent("localtools:recent-colors-change", { detail: updated }),
+    );
+  } catch {}
+  return updated;
+}
+
+function toggleSavedColor(color: string): string[] {
+  const hex = color.toLowerCase();
+  const existing = loadSavedColors();
+  const updated = existing.includes(hex)
+    ? existing.filter((c) => c !== hex)
+    : [hex, ...existing];
+  try {
+    localStorage.setItem(SAVED_COLORS_KEY, JSON.stringify(updated));
+    window.dispatchEvent(
+      new CustomEvent("localtools:saved-colors-change", { detail: updated }),
     );
   } catch {}
   return updated;
@@ -160,15 +189,22 @@ export function ToolColorPicker({
   const [recentColors, setRecentColors] = React.useState<string[]>(() =>
     typeof window === "undefined" ? [] : loadRecentColors(),
   );
+  const [savedColors, setSavedColors] = React.useState<string[]>(() =>
+    typeof window === "undefined" ? [] : loadSavedColors(),
+  );
   const rootRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
-    const onUpdate = (e: Event) => {
+    const onRecent = (e: Event) =>
       setRecentColors((e as CustomEvent<string[]>).detail);
+    const onSaved = (e: Event) =>
+      setSavedColors((e as CustomEvent<string[]>).detail);
+    window.addEventListener("localtools:recent-colors-change", onRecent);
+    window.addEventListener("localtools:saved-colors-change", onSaved);
+    return () => {
+      window.removeEventListener("localtools:recent-colors-change", onRecent);
+      window.removeEventListener("localtools:saved-colors-change", onSaved);
     };
-    window.addEventListener("localtools:recent-colors-change", onUpdate);
-    return () =>
-      window.removeEventListener("localtools:recent-colors-change", onUpdate);
   }, []);
 
   React.useEffect(() => {
@@ -182,6 +218,9 @@ export function ToolColorPicker({
     document.addEventListener("mousedown", onMouseDown);
     return () => document.removeEventListener("mousedown", onMouseDown);
   }, [open, value]);
+
+  const savedSet = new Set(savedColors);
+  const recentOnly = recentColors.filter((c) => !savedSet.has(c));
 
   return (
     <div className={cn("relative", className)} ref={rootRef}>
@@ -217,25 +256,88 @@ export function ToolColorPicker({
             onChange={(event) => setDraft(event.target.value)}
             value={draft}
           />
-          {recentColors.length > 0 ? (
+          {recentOnly.length > 0 ? (
             <div className="mt-2.5 border-t pt-2.5">
               <p className="mb-1.5 text-[0.65rem] font-semibold uppercase tracking-widest opacity-40">
                 Recent
               </p>
               <div className="flex flex-wrap gap-1.5">
-                {recentColors.map((c) => (
-                  <button
-                    aria-label={c}
-                    className="h-5 w-5 rounded-md border border-border/60 dark:border-white/22 transition-transform hover:scale-110"
-                    key={c}
-                    onClick={() => {
-                      onChange(c);
-                      setDraft(c);
-                    }}
-                    style={{ backgroundColor: c }}
-                    title={c}
-                    type="button"
-                  />
+                {recentOnly.map((c) => {
+                  const isSaved = savedSet.has(c);
+                  return (
+                    <div className="group/swatch relative" key={c}>
+                      <button
+                        aria-label={c}
+                        className="h-5 w-5 rounded-md border border-border/60 dark:border-white/22 transition-transform hover:scale-110"
+                        onClick={() => {
+                          onChange(c);
+                          setDraft(c);
+                        }}
+                        style={{ backgroundColor: c }}
+                        title={c}
+                        type="button"
+                      />
+                      <button
+                        aria-label={
+                          isSaved ? `Remove ${c} from saved` : `Save ${c}`
+                        }
+                        className="absolute -right-1 -top-1 hidden h-3 w-3 items-center justify-center rounded-full bg-background shadow group-hover/swatch:flex"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSavedColors(toggleSavedColor(c));
+                        }}
+                        style={{
+                          border: "1px solid currentColor",
+                          opacity: 0.7,
+                        }}
+                        title={isSaved ? "Remove from saved" : "Save color"}
+                        type="button"
+                      >
+                        {isSaved ? (
+                          <IconX size={6} strokeWidth={3} />
+                        ) : (
+                          <IconPlus size={6} strokeWidth={3} />
+                        )}
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          ) : null}
+          {savedColors.length > 0 ? (
+            <div className="mt-2.5 border-t pt-2.5">
+              <p className="mb-1.5 text-[0.65rem] font-semibold uppercase tracking-widest opacity-40">
+                Saved
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                {savedColors.map((c) => (
+                  <div className="group/saved relative" key={c}>
+                    <button
+                      aria-label={c}
+                      className="h-5 w-5 rounded-md border border-border/60 dark:border-white/22 transition-transform hover:scale-110"
+                      onClick={() => {
+                        onChange(c);
+                        setDraft(c);
+                      }}
+                      style={{ backgroundColor: c }}
+                      title={c}
+                      type="button"
+                    />
+                    <button
+                      aria-label={`Remove ${c} from saved`}
+                      className="absolute -right-1 -top-1 hidden h-3 w-3 items-center justify-center rounded-full bg-background shadow group-hover/saved:flex"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSavedColors(toggleSavedColor(c));
+                      }}
+                      style={{ border: "1px solid currentColor", opacity: 0.7 }}
+                      title="Remove from saved"
+                      type="button"
+                    >
+                      <IconX size={6} strokeWidth={3} />
+                    </button>
+                  </div>
                 ))}
               </div>
             </div>
