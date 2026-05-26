@@ -443,7 +443,7 @@ function Sidebar({
         />
         <input
           aria-label={text.searchPlaceholder}
-          className="h-8 w-full rounded-md border border-sidebar-foreground/20 bg-sidebar/40 py-1.5 pl-10 pr-3 text-xs text-sidebar-foreground placeholder:text-sidebar-foreground/55"
+          className="aside-search h-8 w-full rounded-md border border-sidebar-foreground/20 bg-sidebar/40 py-1.5 pl-10 pr-3 text-xs text-sidebar-foreground placeholder:text-sidebar-foreground/55"
           onChange={(event) => onSearchChange(event.target.value)}
           placeholder={text.searchPlaceholder}
           value={search}

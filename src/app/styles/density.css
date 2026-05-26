@@ -43,7 +43,9 @@
 }
 
 .density-compact
-  input:not([type="range"]):not([type="checkbox"]):not([type="radio"]),
+  input:not([type="range"]):not([type="checkbox"]):not([type="radio"]):not(
+    .aside-search
+  ),
 .density-compact textarea,
 .density-compact select {
   padding: 0.55rem 0.7rem;
