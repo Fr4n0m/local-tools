@@ -10,28 +10,30 @@ export function AppLogo({
   return (
     <div
       className={className}
-      style={{ display: "flex", alignItems: "center", gap: "8px", ...style }}
+      style={{
+        display: "flex",
+        alignItems: "flex-start",
+        gap: "8px",
+        ...style,
+      }}
     >
-      <svg aria-hidden fill="none" height="26" viewBox="0 0 26 26" width="26">
-        {/* border-only squircle */}
+      <svg aria-hidden fill="none" height="32" viewBox="0 0 26 26" width="32">
         <rect
           height="25"
-          rx="6.5"
+          rx="6"
           stroke="currentColor"
           strokeWidth="1"
           width="25"
           x="0.5"
           y="0.5"
         />
-        {/* 3 solid dots */}
-        <circle cx="9.5" cy="9.5" fill="currentColor" r="2" />
-        <circle cx="16.5" cy="9.5" fill="currentColor" r="2" />
-        <circle cx="9.5" cy="16.5" fill="currentColor" r="2" />
-        {/* 4th dot hollow */}
+        <circle cx="9.5" cy="9.5" fill="currentColor" r="2.5" />
+        <circle cx="16.5" cy="9.5" fill="currentColor" r="2.5" />
+        <circle cx="9.5" cy="16.5" fill="currentColor" r="2.5" />
         <circle
           cx="16.5"
           cy="16.5"
-          r="1.5"
+          r="2"
           stroke="currentColor"
           strokeWidth="1"
         />
@@ -47,7 +49,7 @@ export function AppLogo({
         <span
           style={{
             fontWeight: 100,
-            fontSize: "9px",
+            fontSize: "10px",
             letterSpacing: "0.22em",
             textTransform: "uppercase",
           }}
@@ -57,7 +59,7 @@ export function AppLogo({
         <span
           style={{
             fontWeight: 900,
-            fontSize: "13px",
+            fontSize: "23px",
             letterSpacing: "-0.04em",
             textTransform: "uppercase",
           }}
