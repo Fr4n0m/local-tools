@@ -143,7 +143,7 @@ export function GlobalFooter() {
             </ul>
           </section>
 
-          <section className="site-footer__column">
+          <section className="site-footer__column site-footer__column--right">
             <p className="site-footer__title">{text.footer.supportTitle}</p>
             <div className="site-footer__actions">
               <a
