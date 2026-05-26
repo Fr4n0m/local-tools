@@ -11,6 +11,7 @@ import {
 import { HexColorPicker } from "react-colorful";
 
 import { cn } from "@/shared/lib/utils";
+import { CountUp as CountUpInline } from "@/shared/presentation/components/count-up";
 
 type ToolSectionProps = {
   title?: string;
@@ -523,6 +524,17 @@ type ToolSliderProps = {
   className?: string;
 };
 
+function parseDisplayValue(
+  display: string,
+): { num: number; suffix: string; decimals: number } | null {
+  const match = display.match(/^(-?\d+(?:\.\d+)?)(.*)$/);
+  if (!match) return null;
+  const raw = match[1];
+  const suffix = match[2] ?? "";
+  const decimals = raw.includes(".") ? raw.split(".")[1].length : 0;
+  return { num: parseFloat(raw), suffix, decimals };
+}
+
 export function ToolSlider({
   value,
   min,
@@ -532,6 +544,20 @@ export function ToolSlider({
   onChange,
   className,
 }: ToolSliderProps) {
+  const parsed = parseDisplayValue(displayValue);
+  const [anim, dispatchAnim] = React.useReducer(
+    (state: { from: number; to: number }, to: number) => ({
+      from: state.to,
+      to,
+    }),
+    { from: parsed?.num ?? 0, to: parsed?.num ?? 0 },
+  );
+
+  React.useEffect(() => {
+    if (parsed) dispatchAnim(parsed.num);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [displayValue]);
+
   return (
     <div className={cn("flex items-center gap-3", className)}>
       <input
@@ -548,9 +574,18 @@ export function ToolSlider({
         className="w-10 shrink-0 text-right text-sm tabular-nums text-foreground/70"
         role="status"
       >
-        <span className="num-tick" key={displayValue}>
-          {displayValue}
-        </span>
+        {parsed ? (
+          <CountUpInline
+            decimals={parsed.decimals}
+            from={anim.from}
+            suffix={parsed.suffix}
+            to={anim.to}
+          />
+        ) : (
+          <span className="num-tick" key={displayValue}>
+            {displayValue}
+          </span>
+        )}
       </span>
     </div>
   );
