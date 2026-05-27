@@ -1,7 +1,6 @@
 "use client";
 
 import NextImage from "next/image";
-import QRCode from "qrcode";
 import { useMemo, useState } from "react";
 
 import { buildQrPayloadUseCase } from "@/modules/qr-generator/application/build-qr-payload-use-case";
@@ -61,6 +60,7 @@ export function QrGeneratorTool({ language }: Props) {
 
     setError("");
     const payload = payloadResult.value;
+    const QRCode = (await import("qrcode")).default;
     const nextPng = await QRCode.toDataURL(payload, {
       width: size,
       margin: 2,

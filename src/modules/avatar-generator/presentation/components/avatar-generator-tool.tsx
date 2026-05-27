@@ -145,6 +145,8 @@ export function AvatarGeneratorTool({ language }: Props) {
         <img
           alt={text.preview}
           className="h-40 w-40 rounded-xl border bg-background/40 object-contain p-2"
+          fetchPriority="high"
+          loading="eager"
           src={previewUrl}
         />
       </div>

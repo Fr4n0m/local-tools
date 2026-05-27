@@ -18,9 +18,14 @@ type LegalPageProps = {
 const legalMessages = { en, es } as const;
 
 export function LegalPage({ docType }: LegalPageProps) {
-  const [language, setLanguage] = useState<Language>(() =>
-    typeof window === "undefined" ? "en" : resolveInitialLanguage(),
-  );
+  const [language, setLanguage] = useState<Language>("en");
+
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => {
+      setLanguage(resolveInitialLanguage());
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
 
   useEffect(() => {
     const onStorage = (event: StorageEvent) => {
