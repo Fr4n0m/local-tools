@@ -9,7 +9,7 @@ export function AppLogo({
 }) {
   return (
     <div
-      className={className}
+      className={`app-logo ${className ?? ""}`}
       style={{
         display: "flex",
         alignItems: "flex-start",

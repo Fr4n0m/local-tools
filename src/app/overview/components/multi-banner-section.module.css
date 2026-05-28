@@ -1,0 +1,106 @@
+.multiBanner {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 1.25rem;
+  min-height: calc(100dvh - 104px);
+  display: grid;
+  align-content: center;
+}
+.multiBannerShell {
+  display: grid;
+  gap: 1rem;
+}
+.storyEyebrow {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--color-foreground), transparent 36%);
+}
+.multiBannerHead h2 {
+  margin-top: 0.35rem;
+  font-size: clamp(1.9rem, 3vw, 2.9rem);
+  line-height: 1.03;
+  letter-spacing: -0.02em;
+}
+.multiBannerHead > p:last-child {
+  margin-top: 0.55rem;
+  max-width: 76ch;
+  color: color-mix(in oklab, var(--color-foreground), transparent 20%);
+}
+.multiBannerGrid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+.multiBannerGrid article {
+  border-radius: var(--radius-squircle);
+  border: 1px solid color-mix(in oklab, var(--color-border), transparent 8%);
+  padding: 0.95rem 1rem;
+  min-height: 160px;
+  display: grid;
+  align-content: end;
+}
+.multiBannerGrid h3 {
+  font-size: 1rem;
+}
+.multiBannerGrid p {
+  margin-top: 0.35rem;
+  font-size: 0.92rem;
+  line-height: 1.35;
+  color: color-mix(in oklab, var(--color-foreground), transparent 16%);
+}
+.bannerA {
+  grid-column: span 7;
+  background:
+    radial-gradient(
+      circle at 15% 20%,
+      color-mix(in oklab, var(--color-accent), transparent 82%) 0%,
+      transparent 50%
+    ),
+    color-mix(in oklab, var(--color-background), var(--color-secondary) 18%);
+}
+.bannerB {
+  grid-column: span 5;
+  background:
+    radial-gradient(
+      circle at 85% 20%,
+      color-mix(in oklab, var(--color-foreground), transparent 90%) 0%,
+      transparent 52%
+    ),
+    color-mix(in oklab, var(--color-background), var(--color-secondary) 16%);
+}
+.bannerC {
+  grid-column: span 4;
+  background:
+    radial-gradient(
+      circle at 20% 80%,
+      color-mix(in oklab, var(--color-accent), transparent 84%) 0%,
+      transparent 55%
+    ),
+    color-mix(in oklab, var(--color-background), var(--color-secondary) 16%);
+}
+.bannerD {
+  grid-column: span 8;
+  background:
+    radial-gradient(
+      circle at 78% 78%,
+      color-mix(in oklab, var(--color-foreground), transparent 90%) 0%,
+      transparent 50%
+    ),
+    color-mix(in oklab, var(--color-background), var(--color-secondary) 18%);
+}
+@media (max-width: 1024px) {
+  .multiBanner {
+    min-height: calc(100dvh - 88px);
+  }
+  .multiBannerGrid {
+    grid-template-columns: 1fr;
+  }
+  .bannerA,
+  .bannerB,
+  .bannerC,
+  .bannerD {
+    grid-column: auto;
+  }
+}

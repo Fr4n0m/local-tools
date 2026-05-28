@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { IconFileDescription, IconScale } from "@tabler/icons-react";
 import {
   resolveInitialLanguage,
   type Language,
 } from "@/shared/presentation/i18n";
+import { SimplePageHeader } from "@/shared/presentation/components/simple-page-header";
+import { PageDisplayControls } from "@/shared/presentation/components/page-display-controls";
 import en from "@/shared/presentation/i18n/legal/en.json";
 import es from "@/shared/presentation/i18n/legal/es.json";
 
@@ -33,40 +34,26 @@ export function LegalPage({ docType }: LegalPageProps) {
         setLanguage(resolveInitialLanguage());
       }
     };
+    const onLanguageChange = () => setLanguage(resolveInitialLanguage());
     window.addEventListener("storage", onStorage);
-    return () => window.removeEventListener("storage", onStorage);
+    window.addEventListener("localtools:language-change", onLanguageChange);
+    return () => {
+      window.removeEventListener("storage", onStorage);
+      window.removeEventListener(
+        "localtools:language-change",
+        onLanguageChange,
+      );
+    };
   }, []);
 
   const text = legalMessages[language];
   const document = useMemo(() => text[docType], [docType, text]);
 
   return (
-    <main className="mx-auto min-h-screen w-full max-w-4xl p-4 md:p-8">
-      <header className="mb-5 flex items-center justify-between gap-3">
-        <h1 className="flex items-center gap-2 text-2xl font-semibold">
-          {docType === "privacy" ? (
-            <IconFileDescription size={20} />
-          ) : (
-            <IconScale size={20} />
-          )}
-          {document.title}
-        </h1>
-        <div className="flex items-center gap-2">
-          <button
-            className={`rounded-md border px-2.5 py-1 text-xs ${language === "es" ? "bg-secondary" : ""}`}
-            onClick={() => setLanguage("es")}
-            type="button"
-          >
-            ES
-          </button>
-          <button
-            className={`rounded-md border px-2.5 py-1 text-xs ${language === "en" ? "bg-secondary" : ""}`}
-            onClick={() => setLanguage("en")}
-            type="button"
-          >
-            EN
-          </button>
-        </div>
+    <main className="page-frame min-h-screen py-6 md:py-8">
+      <SimplePageHeader rightSlot={<PageDisplayControls />} />
+      <header className="mb-5">
+        <h1 className="text-xl font-semibold md:text-2xl">{document.title}</h1>
       </header>
 
       <section className="space-y-5 rounded-xl border border-border/60 dark:border-white/22 bg-background/80 p-4 md:p-6">

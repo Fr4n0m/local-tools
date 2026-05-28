@@ -4,11 +4,13 @@ import {
   IconChevronDown,
   IconLayoutRows,
   IconLayoutDistributeVertical,
+  IconLayoutDashboard,
   IconMenu2,
   IconMoon,
   IconSearch,
   IconSun,
 } from "@tabler/icons-react";
+import Link from "next/link";
 
 import { AppLogo } from "@/shared/presentation/components/app-logo";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
@@ -130,6 +132,7 @@ export function ToolboxApp() {
   const [selectedToolId, setSelectedToolId] = useState<ToolId>(tools[0].id);
   const [search, setSearch] = useState("");
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
@@ -137,35 +140,43 @@ export function ToolboxApp() {
       setTheme(readInitialTheme());
       setDensity(readInitialDensity());
       setSelectedToolId(getInitialToolId());
+      setIsReady(true);
     });
 
     return () => window.cancelAnimationFrame(frame);
   }, []);
 
   useEffect(() => {
+    if (!isReady) return;
     document.documentElement.classList.toggle("dark", theme === "dark");
     window.localStorage.setItem("localtools.theme", theme);
-  }, [theme]);
+  }, [theme, isReady]);
 
   useEffect(() => {
+    if (!isReady) return;
     document.documentElement.lang = language;
     window.localStorage.setItem("localtools.language", language);
-  }, [language]);
+    window.dispatchEvent(
+      new CustomEvent("localtools:language-change", { detail: language }),
+    );
+  }, [language, isReady]);
 
   useEffect(() => {
+    if (!isReady) return;
     window.localStorage.setItem("localtools.density", density);
     window.dispatchEvent(
       new CustomEvent("localtools:density-change", { detail: density }),
     );
-  }, [density]);
+  }, [density, isReady]);
 
   useEffect(() => {
+    if (!isReady) return;
     window.localStorage.setItem("localtools.tool", selectedToolId);
 
     const nextUrl = new URL(window.location.href);
     nextUrl.searchParams.set("tool", selectedToolId);
     window.history.replaceState({}, "", nextUrl);
-  }, [selectedToolId]);
+  }, [selectedToolId, isReady]);
 
   useEffect(() => {
     const onPopState = () => {
@@ -398,7 +409,9 @@ function Sidebar({
       className="aside-fade-mask hide-scrollbar h-full space-y-4 overflow-y-auto px-3 py-5"
     >
       <div className="flex items-center justify-between px-1">
-        <AppLogo className="text-sidebar-foreground" />
+        <Link aria-label="Go to home" className="inline-flex" href="/">
+          <AppLogo className="text-sidebar-foreground" />
+        </Link>
         <div className="flex items-center gap-0.5 rounded-lg bg-black p-0.5">
           <button
             aria-label={text.language}
@@ -465,6 +478,18 @@ function Sidebar({
           title={text.categories[category as keyof typeof text.categories]}
         />
       ))}
+      <div className="mt-2 border-t border-sidebar-foreground/14 pt-3">
+        <Link
+          className="aside-tool-btn group flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-sm text-sidebar-foreground/88 hover:text-sidebar-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sidebar-foreground"
+          href="/"
+        >
+          <span aria-hidden className="tool-marker-dot h-1.5 w-1.5" />
+          <span aria-hidden className="shrink-0">
+            <IconLayoutDashboard size={15} />
+          </span>
+          <span className="font-medium">Home</span>
+        </Link>
+      </div>
     </nav>
   );
 }
