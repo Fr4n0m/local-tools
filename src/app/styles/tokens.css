@@ -74,7 +74,7 @@
   --color-strong-foreground: #f8f9fa;
   --color-canvas-start: #000000;
   --color-canvas-end: #0a0b0d;
-  --canvas-pattern-color: rgba(255, 255, 255, 0.05);
+  --canvas-pattern-color: rgba(255, 255, 255, 0.03);
 }
 
 @theme inline {

@@ -1,0 +1,14 @@
+# ✅ Commit format (project policy)
+# - Start every commit subject with ONE emoji.
+# - Emoji must relate to the change.
+# - Do not repeat the same emoji in two consecutive commits.
+# - 🚫 Forbidden emojis: :lipstick: and :sparkles:
+# - 🚫 Never add Co-Authored-By trailers or AI attribution lines.
+# - Keep subject concise and technical.
+#
+# Examples:
+# ♻️ refactor: split overview into section components
+# 🐛 fix: align story bubbles with timeline curve on resize
+# 🔧 chore: update roadmap status for home section 2
+
+🙂 <type>: <short technical summary>

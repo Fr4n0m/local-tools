@@ -141,15 +141,33 @@ export function OverviewExperience() {
       const heroTl = gsap.timeline({ defaults: { ease: "power3.out" } });
       heroTl
         .fromTo(
-          ".heroCopy",
-          { opacity: 0, y: 38 },
-          { opacity: 1, y: 0, duration: 0.95 },
+          ".heroCopy h1 span",
+          { opacity: 0, y: 26 },
+          { opacity: 1, y: 0, duration: 0.62, stagger: 0.08 },
+        )
+        .fromTo(
+          ".subLead",
+          { opacity: 0, y: 16 },
+          { opacity: 1, y: 0, duration: 0.48 },
+          "-=0.25",
+        )
+        .fromTo(
+          ".heroText",
+          { opacity: 0, y: 16 },
+          { opacity: 1, y: 0, duration: 0.52 },
+          "-=0.3",
+        )
+        .fromTo(
+          ".heroMeta article",
+          { opacity: 0, y: 14 },
+          { opacity: 1, y: 0, duration: 0.42, stagger: 0.08 },
+          "-=0.2",
         )
         .fromTo(
           ".heroAsset",
           { opacity: 0, x: 56, scale: 0.97 },
           { opacity: 1, x: 0, scale: 1, duration: 0.82, ease: "power2.out" },
-          "-=0.62",
+          "-=0.6",
         )
         .fromTo(
           ".heroActions > *",
@@ -426,7 +444,6 @@ export function OverviewExperience() {
 
   return (
     <main className={styles.page} ref={rootRef}>
-      <div className={styles.backdrop} aria-hidden="true" />
       <div className="page-frame">
         <SimplePageHeader rightSlot={<PageDisplayControls />} />
 

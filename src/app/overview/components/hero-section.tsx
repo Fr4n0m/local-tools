@@ -78,13 +78,13 @@ export function HeroSection({ text, onScrollNext }: HeroSectionProps) {
           </article>
         </div>
         <div className={`${styles.heroActions} heroActions`}>
-          <Link className={styles.primaryBtn} href="/#subscribe-updates">
+          <Link className={styles.primaryBtn} href="/tools?view=grid">
+            {text.heroCtaSecondary}
+            <IconRocket size={14} />
+          </Link>
+          <Link className={styles.secondaryBtn} href="/#subscribe-updates">
             {text.heroCtaPrimary}
             <IconBellRinging size={14} />
-          </Link>
-          <Link className={styles.secondaryBtn} href="/tools?view=grid">
-            <IconRocket size={14} />
-            {text.heroCtaSecondary}
           </Link>
         </div>
       </div>
