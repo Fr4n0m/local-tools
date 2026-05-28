@@ -1,0 +1,75 @@
+.finalSection {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 1.25rem;
+  min-height: calc(100dvh - 104px);
+  display: grid;
+  align-content: center;
+}
+.finalSection h2 {
+  font-size: clamp(1.28rem, 2.2vw, 1.9rem);
+}
+.finalSection > p {
+  margin-top: 0.5rem;
+  color: color-mix(in oklab, var(--color-foreground), transparent 20%);
+}
+.finalCards {
+  margin-top: 0.8rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.2fr;
+  gap: 0.65rem;
+}
+.finalCards article {
+  padding: 0.68rem;
+}
+.finalCards h3 {
+  font-size: 0.98rem;
+}
+.finalCards p {
+  margin-top: 0.42rem;
+  color: color-mix(in oklab, var(--color-foreground), transparent 20%);
+}
+.finalCards a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.36rem;
+  margin-top: 0.62rem;
+  border-radius: var(--radius-squircle);
+  text-decoration: none;
+  font-size: 0.84rem;
+  padding: 0.52rem 0.76rem;
+  font-weight: 600;
+  border: 1px solid color-mix(in oklab, var(--color-border), transparent 8%);
+  color: var(--color-foreground);
+}
+.finalCards form {
+  margin-top: 0.62rem;
+  display: grid;
+  gap: 0.45rem;
+}
+.finalCards input {
+  border-radius: var(--radius-squircle);
+  border: 1px solid color-mix(in oklab, var(--color-border), transparent 10%);
+  background: color-mix(
+    in oklab,
+    var(--color-background),
+    var(--color-secondary) 15%
+  );
+  padding: 0.52rem 0.62rem;
+}
+.finalCards button {
+  border-radius: var(--radius-squircle);
+  border: 1px solid color-mix(in oklab, var(--color-border), transparent 8%);
+  background: var(--color-foreground);
+  color: var(--color-background);
+  padding: 0.5rem 0.62rem;
+  font-weight: 600;
+}
+@media (max-width: 1024px) {
+  .finalSection {
+    min-height: calc(100dvh - 88px);
+  }
+  .finalCards {
+    grid-template-columns: 1fr;
+  }
+}

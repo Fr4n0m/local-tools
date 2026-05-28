@@ -1,0 +1,18 @@
+.page {
+  position: relative;
+  min-height: 100dvh;
+  padding-block: clamp(1rem, 2.2vw, 1.6rem);
+  color: var(--color-foreground);
+  overflow-x: hidden;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--canvas-pattern-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--canvas-pattern-color) 1px, transparent 1px);
+  background-size: 26px 26px;
+  opacity: 0.28;
+  pointer-events: none;
+}

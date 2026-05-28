@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
 import "@gravatar-com/hovercards/dist/style.css";
 import {
   IconAlertCircle,
@@ -49,6 +50,18 @@ export function GlobalFooter() {
     { language: "en" as Language, density: "comfortable" as Density },
   );
   const [footerTools, setFooterTools] = useState<Tool[]>(INITIAL_FOOTER_TOOLS);
+  const [usePageFrame, setUsePageFrame] = useState(false);
+
+  useEffect(() => {
+    const updateFrameMode = () => {
+      const path = window.location.pathname;
+      setUsePageFrame(path === "/" || path === "/privacy" || path === "/terms");
+    };
+
+    updateFrameMode();
+    window.addEventListener("popstate", updateFrameMode);
+    return () => window.removeEventListener("popstate", updateFrameMode);
+  }, []);
 
   useEffect(() => {
     dispatchFooter({
@@ -83,12 +96,20 @@ export function GlobalFooter() {
         density: customEvent.detail === "compact" ? "compact" : "comfortable",
       });
     };
+    const onLanguageChange = () => {
+      dispatchFooter({ language: resolveInitialLanguage() });
+    };
 
     window.addEventListener("storage", onStorage);
     window.addEventListener("localtools:density-change", onDensityChange);
+    window.addEventListener("localtools:language-change", onLanguageChange);
     return () => {
       window.removeEventListener("storage", onStorage);
       window.removeEventListener("localtools:density-change", onDensityChange);
+      window.removeEventListener(
+        "localtools:language-change",
+        onLanguageChange,
+      );
     };
   }, []);
 
@@ -139,123 +160,130 @@ export function GlobalFooter() {
 
   const text = sharedMessages[language];
 
-  return (
-    <footer className="site-footer">
-      <div className="site-footer__inner">
-        <div className="site-footer__grid">
-          <section className="site-footer__column">
+  const footerContent = (
+    <div className="site-footer__inner">
+      <div className="site-footer__grid">
+        <section className="site-footer__column">
+          <Link aria-label="Go to home" className="inline-flex" href="/">
             <AppLogo style={{ color: "#fff" }} />
-            <p className="site-footer__brandline" style={{ marginTop: "6px" }}>
-              {text.footer.brandLine}
-            </p>
-          </section>
+          </Link>
+          <p className="site-footer__brandline" style={{ marginTop: "6px" }}>
+            {text.footer.brandLine}
+          </p>
+        </section>
 
-          <section className="site-footer__column">
-            <p className="site-footer__title">{text.footer.tagsTitle}</p>
-            <ul className="site-footer__tags">
-              {footerTools.map((tool) => {
-                const ToolIcon = tool.icon;
-                return (
-                  <li key={tool.id}>
-                    <a
-                      aria-label={tool.name[language]}
-                      className="aside-tool-btn site-footer__tool-link"
-                      title={tool.name[language]}
-                      href={`/?tool=${tool.id}`}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        window.history.pushState({}, "", `/?tool=${tool.id}`);
-                        window.dispatchEvent(new PopStateEvent("popstate"));
-                      }}
-                    >
-                      <span aria-hidden className="shrink-0">
-                        <ToolIcon size={14} />
-                      </span>
-                      <span>{tool.name[language]}</span>
-                    </a>
-                  </li>
-                );
-              })}
-            </ul>
-          </section>
+        <section className="site-footer__column">
+          <p className="site-footer__title">{text.footer.tagsTitle}</p>
+          <ul className="site-footer__tags">
+            {footerTools.map((tool) => {
+              const ToolIcon = tool.icon;
+              return (
+                <li key={tool.id}>
+                  <a
+                    aria-label={tool.name[language]}
+                    className="aside-tool-btn site-footer__tool-link"
+                    title={tool.name[language]}
+                    href={`/tools?tool=${tool.id}`}
+                  >
+                    <span aria-hidden className="shrink-0">
+                      <ToolIcon size={14} />
+                    </span>
+                    <span>{tool.name[language]}</span>
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
 
-          <section className="site-footer__column site-footer__column--right">
-            <p className="site-footer__title">{text.footer.supportTitle}</p>
-            <div className="site-footer__actions">
-              <a
-                className="site-footer__btn site-footer__btn--bmc"
-                href="https://buymeacoffee.com/fran11799"
-                rel="noreferrer"
-                target="_blank"
-              >
-                <IconCoffee aria-hidden size={14} />
-                {text.supportCta}
-              </a>
-              <a
-                className="site-footer__github-btn"
-                href={text.footer.suggestUrl}
-                rel="noreferrer"
-                target="_blank"
-              >
-                <IconBrandGithub aria-hidden size={14} />
-                {text.footer.suggestCta}
-              </a>
-            </div>
-          </section>
-        </div>
-
-        <div className="site-footer__bottom">
-          <div className="site-footer__author">
-            <span>Built for developers by</span>
+        <section className="site-footer__column site-footer__column--right">
+          <p className="site-footer__title">{text.footer.supportTitle}</p>
+          <div className="site-footer__actions">
             <a
-              aria-label="Fr4n0m on Gravatar"
-              className="site-footer__author-avatar"
-              href="https://gravatar.com/fr4n0m"
+              className="site-footer__btn site-footer__btn--bmc"
+              href="https://buymeacoffee.com/fran11799"
               rel="noreferrer"
               target="_blank"
             >
-              <img
-                alt="Fr4n0m"
-                data-gravatar-hash="45f9e6ff5a1ed8b109f19dc13f59c26e7d39fceb75f9344ac30ea6db18f6fbde"
-                height={20}
-                id="footer-gravatar-avatar"
-                src="https://www.gravatar.com/avatar/45f9e6ff5a1ed8b109f19dc13f59c26e7d39fceb75f9344ac30ea6db18f6fbde?s=40&d=mp"
-                width={20}
-              />
+              <IconCoffee aria-hidden size={14} />
+              {text.supportCta}
             </a>
             <a
-              className="site-footer__author-name"
-              href="https://codebyfran.es"
+              className="site-footer__github-btn"
+              href={text.footer.suggestUrl}
               rel="noreferrer"
               target="_blank"
             >
-              Fr4n0m
+              <IconBrandGithub aria-hidden size={14} />
+              {text.footer.suggestCta}
             </a>
           </div>
-          <div
-            className="site-footer__legal"
-            style={{ justifyContent: "flex-end" }}
+        </section>
+      </div>
+
+      <div className="site-footer__bottom">
+        <div className="site-footer__author">
+          <span>Built for developers by</span>
+          <a
+            aria-label="Fr4n0m on Gravatar"
+            className="site-footer__author-avatar"
+            href="https://gravatar.com/fr4n0m"
+            rel="noreferrer"
+            target="_blank"
           >
-            <a className="site-footer__legal-link" href="/privacy">
-              <IconShieldLock aria-hidden size={14} />
-              {text.footer.privacyLink}
-            </a>
-            <a className="site-footer__legal-link" href="/terms">
-              <IconFileText aria-hidden size={14} />
-              {text.footer.termsLink}
-            </a>
-            <a
-              className="site-footer__legal-link"
-              href={text.footer.reportUrl}
-              rel="noreferrer"
-              target="_blank"
-            >
-              <IconAlertCircle aria-hidden size={14} />
-              {text.footer.reportLink}
-            </a>
-          </div>
+            <img
+              alt="Fr4n0m"
+              data-gravatar-hash="45f9e6ff5a1ed8b109f19dc13f59c26e7d39fceb75f9344ac30ea6db18f6fbde"
+              height={20}
+              id="footer-gravatar-avatar"
+              src="https://www.gravatar.com/avatar/45f9e6ff5a1ed8b109f19dc13f59c26e7d39fceb75f9344ac30ea6db18f6fbde?s=40&d=mp"
+              width={20}
+            />
+          </a>
+          <a
+            className="site-footer__author-name"
+            href="https://codebyfran.es"
+            rel="noreferrer"
+            target="_blank"
+          >
+            Fr4n0m
+          </a>
+        </div>
+        <div
+          className="site-footer__legal"
+          style={{ justifyContent: "flex-end" }}
+        >
+          <a className="site-footer__legal-link" href="/privacy">
+            <IconShieldLock aria-hidden size={14} />
+            {text.footer.privacyLink}
+          </a>
+          <a className="site-footer__legal-link" href="/terms">
+            <IconFileText aria-hidden size={14} />
+            {text.footer.termsLink}
+          </a>
+          <a
+            className="site-footer__legal-link"
+            href={text.footer.reportUrl}
+            rel="noreferrer"
+            target="_blank"
+          >
+            <IconAlertCircle aria-hidden size={14} />
+            {text.footer.reportLink}
+          </a>
         </div>
       </div>
+    </div>
+  );
+
+  return (
+    <footer
+      className={`site-footer ${usePageFrame ? "site-footer--framed" : ""}`}
+    >
+      {usePageFrame ? (
+        <div className="page-frame">{footerContent}</div>
+      ) : (
+        footerContent
+      )}
     </footer>
   );
 }

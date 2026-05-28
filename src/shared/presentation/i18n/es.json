@@ -38,12 +38,18 @@
     "reportLink": "Reportar problema",
     "reportUrl": "https://github.com/Fr4n0m/local-tools/issues/new",
     "tags": [
-      { "label": "Conversor de Imágenes", "href": "/?tool=image-converter" },
-      { "label": "Compresor de Imágenes", "href": "/?tool=image-compressor" },
-      { "label": "Formateador JSON", "href": "/?tool=json-formatter" },
-      { "label": "Generador QR", "href": "/?tool=qr-generator" },
-      { "label": "Generador UUID", "href": "/?tool=uuid-generator" },
-      { "label": "Herramienta Base64", "href": "/?tool=base64-tool" }
+      {
+        "label": "Conversor de Imágenes",
+        "href": "/tools?tool=image-converter"
+      },
+      {
+        "label": "Compresor de Imágenes",
+        "href": "/tools?tool=image-compressor"
+      },
+      { "label": "Formateador JSON", "href": "/tools?tool=json-formatter" },
+      { "label": "Generador QR", "href": "/tools?tool=qr-generator" },
+      { "label": "Generador UUID", "href": "/tools?tool=uuid-generator" },
+      { "label": "Herramienta Base64", "href": "/tools?tool=base64-tool" }
     ]
   },
   "categories": {
@@ -51,6 +57,91 @@
     "data-encoding": "Datos y Codificación",
     "text-code": "Texto y Código",
     "advanced": "Utilidades Avanzadas"
+  },
+  "overview": {
+    "heroLead": "Privado por diseño. Todo en tu navegador.",
+    "heroLeadLine1": "Privado por diseño.",
+    "heroLeadLine2": "Todo en tu navegador.",
+    "heroTitle": "Utilidades para developers, sin cuentas ni telemetría.",
+    "heroText": "LocalTools es una colección de utilidades para desarrolladores que se ejecutan completamente en tu navegador. Sin cuentas. Sin telemetría. Solo herramientas confiables que respetan tu flujo de trabajo y tus datos.",
+    "heroCtaPrimary": "Suscribirse a novedades",
+    "heroCtaSecondary": "Inicio rápido",
+    "heroTrustItems": [
+      {
+        "title": "100% Local",
+        "description": "Everything runs in your browser."
+      },
+      {
+        "title": "Open Source",
+        "description": "Transparent by design. Built in the open."
+      },
+      {
+        "title": "Developer First",
+        "description": "Fast, focused, and built for real workflows."
+      },
+      {
+        "title": "Cross Platform",
+        "description": "macOS, Windows, and Linux."
+      }
+    ],
+    "trust": "Scroll",
+    "storyKickerPrimary": "RECORRIDO",
+    "storyKickerSecondary": "DE TOOLS",
+    "storyHeadingLine1": "Construido para developers.",
+    "storyHeadingLine2": "Evoluciona con la comunidad.",
+    "storyLead": "Gratis, sin anuncios y sin cuentas. Un entorno limpio para resolver microtareas técnicas sin fricción ni ruido.",
+    "storyMetaLine": "100% NAVEGADOR · SIN SUBIDAS · SIN CUENTA",
+    "storyTimelineAria": "Flujo de herramientas",
+    "storyItems": [
+      {
+        "titlePrimary": "Archivo",
+        "titleSecondary": "Multimedia",
+        "bodyPrimary": "Convierte formatos y prepara entregables en segundos.",
+        "bodySecondary": "Comprime imagen, PDF o video sin salir del navegador."
+      },
+      {
+        "titlePrimary": "Datos",
+        "titleSecondary": "Codificación",
+        "bodyPrimary": "Valida estructuras y limpia payloads antes de enviarlos.",
+        "bodySecondary": "Codifica y decodifica valores para APIs sin errores."
+      },
+      {
+        "titlePrimary": "Texto",
+        "titleSecondary": "Código",
+        "bodyPrimary": "Transforma contenido para escribir más rápido.",
+        "bodySecondary": "Genera salidas limpias, copiables y listas para usar."
+      },
+      {
+        "titlePrimary": "Utilidades",
+        "titleSecondary": "Visuales",
+        "bodyPrimary": "Resuelve microtareas técnicas del día a día sin fricción.",
+        "bodySecondary": "Valida color, contraste y gradientes con control directo."
+      },
+      {
+        "titlePrimary": "Salida",
+        "titleSecondary": "Continuidad",
+        "bodyPrimary": "Copia o descarga resultados listos para compartir.",
+        "bodySecondary": "Encadena pasos, sin cuentas ni subidas."
+      }
+    ],
+    "storyCuePrimary": "EXPLORAR MÁS",
+    "storyCueSecondary": "/ CATEGORÍAS Y CAPACIDADES",
+    "storyTitle": "Cómo está pensado este producto",
+    "storyP1": "Muchos equipos pierden tiempo en operaciones pequeñas que no justifican software dedicado, pero se repiten constantemente: formatear payloads, convertir archivos, generar valores seguros, validar contraste, comprimir un PDF antes de enviarlo.",
+    "storyP2": "Esta página explica la plataforma como narrativa, no como un dashboard cuadriculado. Puedes escanear rápido, saltar por categorías y entender dónde encaja cada herramienta en un pipeline real.",
+    "chapterTitle": "Capítulos de capacidad",
+    "chapterIntro": "Cada capítulo agrupa herramientas por intención y añade contexto más allá de una descripción corta.",
+    "why": "Por qué existe este capítulo",
+    "what": "Qué puedes hacer",
+    "fit": "Uso ideal",
+    "horizontalTitle": "Todas las herramientas activas en una franja dinámica",
+    "horizontalHint": "Haz scroll para explorar todos los módulos actuales.",
+    "finalTitle": "Producto abierto, dirección visible",
+    "finalText": "Requests de features, críticas UX, decisiones de naming y reportes de bugs forman parte del proceso de evolución. El roadmap se mantiene práctico y guiado por implementación.",
+    "subscribe": "Vista previa de release notes",
+    "subscribeText": "Suscríbete para recibir novedades de versiones.",
+    "subscribeButton": "Avisadme",
+    "subscribePlaceholder": "tu@email.com"
   },
   "buttons": {
     "clear": "Limpiar",
