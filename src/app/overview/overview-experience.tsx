@@ -115,6 +115,7 @@ export function OverviewExperience() {
     const root = rootRef.current;
     const strip = horizontalRef.current;
     if (!root || !strip) return;
+    const cleanupFns: Array<() => void> = [];
 
     gsap.registerPlugin(ScrollTrigger);
     const reduced = window.matchMedia(
@@ -219,6 +220,41 @@ export function OverviewExperience() {
 
       const storyPath = root.querySelector<SVGPathElement>(".storyLinePath");
       const storyNodes = gsap.utils.toArray<HTMLElement>(".storyNode");
+      const storyTimelineEl = root.querySelector<HTMLElement>(".storyTimeline");
+      const storyCurveSvg = root.querySelector<SVGSVGElement>(".timelineCurve");
+
+      const syncStoryNodePositions = () => {
+        if (
+          !storyPath ||
+          !storyTimelineEl ||
+          !storyCurveSvg ||
+          storyNodes.length === 0
+        )
+          return;
+
+        const pathLength = storyPath.getTotalLength();
+        const pathBox = storyPath.getBBox();
+        const curveRect = storyCurveSvg.getBoundingClientRect();
+        if (curveRect.width <= 0) return;
+
+        storyNodes.forEach((node) => {
+          const nodeRect = node.getBoundingClientRect();
+          const nodeCenterXInCurve =
+            nodeRect.left - curveRect.left + nodeRect.width / 2;
+          const xInViewBox = (nodeCenterXInCurve / curveRect.width) * 1000;
+          const xClamped = Math.min(
+            pathBox.x + pathBox.width,
+            Math.max(pathBox.x, xInViewBox),
+          );
+          const progress = (xClamped - pathBox.x) / pathBox.width;
+          const point = storyPath.getPointAtLength(pathLength * progress);
+          const bubbleTopPx = (point.y / 220) * 220 - 27;
+          node.style.setProperty(
+            "--bubble-top",
+            `${Math.max(0, bubbleTopPx)}px`,
+          );
+        });
+      };
 
       gsap.fromTo(
         ".storyHeadItem",
@@ -237,6 +273,18 @@ export function OverviewExperience() {
       );
 
       if (storyPath && storyNodes.length > 0) {
+        syncStoryNodePositions();
+        const resizeObserver = new ResizeObserver(() =>
+          syncStoryNodePositions(),
+        );
+        if (storyTimelineEl) resizeObserver.observe(storyTimelineEl);
+        if (storyCurveSvg) resizeObserver.observe(storyCurveSvg);
+        window.addEventListener("resize", syncStoryNodePositions);
+        cleanupFns.push(() => resizeObserver.disconnect());
+        cleanupFns.push(() =>
+          window.removeEventListener("resize", syncStoryNodePositions),
+        );
+
         const length = storyPath.getTotalLength();
         gsap.set(storyPath, {
           strokeDasharray: length,
@@ -314,6 +362,8 @@ export function OverviewExperience() {
             );
           }
         });
+
+        storyTl.eventCallback("onUpdate", syncStoryNodePositions);
       }
 
       const totalShift = Math.max(strip.scrollWidth - strip.clientWidth, 0);
@@ -366,6 +416,7 @@ export function OverviewExperience() {
     }, root);
 
     return () => {
+      cleanupFns.forEach((fn) => fn());
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
       ctx.revert();
     };

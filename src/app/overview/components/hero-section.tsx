@@ -2,7 +2,7 @@
 
 import {
   IconArrowDown,
-  IconArrowRight,
+  IconBellRinging,
   IconBolt,
   IconBrandGithub,
   IconLock,
@@ -10,6 +10,7 @@ import {
   IconSearch,
   IconWorld,
 } from "@tabler/icons-react";
+import Link from "next/link";
 
 import { AppLogo } from "@/shared/presentation/components/app-logo";
 import styles from "./hero-section.module.css";
@@ -22,6 +23,10 @@ type HeroCopy = {
   heroCtaPrimary: string;
   heroCtaSecondary: string;
   trust: string;
+  heroTrustItems: Array<{
+    title: string;
+    description: string;
+  }>;
 };
 
 type HeroSectionProps = {
@@ -30,6 +35,9 @@ type HeroSectionProps = {
 };
 
 export function HeroSection({ text, onScrollNext }: HeroSectionProps) {
+  const [trustLocal, trustOpen, trustDeveloper, trustPlatform] =
+    text.heroTrustItems;
+
   return (
     <section className={`${styles.hero} hero`} data-fade>
       <div className={`${styles.heroCopy} heroCopy`}>
@@ -43,41 +51,41 @@ export function HeroSection({ text, onScrollNext }: HeroSectionProps) {
           <article>
             <IconLock size={14} />
             <div>
-              <strong>100% Local</strong>
-              <span>Everything runs in your browser.</span>
+              <strong>{trustLocal.title}</strong>
+              <span>{trustLocal.description}</span>
             </div>
           </article>
           <article>
             <IconBrandGithub size={14} />
             <div>
-              <strong>Open Source</strong>
-              <span>Transparent by design. Built in the open.</span>
+              <strong>{trustOpen.title}</strong>
+              <span>{trustOpen.description}</span>
             </div>
           </article>
           <article>
             <IconBolt size={14} />
             <div>
-              <strong>Developer First</strong>
-              <span>Fast, focused, and built for real workflows.</span>
+              <strong>{trustDeveloper.title}</strong>
+              <span>{trustDeveloper.description}</span>
             </div>
           </article>
           <article>
             <IconWorld size={14} />
             <div>
-              <strong>Cross Platform</strong>
-              <span>macOS, Windows, and Linux.</span>
+              <strong>{trustPlatform.title}</strong>
+              <span>{trustPlatform.description}</span>
             </div>
           </article>
         </div>
         <div className={`${styles.heroActions} heroActions`}>
-          <a className={styles.primaryBtn} href="/tools">
+          <Link className={styles.primaryBtn} href="/#subscribe-updates">
             {text.heroCtaPrimary}
-            <IconArrowRight size={14} />
-          </a>
-          <a className={styles.secondaryBtn} href="/tools?tool=json-formatter">
+            <IconBellRinging size={14} />
+          </Link>
+          <Link className={styles.secondaryBtn} href="/tools?view=grid">
             <IconRocket size={14} />
             {text.heroCtaSecondary}
-          </a>
+          </Link>
         </div>
       </div>
       <div className={`${styles.heroAsset} heroAsset`}>

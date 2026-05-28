@@ -53,14 +53,73 @@
     "advanced": "Advanced Utilities"
   },
   "overview": {
-    "heroLead": "Private by design. Powerful by nature.",
+    "heroLead": "Private by design. In your browser.",
     "heroLeadLine1": "Private by design.",
-    "heroLeadLine2": "Powerful by nature.",
-    "heroTitle": "Built for local-first developer workflows.",
+    "heroLeadLine2": "In your browser.",
+    "heroTitle": "Developer utilities, with no accounts or telemetry.",
     "heroText": "LocalTools is a curated collection of developer utilities that run entirely in your browser. No accounts. No telemetry. Just reliable tools that respect your workflow and your data.",
-    "heroCtaPrimary": "Explore all tools",
+    "heroCtaPrimary": "Subscribe for updates",
     "heroCtaSecondary": "Quick Start",
+    "heroTrustItems": [
+      {
+        "title": "100% Local",
+        "description": "Everything runs in your browser."
+      },
+      {
+        "title": "Open Source",
+        "description": "Transparent by design. Built in the open."
+      },
+      {
+        "title": "Developer First",
+        "description": "Fast, focused, and built for real workflows."
+      },
+      {
+        "title": "Cross Platform",
+        "description": "macOS, Windows, and Linux."
+      }
+    ],
     "trust": "Scroll",
+    "storyKickerPrimary": "TOOLFLOW",
+    "storyKickerSecondary": "JOURNEY",
+    "storyHeadingLine1": "Built for developers.",
+    "storyHeadingLine2": "Evolving with the community.",
+    "storyLead": "Free, ad-free, and account-free. A clean environment to solve technical microtasks without friction or noise.",
+    "storyMetaLine": "100% BROWSER · NO UPLOADS · NO ACCOUNT",
+    "storyTimelineAria": "Tool workflow",
+    "storyItems": [
+      {
+        "titlePrimary": "Files",
+        "titleSecondary": "Media",
+        "bodyPrimary": "Convert formats and prepare deliverables in seconds.",
+        "bodySecondary": "Compress images, PDFs, or video without leaving the browser."
+      },
+      {
+        "titlePrimary": "Data",
+        "titleSecondary": "Encoding",
+        "bodyPrimary": "Validate structures and clean payloads before sending.",
+        "bodySecondary": "Encode and decode values for APIs without mistakes."
+      },
+      {
+        "titlePrimary": "Text",
+        "titleSecondary": "Code",
+        "bodyPrimary": "Transform content to write faster.",
+        "bodySecondary": "Generate clean, copy-ready outputs for daily work."
+      },
+      {
+        "titlePrimary": "Utilities",
+        "titleSecondary": "Visual",
+        "bodyPrimary": "Handle daily technical microtasks with less friction.",
+        "bodySecondary": "Validate color, contrast, and gradients with direct controls."
+      },
+      {
+        "titlePrimary": "Output",
+        "titleSecondary": "Continuity",
+        "bodyPrimary": "Copy or download results ready to share.",
+        "bodySecondary": "Chain steps with no accounts and no uploads."
+      }
+    ],
+    "storyCuePrimary": "EXPLORE MORE",
+    "storyCueSecondary": "/ CATEGORIES AND CAPABILITIES",
     "storyTitle": "How this product is meant to be used",
     "storyP1": "Most teams lose time on tiny operations that are too small for dedicated software but too frequent to ignore: format this payload, convert that file, generate this code-safe value, verify that color contrast, compress that PDF before sending it.",
     "storyP2": "This page explains the platform as a narrative, not as a dashboard grid. You can scan it quickly, jump to relevant categories, and understand where each tool fits in a real delivery pipeline.",

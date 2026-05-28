@@ -11,7 +11,21 @@ import { useId } from "react";
 import styles from "./story-section.module.css";
 
 type StoryCopy = {
-  storyTitle: string;
+  storyKickerPrimary: string;
+  storyKickerSecondary: string;
+  storyHeadingLine1: string;
+  storyHeadingLine2: string;
+  storyLead: string;
+  storyMetaLine: string;
+  storyTimelineAria: string;
+  storyItems: Array<{
+    titlePrimary: string;
+    titleSecondary: string;
+    bodyPrimary: string;
+    bodySecondary: string;
+  }>;
+  storyCuePrimary: string;
+  storyCueSecondary: string;
 };
 
 type StorySectionProps = {
@@ -19,75 +33,41 @@ type StorySectionProps = {
   onScrollNext?: () => void;
 };
 
-const journeyItems = [
-  {
-    step: "01",
-    titlePrimary: "Archivo",
-    titleSecondary: "Multimedia",
-    icon: IconFileUpload,
-    bodyPrimary: "Convierte formatos y prepara entregables en segundos.",
-    bodySecondary: "Comprime imagen, PDF o video sin salir del navegador.",
-  },
-  {
-    step: "02",
-    titlePrimary: "Datos",
-    titleSecondary: "Codificación",
-    icon: IconBrackets,
-    bodyPrimary: "Valida estructuras y limpia payloads antes de enviarlos.",
-    bodySecondary: "Codifica y decodifica valores para APIs sin errores.",
-  },
-  {
-    step: "03",
-    titlePrimary: "Texto",
-    titleSecondary: "Código",
-    icon: IconArrowsShuffle,
-    bodyPrimary: "Transforma contenido para escribir más rápido.",
-    bodySecondary: "Genera salidas limpias, copiables y listas para usar.",
-  },
-  {
-    step: "04",
-    titlePrimary: "Utilidades",
-    titleSecondary: "Visuales",
-    icon: IconFileAnalytics,
-    bodyPrimary: "Resuelve microtareas técnicas del día a día sin fricción.",
-    bodySecondary: "Valida color, contraste y gradientes con control directo.",
-  },
-  {
-    step: "05",
-    titlePrimary: "Salida",
-    titleSecondary: "Continuidad",
-    icon: IconRocket,
-    bodyPrimary: "Copia o descarga resultados listos para compartir.",
-    bodySecondary: "Encadena pasos, sin cuentas ni subidas.",
-  },
-];
+const journeyItemIcons = [
+  IconFileUpload,
+  IconBrackets,
+  IconArrowsShuffle,
+  IconFileAnalytics,
+  IconRocket,
+] as const;
 
-export function StorySection({ onScrollNext }: StorySectionProps) {
+export function StorySection({ onScrollNext, text }: StorySectionProps) {
   const gradientId = useId();
 
   return (
     <section className={styles.story} data-fade>
       <div className={styles.storyHead}>
         <p className={`${styles.kicker} storyHeadItem`}>
-          <span className={styles.kickerPrimary}>RECORRIDO</span>{" "}
-          <span className={styles.kickerSecondary}>DE TOOLS</span>
+          <span className={styles.kickerPrimary}>
+            {text.storyKickerPrimary}
+          </span>{" "}
+          <span className={styles.kickerSecondary}>
+            {text.storyKickerSecondary}
+          </span>
         </p>
         <h2 className="storyHeadItem">
-          <span>Construido para developers.</span>
-          <span>Evoluciona con la comunidad.</span>
+          <span>{text.storyHeadingLine1}</span>
+          <span>{text.storyHeadingLine2}</span>
         </h2>
-        <p className={`${styles.lead} storyHeadItem`}>
-          Gratis, sin anuncios y sin cuentas. Un entorno limpio para resolver
-          microtareas técnicas sin fricción ni ruido.
-        </p>
+        <p className={`${styles.lead} storyHeadItem`}>{text.storyLead}</p>
         <p className={`${styles.storyMetaLine} storyHeadItem`}>
-          100% NAVEGADOR · SIN SUBIDAS · SIN CUENTA
+          {text.storyMetaLine}
         </p>
       </div>
 
       <div
         className={`${styles.timeline} storyTimeline`}
-        aria-label="Flujo de herramientas"
+        aria-label={text.storyTimelineAria}
       >
         <svg
           aria-hidden="true"
@@ -112,30 +92,34 @@ export function StorySection({ onScrollNext }: StorySectionProps) {
             stroke={`url(#${gradientId})`}
           />
         </svg>
-        {journeyItems.map((item) => (
-          <article
-            className={`${styles.node} ${styles[`node${item.step}` as keyof typeof styles]} storyNode`}
-            key={item.step}
-          >
-            <div className={`${styles.bubble} storyNodeBubble`}>
-              <item.icon size={26} stroke={2} />
-            </div>
-            <h3>
-              <span>{item.titlePrimary}</span>
-              <span className={styles.nodeTitleSecondary}>
-                {" "}
-                / {item.titleSecondary}
-              </span>
-            </h3>
-            <p className={styles.nodePrimary}>{item.bodyPrimary}</p>
-            <p className={styles.nodeSecondary}>{item.bodySecondary}</p>
-          </article>
-        ))}
+        {text.storyItems.map((item, idx) => {
+          const Icon = journeyItemIcons[idx];
+          const step = String(idx + 1).padStart(2, "0");
+          return (
+            <article
+              className={`${styles.node} ${styles[`node${step}` as keyof typeof styles]} storyNode`}
+              key={step}
+            >
+              <div className={`${styles.bubble} storyNodeBubble`}>
+                <Icon size={26} stroke={2} />
+              </div>
+              <h3>
+                <span>{item.titlePrimary}</span>
+                <span className={styles.nodeTitleSecondary}>
+                  {" "}
+                  / {item.titleSecondary}
+                </span>
+              </h3>
+              <p className={styles.nodePrimary}>{item.bodyPrimary}</p>
+              <p className={styles.nodeSecondary}>{item.bodySecondary}</p>
+            </article>
+          );
+        })}
       </div>
       <button className={styles.storyCue} onClick={onScrollNext} type="button">
-        <span className={styles.storyCuePrimary}>EXPLORAR MÁS</span>{" "}
+        <span className={styles.storyCuePrimary}>{text.storyCuePrimary}</span>{" "}
         <span className={styles.storyCueSecondary}>
-          / CATEGORÍAS Y CAPACIDADES
+          {text.storyCueSecondary}
         </span>
       </button>
     </section>

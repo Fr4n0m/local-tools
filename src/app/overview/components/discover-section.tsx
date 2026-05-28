@@ -17,7 +17,7 @@ type DiscoverSectionProps = {
 
 export function DiscoverSection({ text }: DiscoverSectionProps) {
   return (
-    <section className={styles.finalSection} data-fade>
+    <section className={styles.finalSection} data-fade id="subscribe-updates">
       <h2>{text.finalTitle}</h2>
       <p>{text.finalText}</p>
       <div className={styles.finalCards}>
