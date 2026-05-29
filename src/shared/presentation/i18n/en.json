@@ -127,8 +127,8 @@
         "key": "data-encoding",
         "titlePrimary": "Data",
         "titleSecondary": "",
-        "descriptionPrimary": "Work with data confidently. Format, validate, convert, and generate exactly what you need, locally.",
-        "descriptionSecondary": "Great for cleaning inputs before sending to APIs or sharing results without formatting errors.",
+        "descriptionPrimary": "Format, validate, and convert data directly in your browser.",
+        "descriptionSecondary": "Perfect for cleaning inputs before sending them to APIs.",
         "cta": "Explore Data tools"
       },
       {
@@ -136,7 +136,7 @@
         "titlePrimary": "Web",
         "titleSecondary": "",
         "descriptionPrimary": "Debug, inspect, and interact with web services and content without leaving your machine.",
-        "descriptionSecondary": "Useful to validate URLs, payloads, and responses during quick integration tasks.",
+        "descriptionSecondary": "Ideal for validating URLs, payloads, and responses.",
         "cta": "Explore Web tools"
       },
       {
@@ -166,6 +166,62 @@
     "fit": "Best-fit usage",
     "horizontalTitle": "Every active tool, in one moving strip",
     "horizontalHint": "Scroll to explore all current modules.",
+    "discoverEyebrow": "EXPLORE ALL TOOLS",
+    "discoverTitle": "Discover. Try. Stay local.",
+    "discoverSubtitle": "Discover. Try. Stay local.",
+    "discoverTools": [
+      { "name": "JSON Formatter", "hint": "Format and validate JSON" },
+      { "name": "HTTP Client", "hint": "Send and inspect requests" },
+      { "name": "Text Diff", "hint": "Compare text and files" },
+      { "name": "UUID Generator", "hint": "Generate UUIDs" },
+      { "name": "Hash Generator", "hint": "Generate hashes" },
+      { "name": "Password Generator", "hint": "Strong passwords" },
+      { "name": "Cron Expression", "hint": "Validate cron" },
+      { "name": "HTML Viewer", "hint": "Render and inspect" }
+    ],
+    "trustEyebrow": "PRIVACY YOU CAN TRUST",
+    "trustTitle": "Your data never leaves your machine.",
+    "trustSubtitle": "Local control. Zero accounts.",
+    "trustBodyPrimary": "LocalTools is built on a simple principle: you stay in control. No telemetry. No tracking. No accounts.",
+    "trustBodySecondary": "Just tools that work, even offline.",
+    "trustChecks": [
+      "100% local execution",
+      "No telemetry or tracking",
+      "No accounts or logins",
+      "Open source and auditable"
+    ],
+    "bottomCards": [
+      {
+        "eyebrow": "COMMUNITY",
+        "title": "Built with developers, for developers.",
+        "subtitle": "Built with developers, for developers.",
+        "bodyPrimary": "Contribute, report, translate, or leave feedback. Every issue improves the product.",
+        "bodySecondary": "LocalTools evolves in the open.",
+        "cta": "View on GitHub"
+      },
+      {
+        "eyebrow": "ROADMAP",
+        "title": "What's coming next",
+        "subtitle": "Upcoming steps",
+        "bodyPrimary": "Clear priorities tied to real implementation.",
+        "bodySecondary": "More converters and generators",
+        "bullets": [
+          "More converters and generators",
+          "Team presets and workspaces",
+          "CLI for power users",
+          "Plugin system"
+        ],
+        "cta": "View roadmap"
+      },
+      {
+        "eyebrow": "STAY IN THE LOOP",
+        "title": "New tools. No noise.",
+        "subtitle": "Get version updates only.",
+        "bodyPrimary": "Subscribe for updates on new tools, product changes, and releases.",
+        "bodySecondary": "No spam. Unsubscribe anytime.",
+        "cta": "Subscribe"
+      }
+    ],
     "finalTitle": "Open product, visible direction",
     "finalText": "Feature requests, UX critiques, naming decisions, and bug reports are part of the evolution process. The roadmap stays practical and implementation-driven.",
     "subscribe": "Release note preview",

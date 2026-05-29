@@ -133,8 +133,8 @@
         "key": "data-encoding",
         "titlePrimary": "Datos",
         "titleSecondary": "",
-        "descriptionPrimary": "Trabaja con datos con confianza. Formatea, valida, convierte y genera exactamente lo que necesitas, de forma local.",
-        "descriptionSecondary": "Ideal para limpiar entradas antes de enviarlas a APIs o compartir resultados sin errores de formato.",
+        "descriptionPrimary": "Formatea, valida y convierte datos directamente en tu navegador.",
+        "descriptionSecondary": "Perfecto para limpiar entradas antes de enviarlas a APIs.",
         "cta": "Explorar tools de Datos"
       },
       {
@@ -142,7 +142,7 @@
         "titlePrimary": "Web",
         "titleSecondary": "",
         "descriptionPrimary": "Depura, inspecciona e interactúa con servicios y contenido web sin salir de tu máquina.",
-        "descriptionSecondary": "Perfecto para validar URLs, payloads y respuestas durante tareas rápidas de integración.",
+        "descriptionSecondary": "Ideal para validar URLs, payloads y respuestas.",
         "cta": "Explorar tools de Web"
       },
       {
@@ -172,6 +172,62 @@
     "fit": "Uso ideal",
     "horizontalTitle": "Todas las herramientas activas en una franja dinámica",
     "horizontalHint": "Haz scroll para explorar todos los módulos actuales.",
+    "discoverEyebrow": "EXPLORA TODAS LAS TOOLS",
+    "discoverTitle": "Discover. Try. Stay local.",
+    "discoverSubtitle": "Descubre. Prueba. Mantente local.",
+    "discoverTools": [
+      { "name": "JSON Formatter", "hint": "Formatea y valida JSON" },
+      { "name": "HTTP Client", "hint": "Envía e inspecciona requests" },
+      { "name": "Text Diff", "hint": "Compara texto y archivos" },
+      { "name": "UUID Generator", "hint": "Genera UUIDs" },
+      { "name": "Hash Generator", "hint": "Genera hashes" },
+      { "name": "Password Generator", "hint": "Contraseñas robustas" },
+      { "name": "Cron Expression", "hint": "Valida cron" },
+      { "name": "HTML Viewer", "hint": "Renderiza e inspecciona" }
+    ],
+    "trustEyebrow": "PRIVACIDAD EN LA QUE PUEDES CONFIAR",
+    "trustTitle": "Tus datos nunca salen de tu máquina.",
+    "trustSubtitle": "Control local. Cero cuentas.",
+    "trustBodyPrimary": "LocalTools se basa en un principio simple: tú tienes el control. Sin telemetría. Sin seguimiento. Sin cuentas.",
+    "trustBodySecondary": "Solo herramientas que funcionan, incluso sin conexión.",
+    "trustChecks": [
+      "Ejecución 100% local",
+      "Sin tracking ni telemetría",
+      "Sin cuentas ni logins",
+      "Open source y auditable"
+    ],
+    "bottomCards": [
+      {
+        "eyebrow": "COMUNIDAD",
+        "title": "Construido por developers, para developers.",
+        "subtitle": "Construido por developers, para developers.",
+        "bodyPrimary": "Contribuye, reporta, traduce o deja feedback. Cada issue mejora el producto.",
+        "bodySecondary": "LocalTools evoluciona en abierto.",
+        "cta": "Ver en GitHub"
+      },
+      {
+        "eyebrow": "ROADMAP",
+        "title": "Lo que viene",
+        "subtitle": "Próximos pasos",
+        "bodyPrimary": "Prioridades claras orientadas a implementación real.",
+        "bodySecondary": "Más convertidores y generadores",
+        "bullets": [
+          "Más convertidores y generadores",
+          "Presets para equipos",
+          "CLI para usuarios avanzados",
+          "Sistema de plugins"
+        ],
+        "cta": "Ver hoja de ruta"
+      },
+      {
+        "eyebrow": "MANTENTE AL DÍA",
+        "title": "Nuevas tools. Sin ruido.",
+        "subtitle": "Recibe solo novedades de versiones.",
+        "bodyPrimary": "Suscríbete para recibir avisos de nuevas herramientas, actualizaciones y releases.",
+        "bodySecondary": "Sin spam. Cancela cuando quieras.",
+        "cta": "Suscribirme"
+      }
+    ],
     "finalTitle": "Producto abierto, dirección visible",
     "finalText": "Requests de features, críticas UX, decisiones de naming y reportes de bugs forman parte del proceso de evolución. El roadmap se mantiene práctico y guiado por implementación.",
     "subscribe": "Vista previa de release notes",

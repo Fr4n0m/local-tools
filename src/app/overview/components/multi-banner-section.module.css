@@ -15,6 +15,8 @@
   padding-block: 0;
   box-sizing: border-box;
   overflow-x: clip;
+  --outer-pad: 2.65rem;
+  --inner-pad: 1.2rem;
 }
 
 .multiBannerRows {
@@ -30,20 +32,17 @@
   display: grid;
   grid-template-columns: 44% 56%;
   min-height: 0;
+  padding-inline: 2.65rem;
   border-top: 1px solid
     color-mix(in oklab, var(--color-border), transparent 16%);
   border-bottom: 1px solid
     color-mix(in oklab, var(--color-border), transparent 16%);
   align-items: stretch;
+  column-gap: 1.1rem;
 }
 
 .rowReverse {
   grid-template-columns: 56% 44%;
-}
-
-.visual,
-.copy {
-  padding: 1.08rem 1.2rem;
 }
 
 .visual {
@@ -51,7 +50,7 @@
   align-items: center;
   gap: 0.9rem;
   grid-template-columns: auto 1fr;
-  min-height: 172px;
+  min-height: 152px;
 }
 
 .gradientLtr {
@@ -80,7 +79,7 @@
   position: relative;
   width: 100%;
   height: 100%;
-  min-height: 164px;
+  min-height: 144px;
   border-radius: calc(var(--radius-squircle) - 10px);
   overflow: hidden;
 }
@@ -92,14 +91,7 @@
 
 .assetContain {
   object-fit: contain;
-  padding: 0.2rem;
-}
-
-.assetContainLarge {
-  object-fit: contain;
-  padding: 0;
-  transform: scale(1.14);
-  transform-origin: center;
+  padding: 0.7rem;
 }
 
 .assetCover {
@@ -108,10 +100,14 @@
 
 .visualLeft {
   border-right: none;
+  margin-left: -2.65rem;
+  padding-left: 2.65rem;
 }
 
 .visualRight {
   border-left: none;
+  margin-right: -2.65rem;
+  padding-right: 2.65rem;
 }
 
 .visualOrb {
@@ -185,14 +181,21 @@
 }
 
 .copy {
-  padding: 1.2rem 2.1rem 1.2rem 3.15rem;
+  padding: 1.2rem 4rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-areas:
     "title title"
     "left right";
-  gap: 0.2rem 0.55rem;
-  align-items: start;
+  gap: 0 1rem;
+  align-content: center;
+  justify-content: center;
+  min-height: 100%;
+}
+
+.row:nth-child(1) .visualLeft .assetFrame,
+.row:nth-child(3) .visualLeft .assetFrame {
+  margin-left: 0.46rem;
 }
 
 .titleWithIcon {
@@ -223,7 +226,7 @@
 
 .copy p {
   margin: 0;
-  max-width: 58ch;
+  max-width: 52ch;
   font-size: 0.9rem;
   line-height: 1.34;
   color: color-mix(in oklab, var(--color-foreground), transparent 16%);
@@ -254,24 +257,33 @@
   grid-area: left;
   max-width: none;
   display: grid;
-  gap: 0.48rem;
+  gap: 0.42rem;
   align-content: start;
   width: 100%;
   min-width: 0;
+  padding-right: 0.2rem;
+  margin-top: 0;
 }
 
 .copyRight {
   grid-area: right;
   align-self: start;
   display: grid;
-  gap: 0.58rem;
+  gap: 0.52rem;
   align-content: start;
   width: 100%;
   min-width: 0;
+  padding-left: 0.2rem;
+  margin-top: 0;
 }
 
 .copyTitle {
   grid-area: title;
+  align-self: start;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-top: 1.75rem;
+  padding-bottom: 1rem;
 }
 
 .copyRight p {
@@ -325,11 +337,19 @@
     grid-template-rows: auto 1fr;
   }
 
+  .multiBanner {
+    --outer-pad: 1rem;
+    --inner-pad: 1rem;
+  }
+
   .row {
     grid-template-columns: 1fr;
+    padding-inline: 1rem;
+    column-gap: 0;
   }
 
   .copy {
+    padding: 1rem 0;
     grid-template-columns: 1fr;
     gap: 0.7rem;
   }
@@ -337,5 +357,27 @@
   .visualLeft,
   .visualRight {
     border: none;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
   }
+
+  .visualLeft .assetFrame,
+  .visualRight .assetFrame {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+.row:nth-child(3) .visualLeft .assetFrame {
+  margin-left: -2.5rem;
+}
+
+.row:nth-child(2) .visualRight .assetFrame {
+  transform: translateX(-2.5rem);
+}
+
+.row:nth-child(4) .visualRight .assetFrame {
+  transform: translateX(-5.15rem);
 }

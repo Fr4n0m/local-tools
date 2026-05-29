@@ -191,23 +191,22 @@ export function OverviewExperience() {
 
       const bannerRows = gsap.utils.toArray<HTMLElement>("[data-banner-row]");
       if (bannerRows.length > 0) {
-        const bannerTl = gsap.timeline({
-          scrollTrigger: {
-            trigger: ".multiBannerRows",
-            start: "top 88%",
-            end: "top 46%",
-            scrub: 1,
-          },
-        });
-
-        bannerRows.forEach((row, idx) => {
+        bannerRows.forEach((row) => {
           const dir = row.dataset.bannerDir === "right" ? 1 : -1;
-          const offscreenDistance = window.innerWidth + row.offsetWidth;
-          bannerTl.fromTo(
+          const offscreenDistance = window.innerWidth * 1.16;
+          gsap.fromTo(
             row,
             { x: dir * offscreenDistance, opacity: 1 },
-            { x: 0, ease: "none", duration: 0.28 },
-            idx * 0.16,
+            {
+              x: 0,
+              ease: "none",
+              scrollTrigger: {
+                trigger: row,
+                start: "top 98%",
+                end: "top 84%",
+                scrub: 0.7,
+              },
+            },
           );
         });
       }
