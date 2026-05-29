@@ -18,7 +18,8 @@ type MultiBannerCopy = {
     key: string;
     titlePrimary: string;
     titleSecondary: string;
-    description: string;
+    descriptionPrimary: string;
+    descriptionSecondary?: string;
     cta: string;
   }>;
 };
@@ -36,6 +37,13 @@ const categoryFallback = {
   dev: "text-code",
   advanced: "advanced",
 } as const;
+
+const preferredToolByRow: Record<(typeof categoryOrder)[number], string> = {
+  "data-encoding": "json-formatter",
+  web: "url-encoder",
+  dev: "text-transformer",
+  advanced: "custom-timer",
+};
 
 export function MultiBannerSection({
   language,
@@ -56,13 +64,14 @@ export function MultiBannerSection({
     const categoryTools = tools.filter(
       (tool) => tool.category === mappedCategory,
     );
-    const list = categoryTools
-      .slice(0, 8)
-      .map((tool) => tool.name[language])
-      .join(", ");
-    const href = categoryTools[0]?.id
-      ? `/tools?tool=${categoryTools[0].id}`
-      : "/tools";
+    const selectedNames = categoryTools
+      .slice(0, 6)
+      .map((tool) => tool.name[language]);
+    const list = `${selectedNames.join(", ")}${categoryTools.length > 6 ? ", ..." : ""}`;
+    const preferred = preferredToolByRow[key];
+    const preferredExists = categoryTools.some((tool) => tool.id === preferred);
+    const targetToolId = preferredExists ? preferred : categoryTools[0]?.id;
+    const href = targetToolId ? `/tools?tool=${targetToolId}` : "/tools";
     return { ...copy, list, href, key, Icon: rowIcons[index] };
   });
 
@@ -79,7 +88,7 @@ export function MultiBannerSection({
             {idx % 2 === 0 ? (
               <>
                 <div
-                  className={`${styles.visual} ${styles.visualLeft} ${styles.visualAsset}`}
+                  className={`${styles.visual} ${styles.visualLeft} ${styles.visualAsset} ${idx % 2 === 1 ? styles.gradientRtl : styles.gradientLtr}`}
                 >
                   <div className={`${styles.assetFrame} ${styles.assetOnly}`}>
                     <Image
@@ -98,22 +107,29 @@ export function MultiBannerSection({
                   </div>
                 </div>
                 <div className={styles.copy}>
-                  <div className={styles.copyLeft}>
-                    <h3>
-                      <span className={styles.titleWithIcon}>
-                        <span className={styles.titleIconBadge}>
-                          <row.Icon size={14} stroke={2} />
-                        </span>
-                        {row.titlePrimary}
+                  <h3 className={styles.copyTitle}>
+                    <span className={styles.titleWithIcon}>
+                      <span className={styles.titleIconBadge}>
+                        <row.Icon size={14} stroke={2} />
                       </span>
-                      {row.titleSecondary ? (
-                        <span className={styles.secondary}>
-                          {" "}
-                          / {row.titleSecondary}
-                        </span>
-                      ) : null}
-                    </h3>
-                    <p>{row.description}</p>
+                      {row.titlePrimary}
+                    </span>
+                    {row.titleSecondary ? (
+                      <span className={styles.secondary}>
+                        {" "}
+                        / {row.titleSecondary}
+                      </span>
+                    ) : null}
+                  </h3>
+                  <div className={styles.copyLeft}>
+                    <p className={styles.primaryParagraph}>
+                      {row.descriptionPrimary}
+                    </p>
+                    {row.descriptionSecondary ? (
+                      <p className={styles.mutedParagraph}>
+                        {row.descriptionSecondary}
+                      </p>
+                    ) : null}
                   </div>
                   <div className={styles.copyRight}>
                     <p className={styles.toolsList}>{row.list}</p>
@@ -126,22 +142,29 @@ export function MultiBannerSection({
             ) : (
               <>
                 <div className={styles.copy}>
-                  <div className={styles.copyLeft}>
-                    <h3>
-                      <span className={styles.titleWithIcon}>
-                        <span className={styles.titleIconBadge}>
-                          <row.Icon size={14} stroke={2} />
-                        </span>
-                        {row.titlePrimary}
+                  <h3 className={styles.copyTitle}>
+                    <span className={styles.titleWithIcon}>
+                      <span className={styles.titleIconBadge}>
+                        <row.Icon size={14} stroke={2} />
                       </span>
-                      {row.titleSecondary ? (
-                        <span className={styles.secondary}>
-                          {" "}
-                          / {row.titleSecondary}
-                        </span>
-                      ) : null}
-                    </h3>
-                    <p>{row.description}</p>
+                      {row.titlePrimary}
+                    </span>
+                    {row.titleSecondary ? (
+                      <span className={styles.secondary}>
+                        {" "}
+                        / {row.titleSecondary}
+                      </span>
+                    ) : null}
+                  </h3>
+                  <div className={styles.copyLeft}>
+                    <p className={styles.primaryParagraph}>
+                      {row.descriptionPrimary}
+                    </p>
+                    {row.descriptionSecondary ? (
+                      <p className={styles.mutedParagraph}>
+                        {row.descriptionSecondary}
+                      </p>
+                    ) : null}
                   </div>
                   <div className={styles.copyRight}>
                     <p className={styles.toolsList}>{row.list}</p>
@@ -151,7 +174,7 @@ export function MultiBannerSection({
                   </div>
                 </div>
                 <div
-                  className={`${styles.visual} ${styles.visualRight} ${styles.visualAsset}`}
+                  className={`${styles.visual} ${styles.visualRight} ${styles.visualAsset} ${idx % 2 === 1 ? styles.gradientRtl : styles.gradientLtr}`}
                 >
                   <div className={`${styles.assetFrame} ${styles.assetOnly}`}>
                     <Image

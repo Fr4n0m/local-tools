@@ -127,28 +127,32 @@
         "key": "data-encoding",
         "titlePrimary": "Data",
         "titleSecondary": "",
-        "description": "Work with data confidently. Format, validate, convert, and generate exactly what you need, locally.",
+        "descriptionPrimary": "Work with data confidently. Format, validate, convert, and generate exactly what you need, locally.",
+        "descriptionSecondary": "Great for cleaning inputs before sending to APIs or sharing results without formatting errors.",
         "cta": "Explore Data tools"
       },
       {
         "key": "web",
         "titlePrimary": "Web",
         "titleSecondary": "",
-        "description": "Debug, inspect, and interact with web services and content without leaving your machine.",
+        "descriptionPrimary": "Debug, inspect, and interact with web services and content without leaving your machine.",
+        "descriptionSecondary": "Useful to validate URLs, payloads, and responses during quick integration tasks.",
         "cta": "Explore Web tools"
       },
       {
         "key": "dev",
         "titlePrimary": "Development",
         "titleSecondary": "",
-        "description": "Ship better code with helpers that speed up your daily development tasks.",
+        "descriptionPrimary": "Ship better code with helpers that speed up your daily development tasks.",
+        "descriptionSecondary": "Built for documentation, text transformations, and practical copy-ready snippets.",
         "cta": "Explore Dev tools"
       },
       {
         "key": "advanced",
         "titlePrimary": "Utilities",
         "titleSecondary": "",
-        "description": "Small utilities with a big impact on your productivity, every single day.",
+        "descriptionPrimary": "Small utilities with a big impact on your productivity, every single day.",
+        "descriptionSecondary": "For those moments when you need a microtask solved in seconds, with no extra software.",
         "cta": "Explore Utils tools"
       }
     ],

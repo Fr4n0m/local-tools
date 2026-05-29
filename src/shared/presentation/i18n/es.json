@@ -133,29 +133,33 @@
         "key": "data-encoding",
         "titlePrimary": "Datos",
         "titleSecondary": "",
-        "description": "Trabaja con datos con confianza. Formatea, valida, convierte y genera exactamente lo que necesitas, de forma local.",
-        "cta": "Explorar tools de Data"
+        "descriptionPrimary": "Trabaja con datos con confianza. Formatea, valida, convierte y genera exactamente lo que necesitas, de forma local.",
+        "descriptionSecondary": "Ideal para limpiar entradas antes de enviarlas a APIs o compartir resultados sin errores de formato.",
+        "cta": "Explorar tools de Datos"
       },
       {
         "key": "web",
         "titlePrimary": "Web",
         "titleSecondary": "",
-        "description": "Depura, inspecciona e interactúa con servicios y contenido web sin salir de tu máquina.",
+        "descriptionPrimary": "Depura, inspecciona e interactúa con servicios y contenido web sin salir de tu máquina.",
+        "descriptionSecondary": "Perfecto para validar URLs, payloads y respuestas durante tareas rápidas de integración.",
         "cta": "Explorar tools de Web"
       },
       {
         "key": "dev",
         "titlePrimary": "Desarrollo",
         "titleSecondary": "",
-        "description": "Publica mejor código con herramientas que aceleran tus tareas diarias de desarrollo.",
-        "cta": "Explorar tools de Dev"
+        "descriptionPrimary": "Publica mejor código con herramientas que aceleran tus tareas diarias de desarrollo.",
+        "descriptionSecondary": "Pensado para documentación, transformación de texto y utilidades listas para copiar y pegar.",
+        "cta": "Explorar tools de Desarrollo"
       },
       {
         "key": "advanced",
         "titlePrimary": "Utilidades",
         "titleSecondary": "",
-        "description": "Pequeñas utilidades con un gran impacto en tu productividad, todos los días.",
-        "cta": "Explorar tools de Utils"
+        "descriptionPrimary": "Pequeñas utilidades con un gran impacto en tu productividad, todos los días.",
+        "descriptionSecondary": "Cuando necesitas resolver una microtarea en segundos sin abrir software adicional.",
+        "cta": "Explorar tools de Utilidades"
       }
     ],
     "storyTitle": "Cómo está pensado este producto",
