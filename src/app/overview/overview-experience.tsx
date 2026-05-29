@@ -1,23 +1,14 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import {
-  IconCode,
-  IconDatabase,
-  IconDownload,
-  IconSettings,
-} from "@tabler/icons-react";
 import styles from "./overview.module.css";
 import { SimplePageHeader } from "@/shared/presentation/components/simple-page-header";
 import { PageDisplayControls } from "@/shared/presentation/components/page-display-controls";
-import { tools } from "@/modules/tool-registry/application/tools";
 import { HeroSection } from "./components/hero-section";
 import { StorySection } from "./components/story-section";
 import { MultiBannerSection } from "./components/multi-banner-section";
-import { CapabilityChaptersSection } from "./components/capability-chapters-section";
-import { ToolsStripSection } from "./components/tools-strip-section";
 import { DiscoverSection } from "./components/discover-section";
 import {
   resolveInitialLanguage,
@@ -25,58 +16,16 @@ import {
   type Language,
 } from "@/shared/presentation/i18n";
 
-const categoryOrder = [
-  "files-media",
-  "data-encoding",
-  "text-code",
-  "advanced",
-] as const;
-
-const categoryMeta = {
-  "files-media": {
-    icon: IconDownload,
-    label: { en: "Files & Media", es: "Archivos y Multimedia" },
-    summary: {
-      en: "Image, PDF, and video tasks where speed and privacy matter more than cloud workflows.",
-      es: "Tareas de imagen, PDF y video donde importan más la velocidad y la privacidad que la nube.",
-    },
-  },
-  "data-encoding": {
-    icon: IconDatabase,
-    label: { en: "Data & Encoding", es: "Datos y Codificación" },
-    summary: {
-      en: "Validation and transformation utilities for JSON, URLs, payloads, and compact data formats.",
-      es: "Utilidades de validación y transformación para JSON, URLs, payloads y formatos compactos.",
-    },
-  },
-  "text-code": {
-    icon: IconCode,
-    label: { en: "Text & Code", es: "Texto y Código" },
-    summary: {
-      en: "Text-focused modules for documentation, developer writing, prompt prep, and structured content.",
-      es: "Módulos centrados en texto para documentación, escritura técnica y contenido estructurado.",
-    },
-  },
-  advanced: {
-    icon: IconSettings,
-    label: { en: "Advanced Utilities", es: "Utilidades Avanzadas" },
-    summary: {
-      en: "Specialized tools with deeper controls for creative and high-specificity utility scenarios.",
-      es: "Herramientas especializadas con más control para escenarios creativos y específicos.",
-    },
-  },
-} as const;
-
 export function OverviewExperience() {
   const rootRef = useRef<HTMLDivElement>(null);
-  const horizontalRef = useRef<HTMLDivElement>(null);
   const storyRef = useRef<HTMLDivElement>(null);
   const thirdSectionRef = useRef<HTMLDivElement>(null);
-  const [language, setLanguage] = useState<Language>(() =>
-    typeof window === "undefined" ? "en" : resolveInitialLanguage(),
-  );
+  const [language, setLanguage] = useState<Language>("en");
 
   useEffect(() => {
+    const frame = window.requestAnimationFrame(() => {
+      setLanguage(resolveInitialLanguage());
+    });
     const onStorage = (event: StorageEvent) => {
       if (event.key === "localtools.language")
         setLanguage(resolveInitialLanguage());
@@ -85,6 +34,7 @@ export function OverviewExperience() {
     window.addEventListener("storage", onStorage);
     window.addEventListener("localtools:language-change", onLanguageChange);
     return () => {
+      window.cancelAnimationFrame(frame);
       window.removeEventListener("storage", onStorage);
       window.removeEventListener(
         "localtools:language-change",
@@ -93,28 +43,9 @@ export function OverviewExperience() {
     };
   }, []);
 
-  const chapters = useMemo(
-    () =>
-      categoryOrder.map((category) => {
-        const data = tools.filter((tool) => tool.category === category);
-        const names = data.slice(0, 6).map((tool) => tool.name[language]);
-        const rest = data.length > 6 ? data.length - 6 : 0;
-        return {
-          category,
-          icon: categoryMeta[category].icon,
-          label: categoryMeta[category].label[language],
-          summary: categoryMeta[category].summary[language],
-          names,
-          rest,
-        };
-      }),
-    [language],
-  );
-
   useEffect(() => {
     const root = rootRef.current;
-    const strip = horizontalRef.current;
-    if (!root || !strip) return;
+    if (!root) return;
     const cleanupFns: Array<() => void> = [];
 
     gsap.registerPlugin(ScrollTrigger);
@@ -204,38 +135,6 @@ export function OverviewExperience() {
         },
       );
 
-      gsap.utils.toArray<HTMLElement>("[data-slide]").forEach((el, idx) => {
-        const lead = el.querySelector<HTMLElement>(".chapterLead");
-        const media = el.querySelector<HTMLElement>(".chapterMedia");
-
-        const sectionTl = gsap.timeline({
-          scrollTrigger: {
-            trigger: el,
-            start: "top 82%",
-          },
-        });
-
-        sectionTl
-          .fromTo(
-            lead,
-            { opacity: 0, x: idx % 2 === 0 ? -58 : 58, y: 16 },
-            { opacity: 1, x: 0, y: 0, duration: 0.78, ease: "power3.out" },
-          )
-          .fromTo(
-            media,
-            { opacity: 0, x: idx % 2 === 0 ? 46 : -46, y: 10, scale: 0.985 },
-            {
-              opacity: 1,
-              x: 0,
-              y: 0,
-              scale: 1,
-              duration: 0.82,
-              ease: "power2.out",
-            },
-            "-=0.56",
-          );
-      });
-
       const storyPath = root.querySelector<SVGPathElement>(".storyLinePath");
       const storyNodes = gsap.utils.toArray<HTMLElement>(".storyNode");
       const storyTimelineEl = root.querySelector<HTMLElement>(".storyTimeline");
@@ -289,6 +188,29 @@ export function OverviewExperience() {
           },
         },
       );
+
+      const bannerRows = gsap.utils.toArray<HTMLElement>("[data-banner-row]");
+      if (bannerRows.length > 0) {
+        const bannerTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: ".multiBannerRows",
+            start: "top 88%",
+            end: "top 46%",
+            scrub: 1,
+          },
+        });
+
+        bannerRows.forEach((row, idx) => {
+          const dir = row.dataset.bannerDir === "right" ? 1 : -1;
+          const offscreenDistance = window.innerWidth + row.offsetWidth;
+          bannerTl.fromTo(
+            row,
+            { x: dir * offscreenDistance, opacity: 1 },
+            { x: 0, ease: "none", duration: 0.28 },
+            idx * 0.16,
+          );
+        });
+      }
 
       if (storyPath && storyNodes.length > 0) {
         syncStoryNodePositions();
@@ -383,54 +305,6 @@ export function OverviewExperience() {
 
         storyTl.eventCallback("onUpdate", syncStoryNodePositions);
       }
-
-      const totalShift = Math.max(strip.scrollWidth - strip.clientWidth, 0);
-      if (totalShift > 0) {
-        const stripTween = gsap.to(".horizontalStrip", {
-          x: -totalShift,
-          ease: "none",
-          scrollTrigger: {
-            trigger: "[data-horizontal-wrap]",
-            start: "top top",
-            end: `+=${Math.min(totalShift * 1.2, 3400)}`,
-            pin: true,
-            scrub: 1,
-          },
-        });
-
-        gsap.utils.toArray<HTMLElement>(".stripCard").forEach((card, i) => {
-          gsap.fromTo(
-            card,
-            { opacity: 0.74, y: 24, scale: 0.975 },
-            {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              ease: "power2.out",
-              scrollTrigger: {
-                trigger: card,
-                containerAnimation: stripTween,
-                start: "left 86%",
-                end: "left 50%",
-                scrub: 0.45,
-              },
-            },
-          );
-
-          gsap.to(card, {
-            y: i % 2 === 0 ? -7 : -4,
-            rotate: i % 2 === 0 ? 0.7 : -0.7,
-            ease: "none",
-            scrollTrigger: {
-              trigger: card,
-              containerAnimation: stripTween,
-              start: "left right",
-              end: "right left",
-              scrub: 1,
-            },
-          });
-        });
-      }
     }, root);
 
     return () => {
@@ -473,16 +347,8 @@ export function OverviewExperience() {
         </div>
 
         <div ref={thirdSectionRef}>
-          <MultiBannerSection />
+          <MultiBannerSection language={language} text={t} />
         </div>
-
-        <CapabilityChaptersSection chapters={chapters} text={t} />
-
-        <ToolsStripSection
-          language={language}
-          stripRef={horizontalRef}
-          text={t}
-        />
 
         <DiscoverSection text={t} />
       </div>

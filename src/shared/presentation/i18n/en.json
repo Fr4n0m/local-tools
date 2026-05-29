@@ -120,6 +120,38 @@
     ],
     "storyCuePrimary": "EXPLORE MORE",
     "storyCueSecondary": "/ CATEGORIES AND CAPABILITIES",
+    "section3EyebrowPrimary": "PRODUCT",
+    "section3EyebrowSecondary": "CAPABILITIES",
+    "section3Rows": [
+      {
+        "key": "data-encoding",
+        "titlePrimary": "Data",
+        "titleSecondary": "",
+        "description": "Work with data confidently. Format, validate, convert, and generate exactly what you need, locally.",
+        "cta": "Explore Data tools"
+      },
+      {
+        "key": "web",
+        "titlePrimary": "Web",
+        "titleSecondary": "",
+        "description": "Debug, inspect, and interact with web services and content without leaving your machine.",
+        "cta": "Explore Web tools"
+      },
+      {
+        "key": "dev",
+        "titlePrimary": "Development",
+        "titleSecondary": "",
+        "description": "Ship better code with helpers that speed up your daily development tasks.",
+        "cta": "Explore Dev tools"
+      },
+      {
+        "key": "advanced",
+        "titlePrimary": "Utilities",
+        "titleSecondary": "",
+        "description": "Small utilities with a big impact on your productivity, every single day.",
+        "cta": "Explore Utils tools"
+      }
+    ],
     "storyTitle": "How this product is meant to be used",
     "storyP1": "Most teams lose time on tiny operations that are too small for dedicated software but too frequent to ignore: format this payload, convert that file, generate this code-safe value, verify that color contrast, compress that PDF before sending it.",
     "storyP2": "This page explains the platform as a narrative, not as a dashboard grid. You can scan it quickly, jump to relevant categories, and understand where each tool fits in a real delivery pipeline.",

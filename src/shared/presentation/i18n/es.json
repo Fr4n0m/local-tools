@@ -126,6 +126,38 @@
     ],
     "storyCuePrimary": "EXPLORAR MÁS",
     "storyCueSecondary": "/ CATEGORÍAS Y CAPACIDADES",
+    "section3EyebrowPrimary": "CAPACIDADES",
+    "section3EyebrowSecondary": "DEL PRODUCTO",
+    "section3Rows": [
+      {
+        "key": "data-encoding",
+        "titlePrimary": "Datos",
+        "titleSecondary": "",
+        "description": "Trabaja con datos con confianza. Formatea, valida, convierte y genera exactamente lo que necesitas, de forma local.",
+        "cta": "Explorar tools de Data"
+      },
+      {
+        "key": "web",
+        "titlePrimary": "Web",
+        "titleSecondary": "",
+        "description": "Depura, inspecciona e interactúa con servicios y contenido web sin salir de tu máquina.",
+        "cta": "Explorar tools de Web"
+      },
+      {
+        "key": "dev",
+        "titlePrimary": "Desarrollo",
+        "titleSecondary": "",
+        "description": "Publica mejor código con herramientas que aceleran tus tareas diarias de desarrollo.",
+        "cta": "Explorar tools de Dev"
+      },
+      {
+        "key": "advanced",
+        "titlePrimary": "Utilidades",
+        "titleSecondary": "",
+        "description": "Pequeñas utilidades con un gran impacto en tu productividad, todos los días.",
+        "cta": "Explorar tools de Utils"
+      }
+    ],
     "storyTitle": "Cómo está pensado este producto",
     "storyP1": "Muchos equipos pierden tiempo en operaciones pequeñas que no justifican software dedicado, pero se repiten constantemente: formatear payloads, convertir archivos, generar valores seguros, validar contraste, comprimir un PDF antes de enviarlo.",
     "storyP2": "Esta página explica la plataforma como narrativa, no como un dashboard cuadriculado. Puedes escanear rápido, saltar por categorías y entender dónde encaja cada herramienta en un pipeline real.",
