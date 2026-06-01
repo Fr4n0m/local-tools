@@ -166,21 +166,82 @@
     "fit": "Best-fit usage",
     "horizontalTitle": "Every active tool, in one moving strip",
     "horizontalHint": "Scroll to explore all current modules.",
-    "discoverEyebrow": "EXPLORE ALL TOOLS",
+    "discoverEyebrowPrimary": "EXPLORE",
+    "discoverEyebrowSecondary": "ALL TOOLS",
     "discoverTitle": "Discover. Try. Stay local.",
-    "discoverSubtitle": "Discover. Try. Stay local.",
+    "discoverSubtitle": "Discover practical tools built for developers.",
+    "discoverMetaLine": "PRIVATE · RELIABLE · 100% LOCAL",
+    "carouselOpenLabel": "Open tool →",
+    "carouselHighlights": [
+      {
+        "title": "100% local",
+        "description": "Your data never leaves the browser."
+      },
+      {
+        "title": "No telemetry",
+        "description": "No tracking, no analytics, no hidden monitoring."
+      },
+      {
+        "title": "No accounts",
+        "description": "No sign-up and no login required."
+      },
+      {
+        "title": "Open source & auditable",
+        "description": "Transparent code, built in the open."
+      }
+    ],
     "discoverTools": [
-      { "name": "JSON Formatter", "hint": "Format and validate JSON" },
-      { "name": "HTTP Client", "hint": "Send and inspect requests" },
-      { "name": "Text Diff", "hint": "Compare text and files" },
-      { "name": "UUID Generator", "hint": "Generate UUIDs" },
-      { "name": "Hash Generator", "hint": "Generate hashes" },
-      { "name": "Password Generator", "hint": "Strong passwords" },
-      { "name": "Cron Expression", "hint": "Validate cron" },
-      { "name": "HTML Viewer", "hint": "Render and inspect" }
+      {
+        "id": "json-formatter",
+        "name": "JSON Formatter",
+        "description": "Format and validate JSON instantly. Ideal for API payload debugging.",
+        "badge": "DATA"
+      },
+      {
+        "id": "url-encoder",
+        "name": "URL Encoder",
+        "description": "Encode and decode URLs safely for routes, query strings, and requests.",
+        "badge": "WEB"
+      },
+      {
+        "id": "text-transformer",
+        "name": "Text Transformer",
+        "description": "Transform text in seconds for docs, snippets, and dev workflows.",
+        "badge": "DEV"
+      },
+      {
+        "id": "uuid-generator",
+        "name": "UUID Generator",
+        "description": "Generate unique UUID v4 values for databases, tests, and systems.",
+        "badge": "UTILS"
+      },
+      {
+        "id": "base64-tool",
+        "name": "Base64 Encoder",
+        "description": "Encode and decode Base64 data quickly for integrations and testing.",
+        "badge": "DATA"
+      },
+      {
+        "id": "contrast-checker",
+        "name": "Contrast Checker",
+        "description": "Validate WCAG color contrast for accessible and readable interfaces.",
+        "badge": "WEB"
+      },
+      {
+        "id": "qr-generator",
+        "name": "QR Generator",
+        "description": "Generate local QR codes and export quickly for links or data sharing.",
+        "badge": "UTILS"
+      },
+      {
+        "id": "custom-timer",
+        "name": "Custom Timer",
+        "description": "Set quick timers for focused work sessions and practical checks.",
+        "badge": "DEV"
+      }
     ],
     "trustEyebrow": "PRIVACY YOU CAN TRUST",
-    "trustTitle": "Your data never leaves your machine.",
+    "trustTitle": "Your data never leaves your browser.",
     "trustSubtitle": "Local control. Zero accounts.",
     "trustBodyPrimary": "LocalTools is built on a simple principle: you stay in control. No telemetry. No tracking. No accounts.",
     "trustBodySecondary": "Just tools that work, even offline.",
@@ -194,24 +255,24 @@
       {
         "eyebrow": "COMMUNITY",
         "title": "Built with developers, for developers.",
-        "subtitle": "Built with developers, for developers.",
-        "bodyPrimary": "Contribute, report, translate, or leave feedback. Every issue improves the product.",
-        "bodySecondary": "LocalTools evolves in the open.",
+        "subtitle": "Open community and practical collaboration.",
+        "bodyPrimary": "Share feedback, report bugs, or suggest concrete improvements from real daily workflows.",
+        "bodySecondary": "Every contribution helps prioritize the product and its direction.",
         "cta": "View on GitHub"
       },
       {
         "eyebrow": "ROADMAP",
-        "title": "What's coming next",
-        "subtitle": "Upcoming steps",
-        "bodyPrimary": "Clear priorities tied to real implementation.",
-        "bodySecondary": "More converters and generators",
+        "title": "Got an idea we're missing?",
+        "subtitle": "Propose a feature",
+        "bodyPrimary": "Share feature suggestions, UX improvements, or new tools you'd like to see.",
+        "bodySecondary": "Your suggestion can shape the next implementation block.",
         "bullets": [
-          "More converters and generators",
-          "Team presets and workspaces",
-          "CLI for power users",
-          "Plugin system"
+          "New feature or category",
+          "Workflow or interface improvement",
+          "Real-world use case",
+          "General product feedback"
         ],
-        "cta": "View roadmap"
+        "cta": "Send suggestion"
       },
       {
         "eyebrow": "STAY IN THE LOOP",

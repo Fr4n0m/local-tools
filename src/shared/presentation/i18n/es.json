@@ -172,21 +172,82 @@
     "fit": "Uso ideal",
     "horizontalTitle": "Todas las herramientas activas en una franja dinámica",
     "horizontalHint": "Haz scroll para explorar todos los módulos actuales.",
-    "discoverEyebrow": "EXPLORA TODAS LAS TOOLS",
-    "discoverTitle": "Discover. Try. Stay local.",
-    "discoverSubtitle": "Descubre. Prueba. Mantente local.",
+    "discoverEyebrowPrimary": "EXPLORA",
+    "discoverEyebrowSecondary": "TODAS LAS TOOLS",
+    "discoverTitle": "Descubre. Prueba. Mantente local.",
+    "discoverSubtitle": "Descubre herramientas útiles creadas para desarrolladores.",
+    "discoverMetaLine": "PRIVADAS · CONFIABLES · 100% LOCALES",
+    "carouselOpenLabel": "Abrir tool →",
+    "carouselHighlights": [
+      {
+        "title": "100% local",
+        "description": "Tus datos nunca salen del navegador."
+      },
+      {
+        "title": "Sin telemetría",
+        "description": "No rastreamos, no analizamos, no hacemos seguimiento."
+      },
+      {
+        "title": "Sin cuentas",
+        "description": "No necesitas registrarte ni iniciar sesión."
+      },
+      {
+        "title": "Open source y auditable",
+        "description": "Código abierto, transparente y hecho para durar."
+      }
+    ],
     "discoverTools": [
-      { "name": "JSON Formatter", "hint": "Formatea y valida JSON" },
-      { "name": "HTTP Client", "hint": "Envía e inspecciona requests" },
-      { "name": "Text Diff", "hint": "Compara texto y archivos" },
-      { "name": "UUID Generator", "hint": "Genera UUIDs" },
-      { "name": "Hash Generator", "hint": "Genera hashes" },
-      { "name": "Password Generator", "hint": "Contraseñas robustas" },
-      { "name": "Cron Expression", "hint": "Valida cron" },
-      { "name": "HTML Viewer", "hint": "Renderiza e inspecciona" }
+      {
+        "id": "json-formatter",
+        "name": "Formateador JSON",
+        "description": "Formatea y valida JSON al instante. Ideal para depurar APIs y payloads.",
+        "badge": "DATOS"
+      },
+      {
+        "id": "url-encoder",
+        "name": "Codificador URL",
+        "description": "Codifica y decodifica URLs de forma segura para peticiones y rutas.",
+        "badge": "WEB"
+      },
+      {
+        "id": "text-transformer",
+        "name": "Transformador de Texto",
+        "description": "Transforma texto en segundos para documentación y tareas de desarrollo.",
+        "badge": "CÓDIGO"
+      },
+      {
+        "id": "uuid-generator",
+        "name": "Generador UUID",
+        "description": "Genera UUID v4 únicos para bases de datos, tests y sistemas distribuidos.",
+        "badge": "UTILIDADES"
+      },
+      {
+        "id": "base64-tool",
+        "name": "Codificador Base64",
+        "description": "Codifica y decodifica Base64 para integraciones y pruebas rápidas.",
+        "badge": "DATOS"
+      },
+      {
+        "id": "contrast-checker",
+        "name": "Comprobador de Contraste",
+        "description": "Valida contraste WCAG entre colores para interfaces legibles y accesibles.",
+        "badge": "WEB"
+      },
+      {
+        "id": "qr-generator",
+        "name": "Generador QR",
+        "description": "Crea QR en local y exporta en segundos para compartir enlaces o datos.",
+        "badge": "UTILIDADES"
+      },
+      {
+        "id": "custom-timer",
+        "name": "Temporizador Personalizado",
+        "description": "Configura temporizadores rápidos para sesiones de trabajo y validaciones.",
+        "badge": "CÓDIGO"
+      }
     ],
     "trustEyebrow": "PRIVACIDAD EN LA QUE PUEDES CONFIAR",
-    "trustTitle": "Tus datos nunca salen de tu máquina.",
+    "trustTitle": "Tus datos nunca salen de tu navegador.",
     "trustSubtitle": "Control local. Cero cuentas.",
     "trustBodyPrimary": "LocalTools se basa en un principio simple: tú tienes el control. Sin telemetría. Sin seguimiento. Sin cuentas.",
     "trustBodySecondary": "Solo herramientas que funcionan, incluso sin conexión.",
@@ -200,24 +261,24 @@
       {
         "eyebrow": "COMUNIDAD",
         "title": "Construido por developers, para developers.",
-        "subtitle": "Construido por developers, para developers.",
-        "bodyPrimary": "Contribuye, reporta, traduce o deja feedback. Cada issue mejora el producto.",
-        "bodySecondary": "LocalTools evoluciona en abierto.",
+        "subtitle": "Comunidad abierta y colaboración real.",
+        "bodyPrimary": "Comparte feedback, reporta bugs o propón mejoras concretas desde tu flujo diario.",
+        "bodySecondary": "Cada aporte ayuda a priorizar mejor el producto y su dirección.",
         "cta": "Ver en GitHub"
       },
       {
         "eyebrow": "ROADMAP",
-        "title": "Lo que viene",
-        "subtitle": "Próximos pasos",
-        "bodyPrimary": "Prioridades claras orientadas a implementación real.",
-        "bodySecondary": "Más convertidores y generadores",
+        "title": "¿Se te ocurre algo que falta?",
+        "subtitle": "Propón una idea",
+        "bodyPrimary": "Comparte sugerencias de funcionalidades, mejoras de UX o nuevas tools que te gustaría ver.",
+        "bodySecondary": "Tu propuesta puede entrar en el siguiente bloque de trabajo.",
         "bullets": [
-          "Más convertidores y generadores",
-          "Presets para equipos",
-          "CLI para usuarios avanzados",
-          "Sistema de plugins"
+          "Nueva funcionalidad o categoría",
+          "Mejora de flujo o interfaz",
+          "Caso real de uso",
+          "Feedback general del producto"
         ],
-        "cta": "Ver hoja de ruta"
+        "cta": "Enviar sugerencia"
       },
       {
         "eyebrow": "MANTENTE AL DÍA",

@@ -4,24 +4,16 @@ import {
   IconArrowNarrowRight,
   IconArrowRight,
   IconBrandGithub,
-  IconChevronLeft,
-  IconChevronRight,
-  IconCircleCheck,
-  IconLock,
   IconMail,
   IconRocket,
-  IconRoute,
   IconShieldCheck,
   IconStack2,
 } from "@tabler/icons-react";
 import styles from "./discover-section.module.css";
 import Link from "next/link";
+import Image from "next/image";
 
 type DiscoverCopy = {
-  discoverEyebrow: string;
-  discoverTitle: string;
-  discoverSubtitle: string;
-  discoverTools: Array<{ name: string; hint: string }>;
   trustEyebrow: string;
   trustTitle: string;
   trustSubtitle: string;
@@ -50,42 +42,18 @@ type DiscoverSectionProps = {
 };
 
 export function DiscoverSection({ text }: DiscoverSectionProps) {
-  const topTools = text.discoverTools.slice(0, 8);
-
   return (
     <section className={styles.finalSection} data-fade id="subscribe-updates">
-      <header className={styles.discoverHeader}>
-        <div>
-          <p className={styles.eyebrow}>{text.discoverEyebrow}</p>
-          <h2>{text.discoverTitle}</h2>
-          <p className={styles.subtitle}>{text.discoverSubtitle}</p>
-        </div>
-        <div className={styles.headerNav}>
-          <button aria-label="Previous">
-            <IconChevronLeft size={16} />
-          </button>
-          <button aria-label="Next">
-            <IconChevronRight size={16} />
-          </button>
-        </div>
-      </header>
-
-      <div className={styles.toolsRail}>
-        {topTools.map((tool, idx) => (
-          <article className={styles.toolChip} key={`${tool.name}-${idx}`}>
-            <IconRoute size={14} />
-            <div>
-              <strong>{tool.name}</strong>
-              <span>{tool.hint}</span>
-            </div>
-          </article>
-        ))}
-      </div>
-
       <article className={styles.trustBlock}>
         <div className={styles.trustVisual} aria-hidden>
-          <div className={styles.trustLock}>
-            <IconLock size={38} />
+          <div className={styles.trustAssetWrap}>
+            <Image
+              src="/overview/discover-lock.webp"
+              alt="Local privacy lock"
+              fill
+              className={styles.trustAsset}
+              sizes="(max-width: 1024px) 100vw, 18vw"
+            />
           </div>
         </div>
         <div className={styles.trustCopy}>
@@ -98,7 +66,7 @@ export function DiscoverSection({ text }: DiscoverSectionProps) {
         <ul className={styles.trustChecks}>
           {text.trustChecks.map((item) => (
             <li key={item}>
-              <IconCircleCheck size={16} />
+              <IconShieldCheck size={16} />
               <span>{item}</span>
             </li>
           ))}
@@ -110,12 +78,25 @@ export function DiscoverSection({ text }: DiscoverSectionProps) {
           <p className={styles.eyebrow}>{text.bottomCards[0]?.eyebrow}</p>
           <h3>{text.bottomCards[0]?.title}</h3>
           <p className={styles.subtitle}>{text.bottomCards[0]?.subtitle}</p>
-          <p className={styles.bodyPrimary}>
-            {text.bottomCards[0]?.bodyPrimary}
-          </p>
-          <p className={styles.bodySecondary}>
-            {text.bottomCards[0]?.bodySecondary}
-          </p>
+          <div className={styles.cardRow}>
+            <div>
+              <p className={styles.bodyPrimary}>
+                {text.bottomCards[0]?.bodyPrimary}
+              </p>
+              <p className={styles.bodySecondary}>
+                {text.bottomCards[0]?.bodySecondary}
+              </p>
+            </div>
+            <div className={styles.communityAssetWrap} aria-hidden>
+              <Image
+                src="/overview/discover-community.webp"
+                alt="Community contribution asset"
+                fill
+                className={styles.communityAsset}
+                sizes="(max-width: 1024px) 100vw, 24vw"
+              />
+            </div>
+          </div>
           <a
             href="https://github.com/Fr4n0m/local-tools"
             rel="noreferrer"
@@ -133,22 +114,33 @@ export function DiscoverSection({ text }: DiscoverSectionProps) {
           <p className={styles.bodyPrimary}>
             {text.bottomCards[1]?.bodyPrimary}
           </p>
-          <ul className={styles.miniList}>
-            {(
-              text.bottomCards[1]?.bullets ?? [
-                text.bottomCards[1]?.bodySecondary,
-              ]
-            )
-              .filter(Boolean)
-              .map((bullet) => (
-                <li key={bullet}>
-                  <IconCircleCheck size={14} />
-                  <span>{bullet}</span>
-                </li>
-              ))}
-          </ul>
+          <div className={styles.roadmapRow}>
+            <ul className={styles.miniList}>
+              {(
+                text.bottomCards[1]?.bullets ?? [
+                  text.bottomCards[1]?.bodySecondary,
+                ]
+              )
+                .filter(Boolean)
+                .map((bullet) => (
+                  <li key={bullet}>
+                    <span className={styles.miniIndicator} aria-hidden />
+                    <span>{bullet}</span>
+                  </li>
+                ))}
+            </ul>
+            <div className={styles.roadmapAssetWrap} aria-hidden>
+              <Image
+                src="/overview/discover-roadmap.webp"
+                alt="Roadmap stack asset"
+                fill
+                className={styles.roadmapAsset}
+                sizes="(max-width: 1024px) 100vw, 24vw"
+              />
+            </div>
+          </div>
           <a
-            href="https://github.com/Fr4n0m/local-tools/issues"
+            href="https://github.com/Fr4n0m/local-tools/issues/new/choose"
             rel="noreferrer"
             target="_blank"
           >
@@ -161,25 +153,38 @@ export function DiscoverSection({ text }: DiscoverSectionProps) {
           <p className={styles.eyebrow}>{text.bottomCards[2]?.eyebrow}</p>
           <h3>{text.bottomCards[2]?.title}</h3>
           <p className={styles.subtitle}>{text.bottomCards[2]?.subtitle}</p>
-          <p className={styles.bodyPrimary}>
-            {text.bottomCards[2]?.bodyPrimary}
-          </p>
-          <form
-            className={styles.subscribeForm}
-            onSubmit={(e) => e.preventDefault()}
-          >
-            <label className="sr-only" htmlFor="discover-email">
-              {text.subscribePlaceholder}
-            </label>
-            <input
-              id="discover-email"
-              placeholder={text.subscribePlaceholder}
-              type="email"
-            />
-            <button type="submit" aria-label={text.subscribeButton}>
-              <IconArrowNarrowRight size={16} />
-            </button>
-          </form>
+          <div className={styles.cardRow}>
+            <div>
+              <p className={styles.bodyPrimary}>
+                {text.bottomCards[2]?.bodyPrimary}
+              </p>
+              <form
+                className={styles.subscribeForm}
+                onSubmit={(e) => e.preventDefault()}
+              >
+                <label className="sr-only" htmlFor="discover-email">
+                  {text.subscribePlaceholder}
+                </label>
+                <input
+                  id="discover-email"
+                  placeholder={text.subscribePlaceholder}
+                  type="email"
+                />
+                <button type="submit" aria-label={text.subscribeButton}>
+                  <IconArrowNarrowRight size={16} />
+                </button>
+              </form>
+            </div>
+            <div className={styles.mailAssetWrap} aria-hidden>
+              <Image
+                src="/overview/discover-mail.webp"
+                alt="Mail paper plane asset"
+                fill
+                className={styles.mailAsset}
+                sizes="(max-width: 1024px) 100vw, 24vw"
+              />
+            </div>
+          </div>
           <p className={styles.bodySecondary}>
             {text.bottomCards[2]?.bodySecondary}
           </p>

@@ -9,6 +9,7 @@ import { PageDisplayControls } from "@/shared/presentation/components/page-displ
 import { HeroSection } from "./components/hero-section";
 import { StorySection } from "./components/story-section";
 import { MultiBannerSection } from "./components/multi-banner-section";
+import { CarouselSection } from "./components/carousel-section";
 import { DiscoverSection } from "./components/discover-section";
 import {
   resolveInitialLanguage,
@@ -55,17 +56,14 @@ export function OverviewExperience() {
 
     const ctx = gsap.context(() => {
       if (reduced) {
-        gsap.set(
-          "[data-fade], [data-slide], .horizontalStrip, .stripCard, .heroAssetShape",
-          {
-            opacity: 1,
-            x: 0,
-            y: 0,
-            scale: 1,
-            rotate: 0,
-            clipPath: "inset(0% 0% 0% 0%)",
-          },
-        );
+        gsap.set("[data-fade], [data-slide], .heroAssetShape", {
+          opacity: 1,
+          x: 0,
+          y: 0,
+          scale: 1,
+          rotate: 0,
+          clipPath: "inset(0% 0% 0% 0%)",
+        });
         return;
       }
 
@@ -211,6 +209,70 @@ export function OverviewExperience() {
         });
       }
 
+      const carouselSections = gsap.utils.toArray<HTMLElement>(
+        "[data-carousel-section]",
+      );
+      carouselSections.forEach((section) => {
+        const viewport = section.querySelector<HTMLElement>(
+          "[data-carousel-viewport]",
+        );
+        const track = section.querySelector<HTMLElement>(
+          "[data-carousel-track]",
+        );
+        const progress = section.querySelector<HTMLElement>(
+          "[data-carousel-progress]",
+        );
+        if (!viewport || !track) return;
+
+        const totalShift = () =>
+          Math.max(0, track.scrollWidth - viewport.clientWidth);
+
+        const createAnimation = () => {
+          if (totalShift() <= 2) {
+            gsap.set(track, { x: 0 });
+            if (progress) gsap.set(progress, { scaleX: 0 });
+            section.dataset.carouselEdge = "start";
+            return;
+          }
+
+          gsap.fromTo(
+            track,
+            { x: 0 },
+            {
+              x: () => -totalShift(),
+              ease: "none",
+              scrollTrigger: {
+                trigger: section,
+                start: "top top+=72",
+                end: () =>
+                  `+=${Math.max(window.innerHeight * 1.2, totalShift() * 0.95)}`,
+                scrub: 0.9,
+                pin: true,
+                pinType: "fixed",
+                anticipatePin: 1,
+                fastScrollEnd: true,
+                invalidateOnRefresh: true,
+                onUpdate: (self: ScrollTrigger) => {
+                  if (progress) gsap.set(progress, { scaleX: self.progress });
+                  if (self.progress <= 0.01) {
+                    section.dataset.carouselEdge = "start";
+                  } else if (self.progress >= 0.99) {
+                    section.dataset.carouselEdge = "end";
+                  } else {
+                    section.dataset.carouselEdge = "middle";
+                  }
+                },
+              },
+            },
+          );
+          if (progress) {
+            gsap.set(progress, { scaleX: 0, transformOrigin: "left center" });
+          }
+        };
+
+        createAnimation();
+      });
+
       if (storyPath && storyNodes.length > 0) {
         syncStoryNodePositions();
         const resizeObserver = new ResizeObserver(() =>
@@ -348,6 +410,8 @@ export function OverviewExperience() {
         <div ref={thirdSectionRef}>
           <MultiBannerSection language={language} text={t} />
         </div>
+
+        <CarouselSection text={t} />
 
         <DiscoverSection text={t} />
       </div>

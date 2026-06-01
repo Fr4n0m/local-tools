@@ -3,17 +3,10 @@
   z-index: 1;
   min-height: 100dvh;
   margin-bottom: 1.25rem;
-  padding-block: 1rem 1.2rem;
+  padding-block: 0.8rem 1.2rem;
   display: grid;
-  grid-template-rows: auto auto auto 1fr auto;
+  grid-template-rows: auto 1fr auto;
   gap: 0.62rem;
-}
-
-.discoverHeader {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
 }
 
 .eyebrow {
@@ -26,80 +19,10 @@
   color: color-mix(in oklab, var(--color-foreground), transparent 38%);
 }
 
-.discoverHeader h2 {
-  margin: 0.44rem 0 0;
-  font-size: clamp(1.4rem, 2.4vw, 2rem);
-  line-height: 1.06;
-}
-
 .subtitle {
   margin: 0.28rem 0 0;
   font-size: 0.92rem;
   color: color-mix(in oklab, var(--color-foreground), transparent 22%);
-}
-
-.headerNav {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.18rem;
-}
-
-.headerNav button {
-  width: 34px;
-  height: 34px;
-  border-radius: 999px;
-  border: 1px solid color-mix(in oklab, var(--color-border), transparent 4%);
-  background: color-mix(
-    in oklab,
-    var(--color-background),
-    var(--color-secondary) 16%
-  );
-  color: color-mix(in oklab, var(--color-foreground), transparent 10%);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.toolsRail {
-  border: 1px solid color-mix(in oklab, var(--color-border), transparent 10%);
-  border-radius: calc(var(--radius-squircle) - 2px);
-  background: color-mix(
-    in oklab,
-    var(--color-background),
-    var(--color-secondary) 10%
-  );
-  padding: 0.48rem 0.52rem;
-  display: grid;
-  grid-template-columns: repeat(8, minmax(0, 1fr));
-  gap: 0.38rem;
-}
-
-.toolChip {
-  border: 1px solid color-mix(in oklab, var(--color-border), transparent 18%);
-  border-radius: calc(var(--radius-squircle) - 8px);
-  background: color-mix(
-    in oklab,
-    var(--color-background),
-    var(--color-secondary) 8%
-  );
-  padding: 0.38rem 0.42rem;
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 0.38rem;
-  align-items: start;
-}
-
-.toolChip strong {
-  display: block;
-  font-size: 0.72rem;
-  line-height: 1.1;
-}
-
-.toolChip span {
-  display: block;
-  margin-top: 0.08rem;
-  font-size: 0.62rem;
-  color: color-mix(in oklab, var(--color-foreground), transparent 42%);
 }
 
 .trustBlock {
@@ -128,14 +51,14 @@
   place-items: center;
 }
 
-.trustLock {
-  width: 92px;
-  height: 92px;
-  border-radius: 18px;
-  border: 1px solid color-mix(in oklab, var(--color-border), transparent 12%);
-  background: color-mix(in oklab, var(--color-foreground), transparent 92%);
-  display: grid;
-  place-items: center;
+.trustAssetWrap {
+  position: relative;
+  width: min(170px, 95%);
+  aspect-ratio: 1 / 1;
+}
+
+.trustAsset {
+  object-fit: contain;
 }
 
 .trustCopy h3 {
@@ -195,6 +118,28 @@
   line-height: 1.02;
 }
 
+.communityAssetWrap {
+  position: relative;
+  width: min(180px, 100%);
+  aspect-ratio: 16 / 10;
+  margin: 0.1rem 0 0 auto;
+}
+
+.communityAsset {
+  object-fit: contain;
+}
+
+.roadmapAssetWrap {
+  position: relative;
+  width: min(148px, 100%);
+  aspect-ratio: 1 / 1;
+  margin: 0.1rem 0 0;
+}
+
+.roadmapAsset {
+  object-fit: contain;
+}
+
 .bottomCard a {
   margin-top: auto;
   border: 1px solid color-mix(in oklab, var(--color-border), transparent 8%);
@@ -223,6 +168,23 @@
   align-items: center;
   font-size: 0.78rem;
   color: color-mix(in oklab, var(--color-foreground), transparent 24%);
+}
+
+.miniIndicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--color-foreground), transparent 40%);
+  flex: 0 0 6px;
+  margin-top: 0.1em;
+}
+
+.roadmapRow {
+  margin-top: 0.2rem;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.7rem;
+  align-items: start;
 }
 
 .subscribeForm {
@@ -255,6 +217,25 @@
   justify-content: center;
 }
 
+.mailAssetWrap {
+  position: relative;
+  width: min(160px, 100%);
+  aspect-ratio: 1 / 1;
+  margin: 0.1rem 0 0 auto;
+}
+
+.mailAsset {
+  object-fit: contain;
+}
+
+.cardRow {
+  margin-top: 0.24rem;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.72rem;
+  align-items: start;
+}
+
 .bottomLinks {
   display: flex;
   flex-wrap: wrap;
@@ -280,10 +261,6 @@
     grid-template-rows: auto;
   }
 
-  .toolsRail {
-    grid-template-columns: 1fr 1fr;
-  }
-
   .trustBlock {
     grid-template-columns: 1fr;
   }
@@ -292,7 +269,15 @@
     grid-template-columns: 1fr;
   }
 
-  .copy {
-    padding: 1rem;
+  .roadmapRow {
+    grid-template-columns: 1fr;
+  }
+
+  .roadmapAssetWrap {
+    margin-left: auto;
+  }
+
+  .cardRow {
+    grid-template-columns: 1fr;
   }
 }
