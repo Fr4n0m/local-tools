@@ -3,6 +3,7 @@
 import {
   IconArrowNarrowRight,
   IconBrandGithub,
+  IconCirclePlus,
   IconShieldCheck,
   IconStack2,
 } from "@tabler/icons-react";
@@ -46,6 +47,19 @@ function Eyebrow({ label }: { label?: string }) {
   );
 }
 
+function CommunityTitle({ title }: { title?: string }) {
+  const [top, bottom] = (title ?? "").split(/,\s+/, 2);
+
+  if (!bottom) return <h3>{title}</h3>;
+
+  return (
+    <h3 className={styles.communityTitle}>
+      <span className={styles.communityTitleTop}>{top},</span>
+      <span className={styles.communityTitleBottom}>{bottom}</span>
+    </h3>
+  );
+}
+
 export function DiscoverSection({ text }: DiscoverSectionProps) {
   const roadmapFallback = text.bottomCards[1]?.bodySecondary;
   const roadmapBullets =
@@ -78,6 +92,15 @@ export function DiscoverSection({ text }: DiscoverSectionProps) {
         <div className={styles.trustBody}>
           <p className={styles.bodyPrimary}>{text.trustBodyPrimary}</p>
           <p className={styles.bodySecondary}>{text.trustBodySecondary}</p>
+          <div className={styles.trustDetailAssetWrap} aria-hidden>
+            <Image
+              src="/overview/discover-privacy-asset.webp"
+              alt="Privacy asset"
+              fill
+              className={styles.trustDetailAsset}
+              sizes="(max-width: 1024px) 100vw, 12vw"
+            />
+          </div>
         </div>
         <ul className={styles.trustChecks}>
           {text.trustChecks.map((item) => (
@@ -90,35 +113,47 @@ export function DiscoverSection({ text }: DiscoverSectionProps) {
       </article>
 
       <div className={styles.finalCards}>
-        <article className={styles.bottomCard} data-reveal="bottom-card">
+        <article
+          className={`${styles.bottomCard} ${styles.roadmapCard}`}
+          data-reveal="bottom-card"
+        >
           <Eyebrow label={text.bottomCards[0]?.eyebrow} />
-          <h3>{text.bottomCards[0]?.title}</h3>
-          <p className={styles.subtitle}>{text.bottomCards[0]?.subtitle}</p>
-          <div className={styles.cardRow}>
+          <CommunityTitle title={text.bottomCards[0]?.title} />
+          <p className={`${styles.subtitle} ${styles.communitySubtitle}`}>
+            {text.bottomCards[0]?.subtitle}
+          </p>
+          <div className={`${styles.cardRow} ${styles.communityRow}`}>
             <div>
-              <p className={styles.bodyPrimary}>
+              <p
+                className={`${styles.bodyPrimary} ${styles.communityBodyPrimary}`}
+              >
                 {text.bottomCards[0]?.bodyPrimary}
               </p>
-              <p className={styles.bodySecondary}>
-                {text.bottomCards[0]?.bodySecondary}
-              </p>
+              {text.bottomCards[0]?.bodySecondary ? (
+                <p
+                  className={`${styles.bodySecondary} ${styles.communityBodySecondary}`}
+                >
+                  {text.bottomCards[0]?.bodySecondary}
+                </p>
+              ) : null}
             </div>
-            <div className={styles.communityAssetWrap} aria-hidden>
-              <Image
-                src="/overview/discover-community.webp"
-                alt="Community contribution asset"
-                fill
-                className={styles.communityAsset}
-                sizes="(max-width: 1024px) 100vw, 24vw"
-              />
-            </div>
+          </div>
+          <div className={styles.communityAssetWrap} aria-hidden>
+            <Image
+              src="/overview/discover-community.webp"
+              alt="Community contribution asset"
+              fill
+              className={styles.communityAsset}
+              sizes="(max-width: 1024px) 100vw, 30vw"
+            />
           </div>
           <a
             href="https://github.com/Fr4n0m/local-tools"
+            className={`${styles.cardCta} ${styles.communityCta}`}
             rel="noreferrer"
             target="_blank"
           >
-            <IconBrandGithub size={14} />
+            <IconBrandGithub size={13} />
             {text.bottomCards[0]?.cta}
           </a>
         </article>
@@ -134,7 +169,10 @@ export function DiscoverSection({ text }: DiscoverSectionProps) {
             <ul className={styles.miniList}>
               {roadmapBullets.map((bullet) => (
                 <li key={bullet}>
-                  <span className={styles.miniIndicator} aria-hidden />
+                  <IconCirclePlus
+                    className={styles.miniIndicator}
+                    aria-hidden
+                  />
                   <span>{bullet}</span>
                 </li>
               ))}
@@ -151,10 +189,11 @@ export function DiscoverSection({ text }: DiscoverSectionProps) {
           </div>
           <a
             href="https://github.com/Fr4n0m/local-tools/issues/new/choose"
+            className={styles.cardCta}
             rel="noreferrer"
             target="_blank"
           >
-            <IconStack2 size={14} />
+            <IconStack2 size={13} />
             {text.bottomCards[1]?.cta}
           </a>
         </article>

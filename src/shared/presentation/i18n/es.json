@@ -264,8 +264,8 @@
         "eyebrow": "COMUNIDAD / OPEN SOURCE",
         "title": "Construido por developers, para developers.",
         "subtitle": "Comunidad abierta, feedback real y decisiones visibles.",
-        "bodyPrimary": "LocalTools nace de tareas pequeñas que se repiten a diario: preparar archivos, revisar payloads, generar valores o validar una interfaz.",
-        "bodySecondary": "Si algo falla, falta o puede ser más claro, abre un issue con contexto real. Ese feedback pesa más que una lista abstracta de features.",
+        "bodyPrimary": "LocalTools nace de tareas pequeñas que se repiten a diario: preparar archivos, revisar payloads o validar una interfaz. Si algo falla o puede ser más claro, abre un issue con contexto real.",
+        "bodySecondary": "",
         "cta": "Ver en GitHub"
       },
       {
