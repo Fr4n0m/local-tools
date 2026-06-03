@@ -19,6 +19,8 @@ type CarouselCopy = {
   discoverSubtitle: string;
   discoverMetaLine: string;
   carouselOpenLabel: string;
+  carouselCuePrimary: string;
+  carouselCueSecondary: string;
   discoverTools: Array<{
     id: string;
     name: string;
@@ -30,26 +32,29 @@ type CarouselCopy = {
 
 type CarouselSectionProps = {
   text: CarouselCopy;
+  onScrollNext?: () => void;
 };
 
-export function CarouselSection({ text }: CarouselSectionProps) {
+const HIGHLIGHT_ICONS = [
+  IconShieldCheck,
+  IconEyeOff,
+  IconLock,
+  IconCode,
+] as const;
+
+const TOOL_IMAGES: Record<string, string> = {
+  "json-formatter": "/overview/carousel-final-jsonformatter.webp",
+  "url-encoder": "/overview/carousel-final-urlencoder.webp",
+  "text-transformer": "/overview/carousel-final-texttransformer.webp",
+  "uuid-generator": "/overview/carousel-final-uuidgenerator.webp",
+  "base64-tool": "/overview/carousel-final-base64encoder.webp",
+  "contrast-checker": "/overview/carousel-final-contrastchecker.webp",
+  "qr-generator": "/overview/carousel-final-qrgen.webp",
+  "custom-timer": "/overview/carousel-final-customtimer.webp",
+};
+
+export function CarouselSection({ onScrollNext, text }: CarouselSectionProps) {
   const loopTools = text.discoverTools;
-  const highlightIcons = [
-    IconShieldCheck,
-    IconEyeOff,
-    IconLock,
-    IconCode,
-  ] as const;
-  const toolImages: Record<string, string> = {
-    "json-formatter": "/overview/carousel-jsonformatter.webp",
-    "url-encoder": "/overview/carousel-urlencoder.webp",
-    "text-transformer": "/overview/carousel-texttransformer.webp",
-    "uuid-generator": "/overview/carousel-uuidgenerator.webp",
-    "base64-tool": "/overview/carousel-base64encoder.webp",
-    "contrast-checker": "/overview/carousel-contrastchecker.webp",
-    "qr-generator": "/overview/carousel-qrgen.webp",
-    "custom-timer": "/overview/carousel-customtimer.webp",
-  };
   const nudgeCarousel = useCallback((dir: "prev" | "next") => {
     const delta =
       Math.round(window.innerHeight * 0.28) * (dir === "next" ? 1 : -1);
@@ -59,10 +64,11 @@ export function CarouselSection({ text }: CarouselSectionProps) {
   return (
     <section
       className={styles.carouselSection}
+      data-fade
       data-carousel-section
       data-carousel-edge="start"
     >
-      <header className={styles.carouselHeader}>
+      <header className={styles.carouselHeader} data-reveal="carousel-head">
         <div className={styles.headingBlock}>
           <p className={styles.eyebrow}>
             <span className={styles.eyebrowPrimary}>
@@ -101,10 +107,11 @@ export function CarouselSection({ text }: CarouselSectionProps) {
         <div className={styles.toolsRailViewport} data-carousel-viewport>
           <div className={styles.toolsRailWrap} data-carousel-track>
             {loopTools.map((tool, idx) => {
-              const imageSrc = toolImages[tool.id];
+              const imageSrc = TOOL_IMAGES[tool.id];
               return (
                 <Link
                   className={styles.toolChip}
+                  data-reveal="tool-card"
                   href={`/tools?tool=${tool.id}`}
                   key={`${tool.id}-${idx}`}
                 >
@@ -115,7 +122,10 @@ export function CarouselSection({ text }: CarouselSectionProps) {
                         alt={`${tool.name} icon`}
                         fill
                         className={styles.toolAsset}
-                        sizes="80px"
+                        sizes="(max-width: 1024px) 62vw, 320px"
+                        quality={100}
+                        loading={idx === 0 ? "eager" : "lazy"}
+                        unoptimized
                       />
                     ) : (
                       <IconShieldCheck
@@ -142,9 +152,13 @@ export function CarouselSection({ text }: CarouselSectionProps) {
 
       <div className={styles.highlights}>
         {text.carouselHighlights.slice(0, 4).map((item, idx) => {
-          const Icon = highlightIcons[idx] ?? IconShieldCheck;
+          const Icon = HIGHLIGHT_ICONS[idx] ?? IconShieldCheck;
           return (
-            <article key={item.title} className={styles.highlightCard}>
+            <article
+              key={item.title}
+              className={styles.highlightCard}
+              data-reveal="highlight-card"
+            >
               <span className={styles.highlightIcon}>
                 <Icon size={19} stroke={1.8} />
               </span>
@@ -156,6 +170,19 @@ export function CarouselSection({ text }: CarouselSectionProps) {
           );
         })}
       </div>
+
+      <button
+        className={styles.carouselCue}
+        onClick={onScrollNext}
+        type="button"
+      >
+        <span className={styles.carouselCuePrimary}>
+          {text.carouselCuePrimary}
+        </span>{" "}
+        <span className={styles.carouselCueSecondary}>
+          {text.carouselCueSecondary}
+        </span>
+      </button>
     </section>
   );
 }

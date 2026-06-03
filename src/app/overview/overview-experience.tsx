@@ -21,6 +21,7 @@ export function OverviewExperience() {
   const rootRef = useRef<HTMLDivElement>(null);
   const storyRef = useRef<HTMLDivElement>(null);
   const thirdSectionRef = useRef<HTMLDivElement>(null);
+  const finalSectionRef = useRef<HTMLDivElement>(null);
   const [language, setLanguage] = useState<Language>("en");
 
   useEffect(() => {
@@ -47,7 +48,8 @@ export function OverviewExperience() {
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
-    const cleanupFns: Array<() => void> = [];
+    let storyResizeObserver: ResizeObserver | null = null;
+    let removeStoryResizeListener: (() => void) | null = null;
 
     gsap.registerPlugin(ScrollTrigger);
     const reduced = window.matchMedia(
@@ -117,21 +119,85 @@ export function OverviewExperience() {
         },
       });
 
-      gsap.fromTo(
-        "[data-fade]:not(.hero)",
-        { opacity: 0, y: 28 },
+      gsap.utils
+        .toArray<HTMLElement>("[data-fade]:not(.hero)")
+        .forEach((node) => {
+          gsap.fromTo(
+            node,
+            { opacity: 0, y: 30 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.7,
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: node,
+                start: "top 84%",
+                once: true,
+              },
+            },
+          );
+        });
+
+      const revealGroups = [
         {
-          opacity: 1,
-          y: 0,
-          duration: 0.7,
-          ease: "power2.out",
-          stagger: 0.1,
-          scrollTrigger: {
-            trigger: root,
-            start: "top top+=220",
-          },
+          selector: "[data-reveal='carousel-head'] > *",
+          trigger: "[data-carousel-section]",
+          y: 22,
+          stagger: 0.08,
         },
-      );
+        {
+          selector: "[data-reveal='tool-card']",
+          trigger: "[data-carousel-section]",
+          y: 26,
+          stagger: 0.045,
+        },
+        {
+          selector: "[data-reveal='highlight-card']",
+          trigger: "[data-carousel-section]",
+          y: 18,
+          stagger: 0.07,
+        },
+        {
+          selector: "[data-reveal='trust-block']",
+          trigger: "[data-final-section]",
+          y: 24,
+          stagger: 0,
+        },
+        {
+          selector: "[data-reveal='bottom-card']",
+          trigger: "[data-final-section]",
+          y: 26,
+          stagger: 0.08,
+        },
+        {
+          selector: "[data-reveal='bottom-link']",
+          trigger: "[data-final-section]",
+          y: 14,
+          stagger: 0.05,
+        },
+      ] as const;
+
+      revealGroups.forEach(({ selector, trigger, y, stagger }) => {
+        const targets = gsap.utils.toArray<HTMLElement>(selector);
+        if (targets.length === 0) return;
+        gsap.fromTo(
+          targets,
+          { opacity: 0, y },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.55,
+            ease: "power2.out",
+            stagger,
+            scrollTrigger: {
+              trigger,
+              start: "top 82%",
+              once: true,
+            },
+          },
+        );
+      });
 
       const storyPath = root.querySelector<SVGPathElement>(".storyLinePath");
       const storyNodes = gsap.utils.toArray<HTMLElement>(".storyNode");
@@ -226,6 +292,11 @@ export function OverviewExperience() {
 
         const totalShift = () =>
           Math.max(0, track.scrollWidth - viewport.clientWidth);
+        const scrollDistance = () =>
+          Math.max(
+            window.innerHeight * 1.45,
+            totalShift() + viewport.clientWidth * 0.35,
+          );
 
         const createAnimation = () => {
           if (totalShift() <= 2) {
@@ -244,13 +315,10 @@ export function OverviewExperience() {
               scrollTrigger: {
                 trigger: section,
                 start: "top top+=72",
-                end: () =>
-                  `+=${Math.max(window.innerHeight * 1.2, totalShift() * 0.95)}`,
-                scrub: 0.9,
+                end: () => `+=${scrollDistance()}`,
+                scrub: 0.35,
                 pin: true,
-                pinType: "fixed",
                 anticipatePin: 1,
-                fastScrollEnd: true,
                 invalidateOnRefresh: true,
                 onUpdate: (self: ScrollTrigger) => {
                   if (progress) gsap.set(progress, { scaleX: self.progress });
@@ -275,16 +343,14 @@ export function OverviewExperience() {
 
       if (storyPath && storyNodes.length > 0) {
         syncStoryNodePositions();
-        const resizeObserver = new ResizeObserver(() =>
+        storyResizeObserver = new ResizeObserver(() =>
           syncStoryNodePositions(),
         );
-        if (storyTimelineEl) resizeObserver.observe(storyTimelineEl);
-        if (storyCurveSvg) resizeObserver.observe(storyCurveSvg);
+        if (storyTimelineEl) storyResizeObserver.observe(storyTimelineEl);
+        if (storyCurveSvg) storyResizeObserver.observe(storyCurveSvg);
         window.addEventListener("resize", syncStoryNodePositions);
-        cleanupFns.push(() => resizeObserver.disconnect());
-        cleanupFns.push(() =>
-          window.removeEventListener("resize", syncStoryNodePositions),
-        );
+        removeStoryResizeListener = () =>
+          window.removeEventListener("resize", syncStoryNodePositions);
 
         const length = storyPath.getTotalLength();
         gsap.set(storyPath, {
@@ -298,7 +364,7 @@ export function OverviewExperience() {
           scrollTrigger: {
             trigger: ".storyTimeline",
             start: "top 86%",
-            end: "top 34%",
+            end: "top 52%",
             scrub: 1.05,
           },
         });
@@ -369,7 +435,8 @@ export function OverviewExperience() {
     }, root);
 
     return () => {
-      cleanupFns.forEach((fn) => fn());
+      storyResizeObserver?.disconnect();
+      removeStoryResizeListener?.();
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
       ctx.revert();
     };
@@ -382,20 +449,22 @@ export function OverviewExperience() {
       <div className="page-frame">
         <SimplePageHeader rightSlot={<PageDisplayControls />} />
 
-        <HeroSection
-          onScrollNext={() => {
-            if (!storyRef.current) return;
-            const targetTop =
-              storyRef.current.getBoundingClientRect().top + window.scrollY;
-            window.scrollTo({
-              top: Math.max(targetTop, 0),
-              behavior: "smooth",
-            });
-          }}
-          text={t}
-        />
+        <div className={styles.sectionBand}>
+          <HeroSection
+            onScrollNext={() => {
+              if (!storyRef.current) return;
+              const targetTop =
+                storyRef.current.getBoundingClientRect().top + window.scrollY;
+              window.scrollTo({
+                top: Math.max(targetTop, 0),
+                behavior: "smooth",
+              });
+            }}
+            text={t}
+          />
+        </div>
 
-        <div ref={storyRef}>
+        <div className={styles.sectionBand} ref={storyRef}>
           <StorySection
             onScrollNext={() =>
               thirdSectionRef.current?.scrollIntoView({
@@ -407,13 +476,25 @@ export function OverviewExperience() {
           />
         </div>
 
-        <div ref={thirdSectionRef}>
+        <div className={styles.sectionBand} ref={thirdSectionRef}>
           <MultiBannerSection language={language} text={t} />
         </div>
 
-        <CarouselSection text={t} />
+        <div className={styles.sectionBand}>
+          <CarouselSection
+            onScrollNext={() =>
+              finalSectionRef.current?.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+              })
+            }
+            text={t}
+          />
+        </div>
 
-        <DiscoverSection text={t} />
+        <div className={styles.sectionBand} ref={finalSectionRef}>
+          <DiscoverSection text={t} />
+        </div>
       </div>
     </main>
   );

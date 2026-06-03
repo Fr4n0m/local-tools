@@ -123,7 +123,7 @@ function getCategoryStyles(category: string) {
   };
 }
 
-const LANGUAGE_FLAGS: Record<Language, string> = { en: "🇺🇸", es: "🇪🇸" };
+const LANGUAGE_LABELS: Record<Language, string> = { en: "EN", es: "ES" };
 
 export function ToolboxApp() {
   const [language, setLanguage] = useState<Language>("en");
@@ -255,7 +255,7 @@ export function ToolboxApp() {
       </a>
       <div className="flex min-h-screen md:gap-3 md:p-3">
         <aside className="hidden w-72 shrink-0 md:block">
-          <div className="relative h-[calc(100vh-1.5rem)] overflow-hidden rounded-2xl border border-border/60 dark:border-white/22 bg-sidebar text-sidebar-foreground shadow-[0_42px_90px_-36px_rgba(0,0,0,0.72),0_12px_28px_-18px_rgba(0,0,0,0.55)]">
+          <div className="relative h-[calc(100vh-1.5rem)] overflow-hidden rounded-2xl border border-transparent dark:border-white/22 bg-sidebar text-sidebar-foreground shadow-[0_42px_90px_-36px_rgba(0,0,0,0.72),0_12px_28px_-18px_rgba(0,0,0,0.55)]">
             <Sidebar
               density={density}
               language={language}
@@ -284,7 +284,7 @@ export function ToolboxApp() {
           >
             <aside
               aria-label={text.menu}
-              className="h-full w-72 border-r border-border/60 dark:border-white/22 bg-sidebar text-sidebar-foreground"
+              className="h-full w-72 border-r border-transparent dark:border-white/22 bg-sidebar text-sidebar-foreground"
               id="mobile-sidebar"
               onClick={(event) => event.stopPropagation()}
               aria-modal="true"
@@ -422,8 +422,11 @@ function Sidebar({
             }
             type="button"
           >
-            <span aria-hidden style={{ fontSize: "13px", lineHeight: 1 }}>
-              {LANGUAGE_FLAGS[language]}
+            <span
+              aria-hidden
+              className="font-heading text-[10px] font-bold tracking-[0.08em]"
+            >
+              {LANGUAGE_LABELS[language]}
             </span>
           </button>
           <button

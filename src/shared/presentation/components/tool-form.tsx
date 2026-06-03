@@ -4,7 +4,6 @@ import * as React from "react";
 import {
   IconChevronDown,
   IconHexagon,
-  IconPin,
   IconPlus,
   IconX,
 } from "@tabler/icons-react";
@@ -104,6 +103,7 @@ export function ToolSwitch({
   return (
     <input
       aria-label={ariaLabel}
+      aria-checked={checked}
       checked={checked}
       className={cn("lt-liquid-switch", className)}
       disabled={disabled}
@@ -117,6 +117,27 @@ export function ToolSwitch({
 const RECENT_COLORS_KEY = "localtools.recent-colors";
 const SAVED_COLORS_KEY = "localtools.saved-colors";
 const RECENT_COLORS_MAX = 10;
+const CUSTOM_COLOR_SLOTS = 10;
+const CUSTOM_COLOR_SLOT_IDS = Array.from(
+  { length: CUSTOM_COLOR_SLOTS },
+  (_, idx) => `custom-color-slot-${idx + 1}`,
+);
+const DEFAULT_COLOR_SWATCHES = [
+  "#ff3b3b",
+  "#e348e8",
+  "#9a45d6",
+  "#7563ff",
+  "#3b55f6",
+  "#438cf5",
+  "#2bc7d4",
+  "#34e2ad",
+  "#54df2a",
+  "#b9f719",
+  "#ffc414",
+  "#fb9636",
+  "#ffffff",
+  "#8a8a8a",
+];
 
 function loadColors(key: string): string[] {
   try {
@@ -215,18 +236,28 @@ export function ToolColorPicker({
 
   React.useEffect(() => {
     if (!open) return;
-    const onMouseDown = (event: MouseEvent) => {
-      if (!rootRef.current?.contains(event.target as Node)) {
+    const onPointerDown = (event: PointerEvent) => {
+      const root = rootRef.current;
+      const path = event.composedPath();
+      if (!root || !path.includes(root)) {
         setOpen(false);
         setRecentColors(saveRecentColor(value));
       }
     };
-    document.addEventListener("mousedown", onMouseDown);
-    return () => document.removeEventListener("mousedown", onMouseDown);
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
   }, [open, value]);
 
   const savedSet = new Set(savedColors);
   const recentOnly = recentColors.filter((c) => !savedSet.has(c));
+  const swatchColors = Array.from(
+    new Set([...recentOnly, ...DEFAULT_COLOR_SWATCHES]),
+  ).slice(0, 14);
+  const customSlots = CUSTOM_COLOR_SLOT_IDS.map((id, idx) => ({
+    id,
+    color: savedColors[idx] ? savedColors[idx] : null,
+  }));
+  const firstEmptySlot = customSlots.find((slot) => !slot.color)?.id;
 
   return (
     <div className={cn("relative", className)} ref={rootRef}>
@@ -255,11 +286,30 @@ export function ToolColorPicker({
 
       {open ? (
         <div
-          className="absolute left-0 top-full z-50 mt-1 w-56 rounded-md border bg-background p-3 shadow-lg"
+          className="absolute left-0 top-full z-50 mt-1 w-64 rounded-lg border bg-background p-3 shadow-lg"
           onClick={(e) => e.stopPropagation()}
+          onPointerDown={(e) => e.stopPropagation()}
         >
-          <HexColorPicker color={value} onChange={onChange} />
+          <div className="grid gap-3">
+            <div className="flex items-center gap-2 rounded-md border bg-background/45 p-2">
+              <span
+                aria-hidden
+                className="h-8 w-8 rounded-md border border-border/60 dark:border-white/22"
+                style={{ backgroundColor: value }}
+              />
+              <div className="min-w-0">
+                <p className="text-[0.65rem] font-semibold uppercase tracking-widest text-foreground/45">
+                  Current
+                </p>
+                <p className="font-mono text-xs text-foreground/85">{value}</p>
+              </div>
+            </div>
+
+            <HexColorPicker color={value} onChange={onChange} />
+          </div>
+
           <input
+            aria-label="Custom hex color"
             className="mt-2 w-full rounded-md border bg-background/40 px-2.5 py-1.5 font-mono text-xs"
             onBlur={() => onChange(normalizeHex(draft))}
             onChange={(event) => setDraft(event.target.value)}
@@ -272,66 +322,94 @@ export function ToolColorPicker({
             }}
             value={draft}
           />
-          {recentOnly.length > 0 || savedColors.length > 0 ? (
-            <div className="mt-2.5 border-t pt-2.5">
-              <p className="mb-1.5 text-[0.65rem] font-semibold uppercase tracking-widest opacity-40">
-                Recent
-              </p>
-              <div className="flex flex-wrap gap-1.5">
-                {[...recentOnly, ...savedColors].map((c) => {
-                  const isSaved = savedSet.has(c);
-                  return (
-                    <div className="group/swatch relative" key={c}>
-                      <button
-                        aria-label={c}
-                        className="h-5 w-5 rounded-md border border-border/60 dark:border-white/22 transition-transform hover:scale-110"
-                        onClick={() => {
-                          onChange(c);
-                          setDraft(c);
-                        }}
-                        style={{ backgroundColor: c }}
-                        title={c}
-                        type="button"
-                      />
-                      <button
-                        aria-label={
-                          isSaved ? `Remove ${c} from saved` : `Save ${c}`
-                        }
-                        className={`absolute -right-1 -top-1 h-3 w-3 items-center justify-center rounded-full bg-background shadow ${isSaved ? "flex" : "hidden group-hover/swatch:flex"}`}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setSavedColors(toggleSavedColor(c));
-                        }}
-                        style={{
-                          border: "1px solid currentColor",
-                          opacity: isSaved ? 1 : 0.7,
-                        }}
-                        title={isSaved ? "Remove from saved" : "Save color"}
-                        type="button"
-                      >
-                        {isSaved ? (
-                          <>
-                            <IconPin
-                              size={6}
-                              strokeWidth={3}
-                              className="group-hover/swatch:hidden"
-                            />
-                            <IconX
-                              size={6}
-                              strokeWidth={3}
-                              className="hidden group-hover/swatch:block"
-                            />
-                          </>
-                        ) : (
-                          <IconPlus size={6} strokeWidth={3} />
-                        )}
-                      </button>
-                    </div>
-                  );
-                })}
-              </div>
+          <div className="mt-3 border-t pt-3">
+            <div className="grid grid-cols-7 gap-2">
+              {swatchColors.map((c) => {
+                const selected = c.toLowerCase() === value.toLowerCase();
+                return (
+                  <button
+                    aria-label={c}
+                    aria-pressed={selected}
+                    className={cn(
+                      "h-7 w-7 rounded-full border border-border/50 transition-transform hover:scale-110",
+                      selected &&
+                        "ring-2 ring-foreground ring-offset-2 ring-offset-background",
+                    )}
+                    key={c}
+                    onClick={() => {
+                      onChange(c);
+                      setDraft(c);
+                    }}
+                    style={{ backgroundColor: c }}
+                    title={c}
+                    type="button"
+                  />
+                );
+              })}
             </div>
-          ) : null}
+
+            <p className="mt-3 text-xs font-medium text-foreground/50">
+              Custom colors
+            </p>
+            <div className="mt-2 grid grid-cols-7 gap-2">
+              {customSlots.map(({ color: c, id }) => {
+                if (!c) {
+                  return id === firstEmptySlot ? (
+                    <button
+                      aria-label="Save current color"
+                      className="flex h-7 w-7 items-center justify-center rounded-full bg-foreground/15 text-foreground/55 transition-colors hover:bg-foreground/24"
+                      key={id}
+                      onClick={() => setSavedColors(toggleSavedColor(value))}
+                      title="Save current color"
+                      type="button"
+                    >
+                      <IconPlus size={16} strokeWidth={2.6} />
+                    </button>
+                  ) : (
+                    <span
+                      aria-hidden
+                      className="h-7 w-7 rounded-full bg-foreground/8"
+                      key={id}
+                    />
+                  );
+                }
+
+                const selected = c.toLowerCase() === value.toLowerCase();
+                return (
+                  <div className="group/swatch relative" key={id}>
+                    <button
+                      aria-label={c}
+                      aria-pressed={selected}
+                      className={cn(
+                        "h-7 w-7 rounded-full border border-border/50 transition-transform hover:scale-110",
+                        selected &&
+                          "ring-2 ring-foreground ring-offset-2 ring-offset-background",
+                      )}
+                      onClick={() => {
+                        onChange(c);
+                        setDraft(c);
+                      }}
+                      style={{ backgroundColor: c }}
+                      title={c}
+                      type="button"
+                    />
+                    <button
+                      aria-label={`Remove ${c} from custom colors`}
+                      className="absolute -right-1 -top-1 hidden h-3.5 w-3.5 items-center justify-center rounded-full border bg-background shadow group-hover/swatch:flex"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSavedColors(toggleSavedColor(c));
+                      }}
+                      title="Remove custom color"
+                      type="button"
+                    >
+                      <IconX size={8} strokeWidth={3} />
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
       ) : null}
     </div>

@@ -167,11 +167,13 @@
     "horizontalTitle": "Every active tool, in one moving strip",
     "horizontalHint": "Scroll to explore all current modules.",
     "discoverEyebrowPrimary": "EXPLORE",
-    "discoverEyebrowSecondary": "ALL TOOLS",
+    "discoverEyebrowSecondary": "SOME TOOLS",
     "discoverTitle": "Discover. Try. Stay local.",
     "discoverSubtitle": "Discover practical tools built for developers.",
     "discoverMetaLine": "PRIVATE · RELIABLE · 100% LOCAL",
     "carouselOpenLabel": "Open tool →",
+    "carouselCuePrimary": "CONTINUE",
+    "carouselCueSecondary": "/ PRIVACY AND COMMUNITY",
     "carouselHighlights": [
       {
         "title": "100% local",
@@ -240,11 +242,11 @@
         "badge": "DEV"
       }
     ],
-    "trustEyebrow": "PRIVACY YOU CAN TRUST",
+    "trustEyebrow": "PRIVACY / YOU CAN TRUST",
     "trustTitle": "Your data never leaves your browser.",
     "trustSubtitle": "Local control. Zero accounts.",
-    "trustBodyPrimary": "LocalTools is built on a simple principle: you stay in control. No telemetry. No tracking. No accounts.",
-    "trustBodySecondary": "Just tools that work, even offline.",
+    "trustBodyPrimary": "LocalTools is built on a simple principle: you stay in control. Everything runs in the browser, so there is no backend.",
+    "trustBodySecondary": "No accounts, no tracking, no extra steps. Open a tool, do the task, and move on.",
     "trustChecks": [
       "100% local execution",
       "No telemetry or tracking",
@@ -253,7 +255,7 @@
     ],
     "bottomCards": [
       {
-        "eyebrow": "COMMUNITY",
+        "eyebrow": "COMMUNITY / OPEN SOURCE",
         "title": "Built with developers, for developers.",
         "subtitle": "Open community and practical collaboration.",
         "bodyPrimary": "Share feedback, report bugs, or suggest concrete improvements from real daily workflows.",
@@ -261,7 +263,7 @@
         "cta": "View on GitHub"
       },
       {
-        "eyebrow": "ROADMAP",
+        "eyebrow": "ROADMAP / WHAT'S NEXT",
         "title": "Got an idea we're missing?",
         "subtitle": "Propose a feature",
         "bodyPrimary": "Share feature suggestions, UX improvements, or new tools you'd like to see.",
@@ -275,7 +277,7 @@
         "cta": "Send suggestion"
       },
       {
-        "eyebrow": "STAY IN THE LOOP",
+        "eyebrow": "STAY / IN THE LOOP",
         "title": "New tools. No noise.",
         "subtitle": "Get version updates only.",
         "bodyPrimary": "Subscribe for updates on new tools, product changes, and releases.",

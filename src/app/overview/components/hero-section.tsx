@@ -45,9 +45,9 @@ export function HeroSection({ text, onScrollNext }: HeroSectionProps) {
           <span>{text.heroLeadLine1}</span>
           <span>{text.heroLeadLine2}</span>
         </h1>
-        <p className={styles.subLead}>{text.heroTitle}</p>
-        <p className={styles.heroText}>{text.heroText}</p>
-        <div className={styles.heroMeta}>
+        <p className={`${styles.subLead} subLead`}>{text.heroTitle}</p>
+        <p className={`${styles.heroText} heroText`}>{text.heroText}</p>
+        <div className={`${styles.heroMeta} heroMeta`}>
           <article>
             <IconLock size={14} />
             <div>
@@ -89,12 +89,15 @@ export function HeroSection({ text, onScrollNext }: HeroSectionProps) {
         </div>
       </div>
       <div className={`${styles.heroAsset} heroAsset`}>
-        <div className={styles.heroMockFrame} aria-hidden="true">
+        <div
+          className={`${styles.heroMockFrame} heroAssetShape`}
+          aria-hidden="true"
+        >
           <div className={styles.heroMockTopbar}>
             <AppLogo className={styles.heroMockLogo} />
             <div className={styles.heroMockSearch}>
               <IconSearch size={12} />
-              <span>Search tools...</span>
+              <span>Search tools&hellip;</span>
             </div>
           </div>
           <div className={styles.heroMockBody}>

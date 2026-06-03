@@ -1,7 +1,7 @@
 .site-footer {
   width: 100%;
   background: transparent;
-  padding: 0.75rem;
+  padding: 0.75rem 0.75rem clamp(2rem, 4vh, 3.25rem);
   color: #fff;
 }
 
@@ -247,7 +247,7 @@
 
 @media (min-width: 768px) {
   .site-footer {
-    padding: 0.75rem;
+    padding: 0.75rem 0.75rem clamp(2.25rem, 4.8vh, 3.75rem);
   }
 
   .site-footer__grid {

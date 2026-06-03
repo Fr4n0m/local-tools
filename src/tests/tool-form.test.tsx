@@ -4,6 +4,7 @@ import { describe, expect, it, vi } from "vitest";
 import {
   ToolField,
   ToolFileDrop,
+  ToolColorPicker,
   ToolInput,
   ToolOutputBlock,
   ToolSection,
@@ -190,5 +191,33 @@ describe("tool-form", () => {
 
     expect(onSelectFiles).toHaveBeenCalledTimes(1);
     expect(onSelectFiles).toHaveBeenLastCalledWith([file]);
+  });
+
+  it("keeps color picker open for internal pointer interactions", () => {
+    render(<ToolColorPicker value="#112233" onChange={() => undefined} />);
+
+    fireEvent.click(screen.getByRole("button", { name: /#112233/i }));
+    const hexInput = screen.getByLabelText("Custom hex color");
+
+    fireEvent.pointerDown(hexInput);
+    expect(screen.getByLabelText("Custom hex color")).toBeInTheDocument();
+
+    fireEvent.pointerDown(document.body);
+    expect(screen.queryByLabelText("Custom hex color")).not.toBeInTheDocument();
+  });
+
+  it("renders custom color slots and saves the current color", () => {
+    render(<ToolColorPicker value="#112233" onChange={() => undefined} />);
+
+    fireEvent.click(screen.getByRole("button", { name: /#112233/i }));
+
+    expect(screen.getByText("Custom colors")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Save current color" }));
+
+    expect(
+      screen
+        .getAllByRole("button", { name: "#112233" })
+        .some((button) => button.getAttribute("aria-pressed") === "true"),
+    ).toBe(true);
   });
 });

@@ -69,19 +69,19 @@
     "heroTrustItems": [
       {
         "title": "100% Local",
-        "description": "Everything runs in your browser."
+        "description": "Todo se ejecuta en tu navegador."
       },
       {
         "title": "Open Source",
-        "description": "Transparent by design. Built in the open."
+        "description": "Transparente por diseño. Construido en abierto."
       },
       {
         "title": "Developer First",
-        "description": "Fast, focused, and built for real workflows."
+        "description": "Rápido, enfocado y pensado para flujos reales."
       },
       {
         "title": "Cross Platform",
-        "description": "macOS, Windows, and Linux."
+        "description": "macOS, Windows y Linux."
       }
     ],
     "trust": "Scroll",
@@ -173,11 +173,13 @@
     "horizontalTitle": "Todas las herramientas activas en una franja dinámica",
     "horizontalHint": "Haz scroll para explorar todos los módulos actuales.",
     "discoverEyebrowPrimary": "EXPLORA",
-    "discoverEyebrowSecondary": "TODAS LAS TOOLS",
+    "discoverEyebrowSecondary": "ALGUNAS TOOLS",
     "discoverTitle": "Descubre. Prueba. Mantente local.",
     "discoverSubtitle": "Descubre herramientas útiles creadas para desarrolladores.",
     "discoverMetaLine": "PRIVADAS · CONFIABLES · 100% LOCALES",
     "carouselOpenLabel": "Abrir tool →",
+    "carouselCuePrimary": "CONTINUAR",
+    "carouselCueSecondary": "/ PRIVACIDAD Y COMUNIDAD",
     "carouselHighlights": [
       {
         "title": "100% local",
@@ -246,11 +248,11 @@
         "badge": "CÓDIGO"
       }
     ],
-    "trustEyebrow": "PRIVACIDAD EN LA QUE PUEDES CONFIAR",
+    "trustEyebrow": "PRIVACIDAD / EN LA QUE PUEDES CONFIAR",
     "trustTitle": "Tus datos nunca salen de tu navegador.",
-    "trustSubtitle": "Control local. Cero cuentas.",
-    "trustBodyPrimary": "LocalTools se basa en un principio simple: tú tienes el control. Sin telemetría. Sin seguimiento. Sin cuentas.",
-    "trustBodySecondary": "Solo herramientas que funcionan, incluso sin conexión.",
+    "trustSubtitle": "Trabaja con archivos, texto y datos sin enviarlos a servidores externos.",
+    "trustBodyPrimary": "LocalTools se basa en un principio simple: tú tienes el control. Todo corre en el navegador, así que no pasas por un backend.",
+    "trustBodySecondary": "Sin cuentas, sin tracking y sin pasos extra. Abres una utilidad, resuelves la tarea y sigues con lo tuyo.",
     "trustChecks": [
       "Ejecución 100% local",
       "Sin tracking ni telemetría",
@@ -259,19 +261,19 @@
     ],
     "bottomCards": [
       {
-        "eyebrow": "COMUNIDAD",
+        "eyebrow": "COMUNIDAD / OPEN SOURCE",
         "title": "Construido por developers, para developers.",
-        "subtitle": "Comunidad abierta y colaboración real.",
-        "bodyPrimary": "Comparte feedback, reporta bugs o propón mejoras concretas desde tu flujo diario.",
-        "bodySecondary": "Cada aporte ayuda a priorizar mejor el producto y su dirección.",
+        "subtitle": "Comunidad abierta, feedback real y decisiones visibles.",
+        "bodyPrimary": "LocalTools nace de tareas pequeñas que se repiten a diario: preparar archivos, revisar payloads, generar valores o validar una interfaz.",
+        "bodySecondary": "Si algo falla, falta o puede ser más claro, abre un issue con contexto real. Ese feedback pesa más que una lista abstracta de features.",
         "cta": "Ver en GitHub"
       },
       {
-        "eyebrow": "ROADMAP",
-        "title": "¿Se te ocurre algo que falta?",
-        "subtitle": "Propón una idea",
-        "bodyPrimary": "Comparte sugerencias de funcionalidades, mejoras de UX o nuevas tools que te gustaría ver.",
-        "bodySecondary": "Tu propuesta puede entrar en el siguiente bloque de trabajo.",
+        "eyebrow": "ROADMAP / HOJA DE RUTA",
+        "title": "Lo que viene",
+        "subtitle": "Roadmap práctico, sin promesas vacías.",
+        "bodyPrimary": "La prioridad es añadir herramientas que encajen con el uso real del producto: más conversores, mejores presets, flujos más rápidos y pequeñas mejoras que reduzcan pasos repetidos.",
+        "bodySecondary": "El roadmap se mantiene vivo y se ajusta según lo que aporte valor al día a día. Si una idea mejora el flujo o evita abrir otra app, merece revisarse.",
         "bullets": [
           "Nueva funcionalidad o categoría",
           "Mejora de flujo o interfaz",
@@ -281,11 +283,11 @@
         "cta": "Enviar sugerencia"
       },
       {
-        "eyebrow": "MANTENTE AL DÍA",
+        "eyebrow": "MANTENTE / AL DÍA",
         "title": "Nuevas tools. Sin ruido.",
-        "subtitle": "Recibe solo novedades de versiones.",
-        "bodyPrimary": "Suscríbete para recibir avisos de nuevas herramientas, actualizaciones y releases.",
-        "bodySecondary": "Sin spam. Cancela cuando quieras.",
+        "subtitle": "Avisos claros cuando haya versiones importantes.",
+        "bodyPrimary": "La suscripción servirá para enterarte de nuevas herramientas, cambios relevantes, mejoras de UX y notas de versión cuando el proyecto tenga algo útil que contar.",
+        "bodySecondary": "No habrá spam ni correos de relleno. Solo actualizaciones concretas, pensadas para quien quiere seguir el proyecto sin revisar el repositorio cada semana.",
         "cta": "Suscribirme"
       }
     ],

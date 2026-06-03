@@ -2,15 +2,11 @@
 
 import {
   IconArrowNarrowRight,
-  IconArrowRight,
   IconBrandGithub,
-  IconMail,
-  IconRocket,
   IconShieldCheck,
   IconStack2,
 } from "@tabler/icons-react";
 import styles from "./discover-section.module.css";
-import Link from "next/link";
 import Image from "next/image";
 
 type DiscoverCopy = {
@@ -29,10 +25,6 @@ type DiscoverCopy = {
     bullets?: string[];
     cta: string;
   }>;
-  finalTitle: string;
-  finalText: string;
-  subscribe: string;
-  subscribeText: string;
   subscribeButton: string;
   subscribePlaceholder: string;
 };
@@ -41,14 +33,36 @@ type DiscoverSectionProps = {
   text: DiscoverCopy;
 };
 
-export function DiscoverSection({ text }: DiscoverSectionProps) {
+function Eyebrow({ label }: { label?: string }) {
+  const [primary, secondary] = (label ?? "").split(" / ", 2);
+
   return (
-    <section className={styles.finalSection} data-fade id="subscribe-updates">
-      <article className={styles.trustBlock}>
+    <p className={styles.eyebrow}>
+      <span className={styles.eyebrowPrimary}>{primary}</span>
+      {secondary ? (
+        <span className={styles.eyebrowSecondary}> {secondary}</span>
+      ) : null}
+    </p>
+  );
+}
+
+export function DiscoverSection({ text }: DiscoverSectionProps) {
+  const roadmapFallback = text.bottomCards[1]?.bodySecondary;
+  const roadmapBullets =
+    text.bottomCards[1]?.bullets ?? (roadmapFallback ? [roadmapFallback] : []);
+
+  return (
+    <section
+      className={styles.finalSection}
+      data-fade
+      data-final-section
+      id="subscribe-updates"
+    >
+      <article className={styles.trustBlock} data-reveal="trust-block">
         <div className={styles.trustVisual} aria-hidden>
           <div className={styles.trustAssetWrap}>
             <Image
-              src="/overview/discover-lock.webp"
+              src="/overview/discover-privacy-lock.webp"
               alt="Local privacy lock"
               fill
               className={styles.trustAsset}
@@ -57,9 +71,11 @@ export function DiscoverSection({ text }: DiscoverSectionProps) {
           </div>
         </div>
         <div className={styles.trustCopy}>
-          <p className={styles.eyebrow}>{text.trustEyebrow}</p>
+          <Eyebrow label={text.trustEyebrow} />
           <h3>{text.trustTitle}</h3>
           <p className={styles.subtitle}>{text.trustSubtitle}</p>
+        </div>
+        <div className={styles.trustBody}>
           <p className={styles.bodyPrimary}>{text.trustBodyPrimary}</p>
           <p className={styles.bodySecondary}>{text.trustBodySecondary}</p>
         </div>
@@ -74,8 +90,8 @@ export function DiscoverSection({ text }: DiscoverSectionProps) {
       </article>
 
       <div className={styles.finalCards}>
-        <article className={styles.bottomCard}>
-          <p className={styles.eyebrow}>{text.bottomCards[0]?.eyebrow}</p>
+        <article className={styles.bottomCard} data-reveal="bottom-card">
+          <Eyebrow label={text.bottomCards[0]?.eyebrow} />
           <h3>{text.bottomCards[0]?.title}</h3>
           <p className={styles.subtitle}>{text.bottomCards[0]?.subtitle}</p>
           <div className={styles.cardRow}>
@@ -107,8 +123,8 @@ export function DiscoverSection({ text }: DiscoverSectionProps) {
           </a>
         </article>
 
-        <article className={styles.bottomCard}>
-          <p className={styles.eyebrow}>{text.bottomCards[1]?.eyebrow}</p>
+        <article className={styles.bottomCard} data-reveal="bottom-card">
+          <Eyebrow label={text.bottomCards[1]?.eyebrow} />
           <h3>{text.bottomCards[1]?.title}</h3>
           <p className={styles.subtitle}>{text.bottomCards[1]?.subtitle}</p>
           <p className={styles.bodyPrimary}>
@@ -116,18 +132,12 @@ export function DiscoverSection({ text }: DiscoverSectionProps) {
           </p>
           <div className={styles.roadmapRow}>
             <ul className={styles.miniList}>
-              {(
-                text.bottomCards[1]?.bullets ?? [
-                  text.bottomCards[1]?.bodySecondary,
-                ]
-              )
-                .filter(Boolean)
-                .map((bullet) => (
-                  <li key={bullet}>
-                    <span className={styles.miniIndicator} aria-hidden />
-                    <span>{bullet}</span>
-                  </li>
-                ))}
+              {roadmapBullets.map((bullet) => (
+                <li key={bullet}>
+                  <span className={styles.miniIndicator} aria-hidden />
+                  <span>{bullet}</span>
+                </li>
+              ))}
             </ul>
             <div className={styles.roadmapAssetWrap} aria-hidden>
               <Image
@@ -149,8 +159,8 @@ export function DiscoverSection({ text }: DiscoverSectionProps) {
           </a>
         </article>
 
-        <article className={styles.bottomCard}>
-          <p className={styles.eyebrow}>{text.bottomCards[2]?.eyebrow}</p>
+        <article className={styles.bottomCard} data-reveal="bottom-card">
+          <Eyebrow label={text.bottomCards[2]?.eyebrow} />
           <h3>{text.bottomCards[2]?.title}</h3>
           <p className={styles.subtitle}>{text.bottomCards[2]?.subtitle}</p>
           <div className={styles.cardRow}>
@@ -177,10 +187,17 @@ export function DiscoverSection({ text }: DiscoverSectionProps) {
             </div>
             <div className={styles.mailAssetWrap} aria-hidden>
               <Image
-                src="/overview/discover-mail.webp"
-                alt="Mail paper plane asset"
+                src="/overview/discover-mail-light.webp"
+                alt="Mail paper plane asset light"
                 fill
-                className={styles.mailAsset}
+                className={`${styles.mailAsset} ${styles.mailAssetLight}`}
+                sizes="(max-width: 1024px) 100vw, 24vw"
+              />
+              <Image
+                src="/overview/discover-mail.webp"
+                alt="Mail paper plane asset dark"
+                fill
+                className={`${styles.mailAsset} ${styles.mailAssetDark}`}
                 sizes="(max-width: 1024px) 100vw, 24vw"
               />
             </div>
@@ -189,26 +206,6 @@ export function DiscoverSection({ text }: DiscoverSectionProps) {
             {text.bottomCards[2]?.bodySecondary}
           </p>
         </article>
-      </div>
-
-      <div className={styles.bottomLinks}>
-        <Link href="/tools">
-          <IconRocket size={14} />
-          {text.finalTitle}
-          <IconArrowRight size={14} />
-        </Link>
-        <Link href="/#subscribe-updates">
-          <IconMail size={14} />
-          {text.subscribe}
-        </Link>
-        <a
-          href="https://github.com/Fr4n0m/local-tools"
-          rel="noreferrer"
-          target="_blank"
-        >
-          <IconShieldCheck size={14} />
-          {text.finalText}
-        </a>
       </div>
     </section>
   );

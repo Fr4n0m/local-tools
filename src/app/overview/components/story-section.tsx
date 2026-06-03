@@ -45,7 +45,7 @@ export function StorySection({ onScrollNext, text }: StorySectionProps) {
   const gradientId = useId();
 
   return (
-    <section className={styles.story} data-fade>
+    <section className={`${styles.story} story`} data-fade>
       <div className={styles.storyHead}>
         <p className={`${styles.kicker} storyHeadItem`}>
           <span className={styles.kickerPrimary}>
