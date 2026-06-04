@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import "@gravatar-com/hovercards/dist/style.css";
 import {
@@ -41,6 +42,7 @@ function pickReplacementTool(currentIds: string[]): Tool {
 }
 
 export function GlobalFooter() {
+  const pathname = usePathname();
   type FooterState = { language: Language; density: Density };
   const [{ language, density }, dispatchFooter] = React.useReducer(
     (state: FooterState, patch: Partial<FooterState>) => ({
@@ -50,18 +52,8 @@ export function GlobalFooter() {
     { language: "en" as Language, density: "comfortable" as Density },
   );
   const [footerTools, setFooterTools] = useState<Tool[]>(INITIAL_FOOTER_TOOLS);
-  const [usePageFrame, setUsePageFrame] = useState(false);
-
-  useEffect(() => {
-    const updateFrameMode = () => {
-      const path = window.location.pathname;
-      setUsePageFrame(path === "/" || path === "/privacy" || path === "/terms");
-    };
-
-    updateFrameMode();
-    window.addEventListener("popstate", updateFrameMode);
-    return () => window.removeEventListener("popstate", updateFrameMode);
-  }, []);
+  const usePageFrame =
+    pathname === "/" || pathname === "/privacy" || pathname === "/terms";
 
   useEffect(() => {
     dispatchFooter({
