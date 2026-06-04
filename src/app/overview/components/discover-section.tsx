@@ -9,6 +9,7 @@ import {
 } from "@tabler/icons-react";
 import styles from "./discover-section.module.css";
 import Image from "next/image";
+import type { Language } from "@/shared/presentation/i18n";
 
 type DiscoverCopy = {
   trustEyebrow: string;
@@ -32,6 +33,7 @@ type DiscoverCopy = {
 
 type DiscoverSectionProps = {
   text: DiscoverCopy;
+  language: Language;
 };
 
 function Eyebrow({ label }: { label?: string }) {
@@ -60,7 +62,7 @@ function CommunityTitle({ title }: { title?: string }) {
   );
 }
 
-export function DiscoverSection({ text }: DiscoverSectionProps) {
+export function DiscoverSection({ text, language }: DiscoverSectionProps) {
   const roadmapFallback = text.bottomCards[1]?.bodySecondary;
   const roadmapBullets =
     text.bottomCards[1]?.bullets ?? (roadmapFallback ? [roadmapFallback] : []);
@@ -90,8 +92,12 @@ export function DiscoverSection({ text }: DiscoverSectionProps) {
           <p className={styles.subtitle}>{text.trustSubtitle}</p>
         </div>
         <div className={styles.trustBody}>
-          <p className={styles.bodyPrimary}>{text.trustBodyPrimary}</p>
-          <p className={styles.bodySecondary}>{text.trustBodySecondary}</p>
+          <div className={styles.trustBodyPrimaryBlock}>
+            <p className={styles.bodyPrimary}>{text.trustBodyPrimary}</p>
+          </div>
+          <div className={styles.trustBodySecondaryBlock}>
+            <p className={styles.bodySecondary}>{text.trustBodySecondary}</p>
+          </div>
           <div className={styles.trustDetailAssetWrap} aria-hidden>
             <Image
               src="/overview/discover-privacy-asset.webp"
@@ -122,13 +128,17 @@ export function DiscoverSection({ text }: DiscoverSectionProps) {
           <p className={`${styles.subtitle} ${styles.communitySubtitle}`}>
             {text.bottomCards[0]?.subtitle}
           </p>
-          <div className={`${styles.cardRow} ${styles.communityRow}`}>
-            <div>
+          <div className={styles.communityBodyWrap}>
+            <div className={styles.communityCopyBlockPrimary}>
               <p
-                className={`${styles.bodyPrimary} ${styles.communityBodyPrimary}`}
+                className={`${styles.bodyPrimary} ${styles.communityBodyPrimary} ${
+                  language === "en" ? styles.communityBodyPrimaryEn : ""
+                }`}
               >
                 {text.bottomCards[0]?.bodyPrimary}
               </p>
+            </div>
+            <div className={styles.communityCopyBlockSecondary}>
               {text.bottomCards[0]?.bodySecondary ? (
                 <p
                   className={`${styles.bodySecondary} ${styles.communityBodySecondary}`}
@@ -137,15 +147,15 @@ export function DiscoverSection({ text }: DiscoverSectionProps) {
                 </p>
               ) : null}
             </div>
-          </div>
-          <div className={styles.communityAssetWrap} aria-hidden>
-            <Image
-              src="/overview/discover-community.webp"
-              alt="Community contribution asset"
-              fill
-              className={styles.communityAsset}
-              sizes="(max-width: 1024px) 100vw, 30vw"
-            />
+            <div className={styles.communityAssetWrap} aria-hidden>
+              <Image
+                src="/overview/discover-community.webp"
+                alt="Community contribution asset"
+                fill
+                className={styles.communityAsset}
+                sizes="(max-width: 1024px) 100vw, 30vw"
+              />
+            </div>
           </div>
           <a
             href="https://github.com/Fr4n0m/local-tools"

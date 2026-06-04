@@ -2,14 +2,14 @@
   position: relative;
   z-index: 1;
   box-sizing: border-box;
-  height: 100dvh;
-  min-height: 0;
-  margin-bottom: 1.25rem;
-  padding-block: clamp(2rem, 5vh, 3.7rem);
-  display: grid;
-  grid-template-rows: minmax(0, auto) minmax(0, auto);
-  align-content: center;
-  gap: clamp(0.85rem, 2.1vh, 1.45rem);
+  min-height: 100%;
+  margin-bottom: 0;
+  padding-block: clamp(0.45rem, 0.9vw, 0.7rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  gap: clamp(0.28rem, 0.6vh, 0.42rem);
 }
 
 .eyebrow {
@@ -31,7 +31,7 @@
 }
 
 .subtitle {
-  margin: 0.24rem 0 0;
+  margin: 0.18rem 0 0;
   font-size: clamp(0.78rem, 0.72vw, 0.86rem);
   line-height: 1.3;
   color: color-mix(in oklab, var(--color-foreground), transparent 32%);
@@ -40,28 +40,28 @@
 .trustBlock {
   border: 1px solid color-mix(in oklab, var(--color-border), transparent 10%);
   border-radius: calc(var(--radius-squircle) - 2px);
-  padding: clamp(0.95rem, 1.75vw, 1.55rem);
+  padding: clamp(0.78rem, 1.1vw, 1rem);
   background: color-mix(
     in oklab,
     var(--color-background),
     var(--color-secondary) 4%
   );
   display: grid;
-  grid-template-columns:
-    minmax(210px, 0.92fr) minmax(0, 1.08fr) minmax(0, 1.28fr)
-    minmax(230px, 0.95fr);
-  grid-template-rows: 1fr auto 1fr;
-  gap: clamp(0.9rem, 2vw, 1.5rem) clamp(0.95rem, 2.25vw, 1.9rem);
+  grid-template-columns: minmax(190px, 0.9fr) minmax(0, 1.08fr) minmax(
+      0,
+      1.3fr
+    ) minmax(220px, 0.92fr);
+  grid-template-rows: auto;
+  gap: clamp(0.82rem, 1.55vw, 1.2rem) clamp(0.95rem, 2vw, 1.55rem);
   align-items: center;
   align-content: center;
-  min-height: clamp(300px, 42vh, 420px);
-  align-self: center;
-  max-height: clamp(320px, 48vh, 460px);
+  min-height: clamp(214px, 24vh, 282px);
+  align-self: stretch;
+  max-height: none;
 }
 
 .trustVisual {
-  grid-row: 1 / 4;
-  min-height: clamp(190px, 24vh, 270px);
+  min-height: clamp(132px, 15vh, 168px);
   display: grid;
   place-items: center;
   align-self: center;
@@ -73,7 +73,7 @@
   --trust-dot-soft: rgba(132, 142, 158, 0.28);
   --trust-dot-pale: rgba(178, 186, 199, 0.34);
   position: relative;
-  width: clamp(205px, 17vw, 285px);
+  width: clamp(196px, 15.5vw, 262px);
   aspect-ratio: 1 / 1;
 }
 
@@ -236,9 +236,9 @@
 }
 
 .trustCopy h3 {
-  margin: 3rem 0 0;
+  margin: 0.92rem 0 0;
   font-family: var(--font-heading), "Segoe UI", sans-serif;
-  font-size: clamp(1.75rem, 2.35vw, 2.65rem);
+  font-size: clamp(1.68rem, 2.15vw, 2.45rem);
   line-height: 1.03;
   letter-spacing: -0.015em;
   font-weight: 900;
@@ -262,45 +262,57 @@
 
 .trustCopy {
   grid-column: 2;
-  grid-row: 2;
   min-width: 0;
   max-width: 24rem;
   align-self: center;
 }
 
 .trustCopy .subtitle {
-  margin-top: 1rem;
-  font-size: clamp(1rem, 1vw, 1.18rem);
+  margin-top: 0.92rem;
+  font-size: clamp(0.94rem, 0.92vw, 1.08rem);
   line-height: 1.38;
 }
 
 .trustBody {
   grid-column: 3;
-  grid-row: 2;
   min-width: 0;
   max-width: 36rem;
   align-self: center;
-  padding-bottom: clamp(0.4rem, 1.2vh, 0.9rem);
+  padding-bottom: 0;
   display: grid;
   justify-items: start;
+  gap: 0.72rem;
+}
+
+.trustBodyPrimaryBlock {
+  width: 100%;
+}
+
+.trustBodyPrimaryBlock .bodyPrimary {
+  max-width: none;
 }
 
 .trustBody .bodyPrimary {
-  font-size: clamp(0.92rem, 0.9vw, 1.06rem);
+  font-size: clamp(0.88rem, 0.84vw, 1rem);
   line-height: 1.42;
 }
 
+.trustBodySecondaryBlock {
+  width: 100%;
+  max-width: 28rem;
+}
+
 .trustBody .bodySecondary {
-  margin-top: 0.72rem;
-  font-size: clamp(0.84rem, 0.78vw, 0.95rem);
+  margin-top: 0;
+  font-size: clamp(0.8rem, 0.72vw, 0.9rem);
   line-height: 1.4;
 }
 
 .trustDetailAssetWrap {
   position: relative;
-  width: clamp(140px, 11vw, 190px);
+  width: clamp(126px, 10.2vw, 168px);
   aspect-ratio: 16 / 11;
-  margin-top: clamp(0.85rem, 1.35vh, 1.25rem);
+  margin-top: clamp(0.7rem, 1.1vh, 0.95rem);
 }
 
 .trustDetailAsset {
@@ -309,12 +321,11 @@
 
 .trustChecks {
   grid-column: 4;
-  grid-row: 2;
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 0.88rem;
+  gap: 0.78rem;
   align-content: center;
   justify-content: start;
   align-self: center;
@@ -324,7 +335,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.72rem;
-  font-size: clamp(0.98rem, 0.92vw, 1.08rem);
+  font-size: clamp(0.96rem, 0.88vw, 1.02rem);
   line-height: 1.25;
   color: color-mix(in oklab, var(--color-foreground), transparent 18%);
 }
@@ -338,17 +349,16 @@
 .finalCards {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(0.85rem, 1.35vw, 1.25rem);
+  gap: clamp(0.85rem, 1.3vw, 1.15rem);
   align-items: stretch;
   min-height: 0;
-  align-self: center;
-  max-height: clamp(250px, 38vh, 340px);
+  align-self: stretch;
 }
 
 .bottomCard {
   border: 1px solid color-mix(in oklab, var(--color-border), transparent 10%);
   border-radius: calc(var(--radius-squircle) - 2px);
-  padding: clamp(0.82rem, 1.25vw, 1.15rem);
+  padding: clamp(0.58rem, 0.88vw, 0.8rem);
   min-height: 0;
   display: grid;
   grid-template-rows: auto auto minmax(0, 1fr) auto;
@@ -390,11 +400,36 @@
   overflow: hidden;
 }
 
-.communityRow {
+.communityBodyWrap {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto auto;
+  gap: 0.42rem;
+  min-height: clamp(140px, 17vh, 198px);
+  padding-bottom: clamp(1.2rem, 2vh, 1.8rem);
+}
+
+.communityCopyBlockPrimary {
+  width: 100%;
+  max-width: none;
+  position: relative;
+  z-index: 1;
+}
+
+.communityLowerRow {
   display: block;
-  min-height: clamp(210px, 26vh, 280px);
-  padding-right: clamp(10rem, 16vw, 13.5rem);
-  padding-bottom: clamp(2.6rem, 4.8vh, 3.8rem);
+  width: min(23ch, 100%);
+  position: relative;
+  z-index: 1;
+  margin-top: 0.16rem;
+}
+
+.communityCopyBlockSecondary {
+  width: 100%;
+  max-width: 23ch;
+  position: relative;
+  z-index: 1;
+  margin-top: 0;
 }
 
 .communitySubtitle {
@@ -405,24 +440,39 @@
 }
 
 .communityBodyPrimary {
-  max-width: 31ch;
+  max-width: none;
   font-size: clamp(0.8rem, 0.78vw, 0.92rem);
   line-height: 1.46;
+  width: 100%;
+}
+
+.communityBodyPrimaryEn {
+  text-wrap: balance;
+}
+
+.roadmapCard .communityBodyPrimary {
+  max-width: 33ch;
 }
 
 .communityBodySecondary {
-  max-width: 31ch;
+  max-width: none;
   font-size: clamp(0.72rem, 0.68vw, 0.82rem);
   line-height: 1.42;
+  margin-top: 0;
+  width: 100%;
+}
+
+.roadmapCard .communityBodySecondary {
+  max-width: 23ch;
 }
 
 .communityAssetWrap {
   position: absolute;
-  right: 0;
-  bottom: 0;
-  top: auto;
-  width: clamp(11.5rem, 17vw, 17.5rem);
-  min-width: 11.5rem;
+  right: -1.25rem;
+  bottom: -2.65rem;
+  width: clamp(12.5rem, 17vw, 18rem);
+  min-width: 0;
+  max-width: 17rem;
   aspect-ratio: 16 / 11;
 }
 
@@ -432,7 +482,7 @@
 
 .roadmapCard {
   grid-template-rows: auto auto auto minmax(0, 1fr) auto;
-  padding-bottom: clamp(1.45rem, 2.8vh, 2.2rem);
+  padding-bottom: clamp(1.25rem, 2.35vh, 1.9rem);
 }
 
 .roadmapAssetWrap {
@@ -474,6 +524,7 @@
   padding: 0.3rem 0.7rem;
   background: color-mix(in oklab, var(--color-background), transparent 2%);
 }
+
 .cardCta:hover,
 .cardCta:focus-visible {
   transform: translateY(-1px);
@@ -484,6 +535,8 @@
 .communityCta {
   margin-top: auto;
   align-self: end;
+  position: relative;
+  z-index: 1;
 }
 
 .miniList {
@@ -514,16 +567,16 @@
 
 .roadmapRow {
   display: block;
-  min-height: clamp(170px, 21vh, 235px);
-  padding-right: clamp(8.75rem, 14vw, 11.5rem);
-  padding-top: clamp(2.1rem, 4.8vh, 3.3rem);
+  min-height: clamp(136px, 17vh, 204px);
+  padding-right: clamp(7.75rem, 12.5vw, 10.5rem);
+  padding-top: clamp(1.2rem, 2.4vh, 1.9rem);
   margin-top: 0;
   align-self: end;
   align-items: stretch;
 }
 
 .roadmapCard .bodyPrimary {
-  max-width: 36ch;
+  max-width: 35ch;
   font-size: clamp(0.8rem, 0.77vw, 0.93rem);
   line-height: 1.45;
 }
@@ -535,14 +588,14 @@
 
 .roadmapCard .miniList {
   margin-top: 0;
-  gap: 0.78rem;
+  gap: 0.72rem;
   width: 100%;
   max-width: none;
 }
 
 .roadmapCard .miniList li {
-  font-size: clamp(0.74rem, 0.7vw, 0.82rem);
-  gap: 0.42rem;
+  font-size: clamp(0.73rem, 0.69vw, 0.81rem);
+  gap: 0.4rem;
 }
 
 .roadmapCard .miniList li span:last-child {
@@ -612,9 +665,9 @@
 .cardRow {
   display: block;
   position: relative;
-  min-height: clamp(110px, 15vh, 155px);
-  padding-right: clamp(8.5rem, 14vw, 11rem);
-  margin-top: 0.28rem;
+  min-height: clamp(100px, 13vh, 150px);
+  padding-right: clamp(8rem, 13vw, 10.75rem);
+  margin-top: 0.26rem;
 }
 
 .cardRow > div:first-child {
@@ -626,7 +679,7 @@
   .finalSection {
     height: auto;
     min-height: auto;
-    grid-template-rows: auto;
+    justify-content: flex-start;
   }
 
   .trustBlock {
@@ -655,7 +708,19 @@
     margin-left: auto;
   }
 
-  .cardRow {
-    grid-template-columns: 1fr;
+  .communityBodyWrap {
+    min-height: clamp(140px, 17vh, 198px);
+    padding-bottom: clamp(1.2rem, 2vh, 1.8rem);
+  }
+
+  .communityLowerRow {
+    width: min(23ch, 100%);
+  }
+
+  .communityAssetWrap {
+    right: -0.2rem;
+    bottom: -1.15rem;
+    width: clamp(12rem, 18vw, 17.5rem);
+    max-width: 16rem;
   }
 }
