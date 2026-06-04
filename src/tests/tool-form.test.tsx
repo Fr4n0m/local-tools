@@ -206,6 +206,16 @@ describe("tool-form", () => {
     expect(screen.queryByLabelText("Custom hex color")).not.toBeInTheDocument();
   });
 
+  it("keeps color picker open when using the saturation spectrum", () => {
+    render(<ToolColorPicker value="#112233" onChange={() => undefined} />);
+
+    fireEvent.click(screen.getByRole("button", { name: /#112233/i }));
+    const spectrum = screen.getByRole("slider", { name: "Color" });
+
+    fireEvent.mouseDown(spectrum);
+    expect(screen.getByLabelText("Custom hex color")).toBeInTheDocument();
+  });
+
   it("renders custom color slots and saves the current color", () => {
     render(<ToolColorPicker value="#112233" onChange={() => undefined} />);
 

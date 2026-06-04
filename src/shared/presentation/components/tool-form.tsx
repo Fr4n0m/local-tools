@@ -54,10 +54,15 @@ export function ToolField({
   children,
 }: ToolFieldProps) {
   return (
-    <label className={cn("block space-y-2", className)} htmlFor={htmlFor}>
-      <span className="text-sm font-medium text-foreground/85">{label}</span>
+    <div className={cn("block space-y-2", className)}>
+      <label
+        className="text-sm font-medium text-foreground/85"
+        htmlFor={htmlFor}
+      >
+        {label}
+      </label>
       {children}
-    </label>
+    </div>
   );
 }
 
@@ -206,13 +211,39 @@ function normalizeHex(value: string): string {
   return v.startsWith("#") ? v.toLowerCase() : `#${v.toLowerCase()}`;
 }
 
+function parseRgbColor(value: string): string | null {
+  if (typeof document === "undefined") return null;
+
+  const probe = document.createElement("span");
+  probe.style.color = value;
+  probe.style.display = "none";
+  document.body.appendChild(probe);
+
+  const computed = window.getComputedStyle(probe).color;
+  probe.remove();
+
+  const match = computed.match(
+    /^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*[\d.]+)?\)$/i,
+  );
+  if (!match) return null;
+
+  const [r, g, b] = match.slice(1, 4).map((channel) => Number(channel));
+  return `#${[r, g, b]
+    .map((channel) => channel.toString(16).padStart(2, "0"))
+    .join("")}`;
+}
+
+function normalizeColor(value: string): string {
+  return parseRgbColor(value) ?? normalizeHex(value);
+}
+
 export function ToolColorPicker({
   value,
   onChange,
   className,
 }: ToolColorPickerProps) {
   const [open, setOpen] = React.useState(false);
-  const [draft, setDraft] = React.useState(value);
+  const [draft, setDraft] = React.useState(() => normalizeColor(value));
   const [recentColors, setRecentColors] = React.useState<string[]>(() =>
     typeof window === "undefined" ? [] : loadRecentColors(),
   );
@@ -220,6 +251,7 @@ export function ToolColorPicker({
     typeof window === "undefined" ? [] : loadSavedColors(),
   );
   const rootRef = React.useRef<HTMLDivElement>(null);
+  const pickerColor = React.useMemo(() => normalizeColor(value), [value]);
 
   React.useEffect(() => {
     const onRecent = (e: Event) =>
@@ -241,12 +273,12 @@ export function ToolColorPicker({
       const path = event.composedPath();
       if (!root || !path.includes(root)) {
         setOpen(false);
-        setRecentColors(saveRecentColor(value));
+        setRecentColors(saveRecentColor(pickerColor));
       }
     };
     document.addEventListener("pointerdown", onPointerDown);
     return () => document.removeEventListener("pointerdown", onPointerDown);
-  }, [open, value]);
+  }, [open, pickerColor]);
 
   const savedSet = new Set(savedColors);
   const recentOnly = recentColors.filter((c) => !savedSet.has(c));
@@ -267,9 +299,9 @@ export function ToolColorPicker({
           setOpen((s) => {
             const next = !s;
             if (next) {
-              setDraft(value);
+              setDraft(pickerColor);
             } else {
-              setRecentColors(saveRecentColor(value));
+              setRecentColors(saveRecentColor(pickerColor));
             }
             return next;
           })
@@ -305,7 +337,7 @@ export function ToolColorPicker({
               </div>
             </div>
 
-            <HexColorPicker color={value} onChange={onChange} />
+            <HexColorPicker color={pickerColor} onChange={onChange} />
           </div>
 
           <input
@@ -325,7 +357,7 @@ export function ToolColorPicker({
           <div className="mt-3 border-t pt-3">
             <div className="grid grid-cols-7 gap-2">
               {swatchColors.map((c) => {
-                const selected = c.toLowerCase() === value.toLowerCase();
+                const selected = c.toLowerCase() === pickerColor.toLowerCase();
                 return (
                   <button
                     aria-label={c}
@@ -374,7 +406,7 @@ export function ToolColorPicker({
                   );
                 }
 
-                const selected = c.toLowerCase() === value.toLowerCase();
+                const selected = c.toLowerCase() === pickerColor.toLowerCase();
                 return (
                   <div className="group/swatch relative" key={id}>
                     <button
