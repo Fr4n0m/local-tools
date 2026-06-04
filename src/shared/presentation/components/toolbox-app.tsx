@@ -22,6 +22,11 @@ import {
   sharedMessages,
   type Language,
 } from "@/shared/presentation/i18n";
+import {
+  readInitialTheme,
+  setThemeWithTransition,
+  type Theme,
+} from "@/shared/lib/theme";
 
 const toolIds = new Set<ToolId>(tools.map((tool) => tool.id));
 
@@ -29,23 +34,7 @@ function isToolId(value: string): value is ToolId {
   return toolIds.has(value as ToolId);
 }
 
-type Theme = "light" | "dark";
 type Density = "comfortable" | "compact";
-
-function readInitialTheme(): Theme {
-  if (typeof window === "undefined") {
-    return "light";
-  }
-
-  const storedTheme = window.localStorage.getItem("localtools.theme");
-  if (storedTheme === "light" || storedTheme === "dark") {
-    return storedTheme;
-  }
-
-  return window.matchMedia("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "light";
-}
 
 function readInitialDensity(): Density {
   if (typeof window === "undefined") {
@@ -211,21 +200,8 @@ export function ToolboxApp() {
   }, [isMobileSidebarOpen]);
 
   const text = sharedMessages[language];
-  const toggleTheme = () => {
-    const nextTheme: Theme = theme === "light" ? "dark" : "light";
-    const documentWithTransition = document as Document & {
-      startViewTransition?: (updateCallback: () => void) => void;
-    };
-
-    if (!documentWithTransition.startViewTransition) {
-      setTheme(nextTheme);
-      return;
-    }
-
-    documentWithTransition.startViewTransition(() => {
-      setTheme(nextTheme);
-    });
-  };
+  const toggleTheme = () =>
+    setThemeWithTransition(setTheme, theme === "light" ? "dark" : "light");
 
   const filteredTools = useMemo(() => {
     const trimmedSearch = search.trim().toLowerCase();
