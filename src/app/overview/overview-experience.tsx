@@ -55,44 +55,9 @@ export function OverviewExperience() {
     const reduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
-    const shortViewport = window.matchMedia("(max-height: 820px)").matches;
-    const simplifiedScrollMode = reduced || shortViewport;
 
     const ctx = gsap.context(() => {
-      if (simplifiedScrollMode) {
-        gsap.set(
-          [
-            "[data-fade]",
-            "[data-slide]",
-            ".heroAssetShape",
-            "[data-reveal='carousel-head'] > *",
-            "[data-reveal='tool-card']",
-            "[data-reveal='highlight-card']",
-            "[data-reveal='trust-block']",
-            "[data-reveal='bottom-card']",
-            "[data-reveal='bottom-link']",
-            ".storyHeadItem",
-            ".storyNode",
-            ".storyNodeBubble",
-            "[data-banner-row]",
-          ],
-          {
-            opacity: 1,
-            x: 0,
-            y: 0,
-            scale: 1,
-            rotate: 0,
-            clearProps: "transform",
-          },
-        );
-        gsap.set("[data-carousel-progress]", {
-          scaleX: 0,
-          transformOrigin: "left center",
-        });
-        gsap.set("[data-carousel-track]", { x: 0 });
-        gsap.set(".storyLinePath", {
-          clearProps: "strokeDasharray,strokeDashoffset",
-        });
+      if (reduced) {
         gsap.set("[data-fade], [data-slide], .heroAssetShape", {
           opacity: 1,
           x: 0,

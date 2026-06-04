@@ -34,14 +34,3 @@
     display: block;
   }
 }
-
-@media (max-height: 820px) {
-  .sectionBand {
-    margin-bottom: clamp(2.5rem, 5vh, 3.8rem);
-  }
-
-  .finalSectionBand {
-    min-height: auto;
-    display: block;
-  }
-}

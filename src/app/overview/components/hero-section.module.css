@@ -334,29 +334,6 @@
   }
 }
 
-@media (max-height: 820px) {
-  .hero {
-    min-height: auto;
-    align-items: start;
-    padding-bottom: 1.6rem;
-  }
-
-  .heroMeta {
-    gap: 1.8rem;
-  }
-
-  .scrollCue {
-    position: static;
-    transform: none;
-    margin-top: 1.2rem;
-    justify-self: start;
-  }
-
-  .scrollCue:hover {
-    transform: translateY(-1px);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .scrollCue svg {
     animation: none;
