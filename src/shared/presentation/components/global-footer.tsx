@@ -52,8 +52,7 @@ export function GlobalFooter() {
     { language: "en" as Language, density: "comfortable" as Density },
   );
   const [footerTools, setFooterTools] = useState<Tool[]>(INITIAL_FOOTER_TOOLS);
-  const usePageFrame =
-    pathname === "/" || pathname === "/privacy" || pathname === "/terms";
+  const usePageFrame = pathname === "/privacy" || pathname === "/terms";
 
   useEffect(() => {
     dispatchFooter({
@@ -146,7 +145,7 @@ export function GlobalFooter() {
     });
   }, []);
 
-  if (density === "compact") {
+  if (pathname === "/" || density === "compact") {
     return null;
   }
 

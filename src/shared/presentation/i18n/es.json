@@ -252,7 +252,7 @@
     "trustTitle": "Tus datos nunca salen de tu navegador.",
     "trustSubtitle": "Trabaja con archivos, texto y datos sin enviarlos a servidores externos.",
     "trustBodyPrimary": "LocalTools se basa en un principio simple: tú tienes el control. Todo corre en el navegador, así que no pasas por un backend.",
-    "trustBodySecondary": "Sin cuentas, sin tracking y sin pasos extra. Abres una utilidad, resuelves la tarea y sigues con lo tuyo.",
+    "trustBodySecondary": "",
     "trustChecks": [
       "Ejecución 100% local",
       "Sin tracking ni telemetría",

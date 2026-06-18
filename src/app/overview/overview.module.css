@@ -4,7 +4,8 @@
   padding-top: clamp(1rem, 2.2vw, 1.6rem);
   padding-bottom: 0;
   color: var(--color-foreground);
-  overflow-x: hidden;
+  overflow-x: clip;
+  overflow-y: visible;
 }
 
 .sectionBand {
