@@ -89,8 +89,8 @@ pnpm build
 
 ### 🏗️ Arquitectura y guía de herramientas
 
-- Arquitectura: [docs/architecture.md](docs/architecture.md)
-- Cómo añadir una tool: [docs/add-tool-guide.md](docs/add-tool-guide.md)
+- Arquitectura y contexto: [CONTEXT.md](CONTEXT.md)
+- Versionado: [docs/versioning.md](docs/versioning.md)
 
 ### 🤝 Contribuciones
 
@@ -194,8 +194,8 @@ pnpm build
 
 ### 🏗️ Architecture and tool guide
 
-- Architecture: [docs/architecture.md](docs/architecture.md)
-- How to add a tool: [docs/add-tool-guide.md](docs/add-tool-guide.md)
+- Architecture and context: [CONTEXT.md](CONTEXT.md)
+- Versioning: [docs/versioning.md](docs/versioning.md)
 
 ### 🤝 Contributing
 

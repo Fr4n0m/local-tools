@@ -11,6 +11,7 @@ import { StorySection } from "./components/story-section";
 import { MultiBannerSection } from "./components/multi-banner-section";
 import { CarouselSection } from "./components/carousel-section";
 import { DiscoverSection } from "./components/discover-section";
+import { HomeFooter } from "./components/home-footer";
 import {
   resolveInitialLanguage,
   sharedMessages,
@@ -445,60 +446,64 @@ export function OverviewExperience() {
   const t = sharedMessages[language].overview;
 
   return (
-    <main className={styles.page} ref={rootRef}>
-      <div className="page-frame">
-        <SimplePageHeader rightSlot={<PageDisplayControls />} />
+    <>
+      <main className={styles.page} ref={rootRef}>
+        <div className="page-frame">
+          <SimplePageHeader rightSlot={<PageDisplayControls />} />
 
-        <div className={styles.sectionBand}>
-          <HeroSection
-            onScrollNext={() => {
-              if (!storyRef.current) return;
-              const targetTop =
-                storyRef.current.getBoundingClientRect().top + window.scrollY;
-              window.scrollTo({
-                top: Math.max(targetTop, 0),
-                behavior: "smooth",
-              });
-            }}
-            text={t}
-          />
-        </div>
+          <div className={styles.sectionBand}>
+            <HeroSection
+              onScrollNext={() => {
+                if (!storyRef.current) return;
+                const targetTop =
+                  storyRef.current.getBoundingClientRect().top +
+                  window.scrollY;
+                window.scrollTo({
+                  top: Math.max(targetTop, 0),
+                  behavior: "smooth",
+                });
+              }}
+              text={t}
+            />
+          </div>
 
-        <div className={styles.sectionBand} ref={storyRef}>
-          <StorySection
-            onScrollNext={() =>
-              thirdSectionRef.current?.scrollIntoView({
-                behavior: "smooth",
-                block: "start",
-              })
-            }
-            text={t}
-          />
-        </div>
+          <div className={styles.sectionBand} ref={storyRef}>
+            <StorySection
+              onScrollNext={() =>
+                thirdSectionRef.current?.scrollIntoView({
+                  behavior: "smooth",
+                  block: "start",
+                })
+              }
+              text={t}
+            />
+          </div>
 
-        <div className={styles.sectionBand} ref={thirdSectionRef}>
-          <MultiBannerSection language={language} text={t} />
-        </div>
+          <div className={styles.sectionBand} ref={thirdSectionRef}>
+            <MultiBannerSection language={language} text={t} />
+          </div>
 
-        <div className={styles.sectionBand}>
-          <CarouselSection
-            onScrollNext={() =>
-              finalSectionRef.current?.scrollIntoView({
-                behavior: "smooth",
-                block: "start",
-              })
-            }
-            text={t}
-          />
-        </div>
+          <div className={styles.sectionBand}>
+            <CarouselSection
+              onScrollNext={() =>
+                finalSectionRef.current?.scrollIntoView({
+                  behavior: "smooth",
+                  block: "start",
+                })
+              }
+              text={t}
+            />
+          </div>
 
-        <div
-          className={`${styles.sectionBand} ${styles.finalSectionBand}`}
-          ref={finalSectionRef}
-        >
-          <DiscoverSection language={language} text={t} />
+          <div
+            className={`${styles.sectionBand} ${styles.finalSectionBand}`}
+            ref={finalSectionRef}
+          >
+            <DiscoverSection language={language} text={t} />
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+      <HomeFooter />
+    </>
   );
 }

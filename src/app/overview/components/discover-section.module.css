@@ -281,7 +281,7 @@
   padding-bottom: 0;
   display: grid;
   justify-items: start;
-  gap: 0.72rem;
+  gap: 0;
 }
 
 .trustBodyPrimaryBlock {
@@ -310,13 +310,16 @@
 
 .trustDetailAssetWrap {
   position: relative;
-  width: clamp(126px, 10.2vw, 168px);
+  width: clamp(215px, 15.2vw, 286px);
   aspect-ratio: 16 / 11;
-  margin-top: clamp(0.7rem, 1.1vh, 0.95rem);
+  margin: 0 0 -0.2rem 0;
+  justify-self: start;
 }
 
 .trustDetailAsset {
   object-fit: contain;
+  object-position: left center;
+  transform: translateX(-28%);
 }
 
 .trustChecks {
@@ -694,6 +697,12 @@
   .trustChecks {
     grid-column: auto;
     grid-row: auto;
+  }
+
+  .trustDetailAssetWrap {
+    width: min(64vw, 285px);
+    margin-left: 0;
+    justify-self: start;
   }
 
   .finalCards {

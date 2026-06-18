@@ -12,7 +12,7 @@
   "language": "Language",
   "theme": "Theme",
   "density": "Density",
-  "comfortable": "Comfort",
+  "comfortable": "Comfortable",
   "compact": "Compact",
   "light": "Light",
   "dark": "Dark",
@@ -53,9 +53,9 @@
     "advanced": "Advanced Utilities"
   },
   "overview": {
-    "heroLead": "Private by design. In your browser.",
+    "heroLead": "Private by design. Everything in your browser.",
     "heroLeadLine1": "Private by design.",
-    "heroLeadLine2": "In your browser.",
+    "heroLeadLine2": "Everything in your browser.",
     "heroTitle": "Developer utilities, with no accounts or telemetry.",
     "heroText": "LocalTools is a curated collection of developer utilities that run entirely in your browser. No accounts. No telemetry. Just reliable tools that respect your workflow and your data.",
     "heroCtaPrimary": "Subscribe for updates",
@@ -169,7 +169,7 @@
     "discoverEyebrowPrimary": "EXPLORE",
     "discoverEyebrowSecondary": "SOME TOOLS",
     "discoverTitle": "Discover. Try. Stay local.",
-    "discoverSubtitle": "Discover practical tools built for developers.",
+    "discoverSubtitle": "Discover useful tools built for developers.",
     "discoverMetaLine": "PRIVATE · RELIABLE · 100% LOCAL",
     "carouselOpenLabel": "Open tool →",
     "carouselCuePrimary": "CONTINUE",
@@ -181,7 +181,7 @@
       },
       {
         "title": "No telemetry",
-        "description": "No tracking, no analytics, no hidden monitoring."
+        "description": "No tracking, no analytics, no monitoring."
       },
       {
         "title": "No accounts",
@@ -209,7 +209,7 @@
         "id": "text-transformer",
         "name": "Text Transformer",
         "description": "Transform text in seconds for docs, snippets, and dev workflows.",
-        "badge": "DEV"
+        "badge": "CODE"
       },
       {
         "id": "uuid-generator",
@@ -239,14 +239,14 @@
         "id": "custom-timer",
         "name": "Custom Timer",
         "description": "Set quick timers for focused work sessions and practical checks.",
-        "badge": "DEV"
+        "badge": "CODE"
       }
     ],
     "trustEyebrow": "PRIVACY / YOU CAN TRUST",
     "trustTitle": "Your data never leaves your browser.",
-    "trustSubtitle": "Local control. Zero accounts.",
+    "trustSubtitle": "Work with files, text, and data without sending them to external servers.",
     "trustBodyPrimary": "LocalTools is built on a simple principle: you stay in control. Everything runs in the browser, so there is no backend.",
-    "trustBodySecondary": "No accounts, no tracking, no extra steps. Open a tool, do the task, and move on.",
+    "trustBodySecondary": "",
     "trustChecks": [
       "100% local execution",
       "No telemetry or tracking",
@@ -256,18 +256,18 @@
     "bottomCards": [
       {
         "eyebrow": "COMMUNITY / OPEN SOURCE",
-        "title": "Built with developers, for developers.",
-        "subtitle": "Open community and practical collaboration.",
-        "bodyPrimary": "Share feedback, report bugs, or suggest concrete improvements from real daily workflows.",
-        "bodySecondary": "Every contribution helps prioritize the product and its direction.",
+        "title": "Built by developers, for developers.",
+        "subtitle": "Open community, real feedback, and visible decisions.",
+        "bodyPrimary": "LocalTools comes from small tasks that repeat every day: preparing files, reviewing payloads, or validating an interface.",
+        "bodySecondary": "If something breaks or could be clearer, open an issue with real context.",
         "cta": "View on GitHub"
       },
       {
-        "eyebrow": "ROADMAP / WHAT'S NEXT",
-        "title": "Got an idea we're missing?",
-        "subtitle": "Propose a feature",
-        "bodyPrimary": "Share feature suggestions, UX improvements, or new tools you'd like to see.",
-        "bodySecondary": "Your suggestion can shape the next implementation block.",
+        "eyebrow": "ROADMAP / PLAN",
+        "title": "What's coming next",
+        "subtitle": "A practical roadmap, with no empty promises.",
+        "bodyPrimary": "The priority is adding tools that fit real product usage: more converters, better presets, faster flows, and small improvements that reduce repeated steps.",
+        "bodySecondary": "The roadmap stays alive and adjusts based on what brings value to daily work. If an idea improves the flow or avoids opening another app, it deserves review.",
         "bullets": [
           "New feature or category",
           "Workflow or interface improvement",
@@ -279,9 +279,9 @@
       {
         "eyebrow": "STAY / IN THE LOOP",
         "title": "New tools. No noise.",
-        "subtitle": "Get version updates only.",
-        "bodyPrimary": "Subscribe for updates on new tools, product changes, and releases.",
-        "bodySecondary": "No spam. Unsubscribe anytime.",
+        "subtitle": "Clear notices when important versions ship.",
+        "bodyPrimary": "The subscription will help you hear about new tools, relevant changes, UX improvements, and release notes when the project has something useful to share.",
+        "bodySecondary": "No spam and no filler emails. Only concrete updates, for people who want to follow the project without checking the repository every week.",
         "cta": "Subscribe"
       }
     ],
