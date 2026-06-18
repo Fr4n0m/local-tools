@@ -34,6 +34,7 @@
 
 .headingBlock {
   max-width: 72ch;
+  min-width: 0;
 }
 
 .eyebrow {
@@ -515,6 +516,13 @@
 @media (max-width: 1320px) and (min-width: 1025px) {
   .carouselHeader {
     flex-direction: column;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .carouselHeader h2,
+  .carouselHeader h2 span {
+    white-space: normal;
   }
 
   .headerNav {
@@ -548,6 +556,18 @@
 
   .carouselHeader {
     flex-direction: column;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .headingBlock {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .carouselHeader h2,
+  .carouselHeader h2 span {
+    white-space: normal;
   }
 
   .headerNav {
@@ -562,6 +582,12 @@
   .toolChip {
     width: min(82vw, 340px);
     min-height: 300px;
+  }
+
+  .toolsRailViewport {
+    margin-inline: 0;
+    padding-inline: 0;
+    width: 100%;
   }
 
   .toolChip strong {

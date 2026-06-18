@@ -92,21 +92,23 @@ export function DiscoverSection({ text, language }: DiscoverSectionProps) {
           <p className={styles.subtitle}>{text.trustSubtitle}</p>
         </div>
         <div className={styles.trustBody}>
-          <div className={styles.trustBodyPrimaryBlock}>
-            <p className={styles.bodyPrimary}>{text.trustBodyPrimary}</p>
-          </div>
-          <div className={styles.trustBodySecondaryBlock}>
-            <p className={styles.bodySecondary}>{text.trustBodySecondary}</p>
-          </div>
           <div className={styles.trustDetailAssetWrap} aria-hidden>
             <Image
               src="/overview/discover-privacy-asset.webp"
               alt="Privacy asset"
               fill
               className={styles.trustDetailAsset}
-              sizes="(max-width: 1024px) 100vw, 12vw"
+              sizes="(max-width: 1024px) 70vw, 18vw"
             />
           </div>
+          <div className={styles.trustBodyPrimaryBlock}>
+            <p className={styles.bodyPrimary}>{text.trustBodyPrimary}</p>
+          </div>
+          {text.trustBodySecondary ? (
+            <div className={styles.trustBodySecondaryBlock}>
+              <p className={styles.bodySecondary}>{text.trustBodySecondary}</p>
+            </div>
+          ) : null}
         </div>
         <ul className={styles.trustChecks}>
           {text.trustChecks.map((item) => (
