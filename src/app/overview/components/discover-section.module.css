@@ -41,16 +41,12 @@
   border: 1px solid color-mix(in oklab, var(--color-border), transparent 10%);
   border-radius: calc(var(--radius-squircle) - 2px);
   padding: clamp(0.78rem, 1.1vw, 1rem);
-  background: color-mix(
-    in oklab,
-    var(--color-background),
-    var(--color-secondary) 4%
-  );
+  background: color-mix(in oklab,
+      var(--color-background),
+      var(--color-secondary) 4%);
   display: grid;
-  grid-template-columns: minmax(190px, 0.9fr) minmax(0, 1.08fr) minmax(
-      0,
-      1.3fr
-    ) minmax(220px, 0.92fr);
+  grid-template-columns: minmax(190px, 0.9fr) minmax(0, 1.08fr) minmax(0,
+      1.3fr) minmax(220px, 0.92fr);
   grid-template-rows: auto;
   gap: clamp(0.82rem, 1.55vw, 1.2rem) clamp(0.95rem, 2vw, 1.55rem);
   align-items: center;
@@ -128,106 +124,66 @@
 .trustAssetWrap::after {
   inset: 5%;
   background:
-    radial-gradient(
-      circle at 24% 18%,
+    radial-gradient(circle at 24% 18%,
       var(--trust-dot-mid) 0 1.2px,
-      transparent 1.8px
-    ),
-    radial-gradient(
-      circle at 34% 24%,
+      transparent 1.8px),
+    radial-gradient(circle at 34% 24%,
       var(--trust-dot-pale) 0 2px,
-      transparent 2.5px
-    ),
-    radial-gradient(
-      circle at 48% 17%,
+      transparent 2.5px),
+    radial-gradient(circle at 48% 17%,
       var(--trust-dot-soft) 0 1.4px,
-      transparent 2px
-    ),
-    radial-gradient(
-      circle at 62% 28%,
+      transparent 2px),
+    radial-gradient(circle at 62% 28%,
       var(--trust-dot-strong) 0 2.2px,
-      transparent 2.8px
-    ),
-    radial-gradient(
-      circle at 74% 22%,
+      transparent 2.8px),
+    radial-gradient(circle at 74% 22%,
       var(--trust-dot-mid) 0 1.6px,
-      transparent 2.2px
-    ),
-    radial-gradient(
-      circle at 82% 38%,
+      transparent 2.2px),
+    radial-gradient(circle at 82% 38%,
       var(--trust-dot-pale) 0 2.6px,
-      transparent 3.2px
-    ),
-    radial-gradient(
-      circle at 18% 40%,
+      transparent 3.2px),
+    radial-gradient(circle at 18% 40%,
       var(--trust-dot-soft) 0 1.7px,
-      transparent 2.3px
-    ),
-    radial-gradient(
-      circle at 30% 48%,
+      transparent 2.3px),
+    radial-gradient(circle at 30% 48%,
       var(--trust-dot-strong) 0 2.4px,
-      transparent 3px
-    ),
-    radial-gradient(
-      circle at 42% 40%,
+      transparent 3px),
+    radial-gradient(circle at 42% 40%,
       var(--trust-dot-soft) 0 1.3px,
-      transparent 1.9px
-    ),
-    radial-gradient(
-      circle at 58% 48%,
+      transparent 1.9px),
+    radial-gradient(circle at 58% 48%,
       var(--trust-dot-mid) 0 2px,
-      transparent 2.6px
-    ),
-    radial-gradient(
-      circle at 70% 58%,
+      transparent 2.6px),
+    radial-gradient(circle at 70% 58%,
       var(--trust-dot-pale) 0 1.5px,
-      transparent 2.1px
-    ),
-    radial-gradient(
-      circle at 82% 64%,
+      transparent 2.1px),
+    radial-gradient(circle at 82% 64%,
       var(--trust-dot-strong) 0 2px,
-      transparent 2.6px
-    ),
-    radial-gradient(
-      circle at 20% 68%,
+      transparent 2.6px),
+    radial-gradient(circle at 20% 68%,
       var(--trust-dot-mid) 0 1.6px,
-      transparent 2.2px
-    ),
-    radial-gradient(
-      circle at 34% 76%,
+      transparent 2.2px),
+    radial-gradient(circle at 34% 76%,
       var(--trust-dot-pale) 0 2.5px,
-      transparent 3.1px
-    ),
-    radial-gradient(
-      circle at 50% 70%,
+      transparent 3.1px),
+    radial-gradient(circle at 50% 70%,
       var(--trust-dot-soft) 0 1.4px,
-      transparent 2px
-    ),
-    radial-gradient(
-      circle at 66% 82%,
+      transparent 2px),
+    radial-gradient(circle at 66% 82%,
       var(--trust-dot-mid) 0 2.2px,
-      transparent 2.8px
-    ),
-    radial-gradient(
-      circle at 76% 76%,
+      transparent 2.8px),
+    radial-gradient(circle at 76% 76%,
       var(--trust-dot-pale) 0 1.6px,
-      transparent 2.2px
-    ),
-    radial-gradient(
-      circle at 44% 88%,
+      transparent 2.2px),
+    radial-gradient(circle at 44% 88%,
       var(--trust-dot-strong) 0 1.8px,
-      transparent 2.4px
-    ),
-    radial-gradient(
-      circle at 58% 88%,
+      transparent 2.4px),
+    radial-gradient(circle at 58% 88%,
       var(--trust-dot-pale) 0 1.3px,
-      transparent 1.9px
-    ),
-    radial-gradient(
-      circle at 88% 52%,
+      transparent 1.9px),
+    radial-gradient(circle at 88% 52%,
       var(--trust-dot-soft) 0 1.4px,
-      transparent 2px
-    );
+      transparent 2px);
 }
 
 .trustAsset {
@@ -366,11 +322,9 @@
   display: grid;
   grid-template-rows: auto auto minmax(0, 1fr) auto;
   align-content: stretch;
-  background: color-mix(
-    in oklab,
-    var(--color-background),
-    var(--color-secondary) 4%
-  );
+  background: color-mix(in oklab,
+      var(--color-background),
+      var(--color-secondary) 4%);
 }
 
 .bottomCard h3 {
@@ -518,8 +472,7 @@
     box-shadow 0.18s ease,
     background-color 0.18s ease,
     border-color 0.18s ease;
-  box-shadow: 0 1px 0
-    color-mix(in oklab, var(--color-foreground), transparent 88%);
+  box-shadow: 0 1px 0 color-mix(in oklab, var(--color-foreground), transparent 88%);
   gap: 0.38rem;
   color: color-mix(in oklab, var(--color-foreground), transparent 16%);
   border: 1px solid color-mix(in oklab, var(--color-border), transparent 12%);
@@ -531,8 +484,7 @@
 .cardCta:hover,
 .cardCta:focus-visible {
   transform: translateY(-1px);
-  box-shadow: 0 8px 18px
-    color-mix(in oklab, var(--color-foreground), transparent 90%);
+  box-shadow: 0 8px 18px color-mix(in oklab, var(--color-foreground), transparent 90%);
 }
 
 .communityCta {
@@ -610,6 +562,9 @@
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 0.42rem;
+  max-width: clamp(14.5rem, 17vw, 18rem);
+  position: relative;
+  z-index: 2;
 }
 
 .subscribeForm input {
@@ -617,11 +572,9 @@
   border: 1px solid color-mix(in oklab, var(--color-border), transparent 10%);
   padding: 0.44rem 0.58rem;
   font-size: clamp(0.7rem, 0.64vw, 0.78rem);
-  background: color-mix(
-    in oklab,
-    var(--color-background),
-    var(--color-secondary) 16%
-  );
+  background: color-mix(in oklab,
+      var(--color-background),
+      var(--color-secondary) 16%);
 }
 
 .subscribeForm button {
@@ -635,13 +588,49 @@
   justify-content: center;
 }
 
+.subscribeForm button:disabled {
+  opacity: 0.55;
+}
+
+.subscribeTerms {
+  grid-column: 1 / -1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.32rem;
+  min-width: 0;
+  font-size: clamp(0.61rem, 0.56vw, 0.68rem);
+  line-height: 1.18;
+  color: color-mix(in oklab, var(--color-foreground), transparent 38%);
+}
+
+.subscribeTerms input {
+  width: 0.78rem;
+  height: 0.78rem;
+  flex: 0 0 0.78rem;
+  padding: 0;
+  margin: 0;
+  accent-color: var(--color-foreground);
+}
+
+.subscribeFeedback {
+  position: relative;
+  z-index: 2;
+  margin: 0.42rem 0 0;
+  max-width: clamp(14.5rem, 17vw, 18rem);
+  font-size: clamp(0.64rem, 0.58vw, 0.72rem);
+  line-height: 1.28;
+  color: color-mix(in oklab, var(--color-foreground), transparent 28%);
+}
+
 .mailAssetWrap {
   position: absolute;
-  right: 0;
-  bottom: -0.15rem;
-  width: clamp(9rem, 13vw, 13.5rem);
-  min-width: 9rem;
+  right: clamp(0.7rem, 1.45vw, 1.95rem);
+  bottom: clamp(1.05rem, 1.9vh, 1.55rem);
+  width: clamp(8.2rem, 11.2vw, 11.8rem);
+  min-width: 8.2rem;
   aspect-ratio: 1 / 1;
+  pointer-events: none;
+  z-index: 1;
 }
 
 .mailAsset {
@@ -668,12 +657,12 @@
 .cardRow {
   display: block;
   position: relative;
-  min-height: clamp(100px, 13vh, 150px);
-  padding-right: clamp(8rem, 13vw, 10.75rem);
+  min-height: clamp(116px, 14vh, 166px);
+  padding-right: clamp(6.8rem, 10.5vw, 9rem);
   margin-top: 0.26rem;
 }
 
-.cardRow > div:first-child {
+.cardRow>div:first-child {
   position: relative;
   z-index: 1;
 }

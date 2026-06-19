@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, type FormEvent } from "react";
 import {
   IconArrowNarrowRight,
   IconBrandGithub,
@@ -10,6 +11,8 @@ import {
 import styles from "./discover-section.module.css";
 import Image from "next/image";
 import type { Language } from "@/shared/presentation/i18n";
+import { sileo } from "sileo";
+import { z } from "zod";
 
 type DiscoverCopy = {
   trustEyebrow: string;
@@ -29,6 +32,19 @@ type DiscoverCopy = {
   }>;
   subscribeButton: string;
   subscribePlaceholder: string;
+  subscribeTerms: string;
+  subscribeLoadingTitle: string;
+  subscribeLoadingDescription: string;
+  subscribeSuccessTitle: string;
+  subscribeSuccessDescription: string;
+  subscribeAlreadyPendingTitle: string;
+  subscribeAlreadyPendingDescription: string;
+  subscribeAlreadyActiveTitle: string;
+  subscribeAlreadyActiveDescription: string;
+  subscribeInvalidEmail: string;
+  subscribeTermsRequired: string;
+  subscribeErrorTitle: string;
+  subscribeErrorDescription: string;
 };
 
 type DiscoverSectionProps = {
@@ -62,10 +78,94 @@ function CommunityTitle({ title }: { title?: string }) {
   );
 }
 
+const subscribeSchema = z.object({
+  email: z.string().trim().email().max(240),
+  acceptTerms: z.literal(true),
+});
+
 export function DiscoverSection({ text, language }: DiscoverSectionProps) {
+  const [email, setEmail] = useState("");
+  const [acceptTerms, setAcceptTerms] = useState(false);
+  const [isAlreadyActive, setIsAlreadyActive] = useState(false);
+  const [inlineMessage, setInlineMessage] = useState<string | null>(null);
   const roadmapFallback = text.bottomCards[1]?.bodySecondary;
   const roadmapBullets =
     text.bottomCards[1]?.bullets ?? (roadmapFallback ? [roadmapFallback] : []);
+
+  async function onSubscribe(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setInlineMessage(null);
+
+    const parsed = subscribeSchema.safeParse({ email, acceptTerms });
+    if (!parsed.success) {
+      const firstIssue = parsed.error.issues[0];
+      setInlineMessage(
+        firstIssue?.path.includes("acceptTerms")
+          ? text.subscribeTermsRequired
+          : text.subscribeInvalidEmail,
+      );
+      return;
+    }
+
+    try {
+      await sileo.promise(
+        fetch("https://codebyfran.es/api/projects/local-tools/subscribe", {
+          method: "POST",
+          credentials: "omit",
+          mode: "cors",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({
+            email: parsed.data.email,
+            locale: language,
+            source: "home-final-card",
+            acceptTerms: parsed.data.acceptTerms,
+          }),
+        }).then(async (res) => {
+          if (!res.ok) throw new Error(text.subscribeErrorDescription);
+          return res.json() as Promise<{
+            alreadyActive?: boolean;
+            alreadyPending?: boolean;
+          }>;
+        }),
+        {
+          loading: {
+            title: text.subscribeLoadingTitle,
+            description: text.subscribeLoadingDescription,
+          },
+          success: (data) => {
+            if (data.alreadyActive) {
+              setIsAlreadyActive(true);
+              setInlineMessage(text.subscribeAlreadyActiveDescription);
+              return {
+                title: text.subscribeAlreadyActiveTitle,
+                description: text.subscribeAlreadyActiveDescription,
+              };
+            }
+            if (data.alreadyPending) {
+              setInlineMessage(text.subscribeAlreadyPendingDescription);
+              return {
+                title: text.subscribeAlreadyPendingTitle,
+                description: text.subscribeAlreadyPendingDescription,
+              };
+            }
+            setEmail("");
+            setAcceptTerms(false);
+            setInlineMessage(text.subscribeSuccessDescription);
+            return {
+              title: text.subscribeSuccessTitle,
+              description: text.subscribeSuccessDescription,
+            };
+          },
+          error: () => ({
+            title: text.subscribeErrorTitle,
+            description: text.subscribeErrorDescription,
+          }),
+        },
+      );
+    } catch {
+      setInlineMessage(text.subscribeErrorDescription);
+    }
+  }
 
   return (
     <section
@@ -221,7 +321,7 @@ export function DiscoverSection({ text, language }: DiscoverSectionProps) {
               </p>
               <form
                 className={styles.subscribeForm}
-                onSubmit={(e) => e.preventDefault()}
+                onSubmit={onSubscribe}
               >
                 <label className="sr-only" htmlFor="discover-email">
                   {text.subscribePlaceholder}
@@ -230,23 +330,42 @@ export function DiscoverSection({ text, language }: DiscoverSectionProps) {
                   id="discover-email"
                   placeholder={text.subscribePlaceholder}
                   type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  disabled={isAlreadyActive}
                 />
-                <button type="submit" aria-label={text.subscribeButton}>
+                <button
+                  type="submit"
+                  aria-label={text.subscribeButton}
+                  disabled={isAlreadyActive}
+                >
                   <IconArrowNarrowRight size={16} />
                 </button>
+                <label className={styles.subscribeTerms}>
+                  <input
+                    type="checkbox"
+                    checked={acceptTerms}
+                    onChange={(e) => setAcceptTerms(e.target.checked)}
+                    disabled={isAlreadyActive}
+                  />
+                  <span>{text.subscribeTerms}</span>
+                </label>
               </form>
+              {inlineMessage ? (
+                <p className={styles.subscribeFeedback}>{inlineMessage}</p>
+              ) : null}
             </div>
             <div className={styles.mailAssetWrap} aria-hidden>
               <Image
                 src="/overview/discover-mail-light.webp"
-                alt="Mail paper plane asset light"
+                alt=""
                 fill
                 className={`${styles.mailAsset} ${styles.mailAssetLight}`}
                 sizes="(max-width: 1024px) 100vw, 24vw"
               />
               <Image
                 src="/overview/discover-mail.webp"
-                alt="Mail paper plane asset dark"
+                alt=""
                 fill
                 className={`${styles.mailAsset} ${styles.mailAssetDark}`}
                 sizes="(max-width: 1024px) 100vw, 24vw"
