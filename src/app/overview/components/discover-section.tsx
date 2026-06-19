@@ -13,6 +13,7 @@ import Image from "next/image";
 import type { Language } from "@/shared/presentation/i18n";
 import { sileo } from "sileo";
 import { z } from "zod";
+import { notifyError } from "@/shared/lib/notify";
 
 type DiscoverCopy = {
   trustEyebrow: string;
@@ -99,7 +100,7 @@ export function DiscoverSection({ text, language }: DiscoverSectionProps) {
     const parsed = subscribeSchema.safeParse({ email, acceptTerms });
     if (!parsed.success) {
       const firstIssue = parsed.error.issues[0];
-      setInlineMessage(
+      notifyError(
         firstIssue?.path.includes("acceptTerms")
           ? text.subscribeTermsRequired
           : text.subscribeInvalidEmail,
@@ -319,10 +320,7 @@ export function DiscoverSection({ text, language }: DiscoverSectionProps) {
               <p className={styles.bodyPrimary}>
                 {text.bottomCards[2]?.bodyPrimary}
               </p>
-              <form
-                className={styles.subscribeForm}
-                onSubmit={onSubscribe}
-              >
+              <form className={styles.subscribeForm} onSubmit={onSubscribe}>
                 <label className="sr-only" htmlFor="discover-email">
                   {text.subscribePlaceholder}
                 </label>
