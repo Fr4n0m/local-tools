@@ -2,7 +2,7 @@
   min-height: 100svh;
   display: grid;
   place-items: center;
-  padding: clamp(1.2rem, 3vw, 2rem);
+  padding: clamp(1.2rem, 4vw, 2.5rem);
   background:
     linear-gradient(
       color-mix(in oklab, var(--color-border), transparent 72%) 1px,
@@ -17,97 +17,6 @@
   background-size: 35px 35px;
 }
 
-.card {
-  width: min(100%, 540px);
-  border: 1px solid color-mix(in oklab, var(--color-border), transparent 12%);
-  border-radius: calc(var(--radius-squircle) - 2px);
-  padding: clamp(1.1rem, 3vw, 1.7rem);
-  background: color-mix(
-    in oklab,
-    var(--color-background),
-    var(--color-secondary) 5%
-  );
-  box-shadow: 0 18px 48px color-mix(in oklab, var(--color-foreground), transparent 92%);
-}
-
-.eyebrow {
-  margin: 0;
-  font-family: var(--font-heading);
-  font-size: 0.72rem;
-  line-height: 1;
-  letter-spacing: 0.015em;
-  text-transform: uppercase;
-  font-weight: 800;
-  color: color-mix(in oklab, var(--color-foreground), transparent 38%);
-}
-
-.card h1 {
-  margin: 0.55rem 0 0;
-  font-family: var(--font-heading), "Segoe UI", sans-serif;
-  font-size: clamp(2rem, 4.2vw, 3.25rem);
-  line-height: 0.98;
-  letter-spacing: -0.012em;
-  font-weight: 900;
-}
-
-.description {
-  margin: 0.8rem 0 0;
-  max-width: 36rem;
-  font-size: clamp(0.95rem, 1.1vw, 1.05rem);
-  line-height: 1.45;
-  color: color-mix(in oklab, var(--color-foreground), transparent 28%);
-}
-
-.actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.65rem;
-  margin-top: 1.2rem;
-}
-
-.actions button,
-.actions a {
-  min-height: 2.35rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.42rem;
-  border-radius: 999px;
-  padding: 0.55rem 0.86rem;
-  font-size: 0.82rem;
-  font-weight: 800;
-  line-height: 1;
-  text-decoration: none;
-}
-
-.actions button {
-  border: 1px solid var(--color-foreground);
-  background: var(--color-foreground);
-  color: var(--color-background);
-}
-
-.actions button:disabled {
-  opacity: 0.62;
-}
-
-.actions a {
-  border: 1px solid color-mix(in oklab, var(--color-border), transparent 8%);
-  color: color-mix(in oklab, var(--color-foreground), transparent 14%);
-  background: color-mix(in oklab, var(--color-background), transparent 2%);
-}
-
-.alert,
-.feedback {
-  display: flex;
-  align-items: center;
-  gap: 0.42rem;
-  margin: 1rem 0 0;
-  color: color-mix(in oklab, var(--color-foreground), transparent 22%);
-  font-size: 0.86rem;
-  line-height: 1.35;
-}
-
-.feedbackSuccess {
-  color: color-mix(in oklab, var(--color-foreground), transparent 8%);
-  font-weight: 700;
+.content {
+  width: min(100%, 32rem);
 }

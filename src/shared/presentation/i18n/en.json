@@ -303,7 +303,18 @@
     "subscribeInvalidEmail": "Enter a valid email.",
     "subscribeTermsRequired": "Accept privacy and terms to continue.",
     "subscribeErrorTitle": "Send error",
-    "subscribeErrorDescription": "Could not complete the subscription."
+    "subscribeErrorDescription": "Could not complete the subscription.",
+    "subscriptionModal": {
+      "confirmedEyebrow": "SUBSCRIPTION CONFIRMED",
+      "confirmedTitle": "Subscription confirmed",
+      "confirmedDescription": "Welcome to LocalTools. You will receive new tools, relevant improvements, and release notes when there is something useful to share.",
+      "confirmedAction": "Back to LocalTools",
+      "errorEyebrow": "CONFIRMATION FAILED",
+      "errorTitle": "We could not confirm it",
+      "errorDescription": "The link is invalid, has expired, or could not be processed. Request another confirmation email.",
+      "errorAction": "Request another email",
+      "closeLabel": "Close confirmation"
+    }
   },
   "buttons": {
     "clear": "Clear",
