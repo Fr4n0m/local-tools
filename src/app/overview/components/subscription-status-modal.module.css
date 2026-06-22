@@ -1,0 +1,56 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  padding: clamp(1rem, 4vw, 2rem);
+  background: color-mix(in oklab, var(--color-foreground), transparent 58%);
+  backdrop-filter: blur(5px);
+}
+
+.dialog {
+  position: relative;
+  width: min(100%, 32rem);
+}
+
+.close {
+  position: absolute;
+  z-index: 1;
+  top: 0.72rem;
+  right: 0.72rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid color-mix(in oklab, var(--color-border), transparent 10%);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--color-foreground);
+  background: var(--color-background);
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    background-color 160ms ease;
+}
+
+.close svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.close:hover {
+  transform: rotate(8deg);
+  background: var(--color-secondary);
+}
+
+.close:focus-visible {
+  outline: 2px solid var(--color-foreground);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .close {
+    transition: none;
+  }
+}

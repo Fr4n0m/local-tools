@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import styles from "./overview.module.css";
@@ -12,6 +13,11 @@ import { MultiBannerSection } from "./components/multi-banner-section";
 import { CarouselSection } from "./components/carousel-section";
 import { DiscoverSection } from "./components/discover-section";
 import { HomeFooter } from "./components/home-footer";
+import { SubscriptionStatusModal } from "./components/subscription-status-modal";
+import {
+  normalizeSubscriptionStatus,
+  type SubscriptionStatus,
+} from "./subscription-status";
 import {
   resolveInitialLanguage,
   sharedMessages,
@@ -19,11 +25,43 @@ import {
 } from "@/shared/presentation/i18n";
 
 export function OverviewExperience() {
+  const router = useRouter();
   const rootRef = useRef<HTMLDivElement>(null);
   const storyRef = useRef<HTMLDivElement>(null);
   const thirdSectionRef = useRef<HTMLDivElement>(null);
   const finalSectionRef = useRef<HTMLDivElement>(null);
   const [language, setLanguage] = useState<Language>("en");
+  const [subscriptionStatus, setSubscriptionStatus] =
+    useState<SubscriptionStatus | null>(null);
+
+  const closeSubscriptionModal = useCallback(() => {
+    setSubscriptionStatus(null);
+    router.replace("/", { scroll: false });
+  }, [router]);
+
+  const handleSubscriptionAction = useCallback(() => {
+    const destination =
+      subscriptionStatus === "error" ? "/#subscribe-updates" : "/";
+    setSubscriptionStatus(null);
+
+    if (destination === "/#subscribe-updates") {
+      router.replace("/#subscribe-updates");
+      return;
+    }
+
+    router.replace("/", { scroll: false });
+  }, [router, subscriptionStatus]);
+
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => {
+      const params = new URLSearchParams(window.location.search);
+      setSubscriptionStatus(
+        normalizeSubscriptionStatus(params.get("subscription") ?? undefined),
+      );
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
@@ -456,8 +494,7 @@ export function OverviewExperience() {
               onScrollNext={() => {
                 if (!storyRef.current) return;
                 const targetTop =
-                  storyRef.current.getBoundingClientRect().top +
-                  window.scrollY;
+                  storyRef.current.getBoundingClientRect().top + window.scrollY;
                 window.scrollTo({
                   top: Math.max(targetTop, 0),
                   behavior: "smooth",
@@ -504,6 +541,14 @@ export function OverviewExperience() {
         </div>
       </main>
       <HomeFooter />
+      {subscriptionStatus ? (
+        <SubscriptionStatusModal
+          status={subscriptionStatus}
+          text={t.subscriptionModal}
+          onClose={closeSubscriptionModal}
+          onPrimaryAction={handleSubscriptionAction}
+        />
+      ) : null}
     </>
   );
 }
