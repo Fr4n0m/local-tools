@@ -9,7 +9,7 @@
   flex-direction: column;
   justify-content: center;
   overflow: hidden;
-  gap: clamp(0.28rem, 0.6vh, 0.42rem);
+  gap: clamp(2.75rem, 6vh, 4.5rem);
 }
 
 .eyebrow {
