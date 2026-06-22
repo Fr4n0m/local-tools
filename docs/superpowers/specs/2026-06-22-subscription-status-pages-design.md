@@ -31,13 +31,13 @@ No portfolio changes are required. Its existing verification endpoint already re
 
 ### LocalTools confirmation modal
 
-The home overview reads the existing `subscription` query value:
+The client-side home overview reads the existing `subscription` query value after hydration, preserving the static home route:
 
 - `confirmed` opens the success modal.
 - `error` opens the error modal.
 - Missing or unknown values render no modal.
 
-The modal uses the home page's existing language state and ES/EN copy. It does not fetch or mutate subscription data. Closing it or activating its primary action removes the transactional query with `router.replace`, preventing the modal from reopening on refresh or normal home navigation.
+The modal uses the home page's existing language state and ES/EN copy. It does not fetch or mutate subscription data. Closing it or activating its primary action clears local modal state and removes the transactional query with `router.replace`, preventing the modal from reopening on refresh or normal home navigation.
 
 ### LocalTools unsubscribe route
 

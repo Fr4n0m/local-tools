@@ -25,6 +25,7 @@
 *.pem
 lighthouse-*.json
 .vscode/
+.superpowers/
 
 # debug
 npm-debug.log*
