@@ -1,0 +1,310 @@
+.trustBlock {
+  border: 1px solid color-mix(in oklab, var(--color-border), transparent 10%);
+  border-radius: calc(var(--radius-squircle) - 2px);
+  padding: clamp(0.78rem, 1.1vw, 1rem);
+  background: color-mix(
+    in oklab,
+    var(--color-background),
+    var(--color-secondary) 4%
+  );
+  display: grid;
+  grid-template-columns:
+    minmax(190px, 0.9fr) minmax(0, 1.08fr) minmax(0, 1.3fr)
+    minmax(220px, 0.92fr);
+  grid-template-rows: auto;
+  gap: clamp(0.82rem, 1.55vw, 1.2rem) clamp(0.95rem, 2vw, 1.55rem);
+  align-items: center;
+  align-content: center;
+  min-height: clamp(214px, 24vh, 282px);
+  align-self: stretch;
+  max-height: none;
+}
+
+.trustVisual {
+  min-height: clamp(132px, 15vh, 168px);
+  display: grid;
+  place-items: center;
+  align-self: center;
+}
+
+.trustAssetWrap {
+  --trust-dot-strong: rgba(54, 60, 72, 0.42);
+  --trust-dot-mid: rgba(92, 101, 116, 0.34);
+  --trust-dot-soft: rgba(132, 142, 158, 0.28);
+  --trust-dot-pale: rgba(178, 186, 199, 0.34);
+  position: relative;
+  width: clamp(196px, 15.5vw, 262px);
+  aspect-ratio: 1 / 1;
+}
+
+:global(.dark) .trustAssetWrap {
+  --trust-dot-strong: rgba(255, 255, 255, 0.78);
+  --trust-dot-mid: rgba(198, 205, 216, 0.58);
+  --trust-dot-soft: rgba(142, 152, 168, 0.46);
+  --trust-dot-pale: rgba(238, 241, 246, 0.7);
+}
+
+.trustAssetWrap::before,
+.trustAssetWrap::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  corner-shape: round !important;
+}
+
+.trustAssetWrap::before {
+  inset: 6% 8%;
+  border-radius: 50% !important;
+  corner-shape: round !important;
+  background: transparent;
+  box-shadow:
+    38px 18px 0 1.2px var(--trust-dot-soft),
+    54px 30px 0 2.2px var(--trust-dot-strong),
+    72px 18px 0 1.5px var(--trust-dot-mid),
+    92px 34px 0 2px var(--trust-dot-pale),
+    112px 24px 0 1.3px var(--trust-dot-soft),
+    128px 44px 0 2.6px var(--trust-dot-strong),
+    26px 48px 0 1.6px var(--trust-dot-mid),
+    48px 62px 0 2.3px var(--trust-dot-pale),
+    68px 50px 0 1.1px var(--trust-dot-soft),
+    88px 70px 0 2px var(--trust-dot-strong),
+    108px 58px 0 1.6px var(--trust-dot-mid),
+    132px 76px 0 2.2px var(--trust-dot-pale),
+    18px 82px 0 2px var(--trust-dot-pale),
+    40px 98px 0 1.4px var(--trust-dot-soft),
+    62px 84px 0 2.5px var(--trust-dot-strong),
+    84px 104px 0 1.5px var(--trust-dot-mid),
+    106px 92px 0 2px var(--trust-dot-pale),
+    128px 112px 0 1.4px var(--trust-dot-soft),
+    52px 122px 0 1.9px var(--trust-dot-mid),
+    76px 136px 0 2.5px var(--trust-dot-pale),
+    102px 128px 0 1.3px var(--trust-dot-soft),
+    122px 144px 0 2px var(--trust-dot-mid);
+  height: 1px;
+  width: 1px;
+}
+
+.trustAssetWrap::after {
+  inset: 5%;
+  background:
+    radial-gradient(
+      circle at 24% 18%,
+      var(--trust-dot-mid) 0 1.2px,
+      transparent 1.8px
+    ),
+    radial-gradient(
+      circle at 34% 24%,
+      var(--trust-dot-pale) 0 2px,
+      transparent 2.5px
+    ),
+    radial-gradient(
+      circle at 48% 17%,
+      var(--trust-dot-soft) 0 1.4px,
+      transparent 2px
+    ),
+    radial-gradient(
+      circle at 62% 28%,
+      var(--trust-dot-strong) 0 2.2px,
+      transparent 2.8px
+    ),
+    radial-gradient(
+      circle at 74% 22%,
+      var(--trust-dot-mid) 0 1.6px,
+      transparent 2.2px
+    ),
+    radial-gradient(
+      circle at 82% 38%,
+      var(--trust-dot-pale) 0 2.6px,
+      transparent 3.2px
+    ),
+    radial-gradient(
+      circle at 18% 40%,
+      var(--trust-dot-soft) 0 1.7px,
+      transparent 2.3px
+    ),
+    radial-gradient(
+      circle at 30% 48%,
+      var(--trust-dot-strong) 0 2.4px,
+      transparent 3px
+    ),
+    radial-gradient(
+      circle at 42% 40%,
+      var(--trust-dot-soft) 0 1.3px,
+      transparent 1.9px
+    ),
+    radial-gradient(
+      circle at 58% 48%,
+      var(--trust-dot-mid) 0 2px,
+      transparent 2.6px
+    ),
+    radial-gradient(
+      circle at 70% 58%,
+      var(--trust-dot-pale) 0 1.5px,
+      transparent 2.1px
+    ),
+    radial-gradient(
+      circle at 82% 64%,
+      var(--trust-dot-strong) 0 2px,
+      transparent 2.6px
+    ),
+    radial-gradient(
+      circle at 20% 68%,
+      var(--trust-dot-mid) 0 1.6px,
+      transparent 2.2px
+    ),
+    radial-gradient(
+      circle at 34% 76%,
+      var(--trust-dot-pale) 0 2.5px,
+      transparent 3.1px
+    ),
+    radial-gradient(
+      circle at 50% 70%,
+      var(--trust-dot-soft) 0 1.4px,
+      transparent 2px
+    ),
+    radial-gradient(
+      circle at 66% 82%,
+      var(--trust-dot-mid) 0 2.2px,
+      transparent 2.8px
+    ),
+    radial-gradient(
+      circle at 76% 76%,
+      var(--trust-dot-pale) 0 1.6px,
+      transparent 2.2px
+    ),
+    radial-gradient(
+      circle at 44% 88%,
+      var(--trust-dot-strong) 0 1.8px,
+      transparent 2.4px
+    ),
+    radial-gradient(
+      circle at 58% 88%,
+      var(--trust-dot-pale) 0 1.3px,
+      transparent 1.9px
+    ),
+    radial-gradient(
+      circle at 88% 52%,
+      var(--trust-dot-soft) 0 1.4px,
+      transparent 2px
+    );
+}
+
+.trustAsset {
+  object-fit: contain;
+  z-index: 2;
+}
+
+.trustCopy h3 {
+  margin: 0.92rem 0 0;
+  font-family: var(--font-heading), "Segoe UI", sans-serif;
+  font-size: clamp(1.68rem, 2.15vw, 2.45rem);
+  line-height: 1.03;
+  letter-spacing: -0.015em;
+  font-weight: 900;
+  max-width: 13ch;
+  color: color-mix(in oklab, var(--color-foreground), transparent 3%);
+}
+
+.bodyPrimary {
+  margin: 0.4rem 0 0;
+  font-size: clamp(0.74rem, 0.68vw, 0.84rem);
+  line-height: 1.34;
+  color: color-mix(in oklab, var(--color-foreground), transparent 6%);
+}
+
+.bodySecondary {
+  margin: 1rem 0 0;
+  font-size: clamp(0.68rem, 0.62vw, 0.76rem);
+  line-height: 1.32;
+  color: color-mix(in oklab, var(--color-foreground), transparent 42%);
+}
+
+.trustCopy {
+  grid-column: 2;
+  min-width: 0;
+  max-width: 24rem;
+  align-self: center;
+}
+
+.trustCopy .subtitle {
+  margin-top: 0.92rem;
+  font-size: clamp(0.94rem, 0.92vw, 1.08rem);
+  line-height: 1.38;
+}
+
+.trustBody {
+  grid-column: 3;
+  min-width: 0;
+  max-width: 36rem;
+  align-self: center;
+  padding-bottom: 0;
+  display: grid;
+  justify-items: start;
+  gap: 0;
+}
+
+.trustBodyPrimaryBlock {
+  width: 100%;
+}
+
+.trustBodyPrimaryBlock .bodyPrimary {
+  max-width: none;
+}
+
+.trustBody .bodyPrimary {
+  font-size: clamp(0.88rem, 0.84vw, 1rem);
+  line-height: 1.42;
+}
+
+.trustBodySecondaryBlock {
+  width: 100%;
+  max-width: 28rem;
+}
+
+.trustBody .bodySecondary {
+  margin-top: 0;
+  font-size: clamp(0.8rem, 0.72vw, 0.9rem);
+  line-height: 1.4;
+}
+
+.trustDetailAssetWrap {
+  position: relative;
+  width: clamp(215px, 15.2vw, 286px);
+  aspect-ratio: 16 / 11;
+  margin: 0 0 -0.2rem 0;
+  justify-self: start;
+}
+
+.trustDetailAsset {
+  object-fit: contain;
+  object-position: left center;
+  transform: translateX(-28%);
+}
+
+.trustChecks {
+  grid-column: 4;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.78rem;
+  align-content: center;
+  justify-content: start;
+  align-self: center;
+}
+
+.trustChecks li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.72rem;
+  font-size: clamp(0.96rem, 0.88vw, 1.02rem);
+  line-height: 1.25;
+  color: color-mix(in oklab, var(--color-foreground), transparent 18%);
+}
+
+.trustChecks svg {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 22px;
+}

@@ -1,341 +1,60 @@
 .hero {
-  position: relative;
-  z-index: 1;
-  margin-bottom: 1.25rem;
-  display: grid;
-  grid-template-columns: minmax(400px, 0.82fr) minmax(680px, 1.18fr);
-  gap: clamp(1.5rem, 2.6vw, 2.8rem);
-  min-height: calc(100dvh - 104px);
-  align-items: center;
-  padding-top: clamp(0.15rem, 0.5vw, 0.4rem);
-  padding-bottom: 3.1rem;
-  box-sizing: border-box;
+  composes: hero from "./hero-layout.module.css";
+  composes: hero from "./hero-controls.module.css";
 }
 
 .heroCopy {
-  justify-self: start;
-  max-width: 700px;
+  composes: heroCopy from "./hero-layout.module.css";
+  composes: heroCopy from "./hero-controls.module.css";
 }
 
 .heroAsset {
-  justify-self: end;
-  width: 100%;
-  max-width: 760px;
-  display: grid;
-  align-content: stretch;
-}
-
-.heroCopy h1 {
-  margin-top: 0;
-  font-size: clamp(2.65rem, 4.2vw, 4.45rem);
-  line-height: 1.2;
-  letter-spacing: -0.018em;
-  font-weight: 800;
-  max-width: 13.5ch;
-  padding-top: 0.05em;
-  padding-bottom: 0.14em;
-}
-
-.heroCopy h1 span {
-  display: block;
-  white-space: nowrap;
-}
-
-.heroCopy h1 span + span {
-  margin-top: 0.06rem;
+  composes: heroAsset from "./hero-layout.module.css";
+  composes: heroAsset from "./hero-controls.module.css";
 }
 
 .subLead {
-  margin-top: 0.95rem;
-  font-size: clamp(1.2rem, 1.45vw, 1.5rem);
-  line-height: 1.28;
-  color: color-mix(in oklab, var(--color-foreground), transparent 52%);
-  white-space: nowrap;
+  composes: subLead from "./hero-layout.module.css";
 }
-
 .heroText {
-  margin-top: 1.85rem;
-  color: color-mix(in oklab, var(--color-foreground), transparent 20%);
-  max-width: 56ch;
-  font-size: 1.06rem;
-  line-height: 1.56;
+  composes: heroText from "./hero-layout.module.css";
 }
-
 .heroMeta {
-  margin-top: 3rem;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 5.8rem;
+  composes: heroMeta from "./hero-layout.module.css";
 }
-
-.heroMeta article {
-  display: grid;
-  grid-template-columns: 20px 1fr;
-  column-gap: 0.24rem;
-  min-inline-size: 10.5rem;
-}
-
-.heroMeta article svg {
-  color: var(--color-foreground);
-  width: 18px;
-  height: 18px;
-  margin-top: 0.2rem;
-}
-
-.heroMeta strong {
-  font-size: 0.92rem;
-  line-height: 1.18;
-  white-space: nowrap;
-}
-
-.heroMeta span {
-  display: block;
-  margin-top: 0.24rem;
-  font-size: 0.84rem;
-  line-height: 1.32;
-  color: color-mix(in oklab, var(--color-foreground), transparent 42%);
-  max-width: 24ch;
-  text-wrap: balance;
-}
-
 .heroActions {
-  margin-top: 2.6rem;
-  display: flex;
-  gap: 0.62rem;
-  flex-wrap: wrap;
+  composes: heroActions from "./hero-layout.module.css";
 }
-
-.primaryBtn,
-.secondaryBtn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.36rem;
-  border-radius: var(--radius-squircle);
-  text-decoration: none;
-  font-size: 0.92rem;
-  padding: 0.7rem 1rem;
-  font-weight: 600;
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    background-color 0.2s ease,
-    border-color 0.2s ease,
-    color 0.2s ease;
-}
-
 .primaryBtn {
-  background: var(--color-foreground);
-  color: var(--color-background);
-  box-shadow: 0 10px 20px -14px rgba(0, 0, 0, 0.45);
+  composes: primaryBtn from "./hero-layout.module.css";
 }
-
 .secondaryBtn {
-  border: 1px solid color-mix(in oklab, var(--color-border), transparent 8%);
-  color: var(--color-foreground);
-}
-
-.heroActions a:hover {
-  transform: translateY(-1px);
-}
-
-.primaryBtn:hover {
-  box-shadow: 0 14px 28px -16px rgba(0, 0, 0, 0.55);
-}
-
-.secondaryBtn:hover {
-  background: color-mix(in oklab, var(--color-secondary), transparent 45%);
-}
-
-.heroActions a svg {
-  width: 17px;
-  height: 17px;
+  composes: secondaryBtn from "./hero-layout.module.css";
 }
 
 .heroMockFrame {
-  width: min(100%, 760px);
-  height: 460px;
-  border-radius: calc(var(--radius-squircle) - 2px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background:
-    radial-gradient(
-      circle at 85% 10%,
-      rgba(58, 112, 198, 0.28) 0%,
-      transparent 35%
-    ),
-    linear-gradient(140deg, #090d14 0%, #0b111a 42%, #101a28 100%);
-  transform: perspective(1500px) rotateY(-24deg) rotateX(5deg) rotateZ(-1.2deg);
-  transform-origin: center right;
-  box-shadow:
-    0 70px 110px -58px rgba(2, 8, 20, 0.95),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.03);
-  padding: 0.78rem;
-  display: grid;
-  grid-template-rows: auto 1fr;
-  gap: 0.55rem;
+  composes: heroMockFrame from "./hero-mock.module.css";
+  composes: heroMockFrame from "./hero-controls.module.css";
 }
 
 .heroMockTopbar {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
+  composes: heroMockTopbar from "./hero-mock.module.css";
 }
-
 .heroMockLogo {
-  color: rgba(248, 250, 252, 0.92);
-  transform: scale(0.72);
-  transform-origin: left center;
+  composes: heroMockLogo from "./hero-mock.module.css";
 }
-
 .heroMockSearch {
-  flex: 1;
-  min-height: 28px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(6, 10, 18, 0.56);
-  color: rgba(226, 232, 240, 0.62);
-  display: flex;
-  align-items: center;
-  gap: 0.38rem;
-  padding-inline: 0.45rem;
-  font-size: 0.7rem;
+  composes: heroMockSearch from "./hero-mock.module.css";
 }
-
 .heroMockBody {
-  display: grid;
-  grid-template-columns: 70px 1fr;
-  gap: 0.55rem;
+  composes: heroMockBody from "./hero-mock.module.css";
 }
-
 .heroMockSidebar {
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  background: rgba(8, 12, 21, 0.45);
-  padding: 0.5rem 0.42rem;
-  display: grid;
-  gap: 0.38rem;
+  composes: heroMockSidebar from "./hero-mock.module.css";
 }
-
-.heroMockSidebar span {
-  height: 10px;
-  border-radius: 6px;
-  background: linear-gradient(
-    90deg,
-    rgba(226, 232, 240, 0.2),
-    rgba(226, 232, 240, 0.06)
-  );
-}
-
 .heroMockGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.42rem;
+  composes: heroMockGrid from "./hero-mock.module.css";
 }
-
-.heroMockGrid article {
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  background: rgba(8, 12, 21, 0.54);
-  padding: 0.45rem;
-  display: grid;
-  gap: 0.3rem;
-}
-
-.heroMockGrid article div {
-  width: 20px;
-  height: 20px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  background: rgba(255, 255, 255, 0.04);
-}
-
-.heroMockGrid article p {
-  height: 8px;
-  border-radius: 6px;
-  background: linear-gradient(
-    90deg,
-    rgba(226, 232, 240, 0.28),
-    rgba(226, 232, 240, 0.08)
-  );
-}
-
 .scrollCue {
-  position: absolute;
-  left: 50%;
-  bottom: 1rem;
-  transform: translateX(-50%);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  color: color-mix(in oklab, var(--color-foreground), transparent 40%);
-  font-size: 0.78rem;
-}
-
-.scrollCue:hover {
-  color: color-mix(in oklab, var(--color-foreground), transparent 20%);
-  transform: translateX(-50%) translateY(-1px);
-}
-
-.scrollCue svg {
-  animation: scroll-cue-bounce 2.2s ease-in-out infinite;
-}
-
-@keyframes scroll-cue-bounce {
-  0%,
-  100% {
-    transform: translateY(-3px);
-    opacity: 0.8;
-  }
-
-  50% {
-    transform: translateY(3px);
-    opacity: 1;
-  }
-}
-
-@media (max-width: 1024px) {
-  .hero {
-    grid-template-columns: 1fr;
-    min-height: calc(100dvh - 88px);
-    gap: 1rem;
-    padding-bottom: 2.8rem;
-  }
-
-  .heroCopy h1 {
-    max-width: 100%;
-    font-size: clamp(2rem, 8vw, 3rem);
-  }
-
-  .subLead {
-    white-space: normal;
-  }
-
-  .heroCopy,
-  .heroAsset {
-    max-width: 100%;
-    justify-self: stretch;
-  }
-
-  .heroMeta {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.25rem;
-  }
-
-  .heroMockFrame {
-    height: 340px;
-    transform: perspective(1200px) rotateY(-13deg) rotateX(4deg) rotateZ(-1deg);
-  }
-
-  .scrollCue {
-    bottom: 0.8rem;
-    font-size: 0.74rem;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .scrollCue svg {
-    animation: none;
-  }
+  composes: scrollCue from "./hero-controls.module.css";
 }

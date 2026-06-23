@@ -91,14 +91,14 @@ export function CarouselSection({ onScrollNext, text }: CarouselSectionProps) {
             onClick={() => nudgeCarousel("prev")}
             type="button"
           >
-            <IconChevronLeft size={24} stroke={1.9} />
+            <IconChevronLeft size={24} stroke={2.4} />
           </button>
           <button
             aria-label="Next"
             onClick={() => nudgeCarousel("next")}
             type="button"
           >
-            <IconChevronRight size={24} stroke={1.9} />
+            <IconChevronRight size={24} stroke={2.4} />
           </button>
         </div>
       </header>

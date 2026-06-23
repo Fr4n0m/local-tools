@@ -1,0 +1,174 @@
+.hero {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 1.25rem;
+  display: grid;
+  grid-template-columns: minmax(400px, 0.82fr) minmax(680px, 1.18fr);
+  gap: clamp(1.5rem, 2.6vw, 2.8rem);
+  min-height: calc(100dvh - 104px);
+  align-items: center;
+  padding-top: clamp(0.15rem, 0.5vw, 0.4rem);
+  padding-bottom: 3.1rem;
+  box-sizing: border-box;
+}
+
+.heroCopy {
+  justify-self: start;
+  max-width: 700px;
+}
+
+.heroAsset {
+  justify-self: end;
+  width: 100%;
+  max-width: 760px;
+  display: grid;
+  align-content: stretch;
+}
+
+.heroCopy h1 {
+  margin-top: 0;
+  font-size: clamp(2.65rem, 4.2vw, 4.45rem);
+  line-height: 1.2;
+  letter-spacing: -0.018em;
+  font-weight: 800;
+  max-width: 13.5ch;
+  padding-top: 0.05em;
+  padding-bottom: 0.14em;
+}
+
+.heroCopy h1 span {
+  display: block;
+  white-space: nowrap;
+}
+
+.heroCopy h1 span + span {
+  margin-top: 0.06rem;
+}
+
+.subLead {
+  margin-top: 0.95rem;
+  font-size: clamp(1.2rem, 1.45vw, 1.5rem);
+  line-height: 1.28;
+  color: color-mix(in oklab, var(--color-foreground), transparent 52%);
+  white-space: nowrap;
+}
+
+.heroText {
+  margin-top: 1.85rem;
+  color: color-mix(in oklab, var(--color-foreground), transparent 20%);
+  max-width: 56ch;
+  font-size: 1.06rem;
+  line-height: 1.56;
+}
+
+.heroMeta {
+  margin-top: 3rem;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 5.8rem;
+}
+
+.heroMeta article {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  column-gap: 0.24rem;
+  min-inline-size: 10.5rem;
+}
+
+.heroMeta article svg {
+  color: var(--color-foreground);
+  width: 18px;
+  height: 18px;
+  margin-top: 0.2rem;
+}
+
+.heroMeta strong {
+  font-size: 0.92rem;
+  line-height: 1.18;
+  white-space: nowrap;
+}
+
+.heroMeta span {
+  display: block;
+  margin-top: 0.24rem;
+  font-size: 0.84rem;
+  line-height: 1.32;
+  color: color-mix(in oklab, var(--color-foreground), transparent 42%);
+  max-width: 24ch;
+  text-wrap: balance;
+}
+
+.heroActions {
+  margin-top: 2.6rem;
+  display: flex;
+  gap: 0.62rem;
+  flex-wrap: wrap;
+}
+
+.primaryBtn,
+.secondaryBtn {
+  min-height: var(--button-height);
+  border: 1px solid var(--color-foreground);
+  border-radius: var(--button-radius);
+  padding: 0.68rem var(--button-padding-x);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  text-decoration: none;
+  font-family: var(--font-heading), "Segoe UI", sans-serif;
+  font-size: 0.84rem;
+  font-weight: 800;
+  line-height: 1;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease;
+}
+
+.primaryBtn {
+  background: var(--color-foreground);
+  color: var(--color-background);
+}
+
+.secondaryBtn {
+  background: color-mix(in oklab, var(--color-background), transparent 2%);
+  color: var(--color-foreground);
+  border-color: color-mix(in oklab, var(--color-border), transparent 8%);
+}
+
+.heroActions a:hover,
+.heroActions a:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 0 var(--button-shadow-color);
+}
+
+.secondaryBtn:hover,
+.secondaryBtn:focus-visible {
+  background: color-mix(
+    in oklab,
+    var(--color-background),
+    var(--color-secondary) 30%
+  );
+}
+
+.heroActions a:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 0 var(--button-shadow-color);
+}
+
+.heroActions a:focus-visible {
+  outline: 2px solid var(--button-focus-ring);
+  outline-offset: 3px;
+}
+
+.heroActions a svg {
+  width: 17px;
+  height: 17px;
+  display: block;
+  flex: 0 0 auto;
+  margin-top: 0;
+  stroke-width: 2.4;
+}

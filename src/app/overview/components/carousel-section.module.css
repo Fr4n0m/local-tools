@@ -1,632 +1,103 @@
 .carouselSection {
-  position: relative;
-  z-index: 1;
-  --header-offset: clamp(72px, 8vh, 96px);
-  height: calc(100dvh - var(--header-offset));
-  min-height: calc(100dvh - var(--header-offset));
-  margin-bottom: 1.25rem;
-  padding-block: clamp(0.45rem, 1vh, 0.75rem) clamp(2.8rem, 6vh, 4rem);
-  display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto auto;
-  align-content: center;
-  gap: 0.5rem;
-  overflow: hidden;
+  composes: carouselSection from "./carousel-shell.module.css";
+  composes: carouselSection from "./carousel-rail.module.css";
+  composes: carouselSection from "./carousel-responsive.module.css";
 }
 
 .carouselHeader {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1.4rem;
-  margin-bottom: 0.08rem;
+  composes: carouselHeader from "./carousel-shell.module.css";
+  composes: carouselHeader from "./carousel-responsive.module.css";
 }
 
 .carouselBody {
-  height: 100%;
-  min-height: 0;
-  display: grid;
-  grid-template-rows: auto auto;
-  align-content: center;
-  justify-content: start;
-  gap: 0.78rem;
-  padding-top: 0;
+  composes: carouselBody from "./carousel-shell.module.css";
+  composes: carouselBody from "./carousel-responsive.module.css";
 }
 
 .headingBlock {
-  max-width: 72ch;
-  min-width: 0;
+  composes: headingBlock from "./carousel-shell.module.css";
+  composes: headingBlock from "./carousel-responsive.module.css";
 }
 
 .eyebrow {
-  margin: 0;
-  font-family: var(--font-heading), "Segoe UI", sans-serif;
-  font-size: 0.82rem;
-  line-height: 1;
-  letter-spacing: 0.015em;
-  text-transform: uppercase;
-  font-weight: 700;
-  color: color-mix(in oklab, var(--color-foreground), transparent 6%);
+  composes: eyebrow from "./carousel-shell.module.css";
 }
-
 .eyebrowPrimary {
-  color: color-mix(in oklab, var(--color-foreground), transparent 6%);
+  composes: eyebrowPrimary from "./carousel-shell.module.css";
 }
-
 .eyebrowSecondary {
-  color: color-mix(in oklab, var(--color-foreground), transparent 44%);
+  composes: eyebrowSecondary from "./carousel-shell.module.css";
 }
-
-.carouselHeader h2 {
-  margin: 0.35rem 0 0;
-  font-size: clamp(2.45rem, 3.9vw, 3.75rem);
-  line-height: 1.1;
-  letter-spacing: -0.015em;
-  font-weight: 800;
-  white-space: nowrap;
-}
-
-.carouselHeader h2 span {
-  display: block;
-  white-space: nowrap;
-}
-
 .subtitle {
-  margin: 0.65rem 0 0;
-  font-size: clamp(1.05rem, 1.3vw, 1.28rem);
-  line-height: 1.32;
-  color: color-mix(in oklab, var(--color-foreground), transparent 48%);
-  max-width: 62ch;
+  composes: subtitle from "./carousel-shell.module.css";
+  composes: subtitle from "./carousel-responsive.module.css";
 }
-
 .metaLine {
-  margin-top: 0.78rem;
-  font-family: var(--font-heading), "Segoe UI", sans-serif;
-  font-size: 0.72rem;
-  letter-spacing: 0.015em;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: color-mix(in oklab, var(--color-foreground), transparent 42%);
+  composes: metaLine from "./carousel-shell.module.css";
 }
-
 .headerNav {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding-top: 0.25rem;
-}
-
-.headerNav button {
-  all: unset;
-  box-sizing: border-box;
-  width: 62px;
-  height: 62px;
-  min-width: 62px;
-  min-height: 62px;
-  max-width: 62px;
-  max-height: 62px;
-  aspect-ratio: 1 / 1;
-  padding: 0;
-  border-radius: 50% !important;
-  corner-shape: unset !important;
-  clip-path: circle(50% at 50% 50%) !important;
-  mask-image: none !important;
-  -webkit-mask-image: none !important;
-  border: 1px solid color-mix(in oklab, var(--color-border), transparent 4%);
-  background: color-mix(
-    in oklab,
-    var(--color-background),
-    var(--color-secondary) 12%
-  );
-  color: color-mix(in oklab, var(--color-foreground), transparent 10%);
-  display: inline-flex !important;
-  align-items: center;
-  justify-content: center;
-  transition:
-    transform 0.18s cubic-bezier(0.22, 1, 0.36, 1),
-    background 0.18s ease,
-    border-color 0.18s ease;
-  cursor: pointer;
-}
-
-.headerNav button:hover {
-  transform: translateY(-2px) scale(1.04);
-}
-
-.headerNav button:active {
-  transform: translateY(0) scale(0.92);
+  composes: headerNav from "./carousel-shell.module.css";
+  composes: headerNav from "./carousel-responsive.module.css";
 }
 
 .toolsRailViewport {
-  position: relative;
-  overflow: hidden;
-  margin: -0.75rem -1rem -1.6rem -0.45rem;
-  padding: 1.15rem 1rem 2rem 0.45rem;
-  --mask-left: 0%;
-  --mask-right: 88%;
-  mask-image: linear-gradient(
-    90deg,
-    transparent 0%,
-    #000 var(--mask-left),
-    #000 var(--mask-right),
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    90deg,
-    transparent 0%,
-    #000 var(--mask-left),
-    #000 var(--mask-right),
-    transparent 100%
-  );
-}
-
-.carouselSection[data-carousel-edge="middle"] .toolsRailViewport {
-  --mask-left: 10%;
-  --mask-right: 88%;
-}
-
-.carouselSection[data-carousel-edge="end"] .toolsRailViewport {
-  --mask-left: 10%;
-  --mask-right: 100%;
+  composes: toolsRailViewport from "./carousel-rail.module.css";
+  composes: toolsRailViewport from "./carousel-responsive.module.css";
 }
 
 .toolsRailWrap {
-  display: inline-grid;
-  grid-auto-flow: column;
-  grid-auto-columns: min-content;
-  gap: 0.52rem;
-  padding-right: clamp(3rem, 9vw, 7rem);
-  will-change: transform;
+  composes: toolsRailWrap from "./carousel-rail.module.css";
+  composes: toolsRailWrap from "./carousel-responsive.module.css";
 }
 
 .toolChip {
-  position: relative;
-  z-index: 0;
-  width: clamp(220px, 18.8vw, 270px);
-  min-height: clamp(214px, 23.5vh, 246px);
-  border: 1px solid color-mix(in oklab, var(--color-border), transparent 8%);
-  border-radius: calc(var(--radius-squircle) - 2px);
-  background: color-mix(
-    in oklab,
-    var(--color-background),
-    var(--color-secondary) 10%
-  );
-  padding: 0.72rem;
-  display: grid;
-  grid-template-rows: auto 1fr;
-  gap: 0.5rem;
-  text-decoration: none;
-  transition:
-    transform 0.24s cubic-bezier(0.22, 1, 0.36, 1),
-    border-color 0.22s ease,
-    box-shadow 0.22s ease,
-    background 0.22s ease;
-  will-change: transform;
-  transform-origin: center;
-}
-
-.toolChip > div {
-  display: flex;
-  flex-direction: column;
-  gap: 0.42rem;
-  min-height: 0;
-}
-
-.toolChip:hover,
-.toolChip:focus-visible {
-  z-index: 3;
-  transform: translateY(-10px) scale(1.06);
-  border-color: color-mix(in oklab, var(--color-border), transparent 0%);
-  box-shadow:
-    0 22px 46px color-mix(in oklab, var(--color-foreground), transparent 88%),
-    0 6px 18px color-mix(in oklab, var(--color-foreground), transparent 94%);
-  background: color-mix(
-    in oklab,
-    var(--color-background),
-    var(--color-secondary) 14%
-  );
-}
-
-.toolChip:hover .toolAsset,
-.toolChip:focus-visible .toolAsset {
-  transform: translate3d(0, -3px, 0) scale(1.055) rotate(-0.9deg);
+  composes: toolChip from "./carousel-rail.module.css";
+  composes: toolChip from "./carousel-responsive.module.css";
 }
 
 .toolIconWrap {
-  width: 92%;
-  max-width: 280px;
-  aspect-ratio: 5 / 4;
-  border: none;
-  background: transparent;
-  position: relative;
-  display: block;
-  place-self: center;
-  line-height: 0;
-  overflow: visible;
+  composes: toolIconWrap from "./carousel-rail.module.css";
+  composes: toolIconWrap from "./carousel-responsive.module.css";
 }
 
 .toolAsset {
-  object-fit: contain;
-  padding: 0;
-  backface-visibility: hidden;
-  transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
-  transform-origin: center;
-  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  composes: toolAsset from "./carousel-rail.module.css";
+  composes: toolAsset from "./carousel-responsive.module.css";
 }
 
 .toolSvg {
-  width: 36px;
-  height: 36px;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  display: block;
+  composes: toolSvg from "./carousel-rail.module.css";
 }
-
-.toolChip strong {
-  display: block;
-  margin-top: 0;
-  font-size: 1.35rem;
-  line-height: 1.02;
-  color: color-mix(in oklab, var(--color-foreground), transparent 4%);
-}
-
-.toolChip span {
-  display: block;
-  margin-top: 0;
-  margin-bottom: 0.34rem;
-  font-size: 0.85rem;
-  line-height: 1.32;
-  color: color-mix(in oklab, var(--color-foreground), transparent 33%);
-}
-
-.toolChip a {
-  display: none;
-}
-
-.toolChip em {
-  display: inline-flex;
-  margin-top: auto;
-  font-style: normal;
-  font-family: var(--font-heading);
-  letter-spacing: 0.08em;
-  font-size: 0.68rem;
-  color: color-mix(in oklab, var(--color-foreground), transparent 45%);
-  padding: 0.3rem 0.62rem;
-  border-radius: 999px;
-  background: color-mix(in oklab, var(--color-foreground), transparent 92%);
-  width: fit-content;
-}
-
 .progressTrack {
-  margin-top: 0.34rem;
-  height: 7px;
-  border-radius: 999px;
-  background: color-mix(in oklab, var(--color-foreground), transparent 92%);
-  overflow: hidden;
+  composes: progressTrack from "./carousel-status.module.css";
 }
-
 .progressFill {
-  width: 100%;
-  height: 100%;
-  transform-origin: left center;
-  transform: scaleX(0);
-  border-radius: 999px;
-  background: linear-gradient(
-    90deg,
-    color-mix(in oklab, var(--color-foreground), transparent 30%) 0%,
-    color-mix(in oklab, var(--color-foreground), transparent 55%) 100%
-  );
+  composes: progressFill from "./carousel-status.module.css";
 }
 
 .highlights {
-  margin-top: clamp(0.85rem, 2vh, 1.35rem);
-  margin-bottom: clamp(1.7rem, 4.4vh, 2.8rem);
-  border: 1px solid color-mix(in oklab, var(--color-border), transparent 14%);
-  border-radius: calc(var(--radius-squircle) - 4px);
-  background: color-mix(
-    in oklab,
-    var(--color-background),
-    var(--color-secondary) 5%
-  );
-  box-shadow: 0 18px 42px
-    color-mix(in oklab, var(--color-foreground), transparent 94%);
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  min-height: 68px;
-  overflow: hidden;
-}
-
-.carouselCue {
-  position: absolute;
-  left: 50%;
-  bottom: 0.9rem;
-  transform: translateX(-50%);
-  border: none;
-  background: transparent;
-  padding: 0;
-  font-family: var(--font-heading), "Segoe UI", sans-serif;
-  font-size: 0.72rem;
-  letter-spacing: 0.015em;
-  text-transform: uppercase;
-  color: color-mix(in oklab, var(--color-foreground), transparent 46%);
-  cursor: pointer;
-  transition: color 0.2s ease;
-  white-space: nowrap;
-}
-
-.carouselCuePrimary {
-  color: color-mix(in oklab, var(--color-foreground), transparent 6%);
-  font-weight: 700;
-}
-
-.carouselCueSecondary {
-  color: color-mix(in oklab, var(--color-foreground), transparent 44%);
-  font-weight: 700;
-}
-
-.carouselCue:hover {
-  color: color-mix(in oklab, var(--color-foreground), transparent 18%);
+  composes: highlights from "./carousel-status.module.css";
+  composes: highlights from "./carousel-responsive.module.css";
 }
 
 .highlightCard {
-  position: relative;
-  padding: 0.42rem clamp(0.58rem, 1vw, 0.86rem);
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 0.58rem;
-  align-items: center;
-  min-width: 0;
-}
-
-.highlightCard + .highlightCard::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 22%;
-  bottom: 22%;
-  width: 1px;
-  background: color-mix(in oklab, var(--color-border), transparent 10%);
+  composes: highlightCard from "./carousel-status.module.css";
+  composes: highlightCard from "./carousel-responsive.module.css";
 }
 
 .highlightIcon {
-  width: 40px;
-  height: 40px;
-  border-radius: calc(var(--radius-squircle) - 10px);
-  border: 1px solid color-mix(in oklab, var(--color-border), transparent 12%);
-  background: color-mix(
-    in oklab,
-    var(--color-background),
-    var(--color-secondary) 9%
-  );
-  box-shadow: inset 0 -10px 22px
-    color-mix(in oklab, var(--color-foreground), transparent 97%);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: color-mix(in oklab, var(--color-foreground), transparent 8%);
+  composes: highlightIcon from "./carousel-status.module.css";
+  composes: highlightIcon from "./carousel-responsive.module.css";
 }
 
-.highlightIcon svg {
-  width: 24px;
-  height: 24px;
+.carouselCue {
+  composes: carouselCue from "./carousel-status.module.css";
+  composes: carouselCue from "./carousel-responsive.module.css";
 }
 
-.highlightCard h3 {
-  margin: 0;
-  font-size: clamp(0.72rem, 0.78vw, 0.84rem);
-  line-height: 1.12;
-  font-weight: 800;
-  letter-spacing: -0.01em;
-  color: color-mix(in oklab, var(--color-foreground), transparent 3%);
+.carouselCuePrimary {
+  composes: carouselCuePrimary from "./carousel-status.module.css";
 }
-
-.highlightCard p {
-  margin: 0.16rem 0 0;
-  font-size: clamp(0.6rem, 0.68vw, 0.72rem);
-  line-height: 1.3;
-  color: color-mix(in oklab, var(--color-foreground), transparent 36%);
-}
-
-@media (max-width: 1600px) and (min-width: 1025px) {
-  .carouselSection {
-    --header-offset: clamp(64px, 7vh, 84px);
-    padding-block: 0.4rem clamp(1.75rem, 3.6vh, 2.4rem);
-    gap: 0.42rem;
-  }
-
-  .carouselHeader {
-    gap: 1rem;
-  }
-
-  .carouselHeader h2 {
-    font-size: clamp(2.1rem, 3.2vw, 3.15rem);
-  }
-
-  .subtitle {
-    font-size: clamp(0.96rem, 1.05vw, 1.1rem);
-  }
-
-  .headerNav button {
-    width: 56px;
-    height: 56px;
-    min-width: 56px;
-    min-height: 56px;
-    max-width: 56px;
-    max-height: 56px;
-  }
-
-  .carouselBody {
-    gap: 0.58rem;
-  }
-
-  .toolsRailViewport {
-    margin: -0.55rem -0.65rem -1.1rem -0.25rem;
-    padding: 0.8rem 0.65rem 1.4rem 0.25rem;
-  }
-
-  .toolsRailWrap {
-    gap: 0.42rem;
-    padding-right: clamp(2rem, 4vw, 3.6rem);
-  }
-
-  .toolChip {
-    width: clamp(206px, 16.9vw, 244px);
-    min-height: clamp(214px, 22.2vh, 240px);
-    padding: 0.62rem;
-    gap: 0.42rem;
-  }
-
-  .toolIconWrap {
-    width: 90%;
-    max-width: 240px;
-  }
-
-  .toolChip strong {
-    font-size: clamp(1.12rem, 1.34vw, 1.28rem);
-  }
-
-  .toolChip span {
-    font-size: clamp(0.78rem, 0.8vw, 0.86rem);
-    line-height: 1.28;
-    margin-bottom: 0.26rem;
-  }
-
-  .toolChip em {
-    font-size: 0.62rem;
-    padding: 0.26rem 0.54rem;
-  }
-
-  .highlights {
-    margin-top: 0.82rem;
-    margin-bottom: clamp(1rem, 2.2vh, 1.45rem);
-  }
-
-  .highlightCard {
-    padding: 0.36rem clamp(0.5rem, 0.8vw, 0.72rem);
-    gap: 0.48rem;
-  }
-
-  .highlightIcon {
-    width: 35px;
-    height: 35px;
-  }
-}
-
-@media (max-width: 1320px) and (min-width: 1025px) {
-  .carouselHeader {
-    flex-direction: column;
-    min-width: 0;
-    max-width: 100%;
-  }
-
-  .carouselHeader h2,
-  .carouselHeader h2 span {
-    white-space: normal;
-  }
-
-  .headerNav {
-    padding-top: 0;
-  }
-
-  .toolChip {
-    width: clamp(178px, 18vw, 212px);
-    min-height: clamp(188px, 20vh, 214px);
-  }
-
-  .toolChip strong {
-    font-size: clamp(1.02rem, 1.28vw, 1.18rem);
-  }
-
-  .toolChip span {
-    font-size: clamp(0.74rem, 0.76vw, 0.82rem);
-  }
-}
-
-@media (max-width: 1024px) {
-  .carouselSection {
-    --header-offset: 0px;
-    height: auto;
-    min-height: auto;
-    padding-block: 2.3rem 3.4rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.9rem;
-  }
-
-  .carouselHeader {
-    flex-direction: column;
-    min-width: 0;
-    max-width: 100%;
-  }
-
-  .headingBlock {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .carouselHeader h2,
-  .carouselHeader h2 span {
-    white-space: normal;
-  }
-
-  .headerNav {
-    padding-top: 0;
-  }
-
-  .headerNav button {
-    width: 52px;
-    height: 52px;
-  }
-
-  .toolChip {
-    width: min(82vw, 340px);
-    min-height: 300px;
-  }
-
-  .toolsRailViewport {
-    margin-inline: 0;
-    padding-inline: 0;
-    width: 100%;
-  }
-
-  .toolChip strong {
-    font-size: 1.45rem;
-  }
-
-  .toolChip span {
-    font-size: 1rem;
-  }
-
-  .highlights {
-    margin-top: 0.4rem;
-    grid-template-columns: 1fr;
-    min-height: auto;
-  }
-
-  .highlightCard + .highlightCard::before {
-    top: 0;
-    bottom: auto;
-    left: 1rem;
-    right: 1rem;
-    width: auto;
-    height: 1px;
-  }
-
-  .carouselCue {
-    bottom: 0.75rem;
-    font-size: 0.68rem;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .toolChip,
-  .toolAsset {
-    transition: none;
-  }
-
-  .toolChip:hover,
-  .toolChip:focus-visible {
-    transform: none;
-  }
+.carouselCueSecondary {
+  composes: carouselCueSecondary from "./carousel-status.module.css";
 }

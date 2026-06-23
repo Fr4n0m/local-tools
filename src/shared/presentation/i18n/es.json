@@ -251,7 +251,7 @@
     "trustEyebrow": "PRIVACIDAD / EN LA QUE PUEDES CONFIAR",
     "trustTitle": "Tus datos nunca salen de tu navegador.",
     "trustSubtitle": "Trabaja con archivos, texto y datos sin enviarlos a servidores externos.",
-    "trustBodyPrimary": "LocalTools se basa en un principio simple: tú tienes el control. Todo corre en el navegador, así que no pasas por un backend.",
+    "trustBodyPrimary": "LocalTools se basa en un principio simple: tú tienes el control. Las tareas se resuelven en tu navegador, sin enviar tus datos a servidores externos.",
     "trustBodySecondary": "",
     "trustChecks": [
       "Ejecución 100% local",

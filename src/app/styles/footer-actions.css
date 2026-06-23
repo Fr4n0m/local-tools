@@ -1,0 +1,138 @@
+.site-footer__title {
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.site-footer__muted {
+  margin-top: 0.5rem;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.site-footer__actions {
+  margin-top: 0.38rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.site-footer__subscribe-link {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 0.15rem;
+}
+
+.site-footer__subscribe-link:hover {
+  opacity: 0.82;
+}
+
+.site-footer__btn {
+  display: inline-flex;
+  min-height: 2.25rem;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  border-radius: var(--button-radius);
+  border: 1px solid transparent;
+  background: #fff;
+  color: #000;
+  padding: 0.55rem 0.8rem;
+  font-family: var(--font-heading), "Segoe UI", sans-serif;
+  font-size: 0.76rem;
+  font-weight: 800;
+  line-height: 1;
+  text-decoration: none;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease;
+}
+
+.site-footer__btn:hover,
+.site-footer__btn:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 0 rgba(255, 255, 255, 0.28);
+  border-color: rgba(255, 255, 255, 0.28);
+  background: #000;
+  color: #fff;
+}
+
+.site-footer__btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 0 rgba(255, 255, 255, 0.28);
+}
+
+.site-footer__btn--bmc {
+  background: #ffdd00;
+  border-color: #ffdd00;
+  color: #000;
+}
+
+.site-footer__btn--bmc:hover,
+.site-footer__btn--bmc:focus-visible {
+  background: #e6c800;
+  border-color: #e6c800;
+  color: #000;
+}
+
+.site-footer__github-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 2.25rem;
+  padding: 0.55rem 0.8rem;
+  border-radius: var(--button-radius);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.75);
+  font-family: var(--font-heading), "Segoe UI", sans-serif;
+  font-size: 0.76rem;
+  font-weight: 800;
+  line-height: 1;
+  text-decoration: none;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease,
+    color 160ms ease;
+}
+
+.site-footer__btn svg,
+.site-footer__github-btn svg {
+  width: 0.95rem;
+  height: 0.95rem;
+  display: block;
+  flex: 0 0 auto;
+  margin-top: 0;
+  stroke-width: 2.45;
+}
+
+.site-footer__github-btn:hover,
+.site-footer__github-btn:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 0 rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.site-footer__github-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 0 rgba(255, 255, 255, 0.18);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-footer__btn,
+  .site-footer__github-btn {
+    transition: none;
+  }
+}

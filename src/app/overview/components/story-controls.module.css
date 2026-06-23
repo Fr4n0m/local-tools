@@ -1,0 +1,85 @@
+.storyCue {
+  position: absolute;
+  left: 50%;
+  bottom: 0.9rem;
+  transform: translateX(-50%);
+  border: none;
+  background: transparent;
+  padding: 0;
+  font-family: var(--font-heading), "Segoe UI", sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.015em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--color-foreground), transparent 46%);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.storyCuePrimary {
+  color: color-mix(in oklab, var(--color-foreground), transparent 6%);
+  font-weight: 700;
+}
+
+.storyCueSecondary {
+  color: color-mix(in oklab, var(--color-foreground), transparent 44%);
+  font-weight: 700;
+}
+
+.storyCue:hover {
+  color: color-mix(in oklab, var(--color-foreground), transparent 18%);
+}
+
+@media (max-width: 1024px) {
+  .story {
+    min-height: 100dvh;
+    grid-template-rows: auto auto auto auto;
+    padding-bottom: 2.5rem;
+  }
+
+  .storyHead h2 {
+    font-size: clamp(1.28rem, 5.2vw, 1.7rem);
+    white-space: nowrap;
+  }
+
+  .timeline {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+
+  .timelineLine {
+    display: none;
+  }
+
+  .timelineCurve {
+    display: none;
+  }
+
+  .node {
+    grid-template-columns: 54px 1fr;
+    column-gap: 0.6rem;
+    row-gap: 0.15rem;
+    padding-top: 0;
+  }
+
+  .node h3 {
+    margin-top: 0;
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .node p {
+    grid-column: 2;
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .bubble {
+    position: static;
+    transform: none !important;
+  }
+
+  .storyCue {
+    bottom: 0.75rem;
+    font-size: 0.68rem;
+  }
+}
