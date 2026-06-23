@@ -2,7 +2,9 @@
 @import "./styles/tokens.css";
 @import "./styles/base.css";
 @import "./styles/buttons.css";
+@import "./styles/surfaces.css";
 @import "./styles/tool-shell.css";
+@import "./styles/tools-layout.css";
 @import "./styles/density.css";
 @import "./styles/sidebar.css";
 @import "./styles/footer.css";

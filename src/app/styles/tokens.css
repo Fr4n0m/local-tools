@@ -63,6 +63,13 @@
     transparent 44%
   );
   --button-focus-ring: var(--color-foreground);
+  --surface-shadow-color: color-mix(
+    in oklab,
+    var(--color-border),
+    transparent 54%
+  );
+  --surface-shadow: 8px 8px 0 var(--surface-shadow-color);
+  --surface-shadow-compact: 5px 5px 0 var(--surface-shadow-color);
 }
 
 .dark {
@@ -90,6 +97,11 @@
     transparent 26%
   );
   --button-focus-ring: var(--color-foreground);
+  --surface-shadow-color: color-mix(
+    in oklab,
+    var(--color-border),
+    transparent 36%
+  );
 }
 
 @theme inline {

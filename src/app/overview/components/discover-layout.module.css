@@ -73,6 +73,11 @@
     var(--color-background),
     var(--color-secondary) 4%
   );
+  box-shadow: var(--surface-shadow-compact);
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
 }
 
 .bottomCard h3 {
@@ -89,6 +94,13 @@
 .bottomCard {
   position: relative;
   overflow: hidden;
+}
+
+.bottomCard:hover,
+.bottomCard:focus-within {
+  transform: translateY(-2px);
+  box-shadow: var(--surface-shadow);
+  border-color: color-mix(in oklab, var(--color-border), transparent 0%);
 }
 
 .cardCta {

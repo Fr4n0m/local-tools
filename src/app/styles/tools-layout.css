@@ -1,0 +1,60 @@
+.tools-aside-panel {
+  box-shadow:
+    8px 8px 0
+      color-mix(in oklab, var(--color-sidebar-foreground), transparent 82%),
+    0 42px 90px -36px rgba(0, 0, 0, 0.72),
+    0 12px 28px -18px rgba(0, 0, 0, 0.55);
+}
+
+.tools-main-panel {
+  box-shadow: none;
+}
+
+.tools-tool-panel,
+.tools-privacy-panel {
+  box-shadow: var(--surface-shadow-compact);
+}
+
+.tools-tool-panel {
+  transition:
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+}
+
+.tools-tool-panel:focus-within {
+  box-shadow: var(--surface-shadow);
+  border-color: color-mix(in oklab, var(--color-border), transparent 0%);
+}
+
+.tools-privacy-panel {
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease;
+}
+
+.tools-privacy-panel:hover,
+.tools-privacy-panel:focus-within {
+  transform: translateY(-2px);
+  box-shadow: var(--surface-shadow);
+  border-color: color-mix(in oklab, var(--color-border), transparent 0%);
+}
+
+@media (min-width: 768px) {
+  .tools-main-panel {
+    box-shadow: var(--surface-shadow);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tools-tool-panel,
+  .tools-privacy-panel {
+    transition: none;
+  }
+
+  .tools-privacy-panel:hover,
+  .tools-privacy-panel:focus-within {
+    transform: none;
+  }
+}
