@@ -56,7 +56,7 @@ export function LegalPage({ docType }: LegalPageProps) {
         <h1 className="text-xl font-semibold md:text-2xl">{document.title}</h1>
       </header>
 
-      <section className="space-y-5 rounded-xl border border-border/60 dark:border-white/22 bg-background/80 p-4 md:p-6">
+      <section className="lt-surface-raised space-y-5 rounded-xl border border-border/60 dark:border-white/22 bg-background/80 p-4 md:p-6">
         {document.sections.map((section) => (
           <article className="space-y-2" key={section.title}>
             <h2 className="text-base font-semibold">{section.title}</h2>

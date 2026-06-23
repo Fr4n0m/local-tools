@@ -1,0 +1,32 @@
+.lt-surface-raised {
+  box-shadow: var(--surface-shadow);
+}
+
+.lt-surface-raised--compact {
+  box-shadow: var(--surface-shadow-compact);
+}
+
+.lt-surface-hover {
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease;
+}
+
+.lt-surface-hover:hover,
+.lt-surface-hover:focus-within {
+  transform: translateY(-2px);
+  box-shadow: 10px 10px 0 var(--surface-shadow-color);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lt-surface-hover {
+    transition: none;
+  }
+
+  .lt-surface-hover:hover,
+  .lt-surface-hover:focus-within {
+    transform: none;
+  }
+}
