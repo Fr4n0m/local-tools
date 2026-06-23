@@ -1,0 +1,81 @@
+.scrollCue {
+  position: absolute;
+  left: 50%;
+  bottom: 1rem;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: color-mix(in oklab, var(--color-foreground), transparent 40%);
+  font-size: 0.78rem;
+}
+
+.scrollCue:hover {
+  color: color-mix(in oklab, var(--color-foreground), transparent 20%);
+  transform: translateX(-50%) translateY(-1px);
+}
+
+.scrollCue svg {
+  animation: scroll-cue-bounce 2.2s ease-in-out infinite;
+}
+
+@keyframes scroll-cue-bounce {
+  0%,
+  100% {
+    transform: translateY(-3px);
+    opacity: 0.8;
+  }
+
+  50% {
+    transform: translateY(3px);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 1024px) {
+  .hero {
+    grid-template-columns: 1fr;
+    min-height: calc(100dvh - 88px);
+    gap: 1rem;
+    padding-bottom: 2.8rem;
+  }
+
+  .heroCopy h1 {
+    max-width: 100%;
+    font-size: clamp(2rem, 8vw, 3rem);
+  }
+
+  .subLead {
+    white-space: normal;
+  }
+
+  .heroCopy,
+  .heroAsset {
+    max-width: 100%;
+    justify-self: stretch;
+  }
+
+  .heroMeta {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+
+  .heroMockFrame {
+    height: 340px;
+    transform: perspective(1200px) rotateY(-13deg) rotateX(4deg) rotateZ(-1deg);
+  }
+
+  .scrollCue {
+    bottom: 0.8rem;
+    font-size: 0.74rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scrollCue svg {
+    animation: none;
+  }
+}

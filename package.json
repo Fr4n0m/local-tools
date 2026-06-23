@@ -9,7 +9,6 @@
     "start": "next start",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "notify:release": "node scripts/notify-release.mjs",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
     "test": "vitest run --coverage",

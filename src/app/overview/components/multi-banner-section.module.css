@@ -1,383 +1,102 @@
 .multiBanner {
-  position: relative;
-  z-index: 1;
-  margin-bottom: 1.25rem;
-  height: 100dvh;
-  min-height: 100dvh;
-  width: 100vw;
-  max-width: 100vw;
-  left: 50%;
-  transform: translateX(-50%);
-  display: grid;
-  grid-template-rows: 1fr;
-  align-content: stretch;
-  gap: 0;
-  padding-block: 0;
-  box-sizing: border-box;
-  overflow: clip;
-  --outer-pad: 2.65rem;
-  --inner-pad: 1.2rem;
+  composes: multiBanner from "./multi-banner-layout.module.css";
+  composes: multiBanner from "./multi-banner-responsive.module.css";
 }
 
 .multiBannerRows {
-  min-height: 0;
-  height: 100%;
-  display: grid;
-  grid-template-rows: repeat(4, minmax(0, 1fr));
-  gap: 0;
-  overflow: clip;
+  composes: multiBannerRows from "./multi-banner-layout.module.css";
+  composes: multiBannerRows from "./multi-banner-responsive.module.css";
 }
 
 .row {
-  display: grid;
-  grid-template-columns: 44% 56%;
-  min-height: 0;
-  padding-inline: 2.65rem;
-  border-top: 1px solid
-    color-mix(in oklab, var(--color-border), transparent 16%);
-  border-bottom: 1px solid
-    color-mix(in oklab, var(--color-border), transparent 16%);
-  align-items: stretch;
-  column-gap: 1.1rem;
+  composes: row from "./multi-banner-layout.module.css";
+  composes: row from "./multi-banner-visual.module.css";
+  composes: row from "./multi-banner-responsive.module.css";
 }
 
 .rowReverse {
-  grid-template-columns: 56% 44%;
+  composes: rowReverse from "./multi-banner-layout.module.css";
+  composes: rowReverse from "./multi-banner-responsive.module.css";
 }
 
 .visual {
-  display: grid;
-  align-items: center;
-  gap: 0.9rem;
-  grid-template-columns: auto 1fr;
-  min-height: 152px;
-}
-
-.gradientLtr {
-  background: linear-gradient(
-    90deg,
-    color-mix(in oklab, var(--color-foreground), transparent 92%) 0%,
-    color-mix(in oklab, var(--color-foreground), transparent 98%) 42%,
-    transparent 100%
-  );
-}
-
-.gradientRtl {
-  background: linear-gradient(
-    270deg,
-    color-mix(in oklab, var(--color-foreground), transparent 92%) 0%,
-    color-mix(in oklab, var(--color-foreground), transparent 98%) 42%,
-    transparent 100%
-  );
-}
-
-.visualAsset {
-  grid-template-columns: 1fr;
-}
-
-.assetFrame {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  min-height: 144px;
-  border-radius: calc(var(--radius-squircle) - 10px);
-  overflow: hidden;
-}
-
-.assetOnly {
-  display: block;
-  grid-column: 1 / -1;
-}
-
-.assetContain {
-  object-fit: contain;
-  padding: 0.7rem;
-}
-
-.assetCover {
-  object-fit: cover;
+  composes: visual from "./multi-banner-visual.module.css";
+  composes: visual from "./multi-banner-responsive.module.css";
 }
 
 .visualLeft {
-  border-right: none;
-  margin-left: -2.65rem;
-  padding-left: 2.65rem;
+  composes: visualLeft from "./multi-banner-visual.module.css";
+  composes: visualLeft from "./multi-banner-responsive.module.css";
 }
 
 .visualRight {
-  border-left: none;
-  margin-right: -2.65rem;
-  padding-right: 2.65rem;
+  composes: visualRight from "./multi-banner-visual.module.css";
+  composes: visualRight from "./multi-banner-responsive.module.css";
 }
 
+.gradientLtr {
+  composes: gradientLtr from "./multi-banner-visual.module.css";
+}
+.gradientRtl {
+  composes: gradientRtl from "./multi-banner-visual.module.css";
+}
+.visualAsset {
+  composes: visualAsset from "./multi-banner-visual.module.css";
+}
+.assetFrame {
+  composes: assetFrame from "./multi-banner-visual.module.css";
+  composes: assetFrame from "./multi-banner-responsive.module.css";
+}
+.assetOnly {
+  composes: assetOnly from "./multi-banner-visual.module.css";
+}
+.assetContain {
+  composes: assetContain from "./multi-banner-visual.module.css";
+}
+.assetCover {
+  composes: assetCover from "./multi-banner-visual.module.css";
+}
 .visualOrb {
-  width: 86px;
-  height: 86px;
-  border-radius: 999px;
-  border: 1px solid color-mix(in oklab, var(--color-border), transparent 22%);
-  background: #000;
-  color: #fff;
-  display: grid;
-  place-items: center;
+  composes: visualOrb from "./multi-banner-visual.module.css";
 }
-
-:global(.dark) .visualOrb {
-  background: #f8f9fa;
-  color: #000;
-}
-
 .visualStack {
-  display: grid;
-  gap: 0.62rem;
+  composes: visualStack from "./multi-banner-visual.module.css";
 }
-
-.visualStack span {
-  display: block;
-  height: 16px;
-  border-radius: 999px;
-  background: color-mix(in oklab, var(--color-foreground), transparent 82%);
-}
-
-.visualStack span:nth-child(1) {
-  width: 96%;
-}
-
-.visualStack span:nth-child(2) {
-  width: 82%;
-}
-
-.visualStack span:nth-child(3) {
-  width: 91%;
-}
-
 .visualCard {
-  border-radius: calc(var(--radius-squircle) - 12px);
-  border: 1px solid color-mix(in oklab, var(--color-border), transparent 10%);
-  background: color-mix(
-    in oklab,
-    var(--color-background),
-    var(--color-secondary) 22%
-  );
-  padding: 0.9rem;
-  display: grid;
-  gap: 0.52rem;
-  width: min(360px, 100%);
-}
-
-.visualCard span {
-  display: block;
-  height: 12px;
-  border-radius: 999px;
-  background: color-mix(in oklab, var(--color-foreground), transparent 86%);
-}
-
-.copy h3 {
-  font-size: 1.05rem;
-  line-height: 1.1;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.38rem;
-  margin: 0;
+  composes: visualCard from "./multi-banner-visual.module.css";
 }
 
 .copy {
-  padding: 1.2rem 4rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-areas:
-    "title title"
-    "left right";
-  gap: 0 1rem;
-  align-content: center;
-  justify-content: center;
-  min-height: 100%;
-}
-
-.row:nth-child(1) .visualLeft .assetFrame,
-.row:nth-child(3) .visualLeft .assetFrame {
-  margin-left: 0.46rem;
-}
-
-.titleWithIcon {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.34rem;
-}
-
-.titleIconBadge {
-  width: 24px;
-  height: 24px;
-  border-radius: 999px;
-  background: #000;
-  color: #fff;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-:global(.dark) .titleIconBadge {
-  background: #f8f9fa;
-  color: #000;
-}
-
-.secondary {
-  color: color-mix(in oklab, var(--color-foreground), transparent 45%);
-}
-
-.copy p {
-  margin: 0;
-  max-width: 52ch;
-  font-size: 0.9rem;
-  line-height: 1.34;
-  color: color-mix(in oklab, var(--color-foreground), transparent 16%);
-  text-wrap: balance;
-}
-
-.copyLeft p {
-  max-width: none;
-}
-
-.primaryParagraph {
-  color: color-mix(
-    in oklab,
-    var(--color-foreground),
-    transparent 6%
-  ) !important;
-}
-
-.mutedParagraph {
-  color: color-mix(
-    in oklab,
-    var(--color-foreground),
-    transparent 42%
-  ) !important;
-}
-
-.copyLeft {
-  grid-area: left;
-  max-width: none;
-  display: grid;
-  gap: 0.42rem;
-  align-content: start;
-  width: 100%;
-  min-width: 0;
-  padding-right: 0.2rem;
-  margin-top: 0;
-}
-
-.copyRight {
-  grid-area: right;
-  align-self: start;
-  display: grid;
-  gap: 0.52rem;
-  align-content: start;
-  width: 100%;
-  min-width: 0;
-  padding-left: 0.2rem;
-  margin-top: 0;
+  composes: copy from "./multi-banner-copy.module.css";
+  composes: copy from "./multi-banner-responsive.module.css";
 }
 
 .copyTitle {
-  grid-area: title;
-  align-self: start;
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
-  padding-top: 1.75rem;
-  padding-bottom: 1rem;
+  composes: copyTitle from "./multi-banner-copy.module.css";
 }
-
-.copyRight p {
-  margin: 0;
+.titleWithIcon {
+  composes: titleWithIcon from "./multi-banner-copy.module.css";
 }
-
+.titleIconBadge {
+  composes: titleIconBadge from "./multi-banner-copy.module.css";
+}
+.secondary {
+  composes: secondary from "./multi-banner-copy.module.css";
+}
+.copyLeft {
+  composes: copyLeft from "./multi-banner-copy.module.css";
+  composes: copyLeft from "./multi-banner-responsive.module.css";
+}
+.copyRight {
+  composes: copyRight from "./multi-banner-copy.module.css";
+  composes: copyRight from "./multi-banner-responsive.module.css";
+}
+.primaryParagraph {
+  composes: primaryParagraph from "./multi-banner-copy.module.css";
+}
+.mutedParagraph {
+  composes: mutedParagraph from "./multi-banner-copy.module.css";
+}
 .toolsList {
-  font-size: 0.9rem !important;
-  line-height: 1.36;
-  color: color-mix(
-    in oklab,
-    var(--color-foreground),
-    transparent 6%
-  ) !important;
-  text-wrap: balance;
-}
-
-.copy a {
-  margin-top: 0;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.36rem;
-  color: color-mix(in oklab, var(--color-foreground), transparent 6%);
-  font-weight: 700;
-  text-decoration: none;
-  transition:
-    transform 0.2s ease,
-    color 0.2s ease,
-    gap 0.2s ease;
-  text-wrap: balance;
-}
-
-.copy a:hover {
-  transform: translateX(2px);
-  color: color-mix(in oklab, var(--color-foreground), transparent 0%);
-  gap: 0.52rem;
-}
-
-.copy a :global(svg) {
-  transition: transform 0.25s ease;
-}
-
-.copy a:hover :global(svg) {
-  transform: translateX(3px);
-}
-
-@media (max-width: 1024px) {
-  .multiBanner {
-    height: auto;
-    min-height: 100dvh;
-    grid-template-rows: auto 1fr;
-  }
-
-  .multiBanner {
-    --outer-pad: 1rem;
-    --inner-pad: 1rem;
-  }
-
-  .row {
-    grid-template-columns: 1fr;
-    padding-inline: 1rem;
-    column-gap: 0;
-  }
-
-  .copy {
-    padding: 1rem 0;
-    grid-template-columns: 1fr;
-    gap: 0.7rem;
-  }
-
-  .visualLeft,
-  .visualRight {
-    border: none;
-    margin-left: 0;
-    margin-right: 0;
-    padding-left: 0;
-    padding-right: 0;
-  }
-
-  .visualLeft .assetFrame,
-  .visualRight .assetFrame {
-    margin-left: 0;
-    margin-right: 0;
-  }
-}
-
-.row:nth-child(3) .visualLeft .assetFrame {
-  margin-left: -2.5rem;
-}
-
-.row:nth-child(2) .visualRight .assetFrame {
-  transform: translateX(-2.5rem);
-}
-
-.row:nth-child(4) .visualRight .assetFrame {
-  transform: translateX(-2.5rem);
+  composes: toolsList from "./multi-banner-copy.module.css";
 }

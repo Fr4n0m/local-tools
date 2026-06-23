@@ -1,0 +1,51 @@
+@media (max-width: 1024px) {
+  .multiBanner {
+    height: auto;
+    min-height: 100dvh;
+    grid-template-rows: auto 1fr;
+  }
+
+  .multiBanner {
+    --outer-pad: 1rem;
+    --inner-pad: 1rem;
+  }
+
+  .row {
+    grid-template-columns: 1fr;
+    padding-inline: 1rem;
+    column-gap: 0;
+  }
+
+  .copy {
+    padding: 1rem 0;
+    grid-template-columns: 1fr;
+    gap: 0.7rem;
+  }
+
+  .visualLeft,
+  .visualRight {
+    border: none;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .visualLeft .assetFrame,
+  .visualRight .assetFrame {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+.row:nth-child(3) .visualLeft .assetFrame {
+  margin-left: -2.5rem;
+}
+
+.row:nth-child(2) .visualRight .assetFrame {
+  transform: translateX(-2.5rem);
+}
+
+.row:nth-child(4) .visualRight .assetFrame {
+  transform: translateX(-2.5rem);
+}

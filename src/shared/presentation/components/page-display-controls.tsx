@@ -45,7 +45,7 @@ export function PageDisplayControls() {
     <div className="flex items-center gap-1 rounded-lg border border-border/55 bg-background/65 p-1">
       <button
         aria-label="Language"
-        className="rounded-md px-2 py-1 text-xs font-medium hover:bg-secondary"
+        className="lt-button lt-button--ghost lt-button--sm"
         onClick={() => setLanguage(language === "en" ? "es" : "en")}
         type="button"
       >
@@ -53,7 +53,7 @@ export function PageDisplayControls() {
       </button>
       <button
         aria-label="Theme"
-        className="flex size-7 items-center justify-center rounded-md hover:bg-secondary"
+        className="lt-button lt-button--ghost lt-button--sm lt-button--icon"
         onClick={() =>
           setThemeWithTransition(setTheme, theme === "light" ? "dark" : "light")
         }

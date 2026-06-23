@@ -1,0 +1,115 @@
+.lt-button {
+  min-height: var(--button-height);
+  border: 1px solid var(--color-foreground);
+  border-radius: var(--button-radius);
+  padding: 0.68rem var(--button-padding-x);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  box-sizing: border-box;
+  font-family: var(--font-heading), "Segoe UI", sans-serif;
+  font-size: 0.84rem;
+  font-weight: 800;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    opacity 160ms ease;
+}
+
+.lt-button--solid {
+  color: var(--color-background);
+  background: var(--color-foreground);
+}
+
+.lt-button--outline {
+  border-color: color-mix(in oklab, var(--color-border), transparent 8%);
+  color: var(--color-foreground);
+  background: color-mix(in oklab, var(--color-background), transparent 2%);
+}
+
+.lt-button--ghost {
+  border-color: transparent;
+  color: var(--color-foreground);
+  background: transparent;
+}
+
+.lt-button:hover:not(:disabled),
+.lt-button:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 0 var(--button-shadow-color);
+}
+
+.lt-button--outline:hover:not(:disabled),
+.lt-button--outline:focus-visible,
+.lt-button--ghost:hover:not(:disabled),
+.lt-button--ghost:focus-visible {
+  background: color-mix(
+    in oklab,
+    var(--color-background),
+    var(--color-secondary) 30%
+  );
+}
+
+.lt-button:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 0 var(--button-shadow-color);
+}
+
+.lt-button:focus-visible {
+  outline: 2px solid var(--button-focus-ring);
+  outline-offset: 3px;
+}
+
+.lt-button:disabled,
+.lt-button[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: 0.58;
+  box-shadow: none;
+  transform: none;
+}
+
+.lt-button--sm {
+  min-height: 2.25rem;
+  padding: 0.55rem 0.8rem;
+  font-size: 0.76rem;
+}
+
+.lt-button svg {
+  width: 1.05rem;
+  height: 1.05rem;
+  display: block;
+  flex: 0 0 auto;
+  margin-top: 0;
+  stroke-width: 2.4;
+}
+
+.lt-button--sm svg {
+  width: 0.95rem;
+  height: 0.95rem;
+  stroke-width: 2.45;
+}
+
+.lt-button--icon {
+  width: var(--button-height);
+  min-width: var(--button-height);
+  padding-inline: 0;
+}
+
+.lt-button--sm.lt-button--icon {
+  width: 2.25rem;
+  min-width: 2.25rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lt-button {
+    transition: none;
+  }
+}

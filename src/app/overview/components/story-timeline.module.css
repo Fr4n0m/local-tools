@@ -1,0 +1,103 @@
+.timeline {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 1.4rem;
+  padding-top: 0.75rem;
+  overflow: visible;
+  align-self: center;
+}
+
+.timelineCurve {
+  position: absolute;
+  left: 50%;
+  top: -0.15rem;
+  width: 100vw;
+  height: 220px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  overflow: visible;
+}
+
+.timelineCurve path {
+  fill: none;
+  stroke-width: 4.2;
+  stroke-linecap: round;
+}
+
+.node {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 0.32rem;
+  padding-top: calc(var(--bubble-top, 0px) + 4rem);
+}
+
+.bubble {
+  position: absolute;
+  top: var(--bubble-top, 0px);
+  left: 50%;
+  width: 54px;
+  height: 54px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in oklab, var(--color-border), transparent 10%);
+  background: var(--color-background);
+  display: grid;
+  place-items: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  z-index: 2;
+  transform: translateX(-50%);
+  transition: box-shadow 0.24s ease;
+}
+
+.node01 {
+  --bubble-top: 9rem;
+}
+
+.node02 {
+  --bubble-top: 7.2rem;
+}
+
+.node03 {
+  --bubble-top: 5rem;
+}
+
+.node04 {
+  --bubble-top: 3rem;
+}
+
+.node05 {
+  --bubble-top: 0.5rem;
+}
+
+.node h3 {
+  margin-top: 0.1rem;
+  font-size: 0.95rem;
+  line-height: 1.22;
+  font-weight: 700;
+  margin-left: calc(50% - 27px);
+  width: min(25ch, 100%);
+  text-wrap: balance;
+}
+
+.nodeTitleSecondary {
+  color: color-mix(in oklab, var(--color-foreground), transparent 42%);
+}
+
+.node p {
+  font-size: 0.82rem;
+  line-height: 1.35;
+  margin-left: calc(50% - 27px);
+  width: min(24ch, 100%);
+  text-wrap: balance;
+}
+
+.nodePrimary {
+  color: color-mix(in oklab, var(--color-foreground), transparent 8%);
+}
+
+.nodeSecondary {
+  margin-top: 0.15rem;
+  color: color-mix(in oklab, var(--color-foreground), transparent 38%);
+}

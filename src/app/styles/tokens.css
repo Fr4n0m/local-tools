@@ -54,6 +54,15 @@
   --color-canvas-start: #f8f9fa;
   --color-canvas-end: #dee2e6;
   --canvas-pattern-color: rgba(0, 0, 0, 0.04);
+  --button-radius: calc(var(--radius-squircle) - 4px);
+  --button-height: 2.65rem;
+  --button-padding-x: 1rem;
+  --button-shadow-color: color-mix(
+    in oklab,
+    var(--color-border),
+    transparent 44%
+  );
+  --button-focus-ring: var(--color-foreground);
 }
 
 .dark {
@@ -75,6 +84,12 @@
   --color-canvas-start: #000000;
   --color-canvas-end: #0a0b0d;
   --canvas-pattern-color: rgba(255, 255, 255, 0.03);
+  --button-shadow-color: color-mix(
+    in oklab,
+    var(--color-border),
+    transparent 26%
+  );
+  --button-focus-ring: var(--color-foreground);
 }
 
 @theme inline {

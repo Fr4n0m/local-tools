@@ -1,0 +1,84 @@
+.story {
+  --story-line-stop-1: rgba(0, 0, 0, 0.74);
+  --story-line-stop-2: rgba(0, 0, 0, 0.24);
+  --story-line-stop-3: rgba(10, 10, 10, 0.68);
+  --story-line-stop-4: rgba(0, 0, 0, 0.16);
+  --story-line-stop-5: rgba(6, 6, 6, 0.62);
+  --story-line-stop-6: rgba(0, 0, 0, 0.12);
+  --story-line-stop-7: rgba(0, 0, 0, 0.7);
+  position: relative;
+  z-index: 1;
+  margin-bottom: 1.25rem;
+  min-height: 100dvh;
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  align-content: stretch;
+  gap: 1.2rem;
+  overflow: visible;
+  padding-block: clamp(2.2rem, 5.4vh, 4.2rem);
+  padding-bottom: 3rem;
+  box-sizing: border-box;
+}
+
+:global(.dark) .story {
+  --story-line-stop-1: rgba(255, 255, 255, 0.64);
+  --story-line-stop-2: rgba(0, 0, 0, 0.26);
+  --story-line-stop-3: rgba(255, 255, 255, 0.58);
+  --story-line-stop-4: rgba(0, 0, 0, 0.2);
+  --story-line-stop-5: rgba(255, 255, 255, 0.54);
+  --story-line-stop-6: rgba(0, 0, 0, 0.18);
+  --story-line-stop-7: rgba(255, 255, 255, 0.6);
+}
+
+.storyHead h2 {
+  margin-top: 0.35rem;
+  font-size: clamp(2.45rem, 3.9vw, 3.75rem);
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  font-weight: 800;
+  max-width: none;
+  white-space: nowrap;
+}
+
+.storyHead h2 span {
+  display: block;
+  white-space: nowrap;
+}
+
+.storyHead h2 span + span {
+  margin-top: 0.06rem;
+}
+
+.kicker {
+  font-family: var(--font-heading), "Segoe UI", sans-serif;
+  font-size: 0.82rem;
+  letter-spacing: 0.015em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.kickerPrimary {
+  color: color-mix(in oklab, var(--color-foreground), transparent 6%);
+}
+
+.kickerSecondary {
+  color: color-mix(in oklab, var(--color-foreground), transparent 44%);
+}
+
+.lead {
+  margin-top: 0.65rem;
+  font-size: clamp(1.05rem, 1.3vw, 1.28rem);
+  line-height: 1.32;
+  color: color-mix(in oklab, var(--color-foreground), transparent 48%);
+  max-width: 62ch;
+}
+
+.storyMetaLine {
+  margin-top: 0.78rem;
+  font-family: var(--font-heading), "Segoe UI", sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.015em;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--color-foreground), transparent 42%);
+}

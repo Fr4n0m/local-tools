@@ -128,7 +128,7 @@ export function MultiBannerSection({
               <div className={styles.copyRight}>
                 <p className={styles.toolsList}>{row.list}</p>
                 <Link href={row.href}>
-                  {row.cta} <IconArrowRight size={14} />
+                  {row.cta} <IconArrowRight size={14} stroke={2.4} />
                 </Link>
               </div>
             </div>

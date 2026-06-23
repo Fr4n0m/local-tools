@@ -245,7 +245,7 @@
     "trustEyebrow": "PRIVACY / YOU CAN TRUST",
     "trustTitle": "Your data never leaves your browser.",
     "trustSubtitle": "Work with files, text, and data without sending them to external servers.",
-    "trustBodyPrimary": "LocalTools is built on a simple principle: you stay in control. Everything runs in the browser, so there is no backend.",
+    "trustBodyPrimary": "LocalTools is built on a simple principle: you stay in control. Tasks run in your browser without sending your data to external servers.",
     "trustBodySecondary": "",
     "trustChecks": [
       "100% local execution",

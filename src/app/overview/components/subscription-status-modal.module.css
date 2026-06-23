@@ -31,6 +31,7 @@
   cursor: pointer;
   transition:
     transform 160ms ease,
+    box-shadow 160ms ease,
     background-color 160ms ease;
 }
 
@@ -39,14 +40,21 @@
   height: 1.05rem;
 }
 
-.close:hover {
-  transform: rotate(8deg);
+.close:hover,
+.close:focus-visible {
+  transform: translateY(-2px) rotate(8deg);
+  box-shadow: 0 5px 0 var(--button-shadow-color);
   background: var(--color-secondary);
 }
 
 .close:focus-visible {
-  outline: 2px solid var(--color-foreground);
+  outline: 2px solid var(--button-focus-ring);
   outline-offset: 3px;
+}
+
+.close:active {
+  transform: translateY(0) rotate(0deg);
+  box-shadow: 0 2px 0 var(--button-shadow-color);
 }
 
 @media (prefers-reduced-motion: reduce) {

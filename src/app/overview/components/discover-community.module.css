@@ -1,0 +1,98 @@
+.communityTitle {
+  display: grid;
+  gap: 0.02rem;
+}
+
+.communityTitleTop,
+.communityTitleBottom {
+  display: block;
+}
+
+.communityTitleBottom {
+  color: color-mix(in oklab, var(--color-foreground), transparent 16%);
+}
+
+.bottomCard {
+  position: relative;
+  overflow: hidden;
+}
+
+.communityBodyWrap {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto auto;
+  gap: 0.42rem;
+  min-height: clamp(140px, 17vh, 198px);
+  padding-bottom: clamp(1.2rem, 2vh, 1.8rem);
+}
+
+.communityCopyBlockPrimary {
+  width: 100%;
+  max-width: none;
+  position: relative;
+  z-index: 1;
+}
+
+.communityLowerRow {
+  display: block;
+  width: min(23ch, 100%);
+  position: relative;
+  z-index: 1;
+  margin-top: 0.16rem;
+}
+
+.communityCopyBlockSecondary {
+  width: 100%;
+  max-width: 23ch;
+  position: relative;
+  z-index: 1;
+  margin-top: 0;
+}
+
+.communitySubtitle {
+  max-width: 29ch;
+  font-size: clamp(0.88rem, 0.86vw, 1rem);
+  line-height: 1.38;
+  color: color-mix(in oklab, var(--color-foreground), transparent 28%);
+}
+
+.communityBodyPrimary {
+  max-width: none;
+  font-size: clamp(0.8rem, 0.78vw, 0.92rem);
+  line-height: 1.46;
+  width: 100%;
+}
+
+.communityBodyPrimaryEn {
+  text-wrap: balance;
+}
+
+.roadmapCard .communityBodyPrimary {
+  max-width: 33ch;
+}
+
+.communityBodySecondary {
+  max-width: none;
+  font-size: clamp(0.72rem, 0.68vw, 0.82rem);
+  line-height: 1.42;
+  margin-top: 0;
+  width: 100%;
+}
+
+.roadmapCard .communityBodySecondary {
+  max-width: 23ch;
+}
+
+.communityAssetWrap {
+  position: absolute;
+  right: -1.25rem;
+  bottom: -2.65rem;
+  width: clamp(12.5rem, 17vw, 18rem);
+  min-width: 0;
+  max-width: 17rem;
+  aspect-ratio: 16 / 11;
+}
+
+.communityAsset {
+  object-fit: contain;
+}

@@ -1,0 +1,202 @@
+@media (max-width: 1600px) and (min-width: 1025px) {
+  .carouselSection {
+    --header-offset: clamp(64px, 7vh, 84px);
+    padding-block: 0.4rem clamp(1.75rem, 3.6vh, 2.4rem);
+    gap: 0.42rem;
+  }
+
+  .carouselHeader {
+    gap: 1rem;
+  }
+
+  .carouselHeader h2 {
+    font-size: clamp(2.1rem, 3.2vw, 3.15rem);
+  }
+
+  .subtitle {
+    font-size: clamp(0.96rem, 1.05vw, 1.1rem);
+  }
+
+  .headerNav button {
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
+    min-height: 56px;
+    max-width: 56px;
+    max-height: 56px;
+  }
+
+  .carouselBody {
+    gap: 0.58rem;
+  }
+
+  .toolsRailViewport {
+    margin: -0.55rem -0.65rem -1.1rem -0.25rem;
+    padding: 0.8rem 0.65rem 1.4rem 0.25rem;
+  }
+
+  .toolsRailWrap {
+    gap: 0.42rem;
+    padding-right: clamp(2rem, 4vw, 3.6rem);
+  }
+
+  .toolChip {
+    width: clamp(206px, 16.9vw, 244px);
+    min-height: clamp(214px, 22.2vh, 240px);
+    padding: 0.62rem;
+    gap: 0.42rem;
+  }
+
+  .toolIconWrap {
+    width: 90%;
+    max-width: 240px;
+  }
+
+  .toolChip strong {
+    font-size: clamp(1.12rem, 1.34vw, 1.28rem);
+  }
+
+  .toolChip span {
+    font-size: clamp(0.78rem, 0.8vw, 0.86rem);
+    line-height: 1.28;
+    margin-bottom: 0.26rem;
+  }
+
+  .toolChip em {
+    font-size: 0.62rem;
+    padding: 0.26rem 0.54rem;
+  }
+
+  .highlights {
+    margin-top: 0.82rem;
+    margin-bottom: clamp(1rem, 2.2vh, 1.45rem);
+  }
+
+  .highlightCard {
+    padding: 0.36rem clamp(0.5rem, 0.8vw, 0.72rem);
+    gap: 0.48rem;
+  }
+
+  .highlightIcon {
+    width: 35px;
+    height: 35px;
+  }
+}
+
+@media (max-width: 1320px) and (min-width: 1025px) {
+  .carouselHeader {
+    flex-direction: column;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .carouselHeader h2,
+  .carouselHeader h2 span {
+    white-space: normal;
+  }
+
+  .headerNav {
+    padding-top: 0;
+  }
+
+  .toolChip {
+    width: clamp(178px, 18vw, 212px);
+    min-height: clamp(188px, 20vh, 214px);
+  }
+
+  .toolChip strong {
+    font-size: clamp(1.02rem, 1.28vw, 1.18rem);
+  }
+
+  .toolChip span {
+    font-size: clamp(0.74rem, 0.76vw, 0.82rem);
+  }
+}
+
+@media (max-width: 1024px) {
+  .carouselSection {
+    --header-offset: 0px;
+    height: auto;
+    min-height: auto;
+    padding-block: 2.3rem 3.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+
+  .carouselHeader {
+    flex-direction: column;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .headingBlock {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .carouselHeader h2,
+  .carouselHeader h2 span {
+    white-space: normal;
+  }
+
+  .headerNav {
+    padding-top: 0;
+  }
+
+  .headerNav button {
+    width: 52px;
+    height: 52px;
+  }
+
+  .toolChip {
+    width: min(82vw, 340px);
+    min-height: 300px;
+  }
+
+  .toolsRailViewport {
+    margin-inline: 0;
+    padding-inline: 0;
+    width: 100%;
+  }
+
+  .toolChip strong {
+    font-size: 1.45rem;
+  }
+
+  .toolChip span {
+    font-size: 1rem;
+  }
+
+  .highlights {
+    margin-top: 0.4rem;
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .highlightCard + .highlightCard::before {
+    top: 0;
+    bottom: auto;
+    left: 1rem;
+    right: 1rem;
+    width: auto;
+    height: 1px;
+  }
+
+  .carouselCue {
+    bottom: 0.75rem;
+    font-size: 0.68rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toolChip,
+  .toolAsset {
+    transition: none;
+  }
+
+  .toolChip:hover,
+  .toolChip:focus-visible {
+    transform: none;
+  }
+}
