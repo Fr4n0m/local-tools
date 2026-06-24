@@ -105,6 +105,11 @@
   flex-wrap: wrap;
 }
 
+.heroBtn {
+  min-height: var(--button-height);
+  padding: 0.68rem var(--button-padding-x);
+}
+
 .primaryBtn {
 }
 

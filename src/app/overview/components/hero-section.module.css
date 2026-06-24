@@ -25,6 +25,9 @@
 .heroActions {
   composes: heroActions from "./hero-layout.module.css";
 }
+.heroBtn {
+  composes: heroBtn from "./hero-layout.module.css";
+}
 .primaryBtn {
   composes: primaryBtn from "./hero-layout.module.css";
 }
