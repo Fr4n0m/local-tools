@@ -142,7 +142,13 @@ export function OverviewExperience() {
         .fromTo(
           ".heroActions > *",
           { opacity: 0, y: 14 },
-          { opacity: 1, y: 0, duration: 0.38, stagger: 0.1 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.38,
+            stagger: 0.1,
+            clearProps: "transform",
+          },
           "-=0.45",
         );
 
