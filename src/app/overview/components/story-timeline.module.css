@@ -101,3 +101,35 @@
   margin-top: 0.15rem;
   color: color-mix(in oklab, var(--color-foreground), transparent 38%);
 }
+
+@media (max-width: 760px) {
+  .timeline {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding-top: 0.2rem;
+  }
+
+  .timelineCurve {
+    display: none;
+  }
+
+  .node {
+    grid-template-columns: 52px minmax(0, 1fr);
+    align-items: start;
+    gap: 0.7rem;
+    padding-top: 0;
+  }
+
+  .bubble {
+    position: static;
+    transform: none;
+    width: 46px;
+    height: 46px;
+  }
+
+  .node h3,
+  .node p {
+    margin-left: 0;
+    width: min(38ch, 100%);
+  }
+}

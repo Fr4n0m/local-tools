@@ -82,3 +82,24 @@
   text-transform: uppercase;
   color: color-mix(in oklab, var(--color-foreground), transparent 42%);
 }
+
+@media (max-width: 760px) {
+  .story {
+    min-height: auto;
+    gap: 1.35rem;
+    padding-block: 2.5rem 3.25rem;
+  }
+
+  .storyHead h2,
+  .storyHead h2 span {
+    white-space: normal;
+  }
+
+  .storyHead h2 {
+    font-size: clamp(2rem, 9vw, 2.85rem);
+  }
+
+  .lead {
+    font-size: 1rem;
+  }
+}

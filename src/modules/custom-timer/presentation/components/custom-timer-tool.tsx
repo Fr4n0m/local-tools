@@ -56,16 +56,29 @@ export function CustomTimerTool({ language }: Props) {
     const ctx = new AudioContext();
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
+    let isCleanedUp = false;
     osc.type = "sine";
     osc.frequency.value = 880;
     osc.connect(gain);
     gain.connect(ctx.destination);
     gain.gain.value = 0.03;
     osc.start();
-    setTimeout(() => {
+    const timeoutId = window.setTimeout(() => {
+      if (isCleanedUp) return;
       osc.stop();
       void ctx.close();
     }, 220);
+
+    return () => {
+      isCleanedUp = true;
+      window.clearTimeout(timeoutId);
+      try {
+        osc.stop();
+      } catch {
+        // Oscillator may already be stopped by the timeout.
+      }
+      void ctx.close();
+    };
   }, [finished]);
 
   const start = () => {
