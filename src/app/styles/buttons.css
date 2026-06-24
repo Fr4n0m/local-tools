@@ -49,6 +49,7 @@
 
 .lt-button--solid:hover:not(:disabled),
 .lt-button--solid:focus-visible {
+  box-shadow: 0 5px 0 var(--button-shadow-dark-color);
   background: color-mix(in oklab, var(--color-foreground), #ffffff 14%);
   border-color: color-mix(in oklab, var(--color-foreground), #ffffff 14%);
 }
