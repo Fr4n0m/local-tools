@@ -77,7 +77,7 @@
 }
 
 .dark {
-  --color-background: #000000;
+  --color-background: #07090b;
   --color-foreground: #f8f9fa;
   --color-primary: #ffffff;
   --color-secondary: #0c0f12;
@@ -92,8 +92,8 @@
   --color-warning: #adb5bd;
   --color-highlight: #f8f9fa;
   --color-strong-foreground: #f8f9fa;
-  --color-canvas-start: #000000;
-  --color-canvas-end: #0a0b0d;
+  --color-canvas-start: #07090b;
+  --color-canvas-end: #111417;
   --canvas-pattern-color: rgba(255, 255, 255, 0.03);
   --button-shadow-color: color-mix(
     in oklab,
