@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import {
   buildMeshGradientCss,
@@ -26,6 +26,14 @@ const INITIAL_STOPS: MeshStop[] = [
   { color: "#06d6a0", x: 76, y: 74 },
 ];
 
+function randomizeMeshStops(stops: MeshStop[]): MeshStop[] {
+  return stops.map((stop) => ({
+    ...stop,
+    x: Math.floor(Math.random() * 101),
+    y: Math.floor(Math.random() * 101),
+  }));
+}
+
 type Props = { language: Language };
 
 export function MeshGradientTool({ language }: Props) {
@@ -43,6 +51,9 @@ export function MeshGradientTool({ language }: Props) {
     }),
     [stops],
   );
+  const randomizeStops = useCallback(() => {
+    setStops((previous) => randomizeMeshStops(previous));
+  }, []);
 
   return (
     <ToolSection title={text.title}>
@@ -98,15 +109,7 @@ export function MeshGradientTool({ language }: Props) {
         actions={[
           {
             label: text.randomize,
-            onClick: () => {
-              setStops((prev) =>
-                prev.map((stop) => ({
-                  ...stop,
-                  x: Math.floor(Math.random() * 101),
-                  y: Math.floor(Math.random() * 101),
-                })),
-              );
-            },
+            onClick: randomizeStops,
           },
           {
             label: text.copyCss,
