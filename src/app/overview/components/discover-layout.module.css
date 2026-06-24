@@ -5,10 +5,11 @@
   min-height: 100%;
   margin-bottom: 0;
   padding-block: clamp(0.45rem, 0.9vw, 0.7rem);
+  padding-inline-end: 0.5rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  overflow: hidden;
+  overflow: visible;
   gap: clamp(2.75rem, 6vh, 4.5rem);
 }
 
@@ -73,11 +74,8 @@
     var(--color-background),
     var(--color-secondary) 4%
   );
-  box-shadow: var(--surface-shadow-compact);
-  transition:
-    transform 180ms ease,
-    box-shadow 180ms ease,
-    border-color 180ms ease;
+  box-shadow: var(--surface-shadow);
+  transition: border-color 180ms ease;
 }
 
 .bottomCard h3 {
@@ -98,8 +96,6 @@
 
 .bottomCard:hover,
 .bottomCard:focus-within {
-  transform: translateY(-2px);
-  box-shadow: var(--surface-shadow);
   border-color: color-mix(in oklab, var(--color-border), transparent 0%);
 }
 

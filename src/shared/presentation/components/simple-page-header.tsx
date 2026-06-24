@@ -8,7 +8,7 @@ type SimplePageHeaderProps = {
 
 export function SimplePageHeader({ rightSlot }: SimplePageHeaderProps) {
   return (
-    <header className="mb-5 border-b border-border/55 pb-3">
+    <header className="simple-page-header mb-5 pb-3">
       <div className="flex items-center justify-between gap-3">
         <div className="min-w-0">
           <Link className="inline-flex" href="/">

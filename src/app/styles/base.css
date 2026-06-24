@@ -108,6 +108,39 @@ body {
   padding-inline: clamp(0.4rem, 1vw, 0.9rem);
 }
 
+.simple-page-header {
+  position: relative;
+  border-bottom: 1px solid
+    color-mix(in oklab, var(--color-border), transparent 42%);
+}
+
+.simple-page-header::after {
+  content: "";
+  position: absolute;
+  right: clamp(1.2rem, 3.5vw, 3rem);
+  bottom: -0.36rem;
+  left: clamp(1.2rem, 3.5vw, 3rem);
+  height: 0.36rem;
+  border-radius: 999px;
+  background: var(--button-shadow-color);
+  opacity: 0.92;
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    #000 7%,
+    #000 93%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    #000 7%,
+    #000 93%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
 .app-logo {
   transition:
     transform 0.2s ease,
