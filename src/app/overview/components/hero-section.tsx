@@ -79,14 +79,14 @@ export function HeroSection({ text, onScrollNext }: HeroSectionProps) {
         </div>
         <div className={`${styles.heroActions} heroActions`}>
           <Link
-            className={`${styles.primaryBtn} lt-button lt-button--solid`}
+            className={`${styles.heroBtn} ${styles.primaryBtn} lt-button lt-button--solid`}
             href="/tools?view=grid"
           >
             {text.heroCtaSecondary}
             <IconRocket size={14} />
           </Link>
           <Link
-            className={`${styles.secondaryBtn} lt-button lt-button--outline`}
+            className={`${styles.heroBtn} ${styles.secondaryBtn} lt-button lt-button--outline`}
             href="/#subscribe-updates"
           >
             {text.heroCtaPrimary}
