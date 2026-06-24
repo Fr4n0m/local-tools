@@ -1,9 +1,21 @@
 .tools-aside-panel {
+  border: none;
   box-shadow:
-    8px 8px 0
-      color-mix(in oklab, var(--color-sidebar-foreground), transparent 82%),
+    var(--surface-shadow),
     0 42px 90px -36px rgba(0, 0, 0, 0.72),
     0 12px 28px -18px rgba(0, 0, 0, 0.55);
+}
+
+.tools-aside-panel .aside-search {
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
+.tools-aside-panel .aside-search:focus-visible {
+  outline: 2px solid
+    color-mix(in oklab, var(--color-sidebar-foreground), transparent 56%);
+  outline-offset: 2px;
 }
 
 .tools-main-panel {
