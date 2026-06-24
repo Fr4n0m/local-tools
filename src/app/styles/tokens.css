@@ -68,8 +68,12 @@
     var(--color-border),
     transparent 54%
   );
+  --surface-shadow-dark-color: rgba(33, 37, 41, 0.42);
   --surface-shadow: 8px 8px 0 var(--surface-shadow-color);
   --surface-shadow-compact: 5px 5px 0 var(--surface-shadow-color);
+  --surface-shadow-dark: 8px 8px 0 var(--surface-shadow-dark-color);
+  --surface-shadow-dark-compact: 5px 5px 0 var(--surface-shadow-dark-color);
+  --button-shadow-dark-color: rgba(33, 37, 41, 0.42);
 }
 
 .dark {
@@ -102,6 +106,8 @@
     var(--color-border),
     transparent 36%
   );
+  --surface-shadow-dark-color: var(--surface-shadow-color);
+  --button-shadow-dark-color: var(--button-shadow-color);
 }
 
 @theme inline {

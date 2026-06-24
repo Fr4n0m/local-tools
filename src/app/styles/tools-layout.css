@@ -1,7 +1,7 @@
 .tools-aside-panel {
   border: none;
   box-shadow:
-    var(--surface-shadow),
+    var(--surface-shadow-dark),
     0 42px 90px -36px rgba(0, 0, 0, 0.72),
     0 12px 28px -18px rgba(0, 0, 0, 0.55);
 }
