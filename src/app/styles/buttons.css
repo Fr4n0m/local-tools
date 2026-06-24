@@ -47,15 +47,17 @@
   box-shadow: 0 5px 0 var(--button-shadow-color);
 }
 
+.lt-button--solid:hover:not(:disabled),
+.lt-button--solid:focus-visible {
+  background: color-mix(in oklab, var(--color-foreground), #ffffff 14%);
+  border-color: color-mix(in oklab, var(--color-foreground), #ffffff 14%);
+}
+
 .lt-button--outline:hover:not(:disabled),
 .lt-button--outline:focus-visible,
 .lt-button--ghost:hover:not(:disabled),
 .lt-button--ghost:focus-visible {
-  background: color-mix(
-    in oklab,
-    var(--color-background),
-    var(--color-secondary) 30%
-  );
+  background: color-mix(in oklab, var(--color-background), #ffffff 14%);
 }
 
 .lt-button:active:not(:disabled) {
