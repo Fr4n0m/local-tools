@@ -105,70 +105,8 @@
   flex-wrap: wrap;
 }
 
-.primaryBtn,
-.secondaryBtn {
-  min-height: var(--button-height);
-  border: 1px solid var(--color-foreground);
-  border-radius: var(--button-radius);
-  padding: 0.68rem var(--button-padding-x);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.45rem;
-  text-decoration: none;
-  font-family: var(--font-heading), "Segoe UI", sans-serif;
-  font-size: 0.84rem;
-  font-weight: 800;
-  line-height: 1;
-  transition:
-    transform 160ms ease,
-    box-shadow 160ms ease,
-    background-color 160ms ease,
-    border-color 160ms ease,
-    color 160ms ease;
-}
-
 .primaryBtn {
-  background: var(--color-foreground);
-  color: var(--color-background);
 }
 
 .secondaryBtn {
-  background: color-mix(in oklab, var(--color-background), transparent 2%);
-  color: var(--color-foreground);
-  border-color: color-mix(in oklab, var(--color-border), transparent 8%);
-}
-
-.heroActions a:hover,
-.heroActions a:focus-visible {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 0 var(--button-shadow-color);
-}
-
-.secondaryBtn:hover,
-.secondaryBtn:focus-visible {
-  background: color-mix(
-    in oklab,
-    var(--color-background),
-    var(--color-secondary) 30%
-  );
-}
-
-.heroActions a:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 0 var(--button-shadow-color);
-}
-
-.heroActions a:focus-visible {
-  outline: 2px solid var(--button-focus-ring);
-  outline-offset: 3px;
-}
-
-.heroActions a svg {
-  width: 17px;
-  height: 17px;
-  display: block;
-  flex: 0 0 auto;
-  margin-top: 0;
-  stroke-width: 2.4;
 }

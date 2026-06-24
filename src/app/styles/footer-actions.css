@@ -61,9 +61,9 @@
 .site-footer__btn:focus-visible {
   transform: translateY(-2px);
   box-shadow: 0 5px 0 rgba(255, 255, 255, 0.28);
-  border-color: rgba(255, 255, 255, 0.28);
-  background: #000;
-  color: #fff;
+  border-color: rgba(255, 255, 255, 0.42);
+  background: #fff;
+  color: #000;
 }
 
 .site-footer__btn:active {
@@ -79,8 +79,8 @@
 
 .site-footer__btn--bmc:hover,
 .site-footer__btn--bmc:focus-visible {
-  background: #e6c800;
-  border-color: #e6c800;
+  background: #ffe866;
+  border-color: #ffe866;
   color: #000;
 }
 
@@ -121,7 +121,7 @@
 .site-footer__github-btn:focus-visible {
   transform: translateY(-2px);
   box-shadow: 0 5px 0 rgba(255, 255, 255, 0.18);
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.16);
   color: #fff;
 }
 
