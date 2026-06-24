@@ -1,7 +1,7 @@
 .site-footer {
   width: 100%;
   background: transparent;
-  padding: 0.75rem 0.75rem clamp(2rem, 4vh, 3.25rem);
+  padding: 0.75rem calc(0.75rem + 5px) clamp(2rem, 4vh, 3.25rem) 0.75rem;
   color: #fff;
 }
 
@@ -13,10 +13,11 @@
   margin-inline: auto;
   width: 100%;
   max-width: calc(100vw - 1.5rem);
-  border: 1px solid rgba(255, 255, 255, 0.22);
+  border: 1px solid color-mix(in oklab, var(--color-border), transparent 8%);
   border-radius: 0.8rem;
   background: #000;
   box-shadow:
+    var(--surface-shadow-compact),
     0 42px 90px -36px rgba(0, 0, 0, 0.72),
     0 12px 28px -18px rgba(0, 0, 0, 0.55);
   padding: 1.25rem 2.6rem;
