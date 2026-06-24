@@ -57,10 +57,10 @@
   --button-radius: calc(var(--radius-squircle) - 4px);
   --button-height: 2.65rem;
   --button-padding-x: 1rem;
-  --button-shadow-color: rgba(33, 37, 41, 0.3);
+  --button-shadow-color: rgba(33, 37, 41, 0.24);
   --button-focus-ring: var(--color-foreground);
-  --surface-shadow-color: rgba(33, 37, 41, 0.3);
-  --surface-shadow-dark-color: rgba(33, 37, 41, 0.3);
+  --surface-shadow-color: rgba(33, 37, 41, 0.24);
+  --surface-shadow-dark-color: rgba(33, 37, 41, 0.24);
   --surface-shadow: 8px 8px 0 var(--surface-shadow-color);
   --surface-shadow-compact: 5px 5px 0 var(--surface-shadow-color);
   --surface-shadow-dark: 8px 8px 0 var(--surface-shadow-dark-color);

@@ -6,11 +6,12 @@
   min-height: calc(100dvh - var(--header-offset));
   margin-bottom: 1.25rem;
   padding-block: clamp(0.45rem, 1vh, 0.75rem) clamp(2.8rem, 6vh, 4rem);
+  padding-inline-end: 0.5rem;
   display: grid;
   grid-template-rows: auto minmax(0, 1fr) auto auto;
   align-content: center;
   gap: 0.5rem;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .carouselHeader {
@@ -133,6 +134,8 @@
 .headerNav button:focus-visible {
   transform: translateY(-2px) scale(1.04);
   box-shadow: 0 5px 0 var(--button-shadow-color);
+  background: color-mix(in oklab, var(--color-background), #ffffff 14%);
+  border-color: color-mix(in oklab, var(--color-border), transparent 0%);
 }
 
 .headerNav button:focus-visible {

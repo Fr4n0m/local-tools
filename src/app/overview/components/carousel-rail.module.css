@@ -35,7 +35,7 @@
   display: inline-grid;
   grid-auto-flow: column;
   grid-auto-columns: min-content;
-  gap: 0.52rem;
+  gap: 1rem;
   padding-right: clamp(3rem, 9vw, 7rem);
   will-change: transform;
 }
@@ -53,6 +53,7 @@
     var(--color-secondary) 10%
   );
   padding: 0.72rem;
+  box-shadow: var(--surface-shadow-compact);
   display: grid;
   grid-template-rows: auto 1fr;
   gap: 0.5rem;
@@ -78,9 +79,7 @@
   z-index: 3;
   transform: translateY(-10px) scale(1.06);
   border-color: color-mix(in oklab, var(--color-border), transparent 0%);
-  box-shadow:
-    0 22px 46px color-mix(in oklab, var(--color-foreground), transparent 88%),
-    0 6px 18px color-mix(in oklab, var(--color-foreground), transparent 94%);
+  box-shadow: var(--surface-shadow);
   background: color-mix(
     in oklab,
     var(--color-background),

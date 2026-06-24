@@ -2,7 +2,7 @@
   .carouselSection {
     --header-offset: clamp(64px, 7vh, 84px);
     padding-block: 0.4rem clamp(1.75rem, 3.6vh, 2.4rem);
-    gap: 0.42rem;
+    gap: 0.8rem;
   }
 
   .carouselHeader {
@@ -184,7 +184,7 @@
   }
 
   .carouselCue {
-    bottom: 0.75rem;
+    bottom: 1.35rem;
     font-size: 0.68rem;
   }
 }
@@ -232,7 +232,7 @@
   }
 
   .carouselCue {
-    bottom: 0.9rem;
+    bottom: 1.4rem;
   }
 }
 

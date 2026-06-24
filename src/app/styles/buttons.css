@@ -113,10 +113,16 @@
 
 .lt-button.page-display-control-button {
   min-height: 1.75rem;
-  border-radius: 0.375rem;
+  border-radius: calc(var(--radius-squircle) - 8px);
   padding: 0.25rem 0.5rem;
-  font-size: 0.75rem;
+  font-size: 0.82rem;
   font-weight: 500;
+}
+
+@supports (corner-shape: squircle) {
+  .lt-button.page-display-control-button {
+    corner-shape: squircle;
+  }
 }
 
 .lt-button.page-display-control-button--icon {
@@ -124,6 +130,24 @@
   min-width: 1.75rem;
   height: 1.75rem;
   padding: 0;
+}
+
+.page-display-control-group {
+  box-shadow: var(--surface-shadow-compact);
+}
+
+.page-display-control-flag {
+  width: 1.02rem;
+  height: 1.02rem;
+  display: block;
+  object-fit: contain;
+}
+
+.page-display-control-theme-icon {
+  width: 0.82rem;
+  height: 0.82rem;
+  display: block;
+  object-fit: contain;
 }
 
 @media (prefers-reduced-motion: reduce) {
