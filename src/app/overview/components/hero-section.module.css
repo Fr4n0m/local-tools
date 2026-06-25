@@ -40,23 +40,14 @@
   composes: heroMockFrame from "./hero-controls.module.css";
 }
 
-.heroMockTopbar {
-  composes: heroMockTopbar from "./hero-mock.module.css";
+.heroMockImage {
+  composes: heroMockImage from "./hero-mock.module.css";
 }
-.heroMockLogo {
-  composes: heroMockLogo from "./hero-mock.module.css";
+.heroMockImageLight {
+  composes: heroMockImageLight from "./hero-mock.module.css";
 }
-.heroMockSearch {
-  composes: heroMockSearch from "./hero-mock.module.css";
-}
-.heroMockBody {
-  composes: heroMockBody from "./hero-mock.module.css";
-}
-.heroMockSidebar {
-  composes: heroMockSidebar from "./hero-mock.module.css";
-}
-.heroMockGrid {
-  composes: heroMockGrid from "./hero-mock.module.css";
+.heroMockImageDark {
+  composes: heroMockImageDark from "./hero-mock.module.css";
 }
 .scrollCue {
   composes: scrollCue from "./hero-controls.module.css";

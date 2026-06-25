@@ -78,6 +78,24 @@
   transition: border-color 180ms ease;
 }
 
+@media (min-width: 1440px) {
+  .bottomCard {
+    padding: clamp(1rem, 1.25vw, 1.45rem);
+  }
+
+  .bottomCard h3 {
+    margin-top: 0.46rem;
+  }
+
+  .subtitle {
+    margin-top: 0.32rem;
+  }
+
+  .bodyPrimary {
+    margin-top: 0.7rem;
+  }
+}
+
 .bottomCard h3 {
   margin: 0.34rem 0 0;
   font-family: var(--font-heading), "Segoe UI", sans-serif;

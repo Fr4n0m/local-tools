@@ -830,6 +830,20 @@ function ToolsIndex({
 }: ToolsIndexProps) {
   const text = sharedMessages[language];
   const categoryCount = new Set(tools.map((tool) => tool.category)).size;
+  const isSearching = search.trim().length > 0;
+  const groupedTools = isSearching
+    ? []
+    : (
+        Object.entries(text.categories) as Array<
+          [keyof typeof text.categories, string]
+        >
+      )
+        .map(([category, label]) => ({
+          category,
+          label,
+          tools: toolsToRender.filter((tool) => tool.category === category),
+        }))
+        .filter((group) => group.tools.length > 0);
 
   return (
     <section className="tools-index-panel">
@@ -854,7 +868,7 @@ function ToolsIndex({
         </dl>
       </div>
 
-      {search.trim() ? (
+      {isSearching ? (
         <p className="tools-index-search-note">
           {text.toolsIndexSearchHint.replace(
             "{count}",
@@ -868,45 +882,90 @@ function ToolsIndex({
           <p>{text.toolsIndexEmptyTitle}</p>
           <span>{text.toolsIndexEmptyText}</span>
         </div>
-      ) : (
+      ) : isSearching ? (
         <div className="tools-index-grid">
-          {toolsToRender.map((tool) => {
-            const Icon = tool.icon;
-            const categoryLabel =
-              text.categories[tool.category as keyof typeof text.categories];
-
-            return (
-              <button
-                className="tools-index-card"
-                key={tool.id}
-                onClick={() => onSelectTool(tool.id)}
-                type="button"
-              >
-                <span className="tools-index-card-top">
-                  <span className="tools-index-card-icon" aria-hidden>
-                    <Icon size={20} />
-                  </span>
-                  <span className="tools-index-card-copy">
-                    <span className="tools-index-card-category">
-                      {categoryLabel}
-                    </span>
-                    <span className="tools-index-card-title">
-                      {tool.name[language]}
-                    </span>
-                    <span className="tools-index-card-description">
-                      {tool.description[language]}
-                    </span>
-                  </span>
-                </span>
-                <span className="tools-index-card-action">
-                  {text.toolsIndexOpenLabel}
-                  <IconArrowRight aria-hidden size={15} />
-                </span>
-              </button>
-            );
-          })}
+          {toolsToRender.map((tool) => (
+            <ToolIndexCard
+              key={tool.id}
+              language={language}
+              onSelectTool={onSelectTool}
+              showCategory
+              text={text}
+              tool={tool}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="tools-index-groups">
+          {groupedTools.map((group) => (
+            <section className="tools-index-group" key={group.category}>
+              <div className="tools-index-group-heading">
+                <h2>{group.label}</h2>
+                <span>{group.tools.length}</span>
+              </div>
+              <div className="tools-index-grid">
+                {group.tools.map((tool) => (
+                  <ToolIndexCard
+                    key={tool.id}
+                    language={language}
+                    onSelectTool={onSelectTool}
+                    showCategory={false}
+                    text={text}
+                    tool={tool}
+                  />
+                ))}
+              </div>
+            </section>
+          ))}
         </div>
       )}
     </section>
+  );
+}
+
+type ToolIndexCardProps = {
+  language: Language;
+  onSelectTool: (toolId: ToolId) => void;
+  showCategory?: boolean;
+  text: (typeof sharedMessages)[Language];
+  tool: (typeof tools)[number];
+};
+
+function ToolIndexCard({
+  language,
+  onSelectTool,
+  showCategory = true,
+  text,
+  tool,
+}: ToolIndexCardProps) {
+  const Icon = tool.icon;
+  const categoryLabel =
+    text.categories[tool.category as keyof typeof text.categories];
+
+  return (
+    <button
+      className="tools-index-card"
+      onClick={() => onSelectTool(tool.id)}
+      type="button"
+    >
+      <span className="tools-index-card-top">
+        <span className="tools-index-card-icon" aria-hidden>
+          <Icon size={20} />
+        </span>
+        <span className="tools-index-card-copy">
+          {showCategory ? (
+            <span className="tools-index-card-category">{categoryLabel}</span>
+          ) : null}
+          <span className="tools-index-card-title">{tool.name[language]}</span>
+          <span className="tools-index-card-description">
+            {tool.description[language]}
+          </span>
+        </span>
+      </span>
+      <span className="tools-index-card-action">
+        {text.toolsIndexOpenLabel}
+        <IconArrowRight aria-hidden size={15} />
+      </span>
+    </button>
   );
 }
