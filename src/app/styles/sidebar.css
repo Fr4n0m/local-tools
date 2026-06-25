@@ -36,12 +36,50 @@
     color-mix(in oklab, var(--color-sidebar-foreground), transparent 70%);
 }
 
+.aside-tool-btn:active {
+  transform: translateX(1px) scale(0.985);
+}
+
 .aside-tool-btn .shrink-0 {
   transition: transform 0.18s ease;
 }
 
 .aside-tool-btn:hover .shrink-0 {
   transform: scale(1.06);
+}
+
+.aside-primary-btn {
+  transition:
+    color 0.18s ease,
+    transform 0.18s ease,
+    text-shadow 0.18s ease,
+    box-shadow 0.18s ease,
+    background-color 0.18s ease;
+}
+
+.aside-primary-btn:hover,
+.aside-primary-btn:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 0 var(--surface-shadow-dark-color);
+  background: color-mix(
+    in oklab,
+    var(--color-sidebar-foreground),
+    transparent 91%
+  );
+}
+
+.aside-primary-btn[aria-pressed="true"] {
+  box-shadow: 0 3px 0 var(--surface-shadow-dark-color);
+  background: color-mix(
+    in oklab,
+    var(--color-sidebar-foreground),
+    transparent 93%
+  );
+}
+
+.aside-primary-btn:active {
+  transform: translateY(1px) scale(0.985);
+  box-shadow: 0 1px 0 var(--surface-shadow-dark-color);
 }
 
 .tool-marker-dot {
@@ -57,6 +95,13 @@
 .hide-scrollbar::-webkit-scrollbar {
   width: 0;
   height: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aside-tool-btn:active,
+  .aside-primary-btn:active {
+    transform: none;
+  }
 }
 
 .aside-fade-mask {

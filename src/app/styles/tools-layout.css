@@ -32,6 +32,167 @@
   outline-offset: 2px;
 }
 
+.aside-language-select {
+  position: relative;
+}
+
+.aside-language-trigger {
+  width: 1.5rem;
+  height: 1.5rem;
+  border: none;
+  border-radius: 0.375rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  color: color-mix(in oklab, var(--color-sidebar-foreground), transparent 30%);
+  background: transparent;
+  cursor: pointer;
+  transition:
+    transform 150ms ease,
+    box-shadow 150ms ease,
+    background-color 150ms ease,
+    color 150ms ease;
+}
+
+.aside-language-trigger:hover,
+.aside-language-trigger:focus-visible,
+.aside-language-select:has(.aside-language-menu) .aside-language-trigger {
+  color: var(--color-sidebar-foreground);
+  background: color-mix(
+    in oklab,
+    var(--color-sidebar-foreground),
+    transparent 88%
+  );
+  transform: translateY(-1px);
+  box-shadow: 0 3px 0 var(--surface-shadow-dark-color);
+}
+
+.aside-language-trigger:focus-visible {
+  outline: 2px solid
+    color-mix(in oklab, var(--color-sidebar-foreground), transparent 52%);
+  outline-offset: 2px;
+}
+
+.tools-aside-panel button[aria-label="Density"],
+.tools-aside-panel button[aria-label="Densidad"],
+.tools-aside-panel button[aria-label="Theme"],
+.tools-aside-panel button[aria-label="Tema"] {
+  transition:
+    transform 150ms ease,
+    box-shadow 150ms ease,
+    background-color 150ms ease,
+    color 150ms ease;
+}
+
+.aside-top-control {
+  transition:
+    transform 150ms ease,
+    box-shadow 150ms ease,
+    background-color 150ms ease,
+    color 150ms ease;
+}
+
+.tools-aside-panel button[aria-label="Density"]:hover,
+.tools-aside-panel button[aria-label="Density"]:focus-visible,
+.tools-aside-panel button[aria-label="Densidad"]:hover,
+.tools-aside-panel button[aria-label="Densidad"]:focus-visible,
+.tools-aside-panel button[aria-label="Theme"]:hover,
+.tools-aside-panel button[aria-label="Theme"]:focus-visible,
+.tools-aside-panel button[aria-label="Tema"]:hover,
+.tools-aside-panel button[aria-label="Tema"]:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 0 var(--surface-shadow-dark-color);
+}
+
+.aside-language-trigger:active,
+.tools-aside-panel button[aria-label="Density"]:active,
+.tools-aside-panel button[aria-label="Densidad"]:active,
+.tools-aside-panel button[aria-label="Theme"]:active,
+.tools-aside-panel button[aria-label="Tema"]:active {
+  transform: translateY(1px) scale(0.96);
+  box-shadow: 0 1px 0 var(--surface-shadow-dark-color);
+}
+
+.aside-top-control:active {
+  transform: translateY(1px) scale(0.92);
+  box-shadow: 0 1px 0 var(--surface-shadow-dark-color);
+}
+
+.aside-language-flag {
+  width: 0.95rem;
+  height: 0.95rem;
+  display: block;
+  object-fit: contain;
+}
+
+.aside-language-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.35rem);
+  z-index: 30;
+  width: 9.5rem;
+  border-radius: 0.55rem;
+  background: #050505;
+  padding: 0.35rem;
+  box-shadow:
+    5px 5px 0 var(--surface-shadow-dark-color),
+    0 18px 42px -24px rgba(0, 0, 0, 0.8);
+  transform-origin: top right;
+  animation: aside-language-menu-in 160ms ease-out both;
+}
+
+.aside-language-option {
+  width: 100%;
+  border: none;
+  border-radius: 0.38rem;
+  padding: 0.42rem 0.45rem;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: color-mix(in oklab, var(--color-sidebar-foreground), transparent 18%);
+  background: transparent;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+
+.aside-language-option:hover:not(:disabled),
+.aside-language-option:focus-visible {
+  color: var(--color-sidebar-foreground);
+  background: color-mix(
+    in oklab,
+    var(--color-sidebar-foreground),
+    transparent 88%
+  );
+}
+
+.aside-language-option:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+}
+
+.aside-language-pending {
+  margin-left: auto;
+  font-size: 0.58rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--color-sidebar-foreground), transparent 46%);
+}
+
+@keyframes aside-language-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-0.35rem) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 .tools-main-panel {
   background-color: color-mix(
     in oklab,
@@ -162,6 +323,11 @@
   box-shadow: 10px 10px 0 var(--surface-shadow-color);
 }
 
+.tools-index-card:active {
+  transform: translateY(1px) scale(0.985);
+  box-shadow: 4px 4px 0 var(--surface-shadow-color);
+}
+
 .tools-index-card:focus-visible {
   outline: 2px solid var(--button-focus-ring);
   outline-offset: 3px;
@@ -175,19 +341,23 @@
 }
 
 .tools-index-card-icon {
-  width: 2.35rem;
-  height: 2.35rem;
-  border-radius: calc(var(--radius-squircle) - 8px);
+  width: 2rem;
+  height: 2rem;
+  aspect-ratio: 1;
+  border: none;
+  border-radius: 50%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: color-mix(in oklab, var(--color-panel), transparent 12%);
+  color: var(--color-background);
+  background: var(--color-foreground);
+  box-shadow: 3px 3px 0 var(--surface-shadow-color);
 }
 
 .tools-index-card-icon svg {
-  width: 1.2rem;
-  height: 1.2rem;
-  stroke-width: 2.3;
+  width: 1.05rem;
+  height: 1.05rem;
+  stroke-width: 2.45;
 }
 
 .tools-index-card-category {
@@ -285,6 +455,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .aside-language-menu {
+    animation: none;
+  }
+
   .tools-tool-panel,
   .tools-privacy-panel,
   .tools-index-card {
@@ -293,7 +467,23 @@
 
   .tools-privacy-panel:hover,
   .tools-index-card:hover,
-  .tools-index-card:focus-visible {
+  .tools-index-card:focus-visible,
+  .tools-index-card:active,
+  .aside-language-trigger:hover,
+  .aside-language-trigger:focus-visible,
+  .aside-language-trigger:active,
+  .tools-aside-panel button[aria-label="Density"]:hover,
+  .tools-aside-panel button[aria-label="Density"]:focus-visible,
+  .tools-aside-panel button[aria-label="Density"]:active,
+  .tools-aside-panel button[aria-label="Densidad"]:hover,
+  .tools-aside-panel button[aria-label="Densidad"]:focus-visible,
+  .tools-aside-panel button[aria-label="Densidad"]:active,
+  .tools-aside-panel button[aria-label="Theme"]:hover,
+  .tools-aside-panel button[aria-label="Theme"]:focus-visible,
+  .tools-aside-panel button[aria-label="Theme"]:active,
+  .tools-aside-panel button[aria-label="Tema"]:hover,
+  .tools-aside-panel button[aria-label="Tema"]:focus-visible,
+  .tools-aside-panel button[aria-label="Tema"]:active {
     transform: none;
   }
 }
