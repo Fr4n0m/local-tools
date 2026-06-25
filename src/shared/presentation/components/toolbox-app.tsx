@@ -137,7 +137,38 @@ function getCategoryStyles(category: string) {
   };
 }
 
-const LANGUAGE_LABELS: Record<Language, string> = { en: "EN", es: "ES" };
+const ASIDE_LANGUAGE_OPTIONS = [
+  {
+    code: "es",
+    label: "Español",
+    flag: "/assets/flags/es.svg",
+    available: true,
+  },
+  {
+    code: "en",
+    label: "English",
+    flag: "/assets/flags/gb.svg",
+    available: true,
+  },
+  {
+    code: "fr",
+    label: "Français",
+    flag: "/assets/flags/fr.svg",
+    available: false,
+  },
+  {
+    code: "de",
+    label: "Deutsch",
+    flag: "/assets/flags/de.svg",
+    available: false,
+  },
+  {
+    code: "it",
+    label: "Italiano",
+    flag: "/assets/flags/it.svg",
+    available: false,
+  },
+] as const;
 
 export function ToolboxApp() {
   const [language, setLanguage] = useState<Language>("en");
@@ -264,9 +295,15 @@ export function ToolboxApp() {
       <a className="skip-link" href="#main-content">
         {text.skipToContent}
       </a>
-      <div className="tools-page-shell flex min-h-screen md:gap-3 md:p-3">
+      <div className="tools-page-shell flex min-h-screen md:gap-5 md:p-3">
         <aside className="hidden w-72 shrink-0 md:block">
-          <div className="tools-aside-panel relative h-[calc(100vh-1.5rem)] overflow-hidden rounded-2xl bg-sidebar text-sidebar-foreground">
+          <div
+            className={`tools-aside-panel relative overflow-hidden rounded-2xl bg-sidebar text-sidebar-foreground ${
+              view === "grid"
+                ? "min-h-[calc(100vh-1.5rem)]"
+                : "h-[calc(100vh-1.5rem)]"
+            }`}
+          >
             <Sidebar
               density={density}
               language={language}
@@ -288,6 +325,7 @@ export function ToolboxApp() {
               selectedToolId={selectedToolId}
               view={view}
               toolsToRender={filteredTools}
+              stretchToPage={view === "grid"}
             />
           </div>
         </aside>
@@ -333,6 +371,7 @@ export function ToolboxApp() {
                 selectedToolId={selectedToolId}
                 view={view}
                 toolsToRender={filteredTools}
+                stretchToPage={false}
               />
             </aside>
           </div>
@@ -408,6 +447,7 @@ type SidebarProps = {
   onShowGrid: () => void;
   onThemeToggle: () => void;
   selectedToolId: ToolId;
+  stretchToPage: boolean;
   view: ToolView;
   toolsToRender: typeof tools;
 };
@@ -424,10 +464,15 @@ function Sidebar({
   onShowGrid,
   onThemeToggle,
   selectedToolId,
+  stretchToPage,
   view,
   toolsToRender,
 }: SidebarProps) {
   const text = sharedMessages[language];
+  const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
+  const currentLanguageOption =
+    ASIDE_LANGUAGE_OPTIONS.find((option) => option.code === language) ??
+    ASIDE_LANGUAGE_OPTIONS[0];
 
   const grouped = useMemo(
     () =>
@@ -444,32 +489,74 @@ function Sidebar({
   return (
     <nav
       aria-label={text.toolsNavigation}
-      className="aside-fade-mask hide-scrollbar h-full space-y-4 overflow-y-auto px-3 py-5"
+      className={`aside-fade-mask hide-scrollbar space-y-4 overflow-y-auto px-3 py-5 ${
+        stretchToPage ? "min-h-[inherit]" : "h-full"
+      }`}
     >
       <div className="flex items-center justify-between px-1">
         <Link aria-label="Go to home" className="inline-flex" href="/">
           <AppLogo className="text-sidebar-foreground" />
         </Link>
         <div className="flex items-center gap-0.5 rounded-lg bg-black p-0.5">
-          <button
-            aria-label={text.language}
-            className="flex h-6 w-6 items-center justify-center rounded-md text-sidebar-foreground/70 transition-colors hover:bg-sidebar-foreground/12 hover:text-sidebar-foreground"
-            onClick={() => onLanguageSelect(language === "en" ? "es" : "en")}
-            title={
-              language === "en" ? "Switch to Español" : "Switch to English"
-            }
-            type="button"
-          >
-            <span
-              aria-hidden
-              className="font-heading text-[10px] font-bold tracking-[0.08em]"
+          <div className="aside-language-select">
+            <button
+              aria-expanded={isLanguageMenuOpen}
+              aria-haspopup="listbox"
+              aria-label={text.language}
+              className="aside-language-trigger aside-top-control"
+              onClick={() => setIsLanguageMenuOpen((open) => !open)}
+              title={currentLanguageOption.label}
+              type="button"
             >
-              {LANGUAGE_LABELS[language]}
-            </span>
-          </button>
+              <img
+                alt=""
+                aria-hidden="true"
+                className="aside-language-flag"
+                src={currentLanguageOption.flag}
+              />
+            </button>
+            {isLanguageMenuOpen ? (
+              <div className="aside-language-menu" role="listbox">
+                {ASIDE_LANGUAGE_OPTIONS.map((option) => {
+                  const isActive = option.code === language;
+                  return (
+                    <button
+                      aria-selected={isActive}
+                      className="aside-language-option"
+                      disabled={!option.available}
+                      key={option.code}
+                      onClick={() => {
+                        if (!option.available) return;
+                        onLanguageSelect(option.code as Language);
+                        setIsLanguageMenuOpen(false);
+                      }}
+                      role="option"
+                      title={
+                        option.available
+                          ? option.label
+                          : `${option.label} pending`
+                      }
+                      type="button"
+                    >
+                      <img
+                        alt=""
+                        aria-hidden="true"
+                        className="aside-language-flag"
+                        src={option.flag}
+                      />
+                      <span>{option.label}</span>
+                      {!option.available ? (
+                        <span className="aside-language-pending">soon</span>
+                      ) : null}
+                    </button>
+                  );
+                })}
+              </div>
+            ) : null}
+          </div>
           <button
             aria-label={text.density}
-            className="flex h-6 w-6 items-center justify-center rounded-md text-sidebar-foreground/70 transition-colors hover:bg-sidebar-foreground/12 hover:text-sidebar-foreground"
+            className="aside-top-control flex h-6 w-6 items-center justify-center rounded-md text-sidebar-foreground/70 transition-colors hover:bg-sidebar-foreground/12 hover:text-sidebar-foreground"
             onClick={onDensityToggle}
             title={`${text.density}: ${density === "compact" ? text.compact : text.comfortable}`}
             type="button"
@@ -482,7 +569,7 @@ function Sidebar({
           </button>
           <button
             aria-label={text.theme}
-            className="flex h-6 w-6 items-center justify-center rounded-md text-sidebar-foreground/70 transition-colors hover:bg-sidebar-foreground/12 hover:text-sidebar-foreground"
+            className="aside-top-control flex h-6 w-6 items-center justify-center rounded-md text-sidebar-foreground/70 transition-colors hover:bg-sidebar-foreground/12 hover:text-sidebar-foreground"
             onClick={onThemeToggle}
             type="button"
           >
@@ -503,22 +590,34 @@ function Sidebar({
           value={search}
         />
       </div>
-      <button
-        aria-pressed={view === "grid"}
-        className={`aside-tool-btn group flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sidebar-foreground ${
-          view === "grid"
-            ? "font-semibold text-sidebar-foreground"
-            : "text-sidebar-foreground/88 hover:text-sidebar-foreground focus-visible:text-sidebar-foreground"
-        }`}
-        onClick={onShowGrid}
-        type="button"
-      >
-        <span aria-hidden className="tool-marker-dot h-1.5 w-1.5" />
-        <span aria-hidden className="shrink-0">
-          <IconGridDots size={15} />
-        </span>
-        <span className="font-medium">{text.toolsIndexNav}</span>
-      </button>
+      <div className="space-y-0.5">
+        <Link
+          className="aside-tool-btn aside-primary-btn group flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-sm text-sidebar-foreground/88 hover:text-sidebar-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sidebar-foreground"
+          href="/"
+        >
+          <span aria-hidden className="tool-marker-dot h-1.5 w-1.5" />
+          <span aria-hidden className="shrink-0">
+            <IconLayoutDashboard size={15} />
+          </span>
+          <span className="font-medium">{text.homeNav}</span>
+        </Link>
+        <button
+          aria-pressed={view === "grid"}
+          className={`aside-tool-btn aside-primary-btn group flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sidebar-foreground ${
+            view === "grid"
+              ? "font-semibold text-sidebar-foreground"
+              : "text-sidebar-foreground/88 hover:text-sidebar-foreground focus-visible:text-sidebar-foreground"
+          }`}
+          onClick={onShowGrid}
+          type="button"
+        >
+          <span aria-hidden className="tool-marker-dot h-1.5 w-1.5" />
+          <span aria-hidden className="shrink-0">
+            <IconGridDots size={15} />
+          </span>
+          <span className="font-medium">{text.toolsIndexNav}</span>
+        </button>
+      </div>
       {toolsToRender.length === 0 ? (
         <p className="px-1 text-sm text-sidebar-foreground/85">
           {text.emptySearch}
@@ -535,18 +634,6 @@ function Sidebar({
           title={text.categories[category as keyof typeof text.categories]}
         />
       ))}
-      <div className="mt-2 border-t border-sidebar-foreground/14 pt-3">
-        <Link
-          className="aside-tool-btn group flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-sm text-sidebar-foreground/88 hover:text-sidebar-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sidebar-foreground"
-          href="/"
-        >
-          <span aria-hidden className="tool-marker-dot h-1.5 w-1.5" />
-          <span aria-hidden className="shrink-0">
-            <IconLayoutDashboard size={15} />
-          </span>
-          <span className="font-medium">Home</span>
-        </Link>
-      </div>
     </nav>
   );
 }
