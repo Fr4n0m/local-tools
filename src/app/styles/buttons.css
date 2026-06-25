@@ -136,6 +136,15 @@
   padding: 0;
 }
 
+.lt-button.page-display-control-button:hover:not(:disabled),
+.lt-button.page-display-control-button:focus-visible {
+  box-shadow: 2px 2px 0 var(--button-shadow-color);
+}
+
+.lt-button.page-display-control-button:active:not(:disabled) {
+  box-shadow: 1px 1px 0 var(--button-shadow-color);
+}
+
 .page-display-control-group {
   box-shadow: var(--surface-shadow-compact);
 }
@@ -151,7 +160,7 @@
   width: 0.82rem;
   height: 0.82rem;
   display: block;
-  object-fit: contain;
+  stroke-width: 2.4;
 }
 
 @media (prefers-reduced-motion: reduce) {
