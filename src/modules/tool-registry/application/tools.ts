@@ -1,21 +1,36 @@
 import {
-  IconBrackets,
+  IconBinary,
+  IconBrush,
+  IconCarouselHorizontal,
+  IconChartDots3,
   IconColorSwatch,
   IconContrast2,
   IconClockHour4,
+  IconDroplet,
+  IconEye,
+  IconFileDescription,
   IconFileTypePng,
   IconFileTypePdf,
-  IconForms,
-  IconFileText,
+  IconFileTypeSvg,
+  IconFileTypography,
+  IconFileZip,
+  IconFingerprint,
+  IconJson,
   IconLanguage,
   IconLink,
-  IconPhoto,
+  IconLoader2,
+  IconMarkdown,
+  IconMusic,
+  IconPhotoCog,
+  IconPhotoDown,
+  IconPhotoScan,
+  IconPrompt,
   IconQrcode,
-  IconTextPlus,
   IconPalette,
-  IconVectorSpline,
   IconRegex,
-  IconVariable,
+  IconSparkles,
+  IconUserCircle,
+  IconVideo,
 } from "@tabler/icons-react";
 
 import { Base64Tool } from "@/modules/base64-tool/presentation/components/base64-tool";
@@ -120,7 +135,7 @@ export const tools: Tool[] = [
   {
     id: "avatar-generator",
     category: "files-media",
-    icon: IconPhoto,
+    icon: IconUserCircle,
     component: AvatarGeneratorTool,
     name: { en: avatarEn.name, es: avatarEs.name },
     description: { en: avatarEn.description, es: avatarEs.description },
@@ -128,7 +143,7 @@ export const tools: Tool[] = [
   {
     id: "image-converter",
     category: "files-media",
-    icon: IconPhoto,
+    icon: IconPhotoCog,
     component: ImageConverterTool,
     name: { en: imageEn.name, es: imageEs.name },
     description: { en: imageEn.description, es: imageEs.description },
@@ -136,7 +151,7 @@ export const tools: Tool[] = [
   {
     id: "image-compressor",
     category: "files-media",
-    icon: IconPhoto,
+    icon: IconPhotoDown,
     component: ImageCompressorTool,
     name: { en: imageCompressorEn.name, es: imageCompressorEs.name },
     description: {
@@ -155,7 +170,7 @@ export const tools: Tool[] = [
   {
     id: "heic-to-jpg",
     category: "files-media",
-    icon: IconPhoto,
+    icon: IconPhotoScan,
     component: HeicToJpgTool,
     name: { en: heicEn.name, es: heicEs.name },
     description: { en: heicEn.description, es: heicEs.description },
@@ -171,7 +186,7 @@ export const tools: Tool[] = [
   {
     id: "svg-to-file",
     category: "files-media",
-    icon: IconVectorSpline,
+    icon: IconFileTypeSvg,
     component: SvgToFileTool,
     name: { en: svgEn.name, es: svgEs.name },
     description: { en: svgEn.description, es: svgEs.description },
@@ -187,7 +202,7 @@ export const tools: Tool[] = [
   {
     id: "pdf-compressor",
     category: "files-media",
-    icon: IconFileTypePdf,
+    icon: IconFileZip,
     component: PdfCompressorTool,
     name: { en: pdfCompressorEn.name, es: pdfCompressorEs.name },
     description: {
@@ -198,7 +213,7 @@ export const tools: Tool[] = [
   {
     id: "video-compressor",
     category: "files-media",
-    icon: IconFileTypePdf,
+    icon: IconVideo,
     component: VideoCompressorTool,
     name: { en: videoCompressorEn.name, es: videoCompressorEs.name },
     description: {
@@ -209,7 +224,7 @@ export const tools: Tool[] = [
   {
     id: "json-formatter",
     category: "data-encoding",
-    icon: IconBrackets,
+    icon: IconJson,
     component: JsonFormatterTool,
     name: { en: jsonEn.name, es: jsonEs.name },
     description: { en: jsonEn.description, es: jsonEs.description },
@@ -217,7 +232,7 @@ export const tools: Tool[] = [
   {
     id: "json-prompt-composer",
     category: "data-encoding",
-    icon: IconBrackets,
+    icon: IconPrompt,
     component: JsonPromptComposerTool,
     name: { en: promptEn.name, es: promptEs.name },
     description: { en: promptEn.description, es: promptEs.description },
@@ -241,7 +256,7 @@ export const tools: Tool[] = [
   {
     id: "fetch-colors",
     category: "data-encoding",
-    icon: IconPalette,
+    icon: IconBrush,
     component: FetchColorsTool,
     name: { en: fetchColorsEn.name, es: fetchColorsEs.name },
     description: {
@@ -263,7 +278,7 @@ export const tools: Tool[] = [
   {
     id: "base64-tool",
     category: "data-encoding",
-    icon: IconForms,
+    icon: IconBinary,
     component: Base64Tool,
     name: { en: base64En.name, es: base64Es.name },
     description: { en: base64En.description, es: base64Es.description },
@@ -287,7 +302,7 @@ export const tools: Tool[] = [
   {
     id: "data-to-markdown",
     category: "text-code",
-    icon: IconBrackets,
+    icon: IconMarkdown,
     component: DataToMarkdownTool,
     name: { en: dataToMdEn.name, es: dataToMdEs.name },
     description: { en: dataToMdEn.description, es: dataToMdEs.description },
@@ -295,7 +310,7 @@ export const tools: Tool[] = [
   {
     id: "focus-reader",
     category: "text-code",
-    icon: IconTextPlus,
+    icon: IconEye,
     component: FocusReaderTool,
     name: { en: focusEn.name, es: focusEs.name },
     description: { en: focusEn.description, es: focusEs.description },
@@ -303,7 +318,7 @@ export const tools: Tool[] = [
   {
     id: "mesh-gradient",
     category: "advanced",
-    icon: IconColorSwatch,
+    icon: IconChartDots3,
     component: MeshGradientTool,
     name: { en: meshEn.name, es: meshEs.name },
     description: { en: meshEn.description, es: meshEs.description },
@@ -311,7 +326,7 @@ export const tools: Tool[] = [
   {
     id: "progressive-blur",
     category: "advanced",
-    icon: IconContrast2,
+    icon: IconDroplet,
     component: ProgressiveBlurTool,
     name: { en: progressiveEn.name, es: progressiveEs.name },
     description: {
@@ -322,7 +337,7 @@ export const tools: Tool[] = [
   {
     id: "liquid-glass",
     category: "advanced",
-    icon: IconForms,
+    icon: IconSparkles,
     component: LiquidGlassTool,
     name: { en: liquidEn.name, es: liquidEs.name },
     description: { en: liquidEn.description, es: liquidEs.description },
@@ -330,7 +345,7 @@ export const tools: Tool[] = [
   {
     id: "loader-maker",
     category: "advanced",
-    icon: IconVariable,
+    icon: IconLoader2,
     component: LoaderMakerTool,
     name: { en: loaderEn.name, es: loaderEs.name },
     description: { en: loaderEn.description, es: loaderEs.description },
@@ -338,7 +353,7 @@ export const tools: Tool[] = [
   {
     id: "llms-txt",
     category: "text-code",
-    icon: IconFileText,
+    icon: IconFileDescription,
     component: LlmsTxtTool,
     name: { en: llmsEn.name, es: llmsEs.name },
     description: { en: llmsEn.description, es: llmsEs.description },
@@ -354,7 +369,7 @@ export const tools: Tool[] = [
   {
     id: "placeholder-text",
     category: "text-code",
-    icon: IconTextPlus,
+    icon: IconFileTypography,
     component: PlaceholderTextTool,
     name: { en: placeholderEn.name, es: placeholderEs.name },
     description: {
@@ -365,7 +380,7 @@ export const tools: Tool[] = [
   {
     id: "uuid-generator",
     category: "text-code",
-    icon: IconVariable,
+    icon: IconFingerprint,
     component: UuidGeneratorTool,
     name: { en: uuidEn.name, es: uuidEs.name },
     description: { en: uuidEn.description, es: uuidEs.description },
@@ -373,7 +388,7 @@ export const tools: Tool[] = [
   {
     id: "carousel-generator",
     category: "advanced",
-    icon: IconForms,
+    icon: IconCarouselHorizontal,
     component: CarouselGeneratorTool,
     name: { en: carouselEn.name, es: carouselEs.name },
     description: { en: carouselEn.description, es: carouselEs.description },
@@ -381,7 +396,7 @@ export const tools: Tool[] = [
   {
     id: "chord-explorer",
     category: "advanced",
-    icon: IconVariable,
+    icon: IconMusic,
     component: ChordExplorerTool,
     name: { en: chordEn.name, es: chordEs.name },
     description: { en: chordEn.description, es: chordEs.description },
