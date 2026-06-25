@@ -44,12 +44,12 @@
 .lt-button:hover:not(:disabled),
 .lt-button:focus-visible {
   transform: translateY(-2px);
-  box-shadow: 0 5px 0 var(--button-shadow-color);
+  box-shadow: 4px 4px 0 var(--button-shadow-color);
 }
 
 .lt-button--solid:hover:not(:disabled),
 .lt-button--solid:focus-visible {
-  box-shadow: 0 5px 0 var(--button-shadow-dark-color);
+  box-shadow: 4px 4px 0 var(--button-shadow-dark-color);
   background: color-mix(in oklab, var(--color-foreground), #ffffff 14%);
   border-color: color-mix(in oklab, var(--color-foreground), #ffffff 14%);
 }
@@ -63,7 +63,11 @@
 
 .lt-button:active:not(:disabled) {
   transform: translateY(0);
-  box-shadow: 0 2px 0 var(--button-shadow-color);
+  box-shadow: 1px 1px 0 var(--button-shadow-color);
+}
+
+.lt-button--solid:active:not(:disabled) {
+  box-shadow: 1px 1px 0 var(--button-shadow-dark-color);
 }
 
 .lt-button:focus-visible {

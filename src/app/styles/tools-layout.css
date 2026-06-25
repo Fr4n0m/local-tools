@@ -3,6 +3,11 @@
 }
 
 .tools-aside-panel {
+  --aside-control-shadow: color-mix(
+    in oklab,
+    var(--surface-shadow-dark-color),
+    #ffffff 38%
+  );
   border: none;
   box-shadow:
     var(--surface-shadow-dark),
@@ -18,7 +23,11 @@
     var(--color-sidebar-foreground),
     transparent 91%
   );
-  box-shadow: none;
+  box-shadow: 3px 3px 0 var(--aside-control-shadow);
+  transition:
+    background-color 150ms ease,
+    box-shadow 150ms ease,
+    transform 150ms ease;
 }
 
 .tools-aside-panel .aside-search:focus-visible {
@@ -27,9 +36,9 @@
     var(--color-sidebar-foreground),
     transparent 87%
   );
-  outline: 2px solid
-    color-mix(in oklab, var(--color-sidebar-foreground), transparent 56%);
-  outline-offset: 2px;
+  transform: translateY(-1px);
+  box-shadow: 4px 4px 0 var(--aside-control-shadow);
+  outline: none;
 }
 
 .aside-language-select {
@@ -65,7 +74,7 @@
     transparent 88%
   );
   transform: translateY(-1px);
-  box-shadow: 0 3px 0 var(--surface-shadow-dark-color);
+  box-shadow: 4px 4px 0 var(--aside-control-shadow);
 }
 
 .aside-language-trigger:focus-visible {
@@ -102,7 +111,7 @@
 .tools-aside-panel button[aria-label="Tema"]:hover,
 .tools-aside-panel button[aria-label="Tema"]:focus-visible {
   transform: translateY(-1px);
-  box-shadow: 0 3px 0 var(--surface-shadow-dark-color);
+  box-shadow: 4px 4px 0 var(--aside-control-shadow);
 }
 
 .aside-language-trigger:active,
@@ -111,12 +120,12 @@
 .tools-aside-panel button[aria-label="Theme"]:active,
 .tools-aside-panel button[aria-label="Tema"]:active {
   transform: translateY(1px) scale(0.96);
-  box-shadow: 0 1px 0 var(--surface-shadow-dark-color);
+  box-shadow: 1px 1px 0 var(--aside-control-shadow);
 }
 
 .aside-top-control:active {
   transform: translateY(1px) scale(0.92);
-  box-shadow: 0 1px 0 var(--surface-shadow-dark-color);
+  box-shadow: 1px 1px 0 var(--aside-control-shadow);
 }
 
 .aside-language-flag {
@@ -136,7 +145,7 @@
   background: #050505;
   padding: 0.35rem;
   box-shadow:
-    5px 5px 0 var(--surface-shadow-dark-color),
+    5px 5px 0 var(--aside-control-shadow),
     0 18px 42px -24px rgba(0, 0, 0, 0.8);
   transform-origin: top right;
   animation: aside-language-menu-in 160ms ease-out both;
@@ -202,15 +211,129 @@
   box-shadow: none;
 }
 
-.tools-tool-panel,
-.tools-privacy-panel {
+.tools-tool-panel {
   box-shadow: var(--surface-shadow-compact);
 }
 
 .tools-tool-panel {
+  position: relative;
   transition:
     box-shadow 180ms ease,
     border-color 180ms ease;
+}
+
+.tools-tool-topbar {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 10;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.tools-privacy-popover {
+  position: relative;
+}
+
+.tools-privacy-trigger {
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid color-mix(in oklab, var(--color-border), transparent 10%);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-foreground);
+  background: color-mix(in oklab, var(--color-background), transparent 6%);
+  box-shadow: 3px 3px 0 var(--surface-shadow-color);
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease;
+}
+
+@supports (corner-shape: squircle) {
+  .tools-privacy-trigger {
+    corner-shape: squircle;
+  }
+}
+
+.tools-privacy-trigger:hover,
+.tools-privacy-trigger:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: 5px 5px 0 var(--surface-shadow-color);
+}
+
+.tools-privacy-trigger:focus-visible {
+  outline: 2px solid var(--button-focus-ring);
+  outline-offset: 3px;
+}
+
+.tools-privacy-card {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.65rem);
+  width: min(20rem, calc(100vw - 2rem));
+  border: 1px solid color-mix(in oklab, var(--color-border), transparent 8%);
+  border-radius: var(--radius-squircle);
+  background: color-mix(in oklab, var(--color-background), transparent 0%);
+  padding: 0.9rem;
+  color: color-mix(in oklab, var(--color-foreground), transparent 18%);
+  box-shadow:
+    var(--surface-shadow-compact),
+    0 24px 60px -36px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-0.25rem) scale(0.98);
+  transform-origin: top right;
+  transition:
+    opacity 150ms ease,
+    transform 150ms ease;
+}
+
+@supports (corner-shape: squircle) {
+  .tools-privacy-card {
+    corner-shape: squircle;
+  }
+}
+
+.tools-privacy-popover:hover .tools-privacy-card,
+.tools-privacy-popover:focus-within .tools-privacy-card {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
+
+.tools-privacy-card p {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.tools-privacy-card ul {
+  margin: 0.65rem 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.tools-privacy-card li {
+  display: grid;
+  grid-template-columns: 0.95rem 1fr;
+  gap: 0.4rem;
+  align-items: start;
+}
+
+.tools-privacy-card li + li {
+  margin-top: 0.3rem;
+}
+
+.tools-privacy-card li svg {
+  margin-top: 0.12rem;
+  color: var(--color-foreground);
+  stroke-width: 2.45;
 }
 
 .tools-index-panel {
@@ -430,20 +553,6 @@
   font-size: 0.9rem;
 }
 
-.tools-privacy-panel {
-  transition:
-    transform 180ms ease,
-    box-shadow 180ms ease,
-    border-color 180ms ease,
-    background-color 180ms ease;
-}
-
-.tools-privacy-panel:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--surface-shadow);
-  border-color: color-mix(in oklab, var(--color-border), transparent 0%);
-}
-
 @media (min-width: 768px) {
   .tools-page-shell {
     padding-right: calc(0.75rem + 8px);
@@ -459,13 +568,16 @@
     animation: none;
   }
 
+  .tools-aside-panel .aside-search,
+  .tools-aside-panel .aside-search:focus-visible {
+    transform: none;
+  }
+
   .tools-tool-panel,
-  .tools-privacy-panel,
   .tools-index-card {
     transition: none;
   }
 
-  .tools-privacy-panel:hover,
   .tools-index-card:hover,
   .tools-index-card:focus-visible,
   .tools-index-card:active,
@@ -500,6 +612,11 @@
 }
 
 @media (max-width: 640px) {
+  .tools-tool-topbar {
+    top: 1rem;
+    right: 1rem;
+  }
+
   .tools-index-panel {
     min-height: auto;
   }
