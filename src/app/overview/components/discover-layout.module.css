@@ -138,7 +138,7 @@
 .cardCta:hover,
 .cardCta:focus-visible {
   transform: translateY(-2px);
-  box-shadow: 0 5px 0 var(--button-shadow-color);
+  box-shadow: 4px 4px 0 var(--button-shadow-color);
   background: color-mix(
     in oklab,
     var(--color-background),
@@ -148,7 +148,7 @@
 
 .cardCta:active {
   transform: translateY(0);
-  box-shadow: 0 2px 0 var(--button-shadow-color);
+  box-shadow: 1px 1px 0 var(--button-shadow-color);
 }
 
 .cardCta:focus-visible {

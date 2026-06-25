@@ -2,11 +2,19 @@
   transition:
     color 0.18s ease,
     transform 0.18s ease,
+    box-shadow 0.18s ease,
+    background-color 0.18s ease,
     text-shadow 0.18s ease;
 }
 
 .aside-tool-btn:hover {
   transform: translateX(2px);
+  box-shadow: 4px 4px 0 var(--aside-control-shadow);
+  background: color-mix(
+    in oklab,
+    var(--color-sidebar-foreground),
+    transparent 94%
+  );
   text-shadow:
     0 0 16px
       color-mix(in oklab, var(--color-sidebar-foreground), transparent 58%),
@@ -32,12 +40,14 @@
 
 .aside-tool-btn:focus-visible {
   transform: translateX(2px);
+  box-shadow: 4px 4px 0 var(--aside-control-shadow);
   text-shadow: 0 0 14px
     color-mix(in oklab, var(--color-sidebar-foreground), transparent 70%);
 }
 
 .aside-tool-btn:active {
   transform: translateX(1px) scale(0.985);
+  box-shadow: 1px 1px 0 var(--aside-control-shadow);
 }
 
 .aside-tool-btn .shrink-0 {
@@ -60,7 +70,7 @@
 .aside-primary-btn:hover,
 .aside-primary-btn:focus-visible {
   transform: translateY(-1px);
-  box-shadow: 0 4px 0 var(--surface-shadow-dark-color);
+  box-shadow: 4px 4px 0 var(--aside-control-shadow);
   background: color-mix(
     in oklab,
     var(--color-sidebar-foreground),
@@ -69,7 +79,7 @@
 }
 
 .aside-primary-btn[aria-pressed="true"] {
-  box-shadow: 0 3px 0 var(--surface-shadow-dark-color);
+  box-shadow: 3px 3px 0 var(--aside-control-shadow);
   background: color-mix(
     in oklab,
     var(--color-sidebar-foreground),
@@ -79,7 +89,60 @@
 
 .aside-primary-btn:active {
   transform: translateY(1px) scale(0.985);
-  box-shadow: 0 1px 0 var(--surface-shadow-dark-color);
+  box-shadow: 1px 1px 0 var(--aside-control-shadow);
+}
+
+.aside-empty-state {
+  margin-inline: 0.25rem;
+  border-radius: 0.7rem;
+  padding: 0.85rem;
+  background: color-mix(
+    in oklab,
+    var(--color-sidebar-foreground),
+    transparent 92%
+  );
+  box-shadow: 5px 5px 0 var(--aside-control-shadow);
+}
+
+.aside-empty-icon {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-sidebar);
+  background: var(--color-sidebar-foreground);
+}
+
+.aside-empty-icon svg {
+  stroke-width: 2.45;
+}
+
+.aside-empty-state p {
+  margin: 0.7rem 0 0;
+  font-size: 0.9rem;
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--color-sidebar-foreground);
+}
+
+.aside-empty-state span:not(.aside-empty-icon) {
+  display: block;
+  margin-top: 0.4rem;
+  font-size: 0.76rem;
+  line-height: 1.35;
+  color: color-mix(in oklab, var(--color-sidebar-foreground), transparent 30%);
+}
+
+.aside-empty-link {
+  margin-top: 0.75rem;
+  display: inline-flex;
+  color: var(--color-sidebar-foreground);
+  font-size: 0.75rem;
+  font-weight: 850;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
 }
 
 .tool-marker-dot {

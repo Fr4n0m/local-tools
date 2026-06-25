@@ -3,6 +3,7 @@
 import {
   IconArrowRight,
   IconChevronDown,
+  IconCheck,
   IconGridDots,
   IconLayoutRows,
   IconLayoutDistributeVertical,
@@ -10,6 +11,8 @@ import {
   IconMenu2,
   IconMoon,
   IconSearch,
+  IconShieldCheck,
+  IconSparkles,
   IconSun,
 } from "@tabler/icons-react";
 import Link from "next/link";
@@ -38,6 +41,62 @@ function isToolId(value: string): value is ToolId {
 
 type Density = "comfortable" | "compact";
 type ToolView = "grid" | "tool";
+
+const SEARCH_SYNONYMS: Record<string, string[]> = {
+  comprimir: ["compresor", "compresion", "compression", "compress", "reduce"],
+  compresor: ["comprimir", "compresion", "compression", "compress", "reduce"],
+  compresion: ["comprimir", "compresor", "compression", "compress", "reduce"],
+  compression: ["compress", "compressor", "comprimir", "compresor"],
+  compress: ["compression", "compressor", "comprimir", "compresor"],
+  convertir: ["conversor", "conversion", "convert", "converter", "exportar"],
+  conversor: ["convertir", "conversion", "convert", "converter", "export"],
+  conversion: ["convertir", "conversor", "convert", "converter"],
+  convert: ["converter", "conversion", "convertir", "conversor"],
+  converter: ["convert", "conversion", "convertir", "conversor"],
+  imagen: ["image", "photo", "foto", "png", "jpg", "jpeg", "webp", "heic"],
+  image: ["imagen", "photo", "foto", "png", "jpg", "jpeg", "webp", "heic"],
+  foto: ["photo", "image", "imagen", "jpg", "jpeg", "heic"],
+  photo: ["foto", "image", "imagen", "jpg", "jpeg", "heic"],
+  pdf: ["documento", "document", "paginas", "pages"],
+  json: ["payload", "api", "format", "formato", "validar", "validate"],
+  formato: ["format", "formatter", "formatear", "json"],
+  formatear: ["format", "formatter", "formato", "json"],
+  format: ["formatter", "formato", "formatear", "json"],
+  validar: ["validate", "checker", "comprobar", "contraste", "contrast"],
+  validate: ["validar", "checker", "check", "contrast", "contraste"],
+  color: ["colores", "colors", "palette", "paleta", "contraste", "contrast"],
+  colores: ["color", "colors", "palette", "paleta", "contraste"],
+  colors: ["color", "colores", "palette", "paleta", "contrast"],
+  texto: ["text", "transformar", "transform", "string"],
+  text: ["texto", "transformar", "transform", "string"],
+  qr: ["codigo", "code", "link", "url"],
+  url: ["link", "encode", "decode", "codificar", "decodificar"],
+  codificar: ["encode", "encoder", "base64", "url"],
+  decodificar: ["decode", "decoder", "base64", "url"],
+  encode: ["codificar", "encoder", "base64", "url"],
+  decode: ["decodificar", "decoder", "base64", "url"],
+};
+
+function normalizeSearchText(value: string): string {
+  return value
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+function expandSearchTerms(value: string): string[] {
+  const normalized = normalizeSearchText(value);
+  if (!normalized) {
+    return [];
+  }
+
+  const terms = normalized.split(/\s+/);
+  return Array.from(
+    new Set(terms.flatMap((term) => [term, ...(SEARCH_SYNONYMS[term] ?? [])])),
+  );
+}
 
 function readInitialDensity(): Density {
   if (typeof window === "undefined") {
@@ -270,19 +329,26 @@ export function ToolboxApp() {
     setThemeWithTransition(setTheme, theme === "light" ? "dark" : "light");
 
   const filteredTools = useMemo(() => {
-    const trimmedSearch = search.trim().toLowerCase();
-    if (!trimmedSearch) {
+    const searchTerms = expandSearchTerms(search);
+    if (searchTerms.length === 0) {
       return tools;
     }
 
     return tools.filter((tool) => {
-      const name = tool.name[language].toLowerCase();
-      const description = tool.description[language].toLowerCase();
-      return (
-        name.includes(trimmedSearch) || description.includes(trimmedSearch)
+      const searchableText = normalizeSearchText(
+        [
+          tool.id,
+          tool.category,
+          tool.name.en,
+          tool.name.es,
+          tool.description.en,
+          tool.description.es,
+        ].join(" "),
       );
+
+      return searchTerms.some((term) => searchableText.includes(term));
     });
-  }, [language, search]);
+  }, [search]);
 
   const selectedTool =
     tools.find((tool) => tool.id === selectedToolId) ?? tools[0];
@@ -378,7 +444,11 @@ export function ToolboxApp() {
         ) : null}
 
         <main
-          className="tools-main-panel flex-1 p-4 md:rounded-2xl md:bg-background/72 md:p-8"
+          className={`flex-1 p-4 ${
+            view === "grid"
+              ? "tools-main-panel md:rounded-2xl md:p-8"
+              : "md:p-0"
+          }`}
           id="main-content"
           tabIndex={-1}
         >
@@ -407,28 +477,12 @@ export function ToolboxApp() {
             />
           ) : (
             <section className="tool-shell tools-tool-panel rounded-lg border border-border/50 bg-background/90 p-4 md:p-6">
+              <div className="tools-tool-topbar">
+                <PrivacyInfo text={text} />
+              </div>
               <SelectedToolComponent language={language} />
             </section>
           )}
-          <aside className="tools-privacy-panel mt-3 rounded-md border border-border/40 bg-panel/20 px-3 py-2 text-xs text-foreground/75">
-            <details>
-              <summary className="privacy-summary cursor-pointer select-none font-medium">
-                <span>{text.privacyTitle}</span>
-                <IconChevronDown
-                  aria-hidden
-                  className="privacy-summary__icon"
-                  size={14}
-                />
-              </summary>
-              <p className="mt-2 text-foreground/80">{text.privacy}</p>
-              <ul className="mt-2 list-disc space-y-1 pl-5 text-foreground/80">
-                <li>{text.privacyItems.local}</li>
-                <li>{text.privacyItems.upload}</li>
-                <li>{text.privacyItems.tracking}</li>
-                <li>{text.privacyItems.auth}</li>
-              </ul>
-            </details>
-          </aside>
         </main>
       </div>
     </div>
@@ -590,38 +644,52 @@ function Sidebar({
           value={search}
         />
       </div>
-      <div className="space-y-0.5">
-        <Link
-          className="aside-tool-btn aside-primary-btn group flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-sm text-sidebar-foreground/88 hover:text-sidebar-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sidebar-foreground"
-          href="/"
-        >
-          <span aria-hidden className="tool-marker-dot h-1.5 w-1.5" />
-          <span aria-hidden className="shrink-0">
-            <IconLayoutDashboard size={15} />
-          </span>
-          <span className="font-medium">{text.homeNav}</span>
-        </Link>
-        <button
-          aria-pressed={view === "grid"}
-          className={`aside-tool-btn aside-primary-btn group flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sidebar-foreground ${
-            view === "grid"
-              ? "font-semibold text-sidebar-foreground"
-              : "text-sidebar-foreground/88 hover:text-sidebar-foreground focus-visible:text-sidebar-foreground"
-          }`}
-          onClick={onShowGrid}
-          type="button"
-        >
-          <span aria-hidden className="tool-marker-dot h-1.5 w-1.5" />
-          <span aria-hidden className="shrink-0">
-            <IconGridDots size={15} />
-          </span>
-          <span className="font-medium">{text.toolsIndexNav}</span>
-        </button>
-      </div>
+      {search.trim() ? null : (
+        <div className="space-y-1.5 px-1">
+          <Link
+            className="aside-tool-btn aside-primary-btn group flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-sm text-sidebar-foreground/88 hover:text-sidebar-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sidebar-foreground"
+            href="/"
+          >
+            <span aria-hidden className="tool-marker-dot h-1.5 w-1.5" />
+            <span aria-hidden className="shrink-0">
+              <IconLayoutDashboard size={15} />
+            </span>
+            <span className="font-medium">{text.homeNav}</span>
+          </Link>
+          <button
+            aria-pressed={view === "grid"}
+            className={`aside-tool-btn aside-primary-btn group flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sidebar-foreground ${
+              view === "grid"
+                ? "font-semibold text-sidebar-foreground"
+                : "text-sidebar-foreground/88 hover:text-sidebar-foreground focus-visible:text-sidebar-foreground"
+            }`}
+            onClick={onShowGrid}
+            type="button"
+          >
+            <span aria-hidden className="tool-marker-dot h-1.5 w-1.5" />
+            <span aria-hidden className="shrink-0">
+              <IconGridDots size={15} />
+            </span>
+            <span className="font-medium">{text.toolsIndexNav}</span>
+          </button>
+        </div>
+      )}
       {toolsToRender.length === 0 ? (
-        <p className="px-1 text-sm text-sidebar-foreground/85">
-          {text.emptySearch}
-        </p>
+        <div className="aside-empty-state">
+          <span className="aside-empty-icon" aria-hidden>
+            <IconSparkles size={16} />
+          </span>
+          <p>{text.emptySearchTitle}</p>
+          <span>{text.emptySearchText}</span>
+          <a
+            className="aside-empty-link"
+            href={text.footer.reportUrl}
+            rel="noreferrer"
+            target="_blank"
+          >
+            {text.emptySearchCta}
+          </a>
+        </div>
       ) : null}
       {Object.entries(grouped).map(([category, categoryTools]) => (
         <CategorySection
@@ -635,6 +703,35 @@ function Sidebar({
         />
       ))}
     </nav>
+  );
+}
+
+type PrivacyInfoProps = {
+  text: (typeof sharedMessages)[Language];
+};
+
+function PrivacyInfo({ text }: PrivacyInfoProps) {
+  return (
+    <div className="tools-privacy-popover">
+      <button
+        aria-label={text.privacyTitle}
+        className="tools-privacy-trigger"
+        type="button"
+      >
+        <IconShieldCheck aria-hidden size={15} />
+      </button>
+      <div className="tools-privacy-card" role="tooltip">
+        <p>{text.privacy}</p>
+        <ul>
+          {Object.values(text.privacyItems).map((item) => (
+            <li key={item}>
+              <IconCheck aria-hidden size={13} />
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
   );
 }
 

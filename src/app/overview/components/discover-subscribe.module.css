@@ -48,12 +48,12 @@
 .subscribeForm button:hover:not(:disabled),
 .subscribeForm button:focus-visible {
   transform: translateY(-2px);
-  box-shadow: 0 5px 0 var(--button-shadow-color);
+  box-shadow: 4px 4px 0 var(--button-shadow-color);
 }
 
 .subscribeForm button:active:not(:disabled) {
   transform: translateY(0);
-  box-shadow: 0 2px 0 var(--button-shadow-color);
+  box-shadow: 1px 1px 0 var(--button-shadow-color);
 }
 
 .subscribeForm button:focus-visible {

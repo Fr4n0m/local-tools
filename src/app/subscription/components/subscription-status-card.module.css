@@ -111,7 +111,13 @@
 .actions button:hover:not(:disabled),
 .actions a:hover {
   transform: translateY(-2px);
-  box-shadow: 0 5px 0 var(--button-shadow-color);
+  box-shadow: 4px 4px 0 var(--button-shadow-color);
+}
+
+.actions button:active:not(:disabled),
+.actions a:active {
+  transform: translateY(0);
+  box-shadow: 1px 1px 0 var(--button-shadow-color);
 }
 
 .actions button:focus-visible,

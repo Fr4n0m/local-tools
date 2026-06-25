@@ -133,7 +133,7 @@
 .headerNav button:hover,
 .headerNav button:focus-visible {
   transform: translateY(-2px) scale(1.04);
-  box-shadow: 0 5px 0 var(--button-shadow-color);
+  box-shadow: 4px 4px 0 var(--button-shadow-color);
   background: color-mix(in oklab, var(--color-background), #ffffff 14%);
   border-color: color-mix(in oklab, var(--color-border), transparent 0%);
 }
@@ -145,5 +145,5 @@
 
 .headerNav button:active {
   transform: translateY(0) scale(0.92);
-  box-shadow: 0 2px 0 var(--button-shadow-color);
+  box-shadow: 1px 1px 0 var(--button-shadow-color);
 }
