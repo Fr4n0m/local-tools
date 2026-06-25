@@ -93,6 +93,22 @@
   aspect-ratio: 16 / 11;
 }
 
+@media (min-width: 1440px) {
+  .communityBodyWrap {
+    min-height: clamp(170px, 18vh, 220px);
+    padding-bottom: clamp(1.65rem, 2.4vh, 2.15rem);
+  }
+
+  .communityLowerRow {
+    margin-top: 0.32rem;
+  }
+
+  .communityAssetWrap {
+    right: -0.6rem;
+    bottom: -2rem;
+  }
+}
+
 .communityAsset {
   object-fit: contain;
 }

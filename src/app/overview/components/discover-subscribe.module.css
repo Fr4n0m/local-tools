@@ -142,3 +142,21 @@
   position: relative;
   z-index: 1;
 }
+
+@media (min-width: 1440px) {
+  .subscribeForm,
+  .subscribeFeedback {
+    max-width: clamp(16rem, 17vw, 19.5rem);
+  }
+
+  .cardRow {
+    min-height: clamp(140px, 15.5vh, 184px);
+    padding-right: clamp(7.5rem, 10.5vw, 9.4rem);
+    margin-top: 0.55rem;
+  }
+
+  .mailAssetWrap {
+    right: clamp(1rem, 1.65vw, 2.2rem);
+    bottom: clamp(1.25rem, 2vh, 1.8rem);
+  }
+}

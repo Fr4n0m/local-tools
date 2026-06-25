@@ -435,6 +435,73 @@
   gap: clamp(0.9rem, 1.6vw, 1.18rem);
 }
 
+.tools-index-groups {
+  display: grid;
+  gap: clamp(2.35rem, 4.4vw, 3.6rem);
+}
+
+.tools-index-group {
+  min-width: 0;
+}
+
+.tools-index-group-heading {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.45rem;
+  padding: 0.25rem 0 0.25rem 0.9rem;
+}
+
+.tools-index-group-heading::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.12rem;
+  bottom: 0.12rem;
+  width: 0.28rem;
+  border-radius: 999px;
+  background: var(--color-foreground);
+  box-shadow: 2px 2px 0 var(--surface-shadow-color);
+}
+
+.tools-index-group-heading h2 {
+  margin: 0;
+  position: relative;
+  display: inline-flex;
+  width: fit-content;
+  font-family: var(--font-heading), "Segoe UI", sans-serif;
+  font-size: clamp(1.12rem, 1.8vw, 1.45rem);
+  font-weight: 850;
+  line-height: 1.05;
+  letter-spacing: 0.015em;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 0
+    color-mix(in oklab, var(--surface-shadow-color), transparent 18%);
+}
+
+.tools-index-group-heading span {
+  min-width: 2.25rem;
+  border: 1px solid color-mix(in oklab, var(--color-border), transparent 12%);
+  border-radius: 0.7rem;
+  padding: 0.28rem 0.62rem;
+  color: var(--color-background);
+  background: var(--color-foreground);
+  box-shadow: 3px 3px 0 var(--surface-shadow-color);
+  font-family: var(--font-heading), "Segoe UI", sans-serif;
+  font-size: 0.72rem;
+  font-weight: 850;
+  line-height: 1;
+  text-align: center;
+}
+
+@supports (corner-shape: squircle) {
+  .tools-index-group-heading span {
+    corner-shape: squircle;
+  }
+}
+
 .tools-index-card {
   min-height: 12.5rem;
   border: 1px solid color-mix(in oklab, var(--color-border), transparent 8%);

@@ -1,106 +1,42 @@
 .heroMockFrame {
-  width: min(100%, 760px);
-  height: 460px;
+  position: relative;
+  width: min(100%, 820px);
+  aspect-ratio: 1.45;
   border-radius: calc(var(--radius-squircle) - 2px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background:
-    radial-gradient(
-      circle at 85% 10%,
-      rgba(58, 112, 198, 0.28) 0%,
-      transparent 35%
-    ),
-    linear-gradient(140deg, #090d14 0%, #0b111a 42%, #101a28 100%);
-  transform: perspective(1500px) rotateY(-24deg) rotateX(5deg) rotateZ(-1.2deg);
+  overflow: hidden;
+  background: var(--color-sidebar);
+  transform: perspective(1500px) rotateY(-18deg) rotateX(4deg) rotateZ(-1deg);
   transform-origin: center right;
   box-shadow:
-    0 70px 110px -58px rgba(2, 8, 20, 0.95),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.03);
-  padding: 0.78rem;
-  display: grid;
-  grid-template-rows: auto 1fr;
-  gap: 0.55rem;
+    var(--surface-shadow-dark),
+    0 70px 110px -58px rgba(2, 8, 20, 0.95);
 }
 
-.heroMockTopbar {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
+@supports (corner-shape: squircle) {
+  .heroMockFrame {
+    corner-shape: squircle;
+  }
 }
 
-.heroMockLogo {
-  color: rgba(248, 250, 252, 0.92);
-  transform: scale(0.72);
-  transform-origin: left center;
+.heroMockImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: left top;
+  transition: opacity 180ms ease;
 }
 
-.heroMockSearch {
-  flex: 1;
-  min-height: 28px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(6, 10, 18, 0.56);
-  color: rgba(226, 232, 240, 0.62);
-  display: flex;
-  align-items: center;
-  gap: 0.38rem;
-  padding-inline: 0.45rem;
-  font-size: 0.7rem;
+.heroMockImageDark {
+  opacity: 0;
 }
 
-.heroMockBody {
-  display: grid;
-  grid-template-columns: 70px 1fr;
-  gap: 0.55rem;
+:global(.dark) .heroMockImageLight {
+  opacity: 0;
 }
 
-.heroMockSidebar {
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  background: rgba(8, 12, 21, 0.45);
-  padding: 0.5rem 0.42rem;
-  display: grid;
-  gap: 0.38rem;
-}
-
-.heroMockSidebar span {
-  height: 10px;
-  border-radius: 6px;
-  background: linear-gradient(
-    90deg,
-    rgba(226, 232, 240, 0.2),
-    rgba(226, 232, 240, 0.06)
-  );
-}
-
-.heroMockGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.42rem;
-}
-
-.heroMockGrid article {
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  background: rgba(8, 12, 21, 0.54);
-  padding: 0.45rem;
-  display: grid;
-  gap: 0.3rem;
-}
-
-.heroMockGrid article div {
-  width: 20px;
-  height: 20px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  background: rgba(255, 255, 255, 0.04);
-}
-
-.heroMockGrid article p {
-  height: 8px;
-  border-radius: 6px;
-  background: linear-gradient(
-    90deg,
-    rgba(226, 232, 240, 0.28),
-    rgba(226, 232, 240, 0.08)
-  );
+:global(.dark) .heroMockImageDark {
+  opacity: 1;
 }

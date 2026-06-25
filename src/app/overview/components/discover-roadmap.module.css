@@ -78,3 +78,19 @@
 .roadmapCard .miniList li span:last-child {
   white-space: nowrap;
 }
+
+@media (min-width: 1440px) {
+  .roadmapCard {
+    padding-bottom: clamp(1.7rem, 2.6vh, 2.2rem);
+  }
+
+  .roadmapAssetWrap {
+    right: 0.4rem;
+    bottom: 0.35rem;
+  }
+
+  .roadmapRow {
+    min-height: clamp(165px, 18vh, 224px);
+    padding-top: clamp(1.45rem, 2.6vh, 2.05rem);
+  }
+}

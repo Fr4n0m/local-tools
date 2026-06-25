@@ -7,12 +7,10 @@ import {
   IconBrandGithub,
   IconLock,
   IconRocket,
-  IconSearch,
   IconWorld,
 } from "@tabler/icons-react";
 import Link from "next/link";
 
-import { AppLogo } from "@/shared/presentation/components/app-logo";
 import styles from "./hero-section.module.css";
 
 type HeroCopy = {
@@ -99,30 +97,16 @@ export function HeroSection({ text, onScrollNext }: HeroSectionProps) {
           className={`${styles.heroMockFrame} heroAssetShape`}
           aria-hidden="true"
         >
-          <div className={styles.heroMockTopbar}>
-            <AppLogo className={styles.heroMockLogo} />
-            <div className={styles.heroMockSearch}>
-              <IconSearch size={12} />
-              <span>Search tools&hellip;</span>
-            </div>
-          </div>
-          <div className={styles.heroMockBody}>
-            <div className={styles.heroMockSidebar}>
-              <span />
-              <span />
-              <span />
-              <span />
-            </div>
-            <div className={styles.heroMockGrid}>
-              {Array.from({ length: 6 }).map((_, idx) => (
-                <article key={`mock-${idx}`}>
-                  <div />
-                  <p />
-                  <p />
-                </article>
-              ))}
-            </div>
-          </div>
+          <img
+            alt=""
+            className={`${styles.heroMockImage} ${styles.heroMockImageLight}`}
+            src="/assets/overview/home-hero-tools-grid-light.webp"
+          />
+          <img
+            alt=""
+            className={`${styles.heroMockImage} ${styles.heroMockImageDark}`}
+            src="/assets/overview/home-hero-tools-grid-dark.webp"
+          />
         </div>
       </div>
       <button className={styles.scrollCue} onClick={onScrollNext} type="button">
