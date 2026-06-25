@@ -106,16 +106,18 @@ export function ToolSwitch({
   disabled = false,
 }: ToolSwitchProps) {
   return (
-    <input
-      aria-label={ariaLabel}
-      aria-checked={checked}
-      checked={checked}
-      className={cn("lt-liquid-switch", className)}
-      disabled={disabled}
-      onChange={(event) => onChange(event.target.checked)}
-      role="switch"
-      type="checkbox"
-    />
+    <label className={cn("lt-switch", className)}>
+      <input
+        aria-label={ariaLabel}
+        aria-checked={checked}
+        checked={checked}
+        disabled={disabled}
+        onChange={(event) => onChange(event.target.checked)}
+        role="switch"
+        type="checkbox"
+      />
+      <span aria-hidden className="lt-switch-slider" />
+    </label>
   );
 }
 
