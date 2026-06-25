@@ -1,7 +1,9 @@
 "use client";
 
 import {
+  IconArrowRight,
   IconChevronDown,
+  IconGridDots,
   IconLayoutRows,
   IconLayoutDistributeVertical,
   IconLayoutDashboard,
@@ -35,6 +37,7 @@ function isToolId(value: string): value is ToolId {
 }
 
 type Density = "comfortable" | "compact";
+type ToolView = "grid" | "tool";
 
 function readInitialDensity(): Density {
   if (typeof window === "undefined") {
@@ -58,6 +61,15 @@ function readToolFromUrl(): ToolId | null {
   return isToolId(raw) ? raw : null;
 }
 
+function readViewFromUrl(): ToolView {
+  if (typeof window === "undefined") {
+    return "tool";
+  }
+
+  const view = new URL(window.location.href).searchParams.get("view");
+  return view === "grid" ? "grid" : "tool";
+}
+
 function getInitialToolId(): ToolId {
   const fromUrl = readToolFromUrl();
   if (fromUrl) {
@@ -70,6 +82,19 @@ function getInitialToolId(): ToolId {
   }
 
   return tools[0].id;
+}
+
+function getInitialView(): ToolView {
+  if (typeof window === "undefined") {
+    return "tool";
+  }
+
+  const fromUrl = readViewFromUrl();
+  if (fromUrl === "grid") {
+    return "grid";
+  }
+
+  return readToolFromUrl() ? "tool" : "grid";
 }
 
 function getCategoryStyles(category: string) {
@@ -118,6 +143,7 @@ export function ToolboxApp() {
   const [language, setLanguage] = useState<Language>("en");
   const [theme, setTheme] = useState<Theme>("light");
   const [density, setDensity] = useState<Density>("comfortable");
+  const [view, setView] = useState<ToolView>("grid");
   const [selectedToolId, setSelectedToolId] = useState<ToolId>(tools[0].id);
   const [search, setSearch] = useState("");
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
@@ -128,6 +154,7 @@ export function ToolboxApp() {
       setLanguage(resolveInitialLanguage());
       setTheme(readInitialTheme());
       setDensity(readInitialDensity());
+      setView(getInitialView());
       setSelectedToolId(getInitialToolId());
       setIsReady(true);
     });
@@ -160,15 +187,23 @@ export function ToolboxApp() {
 
   useEffect(() => {
     if (!isReady) return;
-    window.localStorage.setItem("localtools.tool", selectedToolId);
-
     const nextUrl = new URL(window.location.href);
-    nextUrl.searchParams.set("tool", selectedToolId);
+
+    if (view === "grid") {
+      nextUrl.searchParams.set("view", "grid");
+      nextUrl.searchParams.delete("tool");
+    } else {
+      window.localStorage.setItem("localtools.tool", selectedToolId);
+      nextUrl.searchParams.set("tool", selectedToolId);
+      nextUrl.searchParams.delete("view");
+    }
+
     window.history.replaceState({}, "", nextUrl);
-  }, [selectedToolId, isReady]);
+  }, [selectedToolId, view, isReady]);
 
   useEffect(() => {
     const onPopState = () => {
+      setView(readViewFromUrl());
       const fromUrl = readToolFromUrl();
       if (fromUrl) {
         setSelectedToolId(fromUrl);
@@ -229,7 +264,7 @@ export function ToolboxApp() {
       <a className="skip-link" href="#main-content">
         {text.skipToContent}
       </a>
-      <div className="flex min-h-screen md:gap-3 md:p-3">
+      <div className="tools-page-shell flex min-h-screen md:gap-3 md:p-3">
         <aside className="hidden w-72 shrink-0 md:block">
           <div className="tools-aside-panel relative h-[calc(100vh-1.5rem)] overflow-hidden rounded-2xl bg-sidebar text-sidebar-foreground">
             <Sidebar
@@ -244,9 +279,14 @@ export function ToolboxApp() {
               }
               onLanguageSelect={(lang) => setLanguage(lang)}
               onSearchChange={setSearch}
-              onSelectTool={setSelectedToolId}
+              onSelectTool={(toolId) => {
+                setSelectedToolId(toolId);
+                setView("tool");
+              }}
+              onShowGrid={() => setView("grid")}
               onThemeToggle={toggleTheme}
               selectedToolId={selectedToolId}
+              view={view}
               toolsToRender={filteredTools}
             />
           </div>
@@ -282,10 +322,16 @@ export function ToolboxApp() {
                 onSearchChange={setSearch}
                 onSelectTool={(toolId) => {
                   setSelectedToolId(toolId);
+                  setView("tool");
+                  setIsMobileSidebarOpen(false);
+                }}
+                onShowGrid={() => {
+                  setView("grid");
                   setIsMobileSidebarOpen(false);
                 }}
                 onThemeToggle={toggleTheme}
                 selectedToolId={selectedToolId}
+                view={view}
                 toolsToRender={filteredTools}
               />
             </aside>
@@ -293,7 +339,7 @@ export function ToolboxApp() {
         ) : null}
 
         <main
-          className="tools-main-panel flex-1 p-4 md:rounded-2xl md:bg-background/85 md:p-8"
+          className="tools-main-panel flex-1 p-4 md:rounded-2xl md:bg-background/72 md:p-8"
           id="main-content"
           tabIndex={-1}
         >
@@ -310,9 +356,21 @@ export function ToolboxApp() {
             </button>
           </header>
 
-          <section className="tool-shell tools-tool-panel rounded-lg border border-border/50 bg-background/90 p-4 md:p-6">
-            <SelectedToolComponent language={language} />
-          </section>
+          {view === "grid" ? (
+            <ToolsIndex
+              language={language}
+              onSelectTool={(toolId) => {
+                setSelectedToolId(toolId);
+                setView("tool");
+              }}
+              search={search}
+              toolsToRender={filteredTools}
+            />
+          ) : (
+            <section className="tool-shell tools-tool-panel rounded-lg border border-border/50 bg-background/90 p-4 md:p-6">
+              <SelectedToolComponent language={language} />
+            </section>
+          )}
           <aside className="tools-privacy-panel mt-3 rounded-md border border-border/40 bg-panel/20 px-3 py-2 text-xs text-foreground/75">
             <details>
               <summary className="privacy-summary cursor-pointer select-none font-medium">
@@ -347,8 +405,10 @@ type SidebarProps = {
   onLanguageSelect: (lang: Language) => void;
   onSearchChange: (value: string) => void;
   onSelectTool: (toolId: ToolId) => void;
+  onShowGrid: () => void;
   onThemeToggle: () => void;
   selectedToolId: ToolId;
+  view: ToolView;
   toolsToRender: typeof tools;
 };
 
@@ -361,8 +421,10 @@ function Sidebar({
   onLanguageSelect,
   onSearchChange,
   onSelectTool,
+  onShowGrid,
   onThemeToggle,
   selectedToolId,
+  view,
   toolsToRender,
 }: SidebarProps) {
   const text = sharedMessages[language];
@@ -441,6 +503,22 @@ function Sidebar({
           value={search}
         />
       </div>
+      <button
+        aria-pressed={view === "grid"}
+        className={`aside-tool-btn group flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sidebar-foreground ${
+          view === "grid"
+            ? "font-semibold text-sidebar-foreground"
+            : "text-sidebar-foreground/88 hover:text-sidebar-foreground focus-visible:text-sidebar-foreground"
+        }`}
+        onClick={onShowGrid}
+        type="button"
+      >
+        <span aria-hidden className="tool-marker-dot h-1.5 w-1.5" />
+        <span aria-hidden className="shrink-0">
+          <IconGridDots size={15} />
+        </span>
+        <span className="font-medium">{text.toolsIndexNav}</span>
+      </button>
       {toolsToRender.length === 0 ? (
         <p className="px-1 text-sm text-sidebar-foreground/85">
           {text.emptySearch}
@@ -550,5 +628,101 @@ function CategorySection({
         })}
       </div>
     </div>
+  );
+}
+
+type ToolsIndexProps = {
+  language: Language;
+  onSelectTool: (toolId: ToolId) => void;
+  search: string;
+  toolsToRender: typeof tools;
+};
+
+function ToolsIndex({
+  language,
+  onSelectTool,
+  search,
+  toolsToRender,
+}: ToolsIndexProps) {
+  const text = sharedMessages[language];
+  const categoryCount = new Set(tools.map((tool) => tool.category)).size;
+
+  return (
+    <section className="tools-index-panel">
+      <div className="tools-index-hero">
+        <div>
+          <p className="tools-index-eyebrow">{text.toolsIndexEyebrow}</p>
+          <h1 className="tools-index-title">{text.toolsIndexTitle}</h1>
+          <p className="tools-index-subtitle">{text.toolsIndexSubtitle}</p>
+        </div>
+        <dl
+          className="tools-index-stats"
+          aria-label={text.toolsIndexStatsLabel}
+        >
+          <div>
+            <dt>{text.toolsIndexStatTools}</dt>
+            <dd>{tools.length}</dd>
+          </div>
+          <div>
+            <dt>{text.toolsIndexStatCategories}</dt>
+            <dd>{categoryCount}</dd>
+          </div>
+        </dl>
+      </div>
+
+      {search.trim() ? (
+        <p className="tools-index-search-note">
+          {text.toolsIndexSearchHint.replace(
+            "{count}",
+            String(toolsToRender.length),
+          )}
+        </p>
+      ) : null}
+
+      {toolsToRender.length === 0 ? (
+        <div className="tools-index-empty">
+          <p>{text.toolsIndexEmptyTitle}</p>
+          <span>{text.toolsIndexEmptyText}</span>
+        </div>
+      ) : (
+        <div className="tools-index-grid">
+          {toolsToRender.map((tool) => {
+            const Icon = tool.icon;
+            const categoryLabel =
+              text.categories[tool.category as keyof typeof text.categories];
+
+            return (
+              <button
+                className="tools-index-card"
+                key={tool.id}
+                onClick={() => onSelectTool(tool.id)}
+                type="button"
+              >
+                <span className="tools-index-card-top">
+                  <span className="tools-index-card-icon" aria-hidden>
+                    <Icon size={20} />
+                  </span>
+                  <span className="tools-index-card-copy">
+                    <span className="tools-index-card-category">
+                      {categoryLabel}
+                    </span>
+                    <span className="tools-index-card-title">
+                      {tool.name[language]}
+                    </span>
+                    <span className="tools-index-card-description">
+                      {tool.description[language]}
+                    </span>
+                  </span>
+                </span>
+                <span className="tools-index-card-action">
+                  {text.toolsIndexOpenLabel}
+                  <IconArrowRight aria-hidden size={15} />
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      )}
+    </section>
   );
 }
