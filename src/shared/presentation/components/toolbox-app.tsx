@@ -230,6 +230,7 @@ const ASIDE_LANGUAGE_OPTIONS = [
 ] as const;
 
 export function ToolboxApp() {
+  const mainRef = useRef<HTMLElement | null>(null);
   const [language, setLanguage] = useState<Language>("en");
   const [theme, setTheme] = useState<Theme>("light");
   const [density, setDensity] = useState<Density>("comfortable");
@@ -249,13 +250,40 @@ export function ToolboxApp() {
       setIsReady(true);
     });
 
-    return () => window.cancelAnimationFrame(frame);
+    const onThemeChange = (event: Event) => {
+      const nextTheme = (event as CustomEvent<Theme>).detail;
+      setTheme(nextTheme === "dark" ? "dark" : "light");
+    };
+
+    window.addEventListener("localtools:theme-change", onThemeChange);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("localtools:theme-change", onThemeChange);
+    };
   }, []);
+
+  function focusMainContent() {
+    window.requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+      mainRef.current?.focus({ preventScroll: true });
+    });
+  }
+
+  function selectTool(toolId: ToolId) {
+    setSelectedToolId(toolId);
+    setView("tool");
+    focusMainContent();
+  }
 
   useEffect(() => {
     if (!isReady) return;
     document.documentElement.classList.toggle("dark", theme === "dark");
     window.localStorage.setItem("localtools.theme", theme);
+    window.dispatchEvent(
+      new CustomEvent("localtools:theme-change", { detail: theme }),
+    );
+    window.dispatchEvent(new CustomEvent("cmd-kit-theme-change"));
   }, [theme, isReady]);
 
   useEffect(() => {
@@ -382,10 +410,7 @@ export function ToolboxApp() {
               }
               onLanguageSelect={(lang) => setLanguage(lang)}
               onSearchChange={setSearch}
-              onSelectTool={(toolId) => {
-                setSelectedToolId(toolId);
-                setView("tool");
-              }}
+              onSelectTool={selectTool}
               onShowGrid={() => setView("grid")}
               onThemeToggle={toggleTheme}
               selectedToolId={selectedToolId}
@@ -425,8 +450,7 @@ export function ToolboxApp() {
                 }
                 onSearchChange={setSearch}
                 onSelectTool={(toolId) => {
-                  setSelectedToolId(toolId);
-                  setView("tool");
+                  selectTool(toolId);
                   setIsMobileSidebarOpen(false);
                 }}
                 onShowGrid={() => {
@@ -444,12 +468,9 @@ export function ToolboxApp() {
         ) : null}
 
         <main
-          className={`flex-1 p-4 ${
-            view === "grid"
-              ? "tools-main-panel md:rounded-2xl md:p-8"
-              : "md:p-0"
-          }`}
+          className={`flex-1 p-4 ${view === "grid" ? "md:p-4" : "md:p-0"}`}
           id="main-content"
+          ref={mainRef}
           tabIndex={-1}
         >
           <header className="mb-6 md:hidden">
@@ -468,10 +489,7 @@ export function ToolboxApp() {
           {view === "grid" ? (
             <ToolsIndex
               language={language}
-              onSelectTool={(toolId) => {
-                setSelectedToolId(toolId);
-                setView("tool");
-              }}
+              onSelectTool={selectTool}
               search={search}
               toolsToRender={filteredTools}
             />

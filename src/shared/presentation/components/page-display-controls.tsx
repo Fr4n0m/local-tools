@@ -29,13 +29,28 @@ export function PageDisplayControls() {
       setTheme(readInitialTheme());
       isReadyRef.current = true;
     });
-    return () => window.cancelAnimationFrame(frame);
+
+    const onThemeChange = (event: Event) => {
+      const nextTheme = (event as CustomEvent<Theme>).detail;
+      setTheme(nextTheme === "dark" ? "dark" : "light");
+    };
+
+    window.addEventListener("localtools:theme-change", onThemeChange);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("localtools:theme-change", onThemeChange);
+    };
   }, []);
 
   useEffect(() => {
     if (!isReadyRef.current) return;
     document.documentElement.classList.toggle("dark", theme === "dark");
     window.localStorage.setItem("localtools.theme", theme);
+    window.dispatchEvent(
+      new CustomEvent("localtools:theme-change", { detail: theme }),
+    );
+    window.dispatchEvent(new CustomEvent("cmd-kit-theme-change"));
   }, [theme]);
 
   useEffect(() => {
