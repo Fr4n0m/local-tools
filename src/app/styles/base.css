@@ -108,10 +108,10 @@ body {
   padding-inline: clamp(0.4rem, 1vw, 0.9rem);
 }
 
-@media (min-width: 1600px) {
+@media (min-width: 1440px) {
   .page-frame {
-    max-width: min(1760px, calc(100vw - 3rem));
-    padding-inline: clamp(0.5rem, 0.65vw, 0.8rem);
+    max-width: min(1680px, calc(100vw - clamp(6rem, 7vw, 9rem)));
+    padding-inline: clamp(0.6rem, 0.75vw, 0.9rem);
   }
 }
 
