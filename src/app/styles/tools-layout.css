@@ -202,15 +202,6 @@
   }
 }
 
-.tools-main-panel {
-  background-color: color-mix(
-    in oklab,
-    var(--color-background),
-    transparent 28%
-  );
-  box-shadow: none;
-}
-
 .tools-tool-panel {
   box-shadow: var(--surface-shadow-compact);
 }
@@ -222,7 +213,6 @@
     border-color 180ms ease;
 }
 
-.dark .tools-main-panel,
 .dark .tools-tool-panel {
   background-color: var(--color-sidebar);
   color: var(--color-sidebar-foreground);
@@ -232,11 +222,7 @@
 .dark .tools-index-stats div,
 .dark .tools-index-empty,
 .dark .tools-privacy-card {
-  background: color-mix(
-    in oklab,
-    var(--color-sidebar-foreground),
-    transparent 94%
-  );
+  background: var(--color-sidebar);
 }
 
 .tools-tool-topbar {
@@ -354,8 +340,21 @@
 }
 
 .tools-index-panel {
+  --tools-index-heading-shadow: color-mix(
+    in oklab,
+    var(--surface-shadow-color),
+    transparent 18%
+  );
   min-height: calc(100vh - 8.5rem);
   overflow: visible;
+}
+
+.dark .tools-index-panel {
+  --tools-index-heading-shadow: color-mix(
+    in oklab,
+    var(--color-sidebar-foreground),
+    transparent 72%
+  );
 }
 
 .tools-index-hero {
@@ -451,10 +450,10 @@
 
 .tools-index-group-heading {
   position: relative;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
+  justify-content: flex-start;
+  gap: 0.72rem;
   margin-bottom: 1.45rem;
   padding: 0.25rem 0 0.25rem 0.9rem;
 }
@@ -468,7 +467,7 @@
   width: 0.28rem;
   border-radius: 999px;
   background: var(--color-foreground);
-  box-shadow: 2px 2px 0 var(--surface-shadow-color);
+  box-shadow: 2px 2px 0 var(--tools-index-heading-shadow);
 }
 
 .tools-index-group-heading h2 {
@@ -482,18 +481,18 @@
   line-height: 1.05;
   letter-spacing: 0.015em;
   text-transform: uppercase;
-  text-shadow: 2px 2px 0
-    color-mix(in oklab, var(--surface-shadow-color), transparent 18%);
+  text-shadow: 2px 2px 0 var(--tools-index-heading-shadow);
 }
 
 .tools-index-group-heading span {
+  transform: translateY(-0.08rem);
   min-width: 2.25rem;
   border: 1px solid color-mix(in oklab, var(--color-border), transparent 12%);
   border-radius: 0.7rem;
   padding: 0.28rem 0.62rem;
   color: var(--color-background);
   background: var(--color-foreground);
-  box-shadow: 3px 3px 0 var(--surface-shadow-color);
+  box-shadow: 3px 3px 0 var(--tools-index-heading-shadow);
   font-family: var(--font-heading), "Segoe UI", sans-serif;
   font-size: 0.72rem;
   font-weight: 850;
@@ -511,7 +510,7 @@
   min-height: 12.5rem;
   border: 1px solid color-mix(in oklab, var(--color-border), transparent 8%);
   border-radius: var(--radius-squircle);
-  background: color-mix(in oklab, var(--color-background), transparent 4%);
+  background: var(--color-background);
   color: var(--color-foreground);
   padding: 0.95rem;
   display: flex;
@@ -652,10 +651,6 @@
 @media (min-width: 768px) {
   .tools-page-shell {
     padding-right: calc(0.75rem + 8px);
-  }
-
-  .tools-main-panel {
-    box-shadow: var(--surface-shadow);
   }
 }
 

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { GlobalFooter } from "@/shared/presentation/components/global-footer";
+import { GlobalCommandPalette } from "@/shared/presentation/components/global-command-palette";
 import { NotificationHost } from "@/shared/presentation/components/notification-host";
 import "./globals.css";
 
@@ -138,6 +139,7 @@ export default function RootLayout({
       >
         {children}
         <GlobalFooter />
+        <GlobalCommandPalette />
         <NotificationHost />
       </body>
     </html>
