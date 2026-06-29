@@ -71,6 +71,7 @@ export function MeshGradientTool({ language }: Props) {
                 value={stop.color}
               />
               <input
+                aria-label={`${text.stops} X ${index + 1}`}
                 className="w-full rounded-md border bg-background/40 p-2 text-sm"
                 max={100}
                 min={0}
@@ -86,6 +87,7 @@ export function MeshGradientTool({ language }: Props) {
                 value={stop.x}
               />
               <input
+                aria-label={`${text.stops} Y ${index + 1}`}
                 className="w-full rounded-md border bg-background/40 p-2 text-sm"
                 max={100}
                 min={0}

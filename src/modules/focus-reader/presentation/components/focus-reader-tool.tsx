@@ -47,14 +47,14 @@ export function FocusReaderTool({ language }: Props) {
       </p>
 
       <div className="space-y-3">
-        {paragraphs.map((paragraph, index) => (
+        {paragraphs.map((paragraph) => (
           <p
             className={
               focusMode
                 ? "mx-auto max-w-3xl text-[1.05rem] leading-8"
                 : "text-sm leading-7"
             }
-            key={`${index}-${paragraph.slice(0, 24)}`}
+            key={paragraph}
           >
             {paragraph}
           </p>

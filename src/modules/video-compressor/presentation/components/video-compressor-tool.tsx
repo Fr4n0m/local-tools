@@ -118,6 +118,7 @@ export function VideoCompressorTool({ language }: Props) {
 
       <ToolField label={text.bitrate}>
         <input
+          aria-label={text.bitrate}
           className="w-full rounded-md border bg-background/40 p-3"
           max={6000}
           min={300}
@@ -127,7 +128,9 @@ export function VideoCompressorTool({ language }: Props) {
         />
       </ToolField>
 
-      <video className="hidden" ref={videoRef} />
+      <video aria-label={text.input} className="hidden" ref={videoRef}>
+        <track kind="captions" />
+      </video>
 
       <ToolActions
         actions={[

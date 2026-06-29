@@ -1,0 +1,33 @@
+{
+  "$schema": "https://react.doctor/schema/config.json",
+  "deadCode": false,
+  "supplyChain": {
+    "minScore": 30
+  },
+  "rules": {
+    "react-doctor/no-usememo-simple-expression": "off",
+    "react-doctor/prefer-useReducer": "off",
+    "react-doctor/js-flatmap-filter": "off",
+    "react-doctor/js-combine-iterations": "off",
+    "react-doctor/js-tosorted-immutable": "off",
+    "react-doctor/no-giant-component": "off",
+    "react-doctor/no-react19-deprecated-apis": "off",
+    "react-doctor/only-export-components": "off",
+    "react-doctor/require-pnpm-hardening": "off",
+    "react-doctor/async-await-in-loop": "off",
+    "react-doctor/no-render-in-render": "off",
+    "react-doctor/nextjs-no-img-element": "off",
+    "react-doctor/nextjs-no-a-element": "off",
+    "react-doctor/no-cascading-set-state": "off",
+    "react-doctor/prefer-tag-over-role": "off",
+    "react-doctor/no-tiny-text": "off",
+    "react-doctor/rerender-state-only-in-handlers": "off",
+    "react-doctor/no-event-handler": "off",
+    "react-doctor/no-initialize-state": "off",
+    "react-doctor/rerender-lazy-state-init": "off",
+    "react-doctor/prefer-module-scope-static-value": "off",
+    "react-doctor/prefer-html-dialog": "off",
+    "react-doctor/no-noninteractive-element-interactions": "off",
+    "react-doctor/no-inline-exhaustive-style": "off"
+  }
+}

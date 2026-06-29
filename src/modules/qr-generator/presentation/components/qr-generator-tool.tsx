@@ -61,15 +61,10 @@ export function QrGeneratorTool({ language }: Props) {
     setError("");
     const payload = payloadResult.value;
     const QRCode = (await import("qrcode")).default;
-    const nextPng = await QRCode.toDataURL(payload, {
-      width: size,
-      margin: 2,
-    });
-    const nextSvg = await QRCode.toString(payload, {
-      type: "svg",
-      width: size,
-      margin: 2,
-    });
+    const [nextPng, nextSvg] = await Promise.all([
+      QRCode.toDataURL(payload, { width: size, margin: 2 }),
+      QRCode.toString(payload, { type: "svg", width: size, margin: 2 }),
+    ]);
     setPngDataUrl(nextPng);
     setSvgText(nextSvg);
   };

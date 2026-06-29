@@ -50,6 +50,7 @@ export function CarouselGeneratorTool({ language }: Props) {
       </ToolField>
       <ToolField label={text.autoplayMs}>
         <input
+          aria-label={text.autoplayMs}
           className="w-full rounded-md border bg-background/40 p-3"
           max={15000}
           min={1000}

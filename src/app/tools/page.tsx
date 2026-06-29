@@ -89,11 +89,13 @@ export const metadata: Metadata = {
   },
 };
 
+const serializedJsonLd = JSON.stringify(jsonLd).replace(/</g, "\\u003c");
+
 export default function ToolsPage() {
   return (
     <>
       <script
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: serializedJsonLd }}
         type="application/ld+json"
       />
       <ToolboxApp />

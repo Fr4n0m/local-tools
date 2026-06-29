@@ -562,11 +562,6 @@ export function ToolSelect({
   return (
     <div className={cn("relative", className)} ref={containerRef}>
       <button
-        aria-activedescendant={
-          open && highlighted >= 0
-            ? `${listboxId}-opt-${highlighted}`
-            : undefined
-        }
         aria-controls={open ? listboxId : undefined}
         aria-expanded={open}
         aria-haspopup="listbox"
@@ -656,7 +651,10 @@ export function ToolSlider({
   onChange,
   className,
 }: ToolSliderProps) {
-  const parsed = parseDisplayValue(displayValue);
+  const parsed = React.useMemo(
+    () => parseDisplayValue(displayValue),
+    [displayValue],
+  );
   const [anim, dispatchAnim] = React.useReducer(
     (state: { from: number; to: number }, to: number) => ({
       from: state.to,
@@ -667,12 +665,12 @@ export function ToolSlider({
 
   React.useEffect(() => {
     if (parsed) dispatchAnim(parsed.num);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [displayValue]);
+  }, [parsed]);
 
   return (
     <div className={cn("flex items-center gap-3", className)}>
       <input
+        aria-label={displayValue}
         className="flex-1"
         max={max}
         min={min}
