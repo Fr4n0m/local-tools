@@ -5,8 +5,9 @@
   color: #fff;
 }
 
-.site-footer--framed {
-  padding-inline: 0;
+.site-footer.site-footer--framed {
+  padding-right: 0.75rem;
+  padding-left: 0.75rem;
 }
 
 .site-footer__inner {

@@ -1,0 +1,98 @@
+@media (min-width: 768px) {
+  .tools-page-shell {
+    padding-right: calc(0.75rem + 8px);
+  }
+}
+
+@media (min-width: 1600px) {
+  .tools-index-grid {
+    --tools-index-card-width: clamp(292px, 16.5vw, 340px);
+  }
+
+  .tools-index-card {
+    min-height: 14rem;
+    padding: 1.08rem;
+  }
+
+  .tools-index-card-icon {
+    width: 2.55rem;
+    height: 2.55rem;
+  }
+
+  .tools-index-card-icon svg {
+    width: 1.36rem;
+    height: 1.36rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aside-language-menu {
+    animation: none;
+  }
+
+  .tools-aside-panel .aside-search,
+  .tools-aside-panel .aside-search:focus-visible {
+    transform: none;
+  }
+
+  .tools-tool-panel,
+  .tools-index-card {
+    transition: none;
+  }
+
+  .tools-index-card:hover,
+  .tools-index-card:focus-visible,
+  .tools-index-card:active,
+  .aside-language-trigger:hover,
+  .aside-language-trigger:focus-visible,
+  .aside-language-trigger:active,
+  .tools-aside-panel button[aria-label="Density"]:hover,
+  .tools-aside-panel button[aria-label="Density"]:focus-visible,
+  .tools-aside-panel button[aria-label="Density"]:active,
+  .tools-aside-panel button[aria-label="Densidad"]:hover,
+  .tools-aside-panel button[aria-label="Densidad"]:focus-visible,
+  .tools-aside-panel button[aria-label="Densidad"]:active,
+  .tools-aside-panel button[aria-label="Theme"]:hover,
+  .tools-aside-panel button[aria-label="Theme"]:focus-visible,
+  .tools-aside-panel button[aria-label="Theme"]:active,
+  .tools-aside-panel button[aria-label="Tema"]:hover,
+  .tools-aside-panel button[aria-label="Tema"]:focus-visible,
+  .tools-aside-panel button[aria-label="Tema"]:active {
+    transform: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .tools-index-hero {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .tools-index-stats {
+    max-width: 22rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .tools-tool-topbar {
+    top: 1rem;
+    right: 1rem;
+  }
+
+  .tools-index-panel {
+    min-height: auto;
+  }
+
+  .tools-index-title {
+    font-size: clamp(2rem, 12vw, 2.85rem);
+  }
+
+  .tools-index-grid {
+    --tools-index-card-width: 100%;
+    grid-template-columns: 1fr;
+  }
+
+  .tools-index-card {
+    min-height: 13rem;
+  }
+}

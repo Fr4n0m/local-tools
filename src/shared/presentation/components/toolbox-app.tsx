@@ -18,6 +18,7 @@ import {
 import Link from "next/link";
 
 import { AppLogo } from "@/shared/presentation/components/app-logo";
+import { LanguageSelector } from "@/shared/presentation/components/language-selector";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
 import { tools } from "@/modules/tool-registry/application/tools";
@@ -195,39 +196,6 @@ function getCategoryStyles(category: string) {
     marker: "bg-sidebar-foreground",
   };
 }
-
-const ASIDE_LANGUAGE_OPTIONS = [
-  {
-    code: "es",
-    label: "Español",
-    flag: "/assets/flags/es.svg",
-    available: true,
-  },
-  {
-    code: "en",
-    label: "English",
-    flag: "/assets/flags/gb.svg",
-    available: true,
-  },
-  {
-    code: "fr",
-    label: "Français",
-    flag: "/assets/flags/fr.svg",
-    available: false,
-  },
-  {
-    code: "de",
-    label: "Deutsch",
-    flag: "/assets/flags/de.svg",
-    available: false,
-  },
-  {
-    code: "it",
-    label: "Italiano",
-    flag: "/assets/flags/it.svg",
-    available: false,
-  },
-] as const;
 
 export function ToolboxApp() {
   const mainRef = useRef<HTMLElement | null>(null);
@@ -445,9 +413,7 @@ export function ToolboxApp() {
                     density === "comfortable" ? "compact" : "comfortable",
                   )
                 }
-                onLanguageSelect={() =>
-                  setLanguage(language === "en" ? "es" : "en")
-                }
+                onLanguageSelect={(lang) => setLanguage(lang)}
                 onSearchChange={setSearch}
                 onSelectTool={(toolId) => {
                   selectTool(toolId);
@@ -541,11 +507,6 @@ function Sidebar({
   toolsToRender,
 }: SidebarProps) {
   const text = sharedMessages[language];
-  const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
-  const currentLanguageOption =
-    ASIDE_LANGUAGE_OPTIONS.find((option) => option.code === language) ??
-    ASIDE_LANGUAGE_OPTIONS[0];
-
   const grouped = useMemo(
     () =>
       toolsToRender.reduce<Record<string, typeof tools>>((acc, tool) => {
@@ -570,62 +531,12 @@ function Sidebar({
           <AppLogo className="text-sidebar-foreground" />
         </Link>
         <div className="flex items-center gap-0.5 rounded-lg bg-black p-0.5">
-          <div className="aside-language-select">
-            <button
-              aria-expanded={isLanguageMenuOpen}
-              aria-haspopup="listbox"
-              aria-label={text.language}
-              className="aside-language-trigger aside-top-control"
-              onClick={() => setIsLanguageMenuOpen((open) => !open)}
-              title={currentLanguageOption.label}
-              type="button"
-            >
-              <img
-                alt=""
-                aria-hidden="true"
-                className="aside-language-flag"
-                src={currentLanguageOption.flag}
-              />
-            </button>
-            {isLanguageMenuOpen ? (
-              <div className="aside-language-menu" role="listbox">
-                {ASIDE_LANGUAGE_OPTIONS.map((option) => {
-                  const isActive = option.code === language;
-                  return (
-                    <button
-                      aria-selected={isActive}
-                      className="aside-language-option"
-                      disabled={!option.available}
-                      key={option.code}
-                      onClick={() => {
-                        if (!option.available) return;
-                        onLanguageSelect(option.code as Language);
-                        setIsLanguageMenuOpen(false);
-                      }}
-                      role="option"
-                      title={
-                        option.available
-                          ? option.label
-                          : `${option.label} pending`
-                      }
-                      type="button"
-                    >
-                      <img
-                        alt=""
-                        aria-hidden="true"
-                        className="aside-language-flag"
-                        src={option.flag}
-                      />
-                      <span>{option.label}</span>
-                      {!option.available ? (
-                        <span className="aside-language-pending">soon</span>
-                      ) : null}
-                    </button>
-                  );
-                })}
-              </div>
-            ) : null}
-          </div>
+          <LanguageSelector
+            label={text.language}
+            language={language}
+            onSelect={onLanguageSelect}
+            variant="aside"
+          />
           <button
             aria-label={text.density}
             className="aside-top-control flex h-6 w-6 items-center justify-center rounded-md text-sidebar-foreground/70 transition-colors hover:bg-sidebar-foreground/12 hover:text-sidebar-foreground"

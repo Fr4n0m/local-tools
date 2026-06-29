@@ -21,6 +21,11 @@
   max-height: none;
 }
 
+:global(.dark) .trustBlock {
+  background: var(--color-sidebar);
+  color: var(--color-sidebar-foreground);
+}
+
 .trustVisual {
   min-height: clamp(132px, 15vh, 168px);
   display: grid;

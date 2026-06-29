@@ -1,0 +1,118 @@
+.tools-index-card {
+  min-height: 12.5rem;
+  border: 1px solid color-mix(in oklab, var(--color-border), transparent 8%);
+  border-radius: var(--radius-squircle);
+  background: var(--color-background);
+  color: var(--color-foreground);
+  padding: 0.95rem;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  text-align: left;
+  box-shadow: var(--surface-shadow-compact);
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease;
+}
+
+.tools-index-card:hover,
+.tools-index-card:focus-visible {
+  transform: translateY(-2px);
+  border-color: color-mix(in oklab, var(--color-border), transparent 0%);
+  box-shadow: 10px 10px 0 var(--surface-shadow-color);
+}
+
+.tools-index-card:active {
+  transform: translateY(1px) scale(0.985);
+  box-shadow: 4px 4px 0 var(--surface-shadow-color);
+}
+
+.tools-index-card:focus-visible {
+  outline: 2px solid var(--button-focus-ring);
+  outline-offset: 3px;
+}
+
+.tools-index-card-top {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 0.8rem;
+  min-width: 0;
+}
+
+.tools-index-card-icon {
+  width: 2.35rem;
+  height: 2.35rem;
+  aspect-ratio: 1;
+  border: none;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-background);
+  background: var(--color-foreground);
+  box-shadow: 3px 3px 0 var(--surface-shadow-color);
+}
+
+.tools-index-card-icon svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  stroke-width: 2.45;
+}
+
+.tools-index-card-category {
+  display: block;
+  margin-bottom: 0.42rem;
+  max-width: 100%;
+  font-size: 0.68rem;
+  font-weight: 800;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--color-foreground), transparent 48%);
+  overflow-wrap: anywhere;
+}
+
+.tools-index-card-copy {
+  min-width: 0;
+  display: block;
+}
+
+.tools-index-card-title {
+  display: block;
+  font-family: var(--font-heading), "Segoe UI", sans-serif;
+  font-size: 1.08rem;
+  font-weight: 850;
+  line-height: 1.12;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.tools-index-card-description {
+  display: block;
+  margin-top: 0.55rem;
+  color: color-mix(in oklab, var(--color-foreground), transparent 32%);
+  font-size: 0.84rem;
+  line-height: 1.42;
+  overflow-wrap: anywhere;
+}
+
+.tools-index-card-action {
+  margin-top: auto;
+  padding-top: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-heading), "Segoe UI", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 850;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.tools-index-card-action svg {
+  stroke-width: 2.5;
+}

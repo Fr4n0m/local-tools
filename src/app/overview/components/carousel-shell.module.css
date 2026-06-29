@@ -6,7 +6,6 @@
   min-height: calc(100dvh - var(--header-offset));
   margin-bottom: 1.25rem;
   padding-block: clamp(0.45rem, 1vh, 0.75rem) clamp(2.8rem, 6vh, 4rem);
-  padding-inline-end: 0.5rem;
   display: grid;
   grid-template-rows: auto minmax(0, 1fr) auto auto;
   align-content: center;

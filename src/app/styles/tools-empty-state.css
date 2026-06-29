@@ -1,0 +1,22 @@
+.tools-index-empty {
+  min-height: 16rem;
+  border-radius: var(--radius-squircle);
+  display: grid;
+  place-items: center;
+  text-align: center;
+  background: color-mix(in oklab, var(--color-panel), transparent 16%);
+}
+
+.tools-index-empty p {
+  margin: 0;
+  font-family: var(--font-heading), "Segoe UI", sans-serif;
+  font-size: 1.2rem;
+  font-weight: 850;
+}
+
+.tools-index-empty span {
+  display: block;
+  margin-top: 0.4rem;
+  color: color-mix(in oklab, var(--color-foreground), transparent 42%);
+  font-size: 0.9rem;
+}

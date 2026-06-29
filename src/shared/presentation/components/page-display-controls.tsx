@@ -3,6 +3,7 @@
 import { IconGridDots, IconMoon, IconSun } from "@tabler/icons-react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { LanguageSelector } from "@/shared/presentation/components/language-selector";
 import {
   resolveInitialLanguage,
   type Language,
@@ -12,11 +13,6 @@ import {
   setThemeWithTransition,
   type Theme,
 } from "@/shared/lib/theme";
-
-const LANGUAGE_FLAGS: Record<Language, string> = {
-  en: "/assets/flags/gb.svg",
-  es: "/assets/flags/es.svg",
-};
 
 export function PageDisplayControls() {
   const [language, setLanguage] = useState<Language>("en");
@@ -71,21 +67,12 @@ export function PageDisplayControls() {
       >
         <IconGridDots aria-hidden className="page-display-control-theme-icon" />
       </Link>
-      <button
-        aria-label={
-          language === "en" ? "Switch to Spanish" : "Switch to English"
-        }
-        className="lt-button lt-button--ghost page-display-control-button"
-        onClick={() => setLanguage(language === "en" ? "es" : "en")}
-        type="button"
-      >
-        <img
-          alt=""
-          aria-hidden="true"
-          className="page-display-control-flag"
-          src={LANGUAGE_FLAGS[language]}
-        />
-      </button>
+      <LanguageSelector
+        label={language === "es" ? "Idioma" : "Language"}
+        language={language}
+        onSelect={setLanguage}
+        variant="header"
+      />
       <button
         aria-label="Theme"
         className="lt-button lt-button--ghost lt-button--icon page-display-control-button page-display-control-button--icon"

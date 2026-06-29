@@ -5,7 +5,6 @@
   min-height: 100%;
   margin-bottom: 0;
   padding-block: clamp(0.45rem, 0.9vw, 0.7rem);
-  padding-inline-end: 0.5rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -76,6 +75,11 @@
   );
   box-shadow: var(--surface-shadow);
   transition: border-color 180ms ease;
+}
+
+:global(.dark) .bottomCard {
+  background: var(--color-sidebar);
+  color: var(--color-sidebar-foreground);
 }
 
 @media (min-width: 1440px) {

@@ -1,0 +1,166 @@
+.tools-index-panel {
+  --tools-index-heading-shadow: color-mix(
+    in oklab,
+    var(--surface-shadow-color),
+    transparent 18%
+  );
+  min-height: calc(100vh - 8.5rem);
+  overflow: visible;
+}
+
+.dark .tools-index-panel {
+  --tools-index-heading-shadow: color-mix(
+    in oklab,
+    var(--color-sidebar-foreground),
+    transparent 72%
+  );
+}
+
+.tools-index-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+  align-items: end;
+  margin-bottom: clamp(1.25rem, 2.4vw, 1.9rem);
+}
+
+.tools-index-eyebrow {
+  margin: 0 0 0.45rem;
+  font-family: var(--font-heading), "Segoe UI", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: color-mix(in oklab, var(--color-foreground), transparent 38%);
+}
+
+.tools-index-title {
+  margin: 0;
+  max-width: 18ch;
+  font-family: var(--font-heading), "Segoe UI", sans-serif;
+  font-size: clamp(2rem, 3.4vw, 3.45rem);
+  font-weight: 850;
+  line-height: 1.02;
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+
+.tools-index-subtitle {
+  margin: 1rem 0 0;
+  max-width: 62ch;
+  color: color-mix(in oklab, var(--color-foreground), transparent 28%);
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+.tools-index-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(92px, 1fr));
+  gap: 0.65rem;
+  margin: 0;
+}
+
+.tools-index-stats div {
+  border-radius: var(--radius-squircle);
+  background: color-mix(in oklab, var(--color-panel), transparent 8%);
+  padding: 0.72rem 0.88rem;
+  box-shadow: var(--surface-shadow-compact);
+}
+
+.tools-index-stats dt {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--color-foreground), transparent 46%);
+}
+
+.tools-index-stats dd {
+  margin: 0.2rem 0 0;
+  font-family: var(--font-heading), "Segoe UI", sans-serif;
+  font-size: 1.85rem;
+  font-weight: 850;
+  line-height: 1;
+}
+
+.tools-index-search-note {
+  margin: 0 0 1rem;
+  color: color-mix(in oklab, var(--color-foreground), transparent 38%);
+  font-size: 0.9rem;
+}
+
+.tools-index-grid {
+  --tools-index-card-width: clamp(238px, 22vw, 292px);
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(var(--tools-index-card-width), var(--tools-index-card-width))
+  );
+  justify-content: start;
+  gap: clamp(0.9rem, 1.6vw, 1.18rem);
+}
+
+.tools-index-groups {
+  display: grid;
+  gap: clamp(2.35rem, 4.4vw, 3.6rem);
+}
+
+.tools-index-group {
+  min-width: 0;
+}
+
+.tools-index-group-heading {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.72rem;
+  margin-bottom: 1.45rem;
+  padding: 0.25rem 0 0.25rem 0.9rem;
+}
+
+.tools-index-group-heading::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.12rem;
+  bottom: 0.12rem;
+  width: 0.28rem;
+  border-radius: 999px;
+  background: var(--color-foreground);
+  box-shadow: 2px 2px 0 var(--tools-index-heading-shadow);
+}
+
+.tools-index-group-heading h2 {
+  margin: 0;
+  position: relative;
+  display: inline-flex;
+  width: fit-content;
+  font-family: var(--font-heading), "Segoe UI", sans-serif;
+  font-size: clamp(1.12rem, 1.8vw, 1.45rem);
+  font-weight: 850;
+  line-height: 1.05;
+  letter-spacing: 0.015em;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 0 var(--tools-index-heading-shadow);
+}
+
+.tools-index-group-heading span {
+  transform: translateY(-0.08rem);
+  min-width: 2.25rem;
+  border: 1px solid color-mix(in oklab, var(--color-border), transparent 12%);
+  border-radius: 0.7rem;
+  padding: 0.28rem 0.62rem;
+  color: var(--color-background);
+  background: var(--color-foreground);
+  box-shadow: 3px 3px 0 var(--tools-index-heading-shadow);
+  font-family: var(--font-heading), "Segoe UI", sans-serif;
+  font-size: 0.72rem;
+  font-weight: 850;
+  line-height: 1;
+  text-align: center;
+}
+
+@supports (corner-shape: squircle) {
+  .tools-index-group-heading span {
+    corner-shape: squircle;
+  }
+}

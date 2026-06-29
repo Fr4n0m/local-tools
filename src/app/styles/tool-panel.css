@@ -1,0 +1,31 @@
+.tools-tool-panel {
+  box-shadow: var(--surface-shadow-compact);
+}
+
+.tools-tool-panel {
+  position: relative;
+  transition:
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+}
+
+.dark .tools-tool-panel {
+  background-color: var(--color-sidebar);
+  color: var(--color-sidebar-foreground);
+}
+
+.dark .tools-index-card,
+.dark .tools-index-stats div,
+.dark .tools-index-empty,
+.dark .tools-privacy-card {
+  background: var(--color-sidebar);
+}
+
+.tools-tool-topbar {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 10;
+  display: flex;
+  justify-content: flex-end;
+}

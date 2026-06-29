@@ -1,0 +1,104 @@
+.tools-privacy-popover {
+  position: relative;
+}
+
+.tools-privacy-trigger {
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid color-mix(in oklab, var(--color-border), transparent 10%);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-foreground);
+  background: color-mix(in oklab, var(--color-background), transparent 6%);
+  box-shadow: 3px 3px 0 var(--surface-shadow-color);
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease;
+}
+
+@supports (corner-shape: squircle) {
+  .tools-privacy-trigger {
+    corner-shape: squircle;
+  }
+}
+
+.tools-privacy-trigger:hover,
+.tools-privacy-trigger:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: 5px 5px 0 var(--surface-shadow-color);
+}
+
+.tools-privacy-trigger:focus-visible {
+  outline: 2px solid var(--button-focus-ring);
+  outline-offset: 3px;
+}
+
+.tools-privacy-card {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.65rem);
+  width: min(20rem, calc(100vw - 2rem));
+  border: 1px solid color-mix(in oklab, var(--color-border), transparent 8%);
+  border-radius: var(--radius-squircle);
+  background: color-mix(in oklab, var(--color-background), transparent 0%);
+  padding: 0.9rem;
+  color: color-mix(in oklab, var(--color-foreground), transparent 18%);
+  box-shadow:
+    var(--surface-shadow-compact),
+    0 24px 60px -36px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-0.25rem) scale(0.98);
+  transform-origin: top right;
+  transition:
+    opacity 150ms ease,
+    transform 150ms ease;
+}
+
+@supports (corner-shape: squircle) {
+  .tools-privacy-card {
+    corner-shape: squircle;
+  }
+}
+
+.tools-privacy-popover:hover .tools-privacy-card,
+.tools-privacy-popover:focus-within .tools-privacy-card {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
+
+.tools-privacy-card p {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.tools-privacy-card ul {
+  margin: 0.65rem 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.tools-privacy-card li {
+  display: grid;
+  grid-template-columns: 0.95rem 1fr;
+  gap: 0.4rem;
+  align-items: start;
+}
+
+.tools-privacy-card li + li {
+  margin-top: 0.3rem;
+}
+
+.tools-privacy-card li svg {
+  margin-top: 0.12rem;
+  color: var(--color-foreground);
+  stroke-width: 2.45;
+}

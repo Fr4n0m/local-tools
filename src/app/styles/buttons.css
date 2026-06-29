@@ -156,6 +156,94 @@
   object-fit: contain;
 }
 
+.header-language-select {
+  position: relative;
+}
+
+.header-language-trigger {
+  min-width: 1.75rem;
+  height: 1.75rem;
+  padding-inline: 0.35rem;
+}
+
+.header-language-flag {
+  width: 1.02rem;
+  height: 1.02rem;
+  display: block;
+  object-fit: contain;
+}
+
+.header-language-menu {
+  position: absolute;
+  top: calc(100% + 0.85rem);
+  right: 0;
+  z-index: 50;
+  width: 10.5rem;
+  margin: 0;
+  border: 1px solid color-mix(in oklab, var(--color-border), transparent 15%);
+  border-radius: var(--radius-squircle);
+  background: var(--color-background);
+  padding: 0.35rem;
+  box-shadow:
+    var(--surface-shadow-compact),
+    0 18px 42px -24px rgba(0, 0, 0, 0.45);
+  transform-origin: top right;
+  animation: header-language-menu-in 160ms ease-out both;
+}
+
+.header-language-option {
+  width: 100%;
+  border: 0;
+  border-radius: calc(var(--radius-squircle) - 8px);
+  padding: 0.48rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-foreground);
+  background: transparent;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+
+@supports (corner-shape: squircle) {
+  .header-language-menu,
+  .header-language-option {
+    corner-shape: squircle;
+  }
+}
+
+.header-language-option:hover:not(:disabled),
+.header-language-option:focus-visible {
+  background: color-mix(in oklab, var(--color-foreground), transparent 91%);
+  outline: none;
+}
+
+.header-language-option:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+}
+
+.header-language-pending {
+  margin-left: auto;
+  color: color-mix(in oklab, var(--color-foreground), transparent 45%);
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+@keyframes header-language-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-0.35rem) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 .page-display-control-theme-icon {
   width: 0.82rem;
   height: 0.82rem;
@@ -166,5 +254,9 @@
 @media (prefers-reduced-motion: reduce) {
   .lt-button {
     transition: none;
+  }
+
+  .header-language-menu {
+    animation: none;
   }
 }
