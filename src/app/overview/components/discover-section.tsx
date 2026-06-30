@@ -33,7 +33,10 @@ type DiscoverCopy = {
   }>;
   subscribeButton: string;
   subscribePlaceholder: string;
-  subscribeTerms: string;
+  subscribeConsentPrefix: string;
+  subscribePrivacyLink: string;
+  subscribeConsentJoin: string;
+  subscribeTermsLink: string;
   subscribeLoadingTitle: string;
   subscribeLoadingDescription: string;
   subscribeSuccessTitle: string;
@@ -346,7 +349,12 @@ export function DiscoverSection({ text, language }: DiscoverSectionProps) {
                     onChange={(e) => setAcceptTerms(e.target.checked)}
                     disabled={isAlreadyActive}
                   />
-                  <span>{text.subscribeTerms}</span>
+                  <span>
+                    {text.subscribeConsentPrefix}{" "}
+                    <a href="/privacy">{text.subscribePrivacyLink}</a>{" "}
+                    {text.subscribeConsentJoin}{" "}
+                    <a href="/terms">{text.subscribeTermsLink}</a>.
+                  </span>
                 </label>
               </form>
               {inlineMessage ? (

@@ -5,13 +5,13 @@ import { LegalPage } from "@/shared/presentation/components/legal-page";
 export const metadata: Metadata = {
   title: "Terms of Service",
   description:
-    "LocalTools terms of service — free, open-source developer tools that run entirely in your browser with no accounts, no uploads, and no data collection.",
+    "LocalTools terms of service — permitted use, local browser tools, optional update subscriptions, availability, and applicable conditions.",
   alternates: { canonical: "/terms" },
   robots: { index: true, follow: false },
   openGraph: {
     title: "Terms of Service | LocalTools",
     description:
-      "Free, open-source developer tools. No accounts. No uploads. No data collection.",
+      "Terms covering LocalTools browser utilities, optional update subscriptions, acceptable use, availability, and legal conditions.",
     url: "/terms",
     type: "website",
   },

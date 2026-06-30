@@ -88,6 +88,17 @@
   accent-color: var(--color-foreground);
 }
 
+.subscribeTerms a {
+  color: inherit;
+  font-weight: 700;
+  text-underline-offset: 0.12rem;
+}
+
+.subscribeTerms a:hover,
+.subscribeTerms a:focus-visible {
+  color: var(--color-foreground);
+}
+
 .subscribeFeedback {
   position: relative;
   z-index: 2;

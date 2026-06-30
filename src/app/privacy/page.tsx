@@ -5,13 +5,13 @@ import { LegalPage } from "@/shared/presentation/components/legal-page";
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description:
-    "LocalTools privacy policy — all processing runs 100% locally in your browser. Zero data collection, no file uploads, no analytics, no tracking of any kind.",
+    "LocalTools privacy policy — local browser processing, optional email subscription data, functional storage, providers, retention, and data rights.",
   alternates: { canonical: "/privacy" },
   robots: { index: true, follow: false },
   openGraph: {
     title: "Privacy Policy | LocalTools",
     description:
-      "LocalTools processes everything locally in your browser. We collect no data, accept no uploads, and run no tracking.",
+      "How LocalTools handles local tool data, optional email subscriptions, browser storage, providers, retention, and privacy rights.",
     url: "/privacy",
     type: "website",
   },

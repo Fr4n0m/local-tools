@@ -1,63 +1,75 @@
 {
   "lastUpdatedLabel": "Última actualización",
-  "lastUpdated": "26 de mayo de 2026",
+  "lastUpdated": "30 de junio de 2026",
   "back": "Volver",
   "privacy": {
     "title": "Política de Privacidad",
     "sections": [
       {
-        "title": "1. Qué datos tratamos",
+        "title": "1. Responsable del tratamiento",
         "paragraphs": [
-          "LocalTools recopila los mínimos datos necesarios para operar de forma local y mantener seguridad básica."
-        ],
+          "El responsable de los datos personales tratados mediante LocalTools es Francisco Rodríguez. Contacto para privacidad y ejercicio de derechos: fran11799@outlook.com."
+        ]
+      },
+      {
+        "title": "2. Herramientas locales y datos del navegador",
+        "paragraphs": [
+          "Los textos, archivos y demás contenidos introducidos en las herramientas se procesan localmente en el navegador y LocalTools no los sube a un servidor.",
+          "El navegador guarda preferencias funcionales en localStorage, como idioma, tema, densidad, herramienta seleccionada y colores recientes o guardados. Esta información permanece en el dispositivo y no se usa para analítica, publicidad, seguimiento entre sitios ni elaboración de perfiles."
+        ]
+      },
+      {
+        "title": "3. Suscripción por email",
+        "paragraphs": [
+          "La suscripción es opcional y utiliza doble confirmación. Al solicitarla se tratan el email, idioma, origen del formulario, fecha y versión del consentimiento, dirección IP, user-agent, estado de la suscripción, marcas temporales y hashes de los tokens de verificación y baja.",
+          "Estos datos permiten enviar la confirmación, comunicar novedades relevantes de LocalTools, acreditar el consentimiento, proteger el servicio y tramitar la baja."
+        ]
+      },
+      {
+        "title": "4. Base jurídica",
+        "paragraphs": [
+          "El envío de novedades se basa en el consentimiento explícito, que puede retirarse en cualquier momento sin afectar al tratamiento anterior a su retirada.",
+          "Los datos estrictamente necesarios para seguridad, prevención de abuso, acreditación del consentimiento o atención de obligaciones legales pueden tratarse por interés legítimo o cumplimiento legal, según corresponda."
+        ]
+      },
+      {
+        "title": "5. Proveedores y destinatarios",
+        "paragraphs": [
+          "La web se aloja en Vercel. La suscripción se gestiona mediante el bridge de codebyfran.es, infraestructura de base de datos Supabase y el proveedor de transporte de correo configurado. Estos proveedores tratan únicamente los datos necesarios para prestar sus servicios.",
+          "No vendemos datos personales ni los cedemos para publicidad. Los enlaces externos aplican sus propias políticas."
+        ]
+      },
+      {
+        "title": "6. Conservación",
+        "paragraphs": [
+          "Los datos de una suscripción activa se conservan mientras permanezca activa. Los registros pendientes, dados de baja y las evidencias asociadas se mantienen sólo durante el tiempo necesario para confirmar solicitudes, respetar la baja, atender reclamaciones y cumplir obligaciones; después se eliminan o anonimizan cuando procede."
+        ]
+      },
+      {
+        "title": "7. Cookies y almacenamiento local",
+        "paragraphs": [
+          "LocalTools no utiliza cookies de analítica, publicidad ni seguimiento, ni instala actualmente cookies no esenciales.",
+          "El almacenamiento local funcional descrito en esta política sirve exclusivamente para recordar elecciones de interfaz o datos que el usuario decide guardar. Por ello no se muestra un banner de consentimiento. Esta decisión se revisará antes de incorporar analítica, publicidad, contenido embebido con seguimiento o almacenamiento destinado a otras finalidades."
+        ]
+      },
+      {
+        "title": "8. Derechos",
         "items": [
-          "Preferencias locales: idioma, tema, densidad y herramienta seleccionada guardadas en localStorage.",
-          "Datos técnicos básicos del navegador necesarios para renderizar la app."
+          "Solicitar acceso, rectificación, supresión, limitación, oposición y portabilidad cuando sean aplicables.",
+          "Retirar el consentimiento desde el enlace de baja incluido en cada email o escribiendo a fran11799@outlook.com.",
+          "Presentar una reclamación ante la Agencia Española de Protección de Datos (www.aepd.es)."
         ]
       },
       {
-        "title": "2. Para qué usamos esta información",
+        "title": "9. Seguridad",
         "paragraphs": [
-          "La información local se usa solo para recordar tu experiencia en el dispositivo. No se usa para perfiles publicitarios ni para seguimiento entre sitios."
+          "Aplicamos medidas técnicas y organizativas razonables, incluidos tokens de un solo propósito almacenados como hashes, validación de entradas y limitación de solicitudes. Ningún sistema conectado a Internet puede garantizar seguridad absoluta."
         ]
       },
       {
-        "title": "3. Cookies y almacenamiento local",
+        "title": "10. Cambios en esta política",
         "paragraphs": [
-          "LocalTools no usa cookies de analítica ni cookies publicitarias.",
-          "Puede existir una cookie técnica del hosting para servir versiones correctas del despliegue."
-        ]
-      },
-      {
-        "title": "4. Proveedores y enlaces externos",
-        "paragraphs": [
-          "La app puede contener enlaces externos (por ejemplo, soporte). Cada sitio externo aplica sus propias políticas."
-        ]
-      },
-      {
-        "title": "5. Seguridad",
-        "paragraphs": [
-          "Aplicamos medidas técnicas razonables para reducir riesgos de acceso no autorizado o manipulación del código publicado."
-        ]
-      },
-      {
-        "title": "6. Tus derechos",
-        "items": [
-          "Solicitar información sobre tratamiento de datos cuando aplique.",
-          "Solicitar rectificación o supresión cuando corresponda legalmente.",
-          "Presentar reclamación ante la autoridad competente."
-        ]
-      },
-      {
-        "title": "7. Contacto",
-        "paragraphs": [
-          "Para dudas legales o reportes, usa el canal de contacto del footer."
-        ]
-      },
-      {
-        "title": "8. Cambios en esta política",
-        "paragraphs": [
-          "Podemos actualizar esta política por cambios técnicos o legales. Se publica siempre la versión vigente con fecha."
+          "Podemos actualizar esta política por cambios técnicos o legales. La versión vigente se publica siempre con su fecha de actualización."
         ]
       }
     ]
@@ -74,44 +86,51 @@
       {
         "title": "2. Uso permitido",
         "items": [
-          "Uso personal/profesional de herramientas client-side.",
-          "Prohibido uso ilícito, automatización abusiva o intentos de acceso no autorizado."
+          "Uso personal o profesional de las herramientas ejecutadas en el navegador.",
+          "Queda prohibido el uso ilícito, la automatización abusiva y cualquier intento de acceso no autorizado."
         ]
       },
       {
-        "title": "3. Contenido enviado por usuarios",
+        "title": "3. Suscripción a novedades",
         "paragraphs": [
-          "Si envías sugerencias o feedback, declaras que tienes derecho a compartir ese contenido."
+          "La suscripción es voluntaria, requiere confirmar el email mediante doble opt-in y puede incluir nuevas herramientas, funciones, mejoras relevantes de UX y cambios importantes del sitio.",
+          "No existe una frecuencia garantizada. Puedes retirar el consentimiento gratuitamente y en cualquier momento mediante el enlace de baja incluido en cada mensaje."
         ]
       },
       {
-        "title": "4. Enlaces de terceros",
+        "title": "4. Contenido aportado por usuarios",
         "paragraphs": [
-          "No controlamos sitios externos enlazados ni garantizamos su disponibilidad o seguridad."
+          "Si envías sugerencias o feedback, declaras que tienes derecho a compartir ese contenido. Los datos introducidos en las herramientas locales no se envían a LocalTools."
         ]
       },
       {
-        "title": "5. Seguridad y disponibilidad",
+        "title": "5. Enlaces de terceros",
         "paragraphs": [
-          "Aplicamos medidas razonables, pero no podemos garantizar disponibilidad continua ni ausencia total de incidencias."
+          "No controlamos sitios externos enlazados ni garantizamos su disponibilidad, contenido o seguridad."
         ]
       },
       {
-        "title": "6. Exclusión de garantías",
+        "title": "6. Seguridad y disponibilidad",
         "paragraphs": [
-          "El servicio se ofrece \"tal cual\" y \"según disponibilidad\", dentro del marco legal aplicable."
+          "Aplicamos medidas razonables, pero no garantizamos disponibilidad continua, ausencia de errores ni compatibilidad con todos los dispositivos o formatos."
         ]
       },
       {
-        "title": "7. Cambios del servicio",
+        "title": "7. Exclusión de garantías",
         "paragraphs": [
-          "Podemos actualizar funcionalidades o estos términos en cualquier momento. El uso continuado implica aceptación de la versión vigente."
+          "El servicio se ofrece tal cual y según disponibilidad, dentro de los límites permitidos por la legislación aplicable. Debes revisar cualquier resultado antes de usarlo en contextos críticos."
         ]
       },
       {
-        "title": "8. Ley aplicable y contacto",
+        "title": "8. Cambios del servicio",
         "paragraphs": [
-          "Estas condiciones se interpretan según la normativa aplicable al titular del proyecto y normas imperativas de consumo."
+          "Podemos modificar funcionalidades o estas condiciones. La versión vigente se publica con su fecha de actualización."
+        ]
+      },
+      {
+        "title": "9. Ley aplicable y contacto",
+        "paragraphs": [
+          "Estas condiciones se interpretan conforme a la legislación española y a las normas imperativas aplicables. Contacto: Francisco Rodríguez, fran11799@outlook.com."
         ]
       }
     ]

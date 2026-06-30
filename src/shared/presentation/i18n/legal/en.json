@@ -1,63 +1,75 @@
 {
   "lastUpdatedLabel": "Last updated",
-  "lastUpdated": "May 26, 2026",
+  "lastUpdated": "June 30, 2026",
   "back": "Back",
   "privacy": {
     "title": "Privacy Policy",
     "sections": [
       {
-        "title": "1. What data we process",
+        "title": "1. Data controller",
         "paragraphs": [
-          "LocalTools only handles the minimum data needed to run locally and keep basic security."
-        ],
+          "The controller for personal data processed through LocalTools is Francisco Rodríguez. Privacy and data-rights contact: fran11799@outlook.com."
+        ]
+      },
+      {
+        "title": "2. Local tools and browser data",
+        "paragraphs": [
+          "Text, files, and other content entered into the tools are processed locally in the browser and are not uploaded to a LocalTools server.",
+          "The browser stores functional preferences in localStorage, including language, theme, density, selected tool, and recent or saved colors. This information stays on the device and is not used for analytics, advertising, cross-site tracking, or profiling."
+        ]
+      },
+      {
+        "title": "3. Email subscription",
+        "paragraphs": [
+          "Subscription is optional and uses double opt-in. A request processes the email address, locale, form source, consent date and version, IP address, user-agent, subscription status, timestamps, and hashes of verification and unsubscribe tokens.",
+          "These data are used to send confirmation, communicate relevant LocalTools updates, demonstrate consent, secure the service, and process unsubscribe requests."
+        ]
+      },
+      {
+        "title": "4. Legal basis",
+        "paragraphs": [
+          "Update emails rely on explicit consent. Consent can be withdrawn at any time without affecting processing performed before withdrawal.",
+          "Data strictly required for security, abuse prevention, consent evidence, or legal obligations may be processed under legitimate interests or legal compliance, as applicable."
+        ]
+      },
+      {
+        "title": "5. Providers and recipients",
+        "paragraphs": [
+          "The website is hosted by Vercel. Subscriptions are handled through the codebyfran.es bridge, Supabase database infrastructure, and the configured email transport provider. These providers process only the data needed to provide their services.",
+          "We do not sell personal data or share it for advertising. External links are governed by their own policies."
+        ]
+      },
+      {
+        "title": "6. Retention",
+        "paragraphs": [
+          "Active subscription data are retained while the subscription remains active. Pending and unsubscribed records and related evidence are kept only as long as needed to confirm requests, honour opt-outs, handle claims, and meet obligations; they are then deleted or anonymised where appropriate."
+        ]
+      },
+      {
+        "title": "7. Cookies and local storage",
+        "paragraphs": [
+          "LocalTools does not use analytics, advertising, or tracking cookies and currently installs no non-essential cookies.",
+          "The functional local storage described here is used only to remember interface choices or data the user chooses to save. No consent banner is therefore displayed. This decision will be reviewed before adding analytics, advertising, tracking embeds, or storage for unrelated purposes."
+        ]
+      },
+      {
+        "title": "8. Your rights",
         "items": [
-          "Local preferences: language, theme, density, and selected tool stored in localStorage.",
-          "Basic browser technical data required to render the app."
+          "Request access, correction, erasure, restriction, objection, and portability where applicable.",
+          "Withdraw consent through the unsubscribe link in every email or by contacting fran11799@outlook.com.",
+          "Lodge a complaint with the Spanish Data Protection Agency (www.aepd.es)."
         ]
       },
       {
-        "title": "2. Why we use this information",
+        "title": "9. Security",
         "paragraphs": [
-          "Local information is used only to preserve your experience on your device. It is not used for advertising profiles or cross-site tracking."
+          "We use reasonable technical and organisational safeguards, including single-purpose tokens stored as hashes, input validation, and request limits. No Internet-connected system can guarantee absolute security."
         ]
       },
       {
-        "title": "3. Cookies and local storage",
+        "title": "10. Policy changes",
         "paragraphs": [
-          "LocalTools does not use analytics cookies or advertising cookies.",
-          "A technical hosting cookie may exist to serve the correct deployed version."
-        ]
-      },
-      {
-        "title": "4. Providers and external links",
-        "paragraphs": [
-          "The app may include external links (for example, support links). External sites have their own privacy policies."
-        ]
-      },
-      {
-        "title": "5. Security",
-        "paragraphs": [
-          "We apply reasonable technical measures to reduce unauthorized access or code tampering risks."
-        ]
-      },
-      {
-        "title": "6. Your rights",
-        "items": [
-          "Request information about data processing when applicable.",
-          "Request correction or deletion when legally applicable.",
-          "File a complaint with the competent authority."
-        ]
-      },
-      {
-        "title": "7. Contact",
-        "paragraphs": [
-          "For legal questions or reports, use the contact channel in the footer."
-        ]
-      },
-      {
-        "title": "8. Changes to this policy",
-        "paragraphs": [
-          "We may update this policy for technical or legal reasons. The current version is always published with date."
+          "We may update this policy for technical or legal reasons. The current version is always published with its update date."
         ]
       }
     ]
@@ -74,44 +86,51 @@
       {
         "title": "2. Permitted use",
         "items": [
-          "Personal/professional use of client-side tools.",
-          "No illegal use, abusive automation, or unauthorized access attempts."
+          "Personal or professional use of browser-based tools.",
+          "Illegal use, abusive automation, and unauthorised access attempts are prohibited."
         ]
       },
       {
-        "title": "3. User-submitted content",
+        "title": "3. Update subscription",
         "paragraphs": [
-          "If you submit suggestions or feedback, you declare you have rights to share that content."
+          "Subscription is voluntary, requires email confirmation through double opt-in, and may cover new tools, features, relevant UX improvements, and important website changes.",
+          "No delivery frequency is guaranteed. You may withdraw consent free of charge at any time through the unsubscribe link included in every message."
         ]
       },
       {
-        "title": "4. Third-party links",
+        "title": "4. User-submitted content",
         "paragraphs": [
-          "We do not control external linked sites and do not guarantee their availability or safety."
+          "If you submit suggestions or feedback, you confirm that you have the right to share that content. Data entered into local tools are not sent to LocalTools."
         ]
       },
       {
-        "title": "5. Security and availability",
+        "title": "5. Third-party links",
         "paragraphs": [
-          "We apply reasonable safeguards, but we cannot guarantee uninterrupted service or zero incidents."
+          "We do not control linked external sites and do not guarantee their availability, content, or security."
         ]
       },
       {
-        "title": "6. Warranty disclaimer",
+        "title": "6. Security and availability",
         "paragraphs": [
-          "The service is provided \"as is\" and \"as available\", within the limits of applicable law."
+          "We apply reasonable safeguards but do not guarantee uninterrupted availability, error-free operation, or compatibility with every device or format."
         ]
       },
       {
-        "title": "7. Service changes",
+        "title": "7. Warranty disclaimer",
         "paragraphs": [
-          "We may update features or these terms at any time. Continued use means acceptance of the current version."
+          "The service is provided as is and as available, within the limits of applicable law. Review outputs before using them in critical contexts."
         ]
       },
       {
-        "title": "8. Governing law and contact",
+        "title": "8. Service changes",
         "paragraphs": [
-          "These terms are interpreted under the applicable law of the project owner and mandatory consumer rules."
+          "We may change features or these terms. The current version is published with its update date."
+        ]
+      },
+      {
+        "title": "9. Governing law and contact",
+        "paragraphs": [
+          "These terms are interpreted under Spanish law and applicable mandatory rules. Contact: Francisco Rodríguez, fran11799@outlook.com."
         ]
       }
     ]
