@@ -8,6 +8,7 @@ import es from "@/modules/image-compressor/presentation/i18n/es.json";
 import { downloadBlob } from "@/shared/lib/download";
 import { createZipBlob } from "@/shared/lib/zip";
 import { CameraDownloadButton } from "@/shared/presentation/components/camera-download-button";
+import { ToolDropSurface } from "@/shared/presentation/components/tool-drop-surface";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import {
   ToolField,
@@ -121,116 +122,127 @@ export function ImageCompressorTool({ language }: Props) {
     setFiles(validFiles);
   };
 
+  const downloadCompressed = () => {
+    if (!downloadUrl) return;
+    const name = `compressed-${files[0]?.name ?? "image"}.jpg`;
+    void fetch(downloadUrl)
+      .then((response) => response.blob())
+      .then((blob) => downloadBlob(blob, name));
+  };
+
   return (
     <ToolSection title={text.title}>
-      <ToolFileDrop
-        accept="image/*"
-        currentFileText={
-          files.length > 0 ? `${text.currentFile}: ${files[0].name}` : null
-        }
+      <ToolDropSurface
         dropHint={text.dropHint}
-        extraText={
-          files.length > 1
-            ? text.selectedCount.replace("{count}", String(files.length))
-            : null
-        }
-        inputAriaLabel={text.inputLabel}
         label={text.inputLabel}
-        multiple
         onSelectFiles={onDropFiles}
-      />
-
-      <ToolField label={text.qualityLabel}>
-        <ToolSlider
-          displayValue={`${qualityPercent}%`}
-          max={1}
-          min={0.1}
-          step={0.05}
-          value={quality}
-          onChange={setQuality}
+      >
+        <ToolFileDrop
+          accept="image/*"
+          currentFileText={
+            files.length > 0 ? `${text.currentFile}: ${files[0].name}` : null
+          }
+          dropHint={text.dropHint}
+          extraText={
+            files.length > 1
+              ? text.selectedCount.replace("{count}", String(files.length))
+              : null
+          }
+          inputAriaLabel={text.inputLabel}
+          label={text.inputLabel}
+          multiple
+          onSelectFiles={onDropFiles}
         />
-      </ToolField>
 
-      <ToolActions
-        actions={[
-          {
-            label: text.compress,
-            onClick: () => {
-              void onCompress();
-            },
-            disabled: files.length === 0,
-          },
-          {
-            label: text.compressBatch,
-            onClick: () => {
-              void onCompressBatch();
-            },
-            disabled: files.length <= 1,
-          },
-          {
-            label: sharedText.buttons.clear,
-            onClick: () => {
-              if (downloadUrl) URL.revokeObjectURL(downloadUrl);
-              if (originalPreviewUrl) URL.revokeObjectURL(originalPreviewUrl);
-              setFiles([]);
-              setDownloadUrl("");
-              setOriginalPreviewUrl("");
-            },
-            disabled: files.length === 0 && !downloadUrl,
-          },
-        ]}
-      />
-
-      {files.length > 0 || downloadUrl ? (
-        <div className="grid gap-4 md:grid-cols-2">
-          <div className="space-y-2 rounded-md border bg-background/50 p-3">
-            <p className="text-sm">{text.originalPreview}</p>
-            {originalPreviewUrl ? (
-              <NextImage
-                alt={text.originalPreview}
-                className="max-h-56 w-full rounded-md object-contain"
-                height={320}
-                src={originalPreviewUrl}
-                unoptimized
-                width={320}
-              />
-            ) : null}
-          </div>
-          <div className="space-y-2 rounded-md border bg-background/50 p-3">
-            <p className="text-sm">{text.compressedPreview}</p>
-            {downloadUrl ? (
-              <NextImage
-                alt={text.compressedPreview}
-                className="max-h-56 w-full rounded-md object-contain"
-                height={320}
-                src={downloadUrl}
-                unoptimized
-                width={320}
-              />
-            ) : null}
-          </div>
-        </div>
-      ) : null}
-
-      {downloadUrl ? (
-        <div className="flex items-center gap-4">
-          <CameraDownloadButton
-            alt={text.compressedPreview}
-            imageUrl={downloadUrl}
-            label={text.done}
-            onCapture={() => {
-              const name = `compressed-${files[0]?.name ?? "image"}.jpg`;
-              fetch(downloadUrl)
-                .then((response) => response.blob())
-                .then((blob) => {
-                  downloadBlob(blob, name);
-                });
-            }}
+        <ToolField label={text.qualityLabel}>
+          <ToolSlider
+            displayValue={`${qualityPercent}%`}
+            max={1}
+            min={0.1}
+            step={0.05}
+            value={quality}
+            onChange={setQuality}
           />
-        </div>
-      ) : (
-        <p className="text-sm">{text.empty}</p>
-      )}
+        </ToolField>
+
+        <ToolActions
+          actions={[
+            {
+              label: text.compressBatch,
+              onClick: () => {
+                void onCompressBatch();
+              },
+              disabled: files.length <= 1,
+            },
+            {
+              label: sharedText.buttons.clear,
+              onClick: () => {
+                if (downloadUrl) URL.revokeObjectURL(downloadUrl);
+                if (originalPreviewUrl) URL.revokeObjectURL(originalPreviewUrl);
+                setFiles([]);
+                setDownloadUrl("");
+                setOriginalPreviewUrl("");
+              },
+              disabled: files.length === 0 && !downloadUrl,
+            },
+          ]}
+        />
+
+        {files.length > 0 || downloadUrl ? (
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="space-y-2 rounded-md border bg-background/50 p-3">
+              <p className="text-sm">{text.originalPreview}</p>
+              {originalPreviewUrl ? (
+                <NextImage
+                  alt={text.originalPreview}
+                  className="max-h-56 w-full rounded-md object-contain"
+                  height={320}
+                  src={originalPreviewUrl}
+                  unoptimized
+                  width={320}
+                />
+              ) : null}
+            </div>
+            <div className="space-y-2 rounded-md border bg-background/50 p-3">
+              <p className="text-sm">{text.compressedPreview}</p>
+              {downloadUrl ? (
+                <NextImage
+                  alt={text.compressedPreview}
+                  className="max-h-56 w-full rounded-md object-contain"
+                  height={320}
+                  src={downloadUrl}
+                  unoptimized
+                  width={320}
+                />
+              ) : null}
+            </div>
+          </div>
+        ) : null}
+
+        {files.length > 0 ? (
+          <div className="flex min-h-36 flex-wrap items-start gap-5 pb-3">
+            <CameraDownloadButton
+              convertLabel={text.cameraActionTitle}
+              downloadLabel={text.downloadResult}
+              imageAlt={text.compressedPreview}
+              imageUrl={downloadUrl}
+              onConvert={() => {
+                void onCompress();
+              }}
+              onDownload={downloadCompressed}
+              resultKey={downloadUrl}
+            />
+            <div className="max-w-56 space-y-1 pt-2">
+              <p className="text-sm font-semibold">{text.cameraActionTitle}</p>
+              <p className="text-xs leading-5 text-foreground/65">
+                {downloadUrl ? text.photoDownloadHint : text.cameraActionHint}
+              </p>
+            </div>
+          </div>
+        ) : (
+          <p className="text-sm">{text.empty}</p>
+        )}
+      </ToolDropSurface>
     </ToolSection>
   );
 }

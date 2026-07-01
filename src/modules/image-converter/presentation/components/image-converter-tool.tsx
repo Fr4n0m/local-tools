@@ -1,13 +1,19 @@
 "use client";
 
 import NextImage from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
+import {
+  convertImageFile,
+  convertedFileName,
+  type OutputFormat,
+} from "@/modules/image-converter/domain/image-converter";
 import en from "@/modules/image-converter/presentation/i18n/en.json";
 import es from "@/modules/image-converter/presentation/i18n/es.json";
 import { downloadBlob } from "@/shared/lib/download";
 import { createZipBlob } from "@/shared/lib/zip";
 import { CameraDownloadButton } from "@/shared/presentation/components/camera-download-button";
+import { ToolDropSurface } from "@/shared/presentation/components/tool-drop-surface";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import {
   ToolField,
@@ -20,246 +26,263 @@ import type { Language } from "@/shared/presentation/i18n";
 import { sharedMessages } from "@/shared/presentation/i18n";
 
 type Props = { language: Language };
-type OutputFormat = "image/png" | "image/jpeg" | "image/webp";
+type ProcessingMode = "single" | "batch" | null;
+type ConversionResult = {
+  blob: Blob;
+  url: string;
+  filename: string;
+  key: string;
+};
 
 export function ImageConverterTool({ language }: Props) {
   const text = useMemo(() => (language === "es" ? es : en), [language]);
   const sharedText = sharedMessages[language];
   const [files, setFiles] = useState<File[]>([]);
-  const [format, setFormat] = useState<OutputFormat>("image/png");
+  const [format, setFormat] = useState<OutputFormat>("image/jpeg");
   const [quality, setQuality] = useState(0.9);
-  const [downloadUrl, setDownloadUrl] = useState<string>("");
+  const [result, setResult] = useState<ConversionResult | null>(null);
   const [originalPreviewUrl, setOriginalPreviewUrl] = useState("");
+  const [processing, setProcessing] = useState<ProcessingMode>(null);
+  const [error, setError] = useState("");
+  const resultUrlRef = useRef("");
+  const previewUrlRef = useRef("");
   const qualityPercent = Math.round(quality * 100);
+  const isBusy = processing !== null;
 
-  useEffect(() => {
-    return () => {
-      if (downloadUrl) {
-        URL.revokeObjectURL(downloadUrl);
-      }
-      if (originalPreviewUrl) {
-        URL.revokeObjectURL(originalPreviewUrl);
-      }
-    };
-  }, [downloadUrl, originalPreviewUrl]);
+  useEffect(
+    () => () => {
+      if (resultUrlRef.current) URL.revokeObjectURL(resultUrlRef.current);
+      if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
+    },
+    [],
+  );
 
-  const convertFileToBlob = async (file: File): Promise<Blob | null> => {
-    const image = new Image();
-    const sourceUrl = URL.createObjectURL(file);
-    image.src = sourceUrl;
-
-    await new Promise<void>((resolve, reject) => {
-      image.onload = () => {
-        URL.revokeObjectURL(sourceUrl);
-        resolve();
-      };
-      image.onerror = () => {
-        URL.revokeObjectURL(sourceUrl);
-        reject(new Error("image-load-error"));
-      };
-    });
-
-    const canvas = document.createElement("canvas");
-    canvas.width = image.width;
-    canvas.height = image.height;
-
-    const context = canvas.getContext("2d");
-    if (!context) {
-      return null;
-    }
-
-    context.drawImage(image, 0, 0);
-
-    const blob = await new Promise<Blob | null>((resolve) => {
-      canvas.toBlob(resolve, format, quality);
-    });
-
-    return blob;
+  const clearResult = () => {
+    if (resultUrlRef.current) URL.revokeObjectURL(resultUrlRef.current);
+    resultUrlRef.current = "";
+    setResult(null);
   };
 
   const onConvert = async () => {
-    if (files.length === 0) {
-      return;
+    const file = files[0];
+    if (!file || isBusy) return;
+    setProcessing("single");
+    setError("");
+    try {
+      const blob = await convertImageFile(file, format, quality);
+      clearResult();
+      const url = URL.createObjectURL(blob);
+      resultUrlRef.current = url;
+      setResult({
+        blob,
+        url,
+        filename: convertedFileName(file.name, format),
+        key: `${Date.now()}-${format}-${quality}`,
+      });
+    } catch {
+      clearResult();
+      setError(text.conversionError);
+    } finally {
+      setProcessing(null);
     }
-
-    const blob = await convertFileToBlob(files[0]);
-    if (!blob) {
-      return;
-    }
-
-    if (downloadUrl) {
-      URL.revokeObjectURL(downloadUrl);
-    }
-
-    setDownloadUrl(URL.createObjectURL(blob));
   };
 
   const onConvertBatch = async () => {
-    if (files.length <= 1) {
-      return;
+    if (files.length <= 1 || isBusy) return;
+    setProcessing("batch");
+    setError("");
+    try {
+      const converted = await Promise.all(
+        files.map(async (file) => ({
+          name: convertedFileName(file.name, format, ""),
+          blob: await convertImageFile(file, format, quality),
+        })),
+      );
+      downloadBlob(await createZipBlob(converted), "converted-images.zip");
+    } catch {
+      setError(text.batchError);
+    } finally {
+      setProcessing(null);
     }
-
-    const converted = await Promise.all(
-      files.map(async (file) => {
-        const blob = await convertFileToBlob(file);
-        if (!blob) {
-          return null;
-        }
-        const dotIndex = file.name.lastIndexOf(".");
-        const basename =
-          dotIndex > 0 ? file.name.slice(0, dotIndex) : file.name;
-        const ext = format.split("/")[1];
-        return {
-          name: `${basename}.${ext}`,
-          blob,
-        };
-      }),
-    );
-
-    const zipBlob = await createZipBlob(
-      converted.filter((item): item is { name: string; blob: Blob } => !!item),
-    );
-    downloadBlob(zipBlob, "converted-images.zip");
   };
 
   const onDropFiles = (nextFiles: File[]) => {
-    const validFiles = nextFiles.filter((nextFile) =>
-      nextFile.type.startsWith("image/"),
+    const validFiles = nextFiles.filter((file) =>
+      file.type.startsWith("image/"),
     );
     if (validFiles.length === 0) {
+      setError(text.invalidImage);
       return;
     }
-
-    if (originalPreviewUrl) {
-      URL.revokeObjectURL(originalPreviewUrl);
-    }
-    setOriginalPreviewUrl(URL.createObjectURL(validFiles[0]));
+    clearResult();
+    if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
+    const previewUrl = URL.createObjectURL(validFiles[0]);
+    previewUrlRef.current = previewUrl;
+    setOriginalPreviewUrl(previewUrl);
     setFiles(validFiles);
+    setError("");
+  };
+
+  const clearAll = () => {
+    clearResult();
+    if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
+    previewUrlRef.current = "";
+    setOriginalPreviewUrl("");
+    setFiles([]);
+    setError("");
   };
 
   return (
     <ToolSection title={text.title}>
-      <ToolFileDrop
-        accept="image/*"
-        currentFileText={
-          files.length > 0 ? `${text.currentFile}: ${files[0].name}` : null
-        }
+      <ToolDropSurface
         dropHint={text.dropHint}
-        extraText={
-          files.length > 1
-            ? text.selectedCount.replace("{count}", String(files.length))
-            : null
-        }
-        inputAriaLabel={text.inputLabel}
         label={text.inputLabel}
-        multiple
         onSelectFiles={onDropFiles}
-      />
-      <div className="grid gap-4 md:grid-cols-2">
-        <ToolField label={text.formatLabel}>
-          <ToolSelect
-            options={[
-              { value: "image/png", label: "PNG" },
-              { value: "image/jpeg", label: "JPEG" },
-              { value: "image/webp", label: "WEBP" },
-            ]}
-            value={format}
-            onChange={(val) => setFormat(val as OutputFormat)}
-          />
-        </ToolField>
-        <ToolField label={text.qualityLabel}>
-          <ToolSlider
-            displayValue={`${qualityPercent}%`}
-            max={1}
-            min={0.1}
-            step={0.05}
-            value={quality}
-            onChange={setQuality}
-          />
-        </ToolField>
-      </div>
-      <ToolActions
-        actions={[
-          {
-            label: text.convert,
-            onClick: () => {
-              void onConvert();
-            },
-            disabled: files.length === 0,
-          },
-          {
-            label: text.convertBatch,
-            onClick: () => {
-              void onConvertBatch();
-            },
-            disabled: files.length <= 1,
-          },
-          {
-            label: sharedText.buttons.clear,
-            onClick: () => {
-              if (downloadUrl) {
-                URL.revokeObjectURL(downloadUrl);
-              }
-              if (originalPreviewUrl) {
-                URL.revokeObjectURL(originalPreviewUrl);
-              }
-              setFiles([]);
-              setDownloadUrl("");
-              setOriginalPreviewUrl("");
-            },
-            disabled: files.length === 0 && !downloadUrl,
-          },
-        ]}
-      />
-      {files.length > 0 || downloadUrl ? (
+      >
+        <ToolFileDrop
+          accept="image/*"
+          currentFileText={
+            files.length ? `${text.currentFile}: ${files[0].name}` : null
+          }
+          dropHint={text.dropHint}
+          extraText={
+            files.length > 1
+              ? text.selectedCount.replace("{count}", String(files.length))
+              : null
+          }
+          inputAriaLabel={text.inputLabel}
+          label={text.inputLabel}
+          multiple
+          onSelectFiles={onDropFiles}
+        />
+
         <div className="grid gap-4 md:grid-cols-2">
-          <div className="space-y-2 rounded-md border bg-background/50 p-3">
-            <p className="text-sm">{text.originalPreview}</p>
-            {originalPreviewUrl ? (
-              <NextImage
-                alt={text.originalPreview}
-                className="max-h-56 w-full rounded-md object-contain"
-                height={320}
-                src={originalPreviewUrl}
-                unoptimized
-                width={320}
-              />
+          <ToolField label={text.formatLabel}>
+            <ToolSelect
+              aria-label={text.formatLabel}
+              options={[
+                { value: "image/png", label: "PNG" },
+                { value: "image/jpeg", label: "JPEG" },
+                { value: "image/webp", label: "WEBP" },
+              ]}
+              value={format}
+              onChange={(value) => {
+                clearResult();
+                setFormat(value as OutputFormat);
+              }}
+            />
+          </ToolField>
+          <ToolField label={text.qualityLabel}>
+            <ToolSlider
+              disabled={format === "image/png" || isBusy}
+              displayValue={`${qualityPercent}%`}
+              max={1}
+              min={0.1}
+              step={0.05}
+              value={quality}
+              onChange={(value) => {
+                clearResult();
+                setQuality(value);
+              }}
+            />
+            {format === "image/png" ? (
+              <p className="mt-1 text-xs text-foreground/65">
+                {text.qualityUnavailable}
+              </p>
             ) : null}
-          </div>
-          <div className="space-y-2 rounded-md border bg-background/50 p-3">
-            <p className="text-sm">{text.convertedPreview}</p>
-            {downloadUrl ? (
-              <NextImage
-                alt={text.convertedPreview}
-                className="max-h-56 w-full rounded-md object-contain"
-                height={320}
-                src={downloadUrl}
-                unoptimized
-                width={320}
-              />
-            ) : null}
-          </div>
+          </ToolField>
         </div>
-      ) : null}
-      {downloadUrl ? (
-        <div className="flex items-center gap-4">
-          <CameraDownloadButton
-            alt={text.convertedPreview}
-            imageUrl={downloadUrl}
-            label={text.done}
-            onCapture={() => {
-              const name = `converted-${files[0]?.name ?? "image"}.${format.split("/")[1]}`;
-              fetch(downloadUrl)
-                .then((response) => response.blob())
-                .then((blob) => {
-                  downloadBlob(blob, name);
-                });
-            }}
-          />
-        </div>
-      ) : (
-        <p className="text-sm">{text.empty}</p>
-      )}
+
+        <ToolActions
+          actions={[
+            {
+              label:
+                processing === "batch"
+                  ? text.batchConverting
+                  : text.convertBatch,
+              onClick: () => void onConvertBatch(),
+              disabled: files.length <= 1 || isBusy,
+            },
+            {
+              label: sharedText.buttons.clear,
+              onClick: clearAll,
+              disabled: (files.length === 0 && !result) || isBusy,
+            },
+          ]}
+        />
+
+        {files.length > 0 ? (
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="space-y-2 rounded-md border bg-background/50 p-3">
+              <p className="text-sm">{text.originalPreview}</p>
+              {originalPreviewUrl ? (
+                <NextImage
+                  alt={text.originalPreview}
+                  className="max-h-56 w-full rounded-md object-contain"
+                  height={320}
+                  src={originalPreviewUrl}
+                  unoptimized
+                  width={320}
+                />
+              ) : null}
+            </div>
+            <div className="space-y-2 rounded-md border bg-background/50 p-3">
+              <p className="text-sm">{text.convertedPreview}</p>
+              {result ? (
+                <NextImage
+                  alt={text.convertedPreview}
+                  className="max-h-56 w-full rounded-md object-contain"
+                  height={320}
+                  src={result.url}
+                  unoptimized
+                  width={320}
+                />
+              ) : (
+                <p className="text-xs text-foreground/65">
+                  {text.notConverted}
+                </p>
+              )}
+            </div>
+          </div>
+        ) : (
+          <p className="text-sm">{text.empty}</p>
+        )}
+
+        {files.length > 0 ? (
+          <div className="flex min-h-36 flex-wrap items-start gap-5 pb-3">
+            <CameraDownloadButton
+              busy={processing === "single"}
+              convertLabel={
+                processing === "single" ? text.converting : text.convert
+              }
+              disabled={isBusy}
+              downloadLabel={text.downloadResult}
+              imageAlt={text.convertedPreview}
+              imageUrl={result?.url}
+              onConvert={() => void onConvert()}
+              onDownload={() =>
+                result && downloadBlob(result.blob, result.filename)
+              }
+              resultKey={result?.key}
+            />
+            <div className="max-w-56 space-y-1 pt-2">
+              <p className="text-sm font-semibold">{text.cameraActionTitle}</p>
+              <p className="text-xs leading-5 text-foreground/65">
+                {result ? text.photoDownloadHint : text.cameraActionHint}
+              </p>
+            </div>
+          </div>
+        ) : null}
+        {error ? (
+          <p
+            aria-live="polite"
+            className="text-sm text-destructive"
+            role="alert"
+          >
+            {error}
+          </p>
+        ) : null}
+      </ToolDropSurface>
     </ToolSection>
   );
 }

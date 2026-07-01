@@ -4,6 +4,12 @@ export type MeshStop = {
   y: number;
 };
 
+export type MeshGradientExportFormat =
+  | "image/svg+xml"
+  | "image/png"
+  | "image/jpeg"
+  | "image/webp";
+
 function clamp(value: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, value));
 }
@@ -26,7 +32,11 @@ export function buildMeshGradientCss(stops: MeshStop[]): string {
   return `background-color: #0b0f14;\nbackground-image: ${layers.join(",\n  ")};`;
 }
 
-export function buildMeshGradientSvg(stops: MeshStop[]): string {
+export function buildMeshGradientSvg(
+  stops: MeshStop[],
+  width = 1200,
+  height = 800,
+): string {
   const safe = normalizeStops(stops).slice(0, 6);
   const circles = safe
     .map(
@@ -35,5 +45,5 @@ export function buildMeshGradientSvg(stops: MeshStop[]): string {
     )
     .join("");
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><rect width="1200" height="800" fill="#0b0f14"/>${circles}</svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}"><rect width="${width}" height="${height}" fill="#0b0f14"/>${circles}</svg>`;
 }

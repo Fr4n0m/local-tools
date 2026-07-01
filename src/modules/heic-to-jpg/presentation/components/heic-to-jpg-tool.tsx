@@ -13,6 +13,8 @@ import es from "@/modules/heic-to-jpg/presentation/i18n/es.json";
 import { downloadBlob } from "@/shared/lib/download";
 import { createZipBlob } from "@/shared/lib/zip";
 import { notifyError } from "@/shared/lib/notify";
+import { CameraDownloadButton } from "@/shared/presentation/components/camera-download-button";
+import { ToolDropSurface } from "@/shared/presentation/components/tool-drop-surface";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import {
   ToolField,
@@ -118,116 +120,127 @@ export function HeicToJpgTool({ language }: Props) {
 
   return (
     <ToolSection title={text.title}>
-      <ToolFileDrop
-        accept=".heic,.heif,image/heic,image/heif"
-        currentFileText={
-          files.length > 0 ? `${text.currentFile}: ${files[0].name}` : null
-        }
+      <ToolDropSurface
         dropHint={text.dropHint}
-        extraText={
-          files.length > 1
-            ? text.selectedCount.replace("{count}", String(files.length))
-            : null
-        }
-        inputAriaLabel={text.inputLabel}
         label={text.inputLabel}
-        multiple
         onSelectFiles={onDropFiles}
-      />
-
-      <ToolField label={text.qualityLabel}>
-        <ToolSlider
-          displayValue={`${qualityPercent}%`}
-          max={1}
-          min={0.1}
-          step={0.05}
-          value={quality}
-          onChange={setQuality}
+      >
+        <ToolFileDrop
+          accept=".heic,.heif,image/heic,image/heif"
+          currentFileText={
+            files.length > 0 ? `${text.currentFile}: ${files[0].name}` : null
+          }
+          dropHint={text.dropHint}
+          extraText={
+            files.length > 1
+              ? text.selectedCount.replace("{count}", String(files.length))
+              : null
+          }
+          inputAriaLabel={text.inputLabel}
+          label={text.inputLabel}
+          multiple
+          onSelectFiles={onDropFiles}
         />
-      </ToolField>
 
-      <ToolActions
-        actions={[
-          {
-            label: text.convert,
-            onClick: () => {
-              void onConvert();
-            },
-            disabled: files.length === 0,
-          },
-          {
-            label: text.convertBatch,
-            onClick: () => {
-              void onConvertBatch();
-            },
-            disabled: files.length <= 1,
-          },
-          {
-            label: sharedText.buttons.clear,
-            onClick: () => {
-              if (downloadUrl) URL.revokeObjectURL(downloadUrl);
-              if (originalPreviewUrl) URL.revokeObjectURL(originalPreviewUrl);
-              setFiles([]);
-              setDownloadUrl("");
-              setOriginalPreviewUrl("");
-              setError("");
-            },
-            disabled: files.length === 0 && !downloadUrl && !error,
-          },
-        ]}
-      />
+        <ToolField label={text.qualityLabel}>
+          <ToolSlider
+            displayValue={`${qualityPercent}%`}
+            max={1}
+            min={0.1}
+            step={0.05}
+            value={quality}
+            onChange={setQuality}
+          />
+        </ToolField>
 
-      {error ? <p className="text-sm text-destructive">{error}</p> : null}
+        <ToolActions
+          actions={[
+            {
+              label: text.convertBatch,
+              onClick: () => {
+                void onConvertBatch();
+              },
+              disabled: files.length <= 1,
+            },
+            {
+              label: sharedText.buttons.clear,
+              onClick: () => {
+                if (downloadUrl) URL.revokeObjectURL(downloadUrl);
+                if (originalPreviewUrl) URL.revokeObjectURL(originalPreviewUrl);
+                setFiles([]);
+                setDownloadUrl("");
+                setOriginalPreviewUrl("");
+                setError("");
+              },
+              disabled: files.length === 0 && !downloadUrl && !error,
+            },
+          ]}
+        />
 
-      {files.length > 0 || downloadUrl ? (
-        <div className="grid gap-4 md:grid-cols-2">
-          <div className="space-y-2 rounded-md border bg-background/50 p-3">
-            <p className="text-sm">{text.originalPreview}</p>
-            {originalPreviewUrl ? (
-              <NextImage
-                alt={text.originalPreview}
-                className="max-h-56 w-full rounded-md object-contain"
-                height={320}
-                src={originalPreviewUrl}
-                unoptimized
-                width={320}
-              />
-            ) : null}
+        {error ? <p className="text-sm text-destructive">{error}</p> : null}
+
+        {files.length > 0 || downloadUrl ? (
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="space-y-2 rounded-md border bg-background/50 p-3">
+              <p className="text-sm">{text.originalPreview}</p>
+              {originalPreviewUrl ? (
+                <NextImage
+                  alt={text.originalPreview}
+                  className="max-h-56 w-full rounded-md object-contain"
+                  height={320}
+                  src={originalPreviewUrl}
+                  unoptimized
+                  width={320}
+                />
+              ) : null}
+            </div>
+            <div className="space-y-2 rounded-md border bg-background/50 p-3">
+              <p className="text-sm">{text.convertedPreview}</p>
+              {downloadUrl ? (
+                <NextImage
+                  alt={text.convertedPreview}
+                  className="max-h-56 w-full rounded-md object-contain"
+                  height={320}
+                  src={downloadUrl}
+                  unoptimized
+                  width={320}
+                />
+              ) : null}
+            </div>
           </div>
-          <div className="space-y-2 rounded-md border bg-background/50 p-3">
-            <p className="text-sm">{text.convertedPreview}</p>
-            {downloadUrl ? (
-              <NextImage
-                alt={text.convertedPreview}
-                className="max-h-56 w-full rounded-md object-contain"
-                height={320}
-                src={downloadUrl}
-                unoptimized
-                width={320}
-              />
-            ) : null}
-          </div>
-        </div>
-      ) : null}
+        ) : null}
 
-      {downloadUrl ? (
-        <button
-          className="inline-flex items-center gap-2 rounded-md border px-4 py-2 text-sm"
-          onClick={() => {
-            const name = toJpgName(files[0]?.name ?? "image");
-            fetch(downloadUrl)
-              .then((r) => r.blob())
-              .then((blob) => {
-                downloadBlob(blob, name);
-              });
-          }}
-          type="button"
-        >
-          {text.done}
-        </button>
-      ) : (
-        <p className="text-sm">{text.empty}</p>
-      )}
+        {files.length > 0 ? (
+          <div className="flex min-h-36 flex-wrap items-start gap-5 pb-3">
+            <CameraDownloadButton
+              convertLabel={text.cameraActionTitle}
+              downloadLabel={text.downloadResult}
+              imageAlt={text.convertedPreview}
+              imageUrl={downloadUrl}
+              onConvert={() => {
+                void onConvert();
+              }}
+              onDownload={() => {
+                const name = toJpgName(files[0]?.name ?? "image");
+                void fetch(downloadUrl)
+                  .then((r) => r.blob())
+                  .then((blob) => {
+                    downloadBlob(blob, name);
+                  });
+              }}
+              resultKey={downloadUrl}
+            />
+            <div className="max-w-56 space-y-1 pt-2">
+              <p className="text-sm font-semibold">{text.cameraActionTitle}</p>
+              <p className="text-xs leading-5 text-foreground/65">
+                {downloadUrl ? text.photoDownloadHint : text.cameraActionHint}
+              </p>
+            </div>
+          </div>
+        ) : (
+          <p className="text-sm">{text.empty}</p>
+        )}
+      </ToolDropSurface>
     </ToolSection>
   );
 }

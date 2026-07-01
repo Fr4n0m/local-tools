@@ -11,7 +11,11 @@
   "selectedCount": "Archivos seleccionados: {count}",
   "originalPreview": "Vista previa original",
   "convertedPreview": "Vista previa convertida",
-  "empty": "Selecciona archivos HEIC/HEIF para empezar.",
+  "downloadResult": "Descargar imagen JPG convertida",
+  "cameraActionTitle": "Pulsa la cámara para convertir",
+  "cameraActionHint": "La imagen JPG convertida saldrá por debajo de la cámara.",
+  "photoDownloadHint": "Pulsa la foto expulsada para descargarla.",
+  "empty": "Selecciona o arrastra una imagen HEIC/HEIF para empezar.",
   "done": "Archivo JPG listo para descargar",
   "unsupported": "Solo se admiten archivos HEIC/HEIF."
 }

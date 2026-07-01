@@ -1,19 +1,50 @@
 .toy-camera-wrapper {
   --cam-main: #0b0d0f;
-  --cam-dark: #000000;
-  --cam-accent: #ffffff;
-  --cam-shutter: #e5e7eb;
+  --cam-dark: color-mix(in srgb, #000000 72%, #64748b 28%);
+  --cam-accent: color-mix(in srgb, #cbd5e1 72%, #94a3b8 28%);
+  --cam-shutter: color-mix(in srgb, #cbd5e1 82%, white 18%);
+  --cam-lens: color-mix(in srgb, #1f2937 68%, #64748b 32%);
   --photo-bg: #ffffff;
   --toy-size: 4.3em;
   --elastic: cubic-bezier(0.68, -0.6, 0.32, 1.6);
   position: relative;
-  width: var(--toy-size);
-  height: calc(var(--toy-size) * 0.9);
+  width: calc(var(--toy-size) + 1.6em);
+  height: calc(var(--toy-size) * 1.88);
   perspective: 1200px;
+  overflow: visible;
+}
+
+.dark .toy-camera-wrapper {
+  --cam-main: #eef2f6;
+  --cam-dark: rgba(148, 163, 184, 0.34);
+  --cam-accent: #6d7c90;
+  --cam-shutter: #b8c3cf;
+  --cam-lens: color-mix(in srgb, #1f2937 54%, #64748b 46%);
+}
+
+.toy-camera-trigger {
+  position: absolute;
+  inset: 0 auto auto 0.8em;
+  width: var(--toy-size);
+  height: calc(var(--toy-size) * 0.96);
   cursor: pointer;
   border: 0;
   background: transparent;
   padding: 0;
+  z-index: 10;
+  overflow: visible;
+  transform-origin: center;
+  transition: transform 180ms var(--elastic);
+}
+
+.toy-camera-trigger:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+.toy-camera-trigger:focus-visible,
+.toy-camera-photo:focus-visible {
+  outline: 2px solid var(--button-focus-ring);
+  outline-offset: 4px;
 }
 
 .toy-camera-body {
@@ -21,65 +52,159 @@
   inset: 0;
   background: var(--cam-main);
   border-radius: 1.1em;
+  overflow: visible;
   transform-style: preserve-3d;
   transform: translateZ(14px);
   transition: all 0.45s var(--elastic);
   box-shadow:
-    0 0.5em 0 var(--cam-dark),
     0 0.9em 1.6em rgba(0, 0, 0, 0.2),
     inset 0 0.2em 0.3em rgba(255, 255, 255, 0.2);
   z-index: 10;
 }
 
+.dark .toy-camera-body {
+  border: 1px solid rgba(148, 163, 184, 0.36);
+  box-shadow:
+    0 0.75em 1.1em rgba(15, 23, 42, 0.14),
+    inset 0 0.22em 0.26em rgba(255, 255, 255, 0.34),
+    inset 0 -0.14em 0.2em rgba(148, 163, 184, 0.12);
+}
+
+.dark .toy-camera-body::before {
+  background: linear-gradient(180deg, #8492a5 0%, #69788c 100%);
+  box-shadow:
+    inset 0 0.05em 0 rgba(255, 255, 255, 0.16),
+    inset 0 -0.08em 0 rgba(15, 23, 42, 0.1);
+}
+
 .toy-camera-body::before {
   content: "";
   position: absolute;
-  top: 20%;
-  left: 0;
-  width: 100%;
-  height: 15%;
-  background: var(--cam-accent);
+  top: 0.18em;
+  left: 0.18em;
+  right: 0.18em;
+  height: 0.34em;
+  border-radius: 0.7em 0.7em 0.35em 0.35em;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--cam-accent) 72%, white 28%) 0%,
+    var(--cam-accent) 100%
+  );
+  box-shadow:
+    inset 0 0.05em 0 rgba(255, 255, 255, 0.12),
+    inset 0 -0.08em 0 rgba(0, 0, 0, 0.14);
 }
 
 .toy-camera-button {
   position: absolute;
   top: -0.55em;
-  right: 15%;
-  width: 1.1em;
-  height: 0.72em;
+  right: 0.8em;
+  width: 1em;
+  height: 0.55em;
   background: var(--cam-shutter);
-  border-radius: 0.3em 0.3em 0 0;
+  border-radius: 0.2em 0.2em 0.05em 0.05em;
+  z-index: 2;
+  box-shadow:
+    inset 0 0.05em 0 rgba(255, 255, 255, 0.25),
+    0 0.08em 0 rgba(15, 23, 42, 0.12);
+  transform-origin: top center;
+  transition:
+    transform 120ms ease,
+    filter 120ms ease;
+}
+
+.dark .toy-camera-button {
+  background: #bcc7d2;
+  border: 1px solid rgba(148, 163, 184, 0.26);
+  box-shadow:
+    inset 0 0.05em 0 rgba(255, 255, 255, 0.3),
+    0 0.08em 0 rgba(100, 116, 139, 0.12);
 }
 
 .toy-camera-lens {
   position: absolute;
-  top: 50%;
+  top: 54%;
   left: 50%;
-  width: 60%;
-  height: 65%;
-  background: #1f2937;
+  width: 62%;
+  aspect-ratio: 1;
+  background:
+    radial-gradient(
+      circle at 35% 30%,
+      rgba(255, 255, 255, 0.18) 0 12%,
+      transparent 13%
+    ),
+    radial-gradient(circle at 50% 50%, #475569 0 35%, #1e293b 63%, #020617 100%);
   border-radius: 9999px !important;
-  transform: translate(-50%, -40%) translateZ(15px);
-  border: 0.25em solid var(--cam-dark);
+  transform: translate(-50%, -50%) translateZ(15px);
+  border: 0.24em solid color-mix(in srgb, #94a3b8 52%, white 48%);
+  box-shadow:
+    inset 0 0.14em 0.22em rgba(255, 255, 255, 0.14),
+    inset 0 -0.2em 0.3em rgba(0, 0, 0, 0.14);
+}
+
+.dark .toy-camera-lens {
+  border-color: #b6c2d0;
+  box-shadow:
+    inset 0 0.16em 0.24em rgba(255, 255, 255, 0.18),
+    inset 0 -0.16em 0.24em rgba(15, 23, 42, 0.1);
+}
+
+.toy-camera-flash {
+  position: absolute;
+  inset: -58%;
+  border-radius: 9999px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 1) 0 8%,
+    rgba(255, 255, 255, 0.92) 16%,
+    rgba(255, 255, 255, 0.5) 30%,
+    rgba(255, 255, 255, 0.12) 52%,
+    transparent 76%
+  );
+  mix-blend-mode: screen;
+  filter: blur(2.8px);
+  transform-origin: center;
+  pointer-events: none;
+  opacity: 0;
+  animation: lens-flash 0.46s ease-out;
 }
 
 .toy-camera-photo {
   position: absolute;
-  bottom: 10%;
+  top: calc(var(--toy-size) * 0.58);
   left: 50%;
-  width: 75%;
-  height: 80%;
-  background: var(--photo-bg);
+  width: 62%;
+  height: calc(var(--toy-size) * 0.74);
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  z-index: 4;
+  animation: photo-eject 0.72s var(--elastic) both;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.toy-camera-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  padding: 0.35em;
   border-radius: 0.4em;
-  transform: translateX(-50%) translateZ(-10px) translateY(0);
-  transition: all 0.65s var(--elastic);
+  background: var(--photo-bg);
+  border: 1px solid transparent;
+  overflow: hidden;
   box-shadow:
     0 0.2em 0.5em rgba(0, 0, 0, 0.1),
     inset 0 0 0 0.2em #f1f2f6;
-  display: flex;
-  padding: 0.35em;
-  opacity: 0;
-  z-index: 1;
+  transform-origin: center;
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    background-color 160ms ease,
+    box-shadow 160ms ease;
 }
 
 .photo-image {
@@ -91,60 +216,217 @@
   background: #e5e7eb;
 }
 
-.toy-camera-wrapper:hover .toy-camera-body {
-  transform: translateZ(24px) rotateX(8deg);
-}
-
-.toy-camera-wrapper:active .toy-camera-body {
-  transform: translateZ(8px) scale(0.95);
-}
-
-.toy-camera-wrapper.is-capturing .toy-camera-body {
-  transform: translateZ(24px) translateY(-8%);
-}
-
-.toy-camera-wrapper.is-capturing .toy-camera-photo {
-  opacity: 1;
-  transform: translateX(-50%) translateZ(-24px) translateY(114%) rotate(4deg);
-  animation: photo-bounce 0.8s var(--elastic);
-}
-
-.toy-camera-wrapper.is-capturing .toy-camera-lens::before {
+.photo-image::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: white;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.34) 0%,
+      rgba(255, 255, 255, 0.04) 24%,
+      transparent 42%
+    ),
+    linear-gradient(
+      225deg,
+      transparent 0%,
+      transparent 66%,
+      rgba(15, 23, 42, 0.08) 100%
+    );
   opacity: 0;
-  animation: lens-flash 0.35s ease-out;
-}
-
-.toy-camera-shadow {
-  position: absolute;
-  bottom: -0.8em;
-  left: 50%;
-  width: 90%;
-  height: 1.2em;
-  background: radial-gradient(circle, rgba(0, 0, 0, 0.18) 0%, transparent 70%);
-  transform: translateX(-50%);
+  transition: opacity 160ms ease;
   pointer-events: none;
 }
 
-@keyframes photo-bounce {
+.toy-camera-card::before {
+  content: "";
+  position: absolute;
+  inset: 0.15em;
+  border-radius: inherit;
+  border: 1px solid transparent;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.16) 0%,
+    transparent 34%,
+    rgba(15, 23, 42, 0.06) 100%
+  );
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 160ms ease,
+    border-color 160ms ease;
+}
+
+.toy-camera-trigger:hover:not(:disabled) {
+  transform: translateY(-0.14em) scale(1.018);
+}
+
+.toy-camera-trigger:active:not(:disabled) {
+  transform: translateY(0.1em) scale(0.97);
+}
+
+.toy-camera-trigger:active .toy-camera-button {
+  transform: translateY(0.36em) scaleY(0.35);
+  filter: brightness(0.88);
+}
+
+.toy-camera-trigger[aria-busy="true"] {
+  animation: camera-capture 0.56s var(--elastic);
+}
+
+.toy-camera-trigger[aria-busy="true"] .toy-camera-button {
+  animation: shutter-press 0.42s ease-out;
+}
+
+.toy-camera-photo:hover {
+  transform: translateX(-50%) translateY(72%) rotate(-4deg) scale(1);
+}
+
+.toy-camera-photo.is-awaiting-download .toy-camera-card {
+  animation: photo-pulse 1.7s ease-in-out 0.72s infinite;
+}
+
+.toy-camera-photo:hover .toy-camera-card {
+  animation: none;
+  transform: scale(1.03);
+  border-color: color-mix(in srgb, var(--surface-shadow-color) 42%, white 58%);
+  background-color: color-mix(in srgb, var(--photo-bg) 99%, #f8fafc 1%);
+  box-shadow:
+    0 0.28em 0.56em rgba(15, 23, 42, 0.11),
+    inset 0 0 0 0.2em #eef2f6;
+}
+
+.toy-camera-photo:hover .photo-image::after {
+  opacity: 1;
+}
+
+.toy-camera-photo:hover .toy-camera-card::before,
+.toy-camera-photo.is-awaiting-download .toy-camera-card::before {
+  opacity: 1;
+  border-color: color-mix(
+    in srgb,
+    var(--surface-shadow-color) 18%,
+    transparent
+  );
+}
+
+.toy-camera-photo:active .toy-camera-card {
+  animation: none;
+  transform: scale(0.94);
+  transition: transform 80ms ease-out;
+}
+
+.toy-camera-photo.is-downloaded .toy-camera-card {
+  animation: photo-download 0.48s cubic-bezier(0.22, 1.35, 0.36, 1);
+}
+
+.toy-camera-shadow {
+  display: none;
+}
+
+@keyframes photo-eject {
   0% {
-    transform: translateX(-50%) translateZ(-24px) translateY(0);
+    opacity: 0;
+    transform: translateX(-50%) translateY(-28%) rotate(-5deg);
+  }
+  70% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(74%) rotate(-4deg);
   }
   100% {
-    transform: translateX(-50%) translateZ(-24px) translateY(114%) rotate(4deg);
+    opacity: 1;
+    transform: translateX(-50%) translateY(76%) rotate(-4deg);
+  }
+}
+
+@keyframes camera-capture {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  28% {
+    transform: translateY(0.12em) scale(0.97);
+  }
+  58% {
+    transform: translateY(-0.16em) scale(1.022);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes shutter-press {
+  0%,
+  100% {
+    transform: translateY(0) scaleY(1);
+    filter: brightness(1);
+  }
+  35% {
+    transform: translateY(0.36em) scaleY(0.35);
+    filter: brightness(0.82);
+  }
+}
+
+@keyframes photo-pulse {
+  0%,
+  100% {
+    transform: scale(1.01);
+    box-shadow:
+      0 0.22em 0.5em rgba(15, 23, 42, 0.08),
+      inset 0 0 0 0.2em #eef2f6;
+  }
+  50% {
+    transform: scale(1.03);
+    box-shadow:
+      0 0.3em 0.62em rgba(15, 23, 42, 0.14),
+      inset 0 0 0 0.2em #eef2f6;
+  }
+}
+
+@keyframes photo-download {
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(0.84);
+  }
+  68% {
+    transform: scale(1.09);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toy-camera-trigger,
+  .toy-camera-body,
+  .toy-camera-button,
+  .toy-camera-photo,
+  .toy-camera-card {
+    animation: none;
+    transition: none;
+  }
+
+  .toy-camera-trigger:active .toy-camera-button {
+    transform: translateY(0.2em) scaleY(0.64);
+  }
+  .toy-camera-photo,
+  .toy-camera-photo:hover {
+    transform: translateX(-50%) translateY(72%) rotate(-4deg) scale(1);
   }
 }
 
 @keyframes lens-flash {
   0% {
-    opacity: 1;
+    opacity: 0;
     transform: scale(0.2);
+  }
+  22% {
+    opacity: 1;
+    transform: scale(1.15);
   }
   100% {
     opacity: 0;
-    transform: scale(2);
+    transform: scale(5.4);
   }
 }

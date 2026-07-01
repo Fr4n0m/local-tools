@@ -11,6 +11,10 @@
   "selectedCount": "Selected files: {count}",
   "originalPreview": "Original preview",
   "compressedPreview": "Compressed preview",
-  "empty": "Pick image files to start.",
+  "downloadResult": "Download compressed image",
+  "cameraActionTitle": "Press the camera to compress",
+  "cameraActionHint": "The compressed image will emerge below the camera.",
+  "photoDownloadHint": "Press the ejected photo to download it.",
+  "empty": "Select or drag an image to start.",
   "done": "Compressed file ready for download"
 }

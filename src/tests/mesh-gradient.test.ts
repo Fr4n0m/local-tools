@@ -16,6 +16,9 @@ describe("mesh gradient domain", () => {
   it("builds css and svg outputs", () => {
     const stops = [{ color: "#fff", x: 20, y: 30 }];
     expect(buildMeshGradientCss(stops)).toContain("radial-gradient");
-    expect(buildMeshGradientSvg(stops)).toContain("<svg");
+    const svg = buildMeshGradientSvg(stops, 1600, 900);
+    expect(svg).toContain('viewBox="0 0 1600 900"');
+    expect(svg).toContain('width="1600"');
+    expect(svg).toContain('height="900"');
   });
 });

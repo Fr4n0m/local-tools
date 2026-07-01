@@ -2,15 +2,14 @@
 
 import { sileo } from "sileo";
 
-import { sharedMessages, type Language } from "@/shared/presentation/i18n";
+import {
+  resolveInitialLanguage,
+  sharedMessages,
+  type Language,
+} from "@/shared/presentation/i18n";
 
 function resolveLanguage(): Language {
-  if (typeof window === "undefined") {
-    return "en";
-  }
-
-  const saved = window.localStorage.getItem("localtools.language");
-  return saved === "es" ? "es" : "en";
+  return resolveInitialLanguage();
 }
 
 function t(key: keyof (typeof sharedMessages)["en"]["notifications"]): string {

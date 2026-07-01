@@ -7,6 +7,7 @@ import es from "@/modules/favicon-generator/presentation/i18n/es.json";
 import { copyTextToClipboard } from "@/shared/lib/clipboard";
 import { downloadTextFile } from "@/shared/lib/download";
 import { createZipBlob } from "@/shared/lib/zip";
+import { ToolDropSurface } from "@/shared/presentation/components/tool-drop-surface";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import {
   ToolFileDrop,
@@ -183,108 +184,114 @@ export function FaviconGeneratorTool({ language }: Props) {
 
   return (
     <ToolSection title={text.title}>
-      <ToolFileDrop
-        accept="image/*"
-        currentFileText={file ? `${text.currentFile}: ${file.name}` : null}
+      <ToolDropSurface
         dropHint={text.dropHint}
-        inputAriaLabel={text.inputLabel}
         label={text.inputLabel}
         onSelectFiles={onDropFiles}
-      />
-      <ToolActions
-        actions={[
-          {
-            label: text.generate,
-            onClick: () => {
-              void onGenerate();
+      >
+        <ToolFileDrop
+          accept="image/*"
+          currentFileText={file ? `${text.currentFile}: ${file.name}` : null}
+          dropHint={text.dropHint}
+          inputAriaLabel={text.inputLabel}
+          label={text.inputLabel}
+          onSelectFiles={onDropFiles}
+        />
+        <ToolActions
+          actions={[
+            {
+              label: text.generate,
+              onClick: () => {
+                void onGenerate();
+              },
+              disabled: !file,
             },
-            disabled: !file,
-          },
-          {
-            label: sharedText.buttons.download,
-            onClick: () => {
-              void onDownloadZip();
+            {
+              label: sharedText.buttons.download,
+              onClick: () => {
+                void onDownloadZip();
+              },
+              disabled: generated.length === 0,
             },
-            disabled: generated.length === 0,
-          },
-          {
-            label: sharedText.buttons.clear,
-            onClick: () => {
-              generated.forEach((icon) => URL.revokeObjectURL(icon.url));
-              setFile(null);
-              setGenerated([]);
+            {
+              label: sharedText.buttons.clear,
+              onClick: () => {
+                generated.forEach((icon) => URL.revokeObjectURL(icon.url));
+                setFile(null);
+                setGenerated([]);
+              },
+              disabled: !file && generated.length === 0,
             },
-            disabled: !file && generated.length === 0,
-          },
-        ]}
-      />
-      {generated.length === 0 ? (
-        <p className="text-sm">{text.empty}</p>
-      ) : (
-        <div className="space-y-3">
-          <p className="text-sm">{text.result}</p>
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {generated.map((icon) => (
-              <a
-                className="flex items-center justify-between rounded-md border p-3 text-sm"
-                download={`favicon-${icon.size}.png`}
-                href={icon.url}
-                key={icon.size}
-              >
-                <span>
-                  {icon.size}x{icon.size}
-                </span>
-                <span>PNG</span>
-              </a>
-            ))}
-          </div>
-          <div className="grid gap-4 lg:grid-cols-2">
-            <div className="space-y-2 rounded-md border bg-background/40 p-3">
-              <p className="text-sm">{text.manifest}</p>
-              <ToolTextarea
-                className="h-40 bg-background/60 text-xs"
-                readOnly
-                value={manifestContent}
-              />
-              <ToolActions
-                actions={[
-                  {
-                    label: text.copyManifest,
-                    onClick: () => {
-                      void copyTextToClipboard(manifestContent);
-                    },
-                    disabled: manifestContent.length === 0,
-                  },
-                  {
-                    label: text.downloadManifest,
-                    onClick: onDownloadManifest,
-                    disabled: manifestContent.length === 0,
-                  },
-                ]}
-              />
+          ]}
+        />
+        {generated.length === 0 ? (
+          <p className="text-sm">{text.empty}</p>
+        ) : (
+          <div className="space-y-3">
+            <p className="text-sm">{text.result}</p>
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {generated.map((icon) => (
+                <a
+                  className="flex items-center justify-between rounded-md border p-3 text-sm"
+                  download={`favicon-${icon.size}.png`}
+                  href={icon.url}
+                  key={icon.size}
+                >
+                  <span>
+                    {icon.size}x{icon.size}
+                  </span>
+                  <span>PNG</span>
+                </a>
+              ))}
             </div>
-            <div className="space-y-2 rounded-md border bg-background/40 p-3">
-              <p className="text-sm">{text.snippet}</p>
-              <ToolTextarea
-                className="h-40 bg-background/60 text-xs"
-                readOnly
-                value={htmlSnippet}
-              />
-              <ToolActions
-                actions={[
-                  {
-                    label: text.copySnippet,
-                    onClick: () => {
-                      void copyTextToClipboard(htmlSnippet);
+            <div className="grid gap-4 lg:grid-cols-2">
+              <div className="space-y-2 rounded-md border bg-background/40 p-3">
+                <p className="text-sm">{text.manifest}</p>
+                <ToolTextarea
+                  className="h-40 bg-background/60 text-xs"
+                  readOnly
+                  value={manifestContent}
+                />
+                <ToolActions
+                  actions={[
+                    {
+                      label: text.copyManifest,
+                      onClick: () => {
+                        void copyTextToClipboard(manifestContent);
+                      },
+                      disabled: manifestContent.length === 0,
                     },
-                    disabled: htmlSnippet.length === 0,
-                  },
-                ]}
-              />
+                    {
+                      label: text.downloadManifest,
+                      onClick: onDownloadManifest,
+                      disabled: manifestContent.length === 0,
+                    },
+                  ]}
+                />
+              </div>
+              <div className="space-y-2 rounded-md border bg-background/40 p-3">
+                <p className="text-sm">{text.snippet}</p>
+                <ToolTextarea
+                  className="h-40 bg-background/60 text-xs"
+                  readOnly
+                  value={htmlSnippet}
+                />
+                <ToolActions
+                  actions={[
+                    {
+                      label: text.copySnippet,
+                      onClick: () => {
+                        void copyTextToClipboard(htmlSnippet);
+                      },
+                      disabled: htmlSnippet.length === 0,
+                    },
+                  ]}
+                />
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </ToolDropSurface>
     </ToolSection>
   );
 }

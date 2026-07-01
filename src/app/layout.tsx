@@ -1,8 +1,14 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import Script from "next/script";
 import { GlobalFooter } from "@/shared/presentation/components/global-footer";
 import { GlobalCommandPalette } from "@/shared/presentation/components/global-command-palette";
 import { NotificationHost } from "@/shared/presentation/components/notification-host";
+import { GlobalLanguageSync } from "@/shared/presentation/components/global-language-sync";
+import {
+  LANGUAGE_STORAGE_KEY,
+  SUPPORTED_LANGUAGES,
+} from "@/shared/presentation/i18n";
 import "./globals.css";
 
 const archivo = localFont({
@@ -38,6 +44,7 @@ const appName = "LocalTools";
 const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://localtools.app";
 const appDescription =
   "Free browser-based developer toolbox — 32+ tools that run 100% locally. No uploads, no tracking, no accounts. Image converter, JSON formatter, QR code generator, Base64, UUID, color tools and more.";
+const initialLanguageScript = `(function(){try{var a=${JSON.stringify(SUPPORTED_LANGUAGES)};var s=localStorage.getItem(${JSON.stringify(LANGUAGE_STORAGE_KEY)});var b=(navigator.language||"en").toLowerCase().split("-")[0];document.documentElement.lang=a.includes(s)?s:a.includes(b)?b:"en"}catch(e){document.documentElement.lang="en"}})();`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(appUrl),
@@ -134,10 +141,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <Script
+          dangerouslySetInnerHTML={{
+            __html: initialLanguageScript,
+          }}
+          id="localtools-initial-language"
+          strategy="beforeInteractive"
+        />
+      </head>
       <body
         className={`${archivo.variable} ${archivoHeading.variable} ${ibmPlexMono.variable}`}
       >
         {children}
+        <GlobalLanguageSync />
         <GlobalFooter />
         <GlobalCommandPalette />
         <NotificationHost />

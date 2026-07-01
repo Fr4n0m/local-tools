@@ -6,6 +6,6 @@
   "dropHint": "Suelta una imagen o selecciónala.",
   "maxColors": "Máximo de colores",
   "extract": "Extraer paleta",
-  "empty": "Selecciona una imagen para extraer colores.",
+  "empty": "Selecciona o arrastra una imagen para empezar.",
   "invalid": "Archivo de imagen inválido."
 }

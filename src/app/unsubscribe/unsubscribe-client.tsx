@@ -69,7 +69,17 @@ export function UnsubscribeClient({ token }: Props) {
     const id = window.setTimeout(() => {
       setLanguage(resolveInitialLanguage());
     }, 0);
-    return () => window.clearTimeout(id);
+    const syncLanguage = () => setLanguage(resolveInitialLanguage());
+    const onStorage = (event: StorageEvent) => {
+      if (event.key === "localtools.language") syncLanguage();
+    };
+    window.addEventListener("storage", onStorage);
+    window.addEventListener("localtools:language-change", syncLanguage);
+    return () => {
+      window.clearTimeout(id);
+      window.removeEventListener("storage", onStorage);
+      window.removeEventListener("localtools:language-change", syncLanguage);
+    };
   }, []);
 
   const text = copy[language];

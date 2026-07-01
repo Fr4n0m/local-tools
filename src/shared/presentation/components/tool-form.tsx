@@ -629,6 +629,7 @@ type ToolSliderProps = {
   displayValue: string;
   onChange: (value: number) => void;
   className?: string;
+  disabled?: boolean;
 };
 
 function parseDisplayValue(
@@ -650,6 +651,7 @@ export function ToolSlider({
   displayValue,
   onChange,
   className,
+  disabled = false,
 }: ToolSliderProps) {
   const parsed = React.useMemo(
     () => parseDisplayValue(displayValue),
@@ -672,6 +674,7 @@ export function ToolSlider({
       <input
         aria-label={displayValue}
         className="flex-1"
+        disabled={disabled}
         max={max}
         min={min}
         onChange={(e) => onChange(Number(e.target.value))}
