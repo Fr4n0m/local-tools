@@ -27,6 +27,11 @@ export function ToolDropSurface({
 }: ToolDropSurfaceProps) {
   const [isDragging, setIsDragging] = React.useState(false);
   const dragDepthRef = React.useRef(0);
+  const selectFilesRef = React.useRef(onSelectFiles);
+
+  React.useEffect(() => {
+    selectFilesRef.current = onSelectFiles;
+  }, [onSelectFiles]);
 
   React.useEffect(() => {
     if (!enabled) return;
@@ -58,7 +63,7 @@ export function ToolDropSurface({
       event.preventDefault();
       dragDepthRef.current = 0;
       setIsDragging(false);
-      onSelectFiles(Array.from(event.dataTransfer?.files ?? []));
+      selectFilesRef.current(Array.from(event.dataTransfer?.files ?? []));
     };
 
     window.addEventListener("dragenter", onDragEnter);
@@ -72,11 +77,11 @@ export function ToolDropSurface({
       window.removeEventListener("dragleave", onDragLeave);
       window.removeEventListener("drop", onDrop);
     };
-  }, [enabled, isDragging, onSelectFiles]);
+  }, [enabled, isDragging]);
 
   return (
     <div className={cn("relative", className)}>
-      {children}
+      <div className="space-y-4">{children}</div>
       {enabled && isDragging ? (
         <div className="pointer-events-none absolute inset-0 z-40 flex items-center justify-center rounded-2xl border-2 border-dashed border-foreground/30 bg-background/82 p-6 backdrop-blur-sm">
           <div className="max-w-md space-y-2 text-center">

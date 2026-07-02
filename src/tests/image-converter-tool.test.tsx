@@ -1,5 +1,5 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { convertImageFile } from "@/modules/image-converter/domain/image-converter";
 import { ImageConverterTool } from "@/modules/image-converter/presentation/components/image-converter-tool";
@@ -22,6 +22,12 @@ const zipMock = vi.mocked(createZipBlob);
 
 describe("ImageConverterTool", () => {
   let objectUrlIndex = 0;
+  const OriginalImage = global.Image;
+  const canvasContext = {
+    drawImage: vi.fn(),
+    fillRect: vi.fn(),
+    fillStyle: "",
+  };
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -34,6 +40,36 @@ describe("ImageConverterTool", () => {
       configurable: true,
       value: vi.fn(),
     });
+    Object.defineProperty(HTMLCanvasElement.prototype, "getContext", {
+      configurable: true,
+      value: vi.fn(() => canvasContext),
+    });
+    Object.defineProperty(HTMLCanvasElement.prototype, "toDataURL", {
+      configurable: true,
+      value: vi.fn(() => "data:image/png;base64,preview"),
+    });
+    global.Image = class MockImage {
+      onload: null | (() => void) = null;
+      onerror: null | (() => void) = null;
+      width = 1200;
+      height = 800;
+
+      get naturalWidth() {
+        return this.width;
+      }
+
+      get naturalHeight() {
+        return this.height;
+      }
+
+      set src(_value: string) {
+        queueMicrotask(() => this.onload?.());
+      }
+    } as typeof Image;
+  });
+
+  afterEach(() => {
+    global.Image = OriginalImage;
   });
 
   function selectFiles(files: File[]) {
@@ -47,18 +83,24 @@ describe("ImageConverterTool", () => {
     convertMock.mockResolvedValue(output);
     render(<ImageConverterTool language="en" />);
 
-    expect(screen.getByRole("slider")).toBeEnabled();
+    expect(screen.getByRole("slider", { name: "90%" })).toBeEnabled();
     selectFiles([new File(["source"], "photo.jpeg", { type: "image/jpeg" })]);
     fireEvent.click(screen.getByRole("button", { name: "Convert selected" }));
 
     const photo = await screen.findByRole("button", {
       name: "Download converted image",
     });
+    expect(
+      screen.getByRole("slider", { name: "Comparison slider" }),
+    ).toBeInTheDocument();
     fireEvent.click(photo);
-    expect(convertMock).toHaveBeenCalledWith(
-      expect.objectContaining({ name: "photo.jpeg" }),
-      "image/jpeg",
-      0.9,
+    await waitFor(() =>
+      expect(convertMock).toHaveBeenCalledWith(
+        expect.objectContaining({ name: "photo.jpeg" }),
+        "image/jpeg",
+        0.9,
+        undefined,
+      ),
     );
     expect(downloadMock).toHaveBeenCalledWith(output, "photo-converted.jpg");
   });
@@ -66,7 +108,7 @@ describe("ImageConverterTool", () => {
   it("disables quality only when PNG is selected", () => {
     render(<ImageConverterTool language="en" />);
 
-    const slider = screen.getByRole("slider");
+    const slider = screen.getByRole("slider", { name: "90%" });
     expect(slider).toBeEnabled();
 
     fireEvent.click(screen.getByRole("button", { name: "Output format" }));
@@ -75,6 +117,20 @@ describe("ImageConverterTool", () => {
     expect(slider).toBeDisabled();
     expect(
       screen.getByText("PNG preserves the image without a quality setting."),
+    ).toBeInTheDocument();
+  });
+
+  it("disables quality for QOI because it has no quality slider", () => {
+    render(<ImageConverterTool language="en" />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Output format" }));
+    fireEvent.click(screen.getByRole("option", { name: "QOI" }));
+
+    expect(screen.getByRole("slider", { name: "90%" })).toBeDisabled();
+    expect(
+      screen.getByText(
+        "QOI uses fixed lossless encoding without a quality setting.",
+      ),
     ).toBeInTheDocument();
   });
 
@@ -114,5 +170,39 @@ describe("ImageConverterTool", () => {
     expect(
       screen.getByText("Select or drag an image to start."),
     ).toBeInTheDocument();
+  });
+
+  it("resizes output using the configured width and kept ratio", async () => {
+    convertMock.mockResolvedValue(new Blob(["converted"]));
+    render(<ImageConverterTool language="en" />);
+
+    Object.defineProperty(global.Image.prototype, "naturalWidth", {
+      configurable: true,
+      get: () => 1200,
+    });
+    Object.defineProperty(global.Image.prototype, "naturalHeight", {
+      configurable: true,
+      get: () => 800,
+    });
+
+    selectFiles([new File(["source"], "photo.jpeg", { type: "image/jpeg" })]);
+    await waitFor(() =>
+      expect(screen.getByDisplayValue("1200")).toBeInTheDocument(),
+    );
+
+    fireEvent.change(screen.getByDisplayValue("1200"), {
+      target: { value: "600" },
+    });
+    expect(screen.getByDisplayValue("400")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "Convert selected" }));
+    await waitFor(() =>
+      expect(convertMock).toHaveBeenCalledWith(
+        expect.objectContaining({ name: "photo.jpeg" }),
+        "image/jpeg",
+        0.9,
+        { width: 600, height: 400 },
+      ),
+    );
   });
 });

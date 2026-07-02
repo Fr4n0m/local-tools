@@ -1,6 +1,5 @@
 "use client";
 
-import NextImage from "next/image";
 import { useEffect, useMemo, useState } from "react";
 
 import en from "@/modules/image-compressor/presentation/i18n/en.json";
@@ -8,6 +7,7 @@ import es from "@/modules/image-compressor/presentation/i18n/es.json";
 import { downloadBlob } from "@/shared/lib/download";
 import { createZipBlob } from "@/shared/lib/zip";
 import { CameraDownloadButton } from "@/shared/presentation/components/camera-download-button";
+import { ImageCompareWorkbench } from "@/shared/presentation/components/image-compare-workbench";
 import { ToolDropSurface } from "@/shared/presentation/components/tool-drop-surface";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import {
@@ -189,34 +189,16 @@ export function ImageCompressorTool({ language }: Props) {
         />
 
         {files.length > 0 || downloadUrl ? (
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="space-y-2 rounded-md border bg-background/50 p-3">
-              <p className="text-sm">{text.originalPreview}</p>
-              {originalPreviewUrl ? (
-                <NextImage
-                  alt={text.originalPreview}
-                  className="max-h-56 w-full rounded-md object-contain"
-                  height={320}
-                  src={originalPreviewUrl}
-                  unoptimized
-                  width={320}
-                />
-              ) : null}
-            </div>
-            <div className="space-y-2 rounded-md border bg-background/50 p-3">
-              <p className="text-sm">{text.compressedPreview}</p>
-              {downloadUrl ? (
-                <NextImage
-                  alt={text.compressedPreview}
-                  className="max-h-56 w-full rounded-md object-contain"
-                  height={320}
-                  src={downloadUrl}
-                  unoptimized
-                  width={320}
-                />
-              ) : null}
-            </div>
-          </div>
+          <ImageCompareWorkbench
+            compareLabel={text.compareSlider}
+            emptyText={text.cameraActionHint}
+            originalLabel={text.originalPreview}
+            originalUrl={originalPreviewUrl}
+            resetViewLabel={text.resetView}
+            resultLabel={text.compressedPreview}
+            resultUrl={downloadUrl || undefined}
+            zoomLabel={text.zoom}
+          />
         ) : null}
 
         {files.length > 0 ? (

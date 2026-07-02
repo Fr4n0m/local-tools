@@ -29,8 +29,13 @@ function fixture(options?: { context?: boolean; blob?: Blob | null }) {
   return {
     browser: {
       loadImage: vi.fn(async () => image),
-      createCanvas: vi.fn(() => canvas),
+      createCanvas: vi.fn((width: number, height: number) => {
+        canvas.width = width;
+        canvas.height = height;
+        return canvas;
+      }),
     },
+    drawImage,
     fillRect,
     toBlob,
   };
@@ -53,6 +58,7 @@ describe("image converter domain", () => {
       f.browser,
     );
     expect(f.fillRect).toHaveBeenCalledWith(0, 0, 10, 20);
+    expect(f.drawImage).toHaveBeenCalledWith(expect.anything(), 0, 0, 10, 20);
     expect(f.toBlob).toHaveBeenCalledWith(
       expect.any(Function),
       "image/jpeg",
@@ -68,6 +74,18 @@ describe("image converter domain", () => {
       "image/png",
       undefined,
     );
+  });
+  it("resizes output when custom dimensions are provided", async () => {
+    const f = fixture();
+    await convertImageFile(
+      new File([], "x.jpg"),
+      "image/webp",
+      0.8,
+      { width: 80, height: 40 },
+      f.browser,
+    );
+    expect(f.browser.createCanvas).toHaveBeenCalledWith(80, 40);
+    expect(f.drawImage).toHaveBeenCalledWith(expect.anything(), 0, 0, 80, 40);
   });
   it("returns typed boundary failures", async () => {
     const noContext = fixture({ context: false });

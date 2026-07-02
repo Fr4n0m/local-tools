@@ -1,11 +1,11 @@
 "use client";
 
-import NextImage from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import {
   convertImageFile,
   convertedFileName,
+  type ConvertImageOptions,
   type OutputFormat,
 } from "@/modules/image-converter/domain/image-converter";
 import en from "@/modules/image-converter/presentation/i18n/en.json";
@@ -13,14 +13,18 @@ import es from "@/modules/image-converter/presentation/i18n/es.json";
 import { downloadBlob } from "@/shared/lib/download";
 import { createZipBlob } from "@/shared/lib/zip";
 import { CameraDownloadButton } from "@/shared/presentation/components/camera-download-button";
+import { ImageCompareWorkbench } from "@/shared/presentation/components/image-compare-workbench";
 import { ToolDropSurface } from "@/shared/presentation/components/tool-drop-surface";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import {
   ToolField,
   ToolFileDrop,
+  ToolInput,
   ToolSection,
   ToolSelect,
   ToolSlider,
+  ToolSwitch,
+  ToolToggleField,
 } from "@/shared/presentation/components/tool-form";
 import type { Language } from "@/shared/presentation/i18n";
 import { sharedMessages } from "@/shared/presentation/i18n";
@@ -29,10 +33,73 @@ type Props = { language: Language };
 type ProcessingMode = "single" | "batch" | null;
 type ConversionResult = {
   blob: Blob;
-  url: string;
+  previewUrl: string;
   filename: string;
   key: string;
 };
+type ImageDimensions = {
+  width: number;
+  height: number;
+};
+
+function formatBytes(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+}
+
+function sanitizeDimension(
+  value: number | undefined,
+  fallback: number,
+): number {
+  if (typeof value !== "number" || !Number.isFinite(value) || value <= 0) {
+    return fallback;
+  }
+  return Math.max(1, Math.round(value));
+}
+
+async function renderPreviewDataUrl(
+  file: File,
+  format: OutputFormat,
+  options?: ConvertImageOptions,
+): Promise<string> {
+  const sourceUrl = URL.createObjectURL(file);
+
+  try {
+    const image = await new Promise<HTMLImageElement>((resolve, reject) => {
+      const nextImage = new Image();
+      nextImage.onload = () => resolve(nextImage);
+      nextImage.onerror = () => reject(new Error("preview-load-error"));
+      nextImage.src = sourceUrl;
+    });
+
+    const width = sanitizeDimension(
+      options?.width,
+      image.naturalWidth || image.width,
+    );
+    const height = sanitizeDimension(
+      options?.height,
+      image.naturalHeight || image.height,
+    );
+
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+
+    const context = canvas.getContext("2d");
+    if (!context) throw new Error("preview-canvas-unavailable");
+
+    if (format === "image/jpeg") {
+      context.fillStyle = "#ffffff";
+      context.fillRect(0, 0, width, height);
+    }
+
+    context.drawImage(image, 0, 0, width, height);
+    return canvas.toDataURL("image/png");
+  } finally {
+    URL.revokeObjectURL(sourceUrl);
+  }
+}
 
 export function ImageConverterTool({ language }: Props) {
   const text = useMemo(() => (language === "es" ? es : en), [language]);
@@ -44,22 +111,37 @@ export function ImageConverterTool({ language }: Props) {
   const [originalPreviewUrl, setOriginalPreviewUrl] = useState("");
   const [processing, setProcessing] = useState<ProcessingMode>(null);
   const [error, setError] = useState("");
-  const resultUrlRef = useRef("");
+  const [sourceDimensions, setSourceDimensions] =
+    useState<ImageDimensions | null>(null);
+  const [outputDimensions, setOutputDimensions] =
+    useState<ImageDimensions | null>(null);
+  const [keepAspectRatio, setKeepAspectRatio] = useState(true);
   const previewUrlRef = useRef("");
   const qualityPercent = Math.round(quality * 100);
   const isBusy = processing !== null;
+  const qualityDisabled = format === "image/png" || format === "image/qoi";
+  const originalSize = files[0]?.size ?? 0;
+  const convertedSize = result?.blob.size ?? 0;
+  const savedBytes = Math.max(0, originalSize - convertedSize);
+  const savedPercent =
+    originalSize > 0 && result
+      ? Math.max(0, Math.round((savedBytes / originalSize) * 100))
+      : 0;
+  const conversionOptions: ConvertImageOptions | undefined = outputDimensions
+    ? {
+        width: outputDimensions.width,
+        height: outputDimensions.height,
+      }
+    : undefined;
 
   useEffect(
     () => () => {
-      if (resultUrlRef.current) URL.revokeObjectURL(resultUrlRef.current);
       if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
     },
     [],
   );
 
   const clearResult = () => {
-    if (resultUrlRef.current) URL.revokeObjectURL(resultUrlRef.current);
-    resultUrlRef.current = "";
     setResult(null);
   };
 
@@ -69,13 +151,14 @@ export function ImageConverterTool({ language }: Props) {
     setProcessing("single");
     setError("");
     try {
-      const blob = await convertImageFile(file, format, quality);
+      const [blob, previewUrl] = await Promise.all([
+        convertImageFile(file, format, quality, conversionOptions),
+        renderPreviewDataUrl(file, format, conversionOptions),
+      ]);
       clearResult();
-      const url = URL.createObjectURL(blob);
-      resultUrlRef.current = url;
       setResult({
         blob,
-        url,
+        previewUrl,
         filename: convertedFileName(file.name, format),
         key: `${Date.now()}-${format}-${quality}`,
       });
@@ -95,7 +178,12 @@ export function ImageConverterTool({ language }: Props) {
       const converted = await Promise.all(
         files.map(async (file) => ({
           name: convertedFileName(file.name, format, ""),
-          blob: await convertImageFile(file, format, quality),
+          blob: await convertImageFile(
+            file,
+            format,
+            quality,
+            conversionOptions,
+          ),
         })),
       );
       downloadBlob(await createZipBlob(converted), "converted-images.zip");
@@ -121,6 +209,16 @@ export function ImageConverterTool({ language }: Props) {
     setOriginalPreviewUrl(previewUrl);
     setFiles(validFiles);
     setError("");
+    const image = new Image();
+    image.onload = () => {
+      const nextDimensions = {
+        width: image.naturalWidth || image.width,
+        height: image.naturalHeight || image.height,
+      };
+      setSourceDimensions(nextDimensions);
+      setOutputDimensions(nextDimensions);
+    };
+    image.src = previewUrl;
   };
 
   const clearAll = () => {
@@ -130,6 +228,45 @@ export function ImageConverterTool({ language }: Props) {
     setOriginalPreviewUrl("");
     setFiles([]);
     setError("");
+    setSourceDimensions(null);
+    setOutputDimensions(null);
+    setKeepAspectRatio(true);
+  };
+
+  const onWidthChange = (value: number) => {
+    if (!outputDimensions) return;
+    const nextWidth = sanitizeDimension(
+      value,
+      sourceDimensions?.width ?? outputDimensions.width,
+    );
+    clearResult();
+    if (keepAspectRatio && sourceDimensions) {
+      const ratio = sourceDimensions.width / sourceDimensions.height;
+      setOutputDimensions({
+        width: nextWidth,
+        height: Math.max(1, Math.round(nextWidth / ratio)),
+      });
+      return;
+    }
+    setOutputDimensions({ ...outputDimensions, width: nextWidth });
+  };
+
+  const onHeightChange = (value: number) => {
+    if (!outputDimensions) return;
+    const nextHeight = sanitizeDimension(
+      value,
+      sourceDimensions?.height ?? outputDimensions.height,
+    );
+    clearResult();
+    if (keepAspectRatio && sourceDimensions) {
+      const ratio = sourceDimensions.width / sourceDimensions.height;
+      setOutputDimensions({
+        width: Math.max(1, Math.round(nextHeight * ratio)),
+        height: nextHeight,
+      });
+      return;
+    }
+    setOutputDimensions({ ...outputDimensions, height: nextHeight });
   };
 
   return (
@@ -164,6 +301,9 @@ export function ImageConverterTool({ language }: Props) {
                 { value: "image/png", label: "PNG" },
                 { value: "image/jpeg", label: "JPEG" },
                 { value: "image/webp", label: "WEBP" },
+                { value: "image/avif", label: "AVIF" },
+                { value: "image/jxl", label: "JPEG XL" },
+                { value: "image/qoi", label: "QOI" },
               ]}
               value={format}
               onChange={(value) => {
@@ -174,7 +314,7 @@ export function ImageConverterTool({ language }: Props) {
           </ToolField>
           <ToolField label={text.qualityLabel}>
             <ToolSlider
-              disabled={format === "image/png" || isBusy}
+              disabled={qualityDisabled || isBusy}
               displayValue={`${qualityPercent}%`}
               max={1}
               min={0.1}
@@ -185,13 +325,78 @@ export function ImageConverterTool({ language }: Props) {
                 setQuality(value);
               }}
             />
-            {format === "image/png" ? (
+            {qualityDisabled ? (
               <p className="mt-1 text-xs text-foreground/65">
-                {text.qualityUnavailable}
+                {format === "image/qoi"
+                  ? text.qualityUnavailableQoi
+                  : text.qualityUnavailable}
               </p>
             ) : null}
           </ToolField>
         </div>
+
+        {outputDimensions ? (
+          <div className="space-y-3 rounded-xl border bg-background/45 p-3">
+            <div className="flex items-center justify-between gap-4">
+              <p className="text-sm font-medium text-foreground/85">
+                {text.resizeTitle}
+              </p>
+              <ToolToggleField
+                className="border-0 bg-transparent p-0"
+                label={text.keepAspectRatio}
+              >
+                <ToolSwitch
+                  aria-label={text.keepAspectRatio}
+                  checked={keepAspectRatio}
+                  onChange={(checked) => {
+                    setKeepAspectRatio(checked);
+                    if (checked && sourceDimensions) {
+                      setOutputDimensions((current) => {
+                        if (!current) return current;
+                        const nextHeight = Math.max(
+                          1,
+                          Math.round(
+                            current.width *
+                              (sourceDimensions.height /
+                                sourceDimensions.width),
+                          ),
+                        );
+                        return {
+                          width: current.width,
+                          height: nextHeight,
+                        };
+                      });
+                    }
+                    clearResult();
+                  }}
+                />
+              </ToolToggleField>
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2">
+              <ToolField label={text.outputWidth}>
+                <ToolInput
+                  min={1}
+                  onChange={(event) =>
+                    onWidthChange(Number(event.target.value))
+                  }
+                  type="number"
+                  value={outputDimensions.width}
+                />
+              </ToolField>
+              <ToolField label={text.outputHeight}>
+                <ToolInput
+                  min={1}
+                  onChange={(event) =>
+                    onHeightChange(Number(event.target.value))
+                  }
+                  type="number"
+                  value={outputDimensions.height}
+                />
+              </ToolField>
+            </div>
+          </div>
+        ) : null}
 
         <ToolActions
           actions={[
@@ -212,36 +417,45 @@ export function ImageConverterTool({ language }: Props) {
         />
 
         {files.length > 0 ? (
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="space-y-2 rounded-md border bg-background/50 p-3">
-              <p className="text-sm">{text.originalPreview}</p>
-              {originalPreviewUrl ? (
-                <NextImage
-                  alt={text.originalPreview}
-                  className="max-h-56 w-full rounded-md object-contain"
-                  height={320}
-                  src={originalPreviewUrl}
-                  unoptimized
-                  width={320}
-                />
-              ) : null}
-            </div>
-            <div className="space-y-2 rounded-md border bg-background/50 p-3">
-              <p className="text-sm">{text.convertedPreview}</p>
-              {result ? (
-                <NextImage
-                  alt={text.convertedPreview}
-                  className="max-h-56 w-full rounded-md object-contain"
-                  height={320}
-                  src={result.url}
-                  unoptimized
-                  width={320}
-                />
-              ) : (
-                <p className="text-xs text-foreground/65">
-                  {text.notConverted}
+          <div className="space-y-4">
+            <ImageCompareWorkbench
+              compareLabel={text.compareSlider}
+              emptyText={text.notConverted}
+              originalLabel={text.originalPreview}
+              originalUrl={originalPreviewUrl}
+              resetViewLabel={text.resetView}
+              resultLabel={text.convertedPreview}
+              resultUrl={result?.previewUrl}
+              zoomLabel={text.zoom}
+            />
+
+            <div className="grid gap-3 md:grid-cols-3">
+              <div className="rounded-xl border bg-background/45 p-3">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-foreground/52">
+                  {text.originalSize}
                 </p>
-              )}
+                <p className="mt-2 text-lg font-semibold">
+                  {formatBytes(originalSize)}
+                </p>
+              </div>
+              <div className="rounded-xl border bg-background/45 p-3">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-foreground/52">
+                  {text.convertedSize}
+                </p>
+                <p className="mt-2 text-lg font-semibold">
+                  {result ? formatBytes(convertedSize) : text.pendingMetric}
+                </p>
+              </div>
+              <div className="rounded-xl border bg-background/45 p-3">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-foreground/52">
+                  {text.savedSize}
+                </p>
+                <p className="mt-2 text-lg font-semibold">
+                  {result
+                    ? `${formatBytes(savedBytes)} · ${savedPercent}%`
+                    : text.pendingMetric}
+                </p>
+              </div>
             </div>
           </div>
         ) : (
@@ -258,7 +472,7 @@ export function ImageConverterTool({ language }: Props) {
               disabled={isBusy}
               downloadLabel={text.downloadResult}
               imageAlt={text.convertedPreview}
-              imageUrl={result?.url}
+              imageUrl={result?.previewUrl}
               onConvert={() => void onConvert()}
               onDownload={() =>
                 result && downloadBlob(result.blob, result.filename)

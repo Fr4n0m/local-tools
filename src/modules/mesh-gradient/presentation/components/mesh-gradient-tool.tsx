@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
+import { IconMinus, IconPlus } from "@tabler/icons-react";
 
 import {
   buildMeshGradientCss,
@@ -29,8 +30,23 @@ const INITIAL_STOPS: MeshStop[] = [
   { color: "#ff006e", x: 30, y: 76 },
   { color: "#06d6a0", x: 76, y: 74 },
 ];
+const MAX_STOPS = 10;
 
-function randomizeMeshStops(stops: MeshStop[]): MeshStop[] {
+type EditableMeshStop = MeshStop & { id: string };
+
+function createStop(overrides?: Partial<MeshStop>): EditableMeshStop {
+  return {
+    id:
+      typeof crypto !== "undefined" && "randomUUID" in crypto
+        ? crypto.randomUUID()
+        : `mesh-stop-${Date.now()}-${Math.random()}`,
+    color: overrides?.color ?? randomHexColor(),
+    x: overrides?.x ?? Math.floor(Math.random() * 101),
+    y: overrides?.y ?? Math.floor(Math.random() * 101),
+  };
+}
+
+function randomizeMeshStops(stops: EditableMeshStop[]): EditableMeshStop[] {
   return stops.map((stop) => ({
     ...stop,
     x: Math.floor(Math.random() * 101),
@@ -57,7 +73,7 @@ function randomHexColor(): string {
     .join("")}`;
 }
 
-function randomizeAllMeshStops(stops: MeshStop[]): MeshStop[] {
+function randomizeAllMeshStops(stops: EditableMeshStop[]): EditableMeshStop[] {
   return randomizeMeshStops(stops).map((stop) => ({
     ...stop,
     color: randomHexColor(),
@@ -86,11 +102,14 @@ type Props = { language: Language };
 
 export function MeshGradientTool({ language }: Props) {
   const text = useMemo(() => (language === "es" ? es : en), [language]);
-  const [stops, setStops] = useState<MeshStop[]>(INITIAL_STOPS);
+  const [stops, setStops] = useState<EditableMeshStop[]>(() =>
+    INITIAL_STOPS.map((stop) => createStop(stop)),
+  );
   const [exportFormat, setExportFormat] =
     useState<MeshGradientExportFormat>("image/svg+xml");
   const [width, setWidth] = useState(1200);
   const [height, setHeight] = useState(800);
+  const dimensionsDisabled = exportFormat === "image/svg+xml";
   const safeWidth = useMemo(() => sanitizeDimension(width, 1200), [width]);
   const safeHeight = useMemo(() => sanitizeDimension(height, 800), [height]);
 
@@ -114,6 +133,20 @@ export function MeshGradientTool({ language }: Props) {
 
   const randomizeAllStops = useCallback(() => {
     setStops((previous) => randomizeAllMeshStops(previous));
+  }, []);
+
+  const addStop = useCallback(() => {
+    setStops((previous) =>
+      previous.length >= MAX_STOPS ? previous : [...previous, createStop()],
+    );
+  }, []);
+
+  const removeStop = useCallback((id: string) => {
+    setStops((previous) =>
+      previous.length <= 1
+        ? previous
+        : previous.filter((stop) => stop.id !== id),
+    );
   }, []);
 
   const onDownload = useCallback(async () => {
@@ -151,15 +184,53 @@ export function MeshGradientTool({ language }: Props) {
   return (
     <ToolSection title={text.title}>
       <p className="text-sm text-muted-foreground">{text.stops}</p>
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border bg-background/45 p-3">
+        <p className="text-sm text-foreground/72">
+          {text.stopCount
+            .replace("{count}", String(stops.length))
+            .replace("{max}", String(MAX_STOPS))}
+        </p>
+        <button
+          className="lt-button lt-button--secondary h-9 px-3 text-sm"
+          disabled={stops.length >= MAX_STOPS}
+          onClick={addStop}
+          type="button"
+        >
+          <IconPlus size={16} />
+          <span>{text.addColor}</span>
+        </button>
+      </div>
       <div className="grid gap-3 md:grid-cols-2">
         {stops.map((stop, index) => (
-          <div className="rounded-md border p-3" key={`${stop.color}-${index}`}>
+          <div className="rounded-md border p-3" key={stop.id}>
+            <div className="mb-3 flex items-center justify-between gap-3">
+              <p className="text-sm font-medium text-foreground/78">
+                {text.colorStopLabel.replace("{index}", String(index + 1))}
+              </p>
+              <button
+                aria-label={text.removeColor.replace(
+                  "{index}",
+                  String(index + 1),
+                )}
+                className="lt-button lt-button--ghost h-8 px-2.5 text-sm"
+                disabled={stops.length <= 1}
+                onClick={() => removeStop(stop.id)}
+                type="button"
+              >
+                <IconMinus size={15} />
+                <span>{text.removeColorShort}</span>
+              </button>
+            </div>
             <div className="grid grid-cols-3 gap-2">
               <ToolColorPicker
                 onChange={(value) => {
-                  const next = [...stops];
-                  next[index] = { ...next[index], color: value };
-                  setStops(next);
+                  setStops((previous) =>
+                    previous.map((current) =>
+                      current.id === stop.id
+                        ? { ...current, color: value }
+                        : current,
+                    ),
+                  );
                 }}
                 value={stop.color}
               />
@@ -169,12 +240,13 @@ export function MeshGradientTool({ language }: Props) {
                 max={100}
                 min={0}
                 onChange={(event) => {
-                  const next = [...stops];
-                  next[index] = {
-                    ...next[index],
-                    x: Number(event.target.value),
-                  };
-                  setStops(next);
+                  setStops((previous) =>
+                    previous.map((current) =>
+                      current.id === stop.id
+                        ? { ...current, x: Number(event.target.value) }
+                        : current,
+                    ),
+                  );
                 }}
                 type="number"
                 value={stop.x}
@@ -185,12 +257,13 @@ export function MeshGradientTool({ language }: Props) {
                 max={100}
                 min={0}
                 onChange={(event) => {
-                  const next = [...stops];
-                  next[index] = {
-                    ...next[index],
-                    y: Number(event.target.value),
-                  };
-                  setStops(next);
+                  setStops((previous) =>
+                    previous.map((current) =>
+                      current.id === stop.id
+                        ? { ...current, y: Number(event.target.value) }
+                        : current,
+                    ),
+                  );
                 }}
                 type="number"
                 value={stop.y}
@@ -237,6 +310,8 @@ export function MeshGradientTool({ language }: Props) {
         </ToolField>
         <ToolField label={text.exportWidth}>
           <ToolInput
+            aria-label={text.exportWidth}
+            disabled={dimensionsDisabled}
             max={4000}
             min={64}
             onChange={(event) => setWidth(Number(event.target.value))}
@@ -246,6 +321,8 @@ export function MeshGradientTool({ language }: Props) {
         </ToolField>
         <ToolField label={text.exportHeight}>
           <ToolInput
+            aria-label={text.exportHeight}
+            disabled={dimensionsDisabled}
             max={4000}
             min={64}
             onChange={(event) => setHeight(Number(event.target.value))}
@@ -254,6 +331,9 @@ export function MeshGradientTool({ language }: Props) {
           />
         </ToolField>
       </div>
+      {dimensionsDisabled ? (
+        <p className="text-xs text-foreground/65">{text.svgSizeHint}</p>
+      ) : null}
 
       <ToolActions
         actions={[

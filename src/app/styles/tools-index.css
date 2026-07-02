@@ -88,13 +88,8 @@
 }
 
 .tools-index-grid {
-  --tools-index-card-width: clamp(238px, 22vw, 292px);
   display: grid;
-  grid-template-columns: repeat(
-    auto-fill,
-    minmax(var(--tools-index-card-width), var(--tools-index-card-width))
-  );
-  justify-content: start;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 19.5rem), 1fr));
   gap: clamp(0.9rem, 1.6vw, 1.18rem);
 }
 

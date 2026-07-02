@@ -5,10 +5,7 @@ export type MeshStop = {
 };
 
 export type MeshGradientExportFormat =
-  | "image/svg+xml"
-  | "image/png"
-  | "image/jpeg"
-  | "image/webp";
+  "image/svg+xml" | "image/png" | "image/jpeg" | "image/webp";
 
 function clamp(value: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, value));
@@ -23,7 +20,7 @@ export function normalizeStops(stops: MeshStop[]): MeshStop[] {
 }
 
 export function buildMeshGradientCss(stops: MeshStop[]): string {
-  const safe = normalizeStops(stops).slice(0, 6);
+  const safe = normalizeStops(stops).slice(0, 10);
   const layers = safe.map(
     (stop) =>
       `radial-gradient(circle at ${stop.x}% ${stop.y}%, ${stop.color} 0%, transparent 55%)`,
@@ -37,7 +34,7 @@ export function buildMeshGradientSvg(
   width = 1200,
   height = 800,
 ): string {
-  const safe = normalizeStops(stops).slice(0, 6);
+  const safe = normalizeStops(stops).slice(0, 10);
   const circles = safe
     .map(
       (stop) =>
