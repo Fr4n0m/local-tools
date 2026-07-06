@@ -49,7 +49,7 @@ export function AppLogo({
         <span
           style={{
             fontWeight: 100,
-            fontSize: "10px",
+            fontSize: "12px",
             letterSpacing: "0.22em",
             textTransform: "uppercase",
           }}

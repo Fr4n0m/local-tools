@@ -111,12 +111,11 @@ export function ImageConverterTool({ language }: Props) {
   const [originalPreviewUrl, setOriginalPreviewUrl] = useState("");
   const [processing, setProcessing] = useState<ProcessingMode>(null);
   const [error, setError] = useState("");
-  const [sourceDimensions, setSourceDimensions] =
-    useState<ImageDimensions | null>(null);
   const [outputDimensions, setOutputDimensions] =
     useState<ImageDimensions | null>(null);
   const [keepAspectRatio, setKeepAspectRatio] = useState(true);
   const previewUrlRef = useRef("");
+  const sourceDimensionsRef = useRef<ImageDimensions | null>(null);
   const qualityPercent = Math.round(quality * 100);
   const isBusy = processing !== null;
   const qualityDisabled = format === "image/png" || format === "image/qoi";
@@ -215,7 +214,7 @@ export function ImageConverterTool({ language }: Props) {
         width: image.naturalWidth || image.width,
         height: image.naturalHeight || image.height,
       };
-      setSourceDimensions(nextDimensions);
+      sourceDimensionsRef.current = nextDimensions;
       setOutputDimensions(nextDimensions);
     };
     image.src = previewUrl;
@@ -228,7 +227,7 @@ export function ImageConverterTool({ language }: Props) {
     setOriginalPreviewUrl("");
     setFiles([]);
     setError("");
-    setSourceDimensions(null);
+    sourceDimensionsRef.current = null;
     setOutputDimensions(null);
     setKeepAspectRatio(true);
   };
@@ -237,11 +236,12 @@ export function ImageConverterTool({ language }: Props) {
     if (!outputDimensions) return;
     const nextWidth = sanitizeDimension(
       value,
-      sourceDimensions?.width ?? outputDimensions.width,
+      sourceDimensionsRef.current?.width ?? outputDimensions.width,
     );
     clearResult();
-    if (keepAspectRatio && sourceDimensions) {
-      const ratio = sourceDimensions.width / sourceDimensions.height;
+    if (keepAspectRatio && sourceDimensionsRef.current) {
+      const ratio =
+        sourceDimensionsRef.current.width / sourceDimensionsRef.current.height;
       setOutputDimensions({
         width: nextWidth,
         height: Math.max(1, Math.round(nextWidth / ratio)),
@@ -255,11 +255,12 @@ export function ImageConverterTool({ language }: Props) {
     if (!outputDimensions) return;
     const nextHeight = sanitizeDimension(
       value,
-      sourceDimensions?.height ?? outputDimensions.height,
+      sourceDimensionsRef.current?.height ?? outputDimensions.height,
     );
     clearResult();
-    if (keepAspectRatio && sourceDimensions) {
-      const ratio = sourceDimensions.width / sourceDimensions.height;
+    if (keepAspectRatio && sourceDimensionsRef.current) {
+      const ratio =
+        sourceDimensionsRef.current.width / sourceDimensionsRef.current.height;
       setOutputDimensions({
         width: Math.max(1, Math.round(nextHeight * ratio)),
         height: nextHeight,
@@ -350,15 +351,15 @@ export function ImageConverterTool({ language }: Props) {
                   checked={keepAspectRatio}
                   onChange={(checked) => {
                     setKeepAspectRatio(checked);
-                    if (checked && sourceDimensions) {
+                    if (checked && sourceDimensionsRef.current) {
                       setOutputDimensions((current) => {
                         if (!current) return current;
                         const nextHeight = Math.max(
                           1,
                           Math.round(
                             current.width *
-                              (sourceDimensions.height /
-                                sourceDimensions.width),
+                              (sourceDimensionsRef.current!.height /
+                                sourceDimensionsRef.current!.width),
                           ),
                         );
                         return {

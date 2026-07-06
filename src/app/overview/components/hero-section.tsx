@@ -9,6 +9,7 @@ import {
   IconRocket,
   IconWorld,
 } from "@tabler/icons-react";
+import Image from "next/image";
 import Link from "next/link";
 
 import styles from "./hero-section.module.css";
@@ -97,14 +98,18 @@ export function HeroSection({ text, onScrollNext }: HeroSectionProps) {
           className={`${styles.heroMockFrame} heroAssetShape`}
           aria-hidden="true"
         >
-          <img
+          <Image
             alt=""
             className={`${styles.heroMockImage} ${styles.heroMockImageLight}`}
+            fill
+            sizes="(max-width: 1024px) 100vw, 48vw"
             src="/assets/overview/home-hero-tools-grid-light.webp"
           />
-          <img
+          <Image
             alt=""
             className={`${styles.heroMockImage} ${styles.heroMockImageDark}`}
+            fill
+            sizes="(max-width: 1024px) 100vw, 48vw"
             src="/assets/overview/home-hero-tools-grid-dark.webp"
           />
         </div>

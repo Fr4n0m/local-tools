@@ -45,19 +45,19 @@ const preferredToolByRow: Record<(typeof categoryOrder)[number], string> = {
   advanced: "custom-timer",
 };
 
+const rowAssets = [
+  "/overview/banner1.webp",
+  "/overview/banner2variant (2).webp",
+  "/overview/banner3.webp",
+  "/overview/banner4.webp",
+] as const;
+
+const rowIcons = [IconDatabase, IconWorld, IconBraces, IconTool] as const;
+
 export function MultiBannerSection({
   language,
   text,
 }: MultiBannerSectionProps) {
-  const rowAssets = [
-    "/overview/banner1.webp",
-    "/overview/banner2variant (2).webp",
-    "/overview/banner3.webp",
-    "/overview/banner4.webp",
-  ] as const;
-
-  const rowIcons = [IconDatabase, IconWorld, IconBraces, IconTool] as const;
-
   const rowContent = categoryOrder.map((key, index) => {
     const copy = text.section3Rows[index];
     const mappedCategory = categoryFallback[key];

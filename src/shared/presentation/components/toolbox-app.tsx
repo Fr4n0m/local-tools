@@ -2,7 +2,6 @@
 
 import {
   IconArrowRight,
-  IconChevronDown,
   IconCheck,
   IconGridDots,
   IconLayoutRows,
@@ -527,7 +526,7 @@ function Sidebar({
       }`}
     >
       <div className="flex items-center justify-between px-1">
-        <Link aria-label="Go to home" className="inline-flex" href="/">
+        <Link className="inline-flex" href="/">
           <AppLogo className="text-sidebar-foreground" />
         </Link>
         <div className="flex items-center gap-0.5 rounded-lg bg-black p-0.5">

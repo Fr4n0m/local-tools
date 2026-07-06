@@ -7,7 +7,9 @@ export type OutputFormat =
   | "image/qoi";
 
 export type ConversionErrorCode =
-  "image-load-error" | "canvas-unavailable" | "conversion-failed";
+  | "image-load-error"
+  | "canvas-unavailable"
+  | "conversion-failed";
 
 export class ImageConversionError extends Error {
   constructor(public readonly code: ConversionErrorCode) {
@@ -93,29 +95,23 @@ async function encodeWithAdvancedCodec(
   format: OutputFormat,
   quality: number,
 ): Promise<Blob | null> {
+  const isAdvancedFormat =
+    format === "image/avif" || format === "image/jxl" || format === "image/qoi";
+
+  if (!isAdvancedFormat) return null;
+
+  const { encodeAdvancedCodec } =
+    await import("@/modules/image-converter/infrastructure/browser/advanced-codecs");
+
   if (format === "image/avif") {
-    const { encode } = await import("@jsquash/avif");
-    const buffer = await encode(imageData, {
-      quality: Math.round(quality * 100),
-    });
-    return new Blob([buffer], { type: format });
+    return encodeAdvancedCodec(imageData, format, quality);
   }
 
   if (format === "image/jxl") {
-    const { encode } = await import("@jsquash/jxl");
-    const buffer = await encode(imageData, {
-      quality: Math.round(quality * 100),
-    });
-    return new Blob([buffer], { type: format });
+    return encodeAdvancedCodec(imageData, format, quality);
   }
 
-  if (format === "image/qoi") {
-    const { encode } = await import("@jsquash/qoi");
-    const buffer = await encode(imageData);
-    return new Blob([buffer], { type: format });
-  }
-
-  return null;
+  return encodeAdvancedCodec(imageData, format, quality);
 }
 
 export async function convertImageFile(

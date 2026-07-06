@@ -29,7 +29,9 @@ export function AvatarGeneratorTool({ language }: Props) {
   const [name, setName] = useState("Local Tools");
   const [shape, setShape] = useState<AvatarShape>("rounded");
   const [size, setSize] = useState(256);
-  const [background, setBackground] = useState(avatarSeedColor("Local Tools"));
+  const [background, setBackground] = useState(() =>
+    avatarSeedColor("Local Tools"),
+  );
   const [textColor, setTextColor] = useState("#ffffff");
   const [svg, setSvg] = useState("");
 

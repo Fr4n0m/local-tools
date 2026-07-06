@@ -389,7 +389,7 @@ function buildIconMap(theme: Theme): Record<string, PaletteIcon> {
   };
 }
 
-function renderShortcut(shortcut: string) {
+function ShortcutDisplay({ shortcut }: { shortcut: string }) {
   return shortcut
     .split("+")
     .map((token) => token.trim().toLowerCase())
@@ -438,7 +438,7 @@ function renderPaletteItem(
       </span>
       {item.shortcut ? (
         <kbd className="lt-command-row__shortcut">
-          {renderShortcut(item.shortcut)}
+          <ShortcutDisplay shortcut={item.shortcut} />
         </kbd>
       ) : null}
     </div>
@@ -514,7 +514,9 @@ export function GlobalCommandPalette() {
   return (
     <>
       <button
-        aria-label={language === "es" ? "Abrir comandos" : "Open commands"}
+        aria-label={
+          language === "es" ? "+ K Abrir comandos" : "+ K Open commands"
+        }
         className="lt-command-floating-trigger"
         onClick={() => setOpen(true)}
         title={`${title} (Ctrl/Cmd + K)`}

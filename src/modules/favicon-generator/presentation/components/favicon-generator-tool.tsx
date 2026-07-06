@@ -119,25 +119,29 @@ export function FaviconGeneratorTool({ language }: Props) {
       };
     });
 
-    const icons: GeneratedIcon[] = [];
-    for (const size of sizes) {
-      const canvas = document.createElement("canvas");
-      canvas.width = size;
-      canvas.height = size;
-      const context = canvas.getContext("2d");
-      if (!context) {
-        continue;
-      }
-      context.drawImage(image, 0, 0, size, size);
+    const icons = (
+      await Promise.all(
+        sizes.map(async (size) => {
+          const canvas = document.createElement("canvas");
+          canvas.width = size;
+          canvas.height = size;
+          const context = canvas.getContext("2d");
+          if (!context) {
+            return null;
+          }
+          context.drawImage(image, 0, 0, size, size);
 
-      const blob = await new Promise<Blob | null>((resolve) => {
-        canvas.toBlob(resolve, "image/png");
-      });
-      if (!blob) {
-        continue;
-      }
-      icons.push({ size, url: URL.createObjectURL(blob), blob });
-    }
+          const blob = await new Promise<Blob | null>((resolve) => {
+            canvas.toBlob(resolve, "image/png");
+          });
+          if (!blob) {
+            return null;
+          }
+
+          return { size, url: URL.createObjectURL(blob), blob };
+        }),
+      )
+    ).filter((icon): icon is GeneratedIcon => icon !== null);
 
     setGenerated(icons);
   };

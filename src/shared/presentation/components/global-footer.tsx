@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import "@gravatar-com/hovercards/dist/style.css";
@@ -155,7 +156,7 @@ export function GlobalFooter() {
     <div className="site-footer__inner">
       <div className="site-footer__grid">
         <section className="site-footer__column">
-          <Link aria-label="Go to home" className="inline-flex" href="/">
+          <Link className="inline-flex" href="/">
             <AppLogo style={{ color: "#fff" }} />
           </Link>
           <p className="site-footer__brandline" style={{ marginTop: "6px" }}>
@@ -170,7 +171,7 @@ export function GlobalFooter() {
               const ToolIcon = tool.icon;
               return (
                 <li key={tool.id}>
-                  <a
+                  <Link
                     aria-label={tool.name[language]}
                     className="aside-tool-btn site-footer__tool-link"
                     title={tool.name[language]}
@@ -180,7 +181,7 @@ export function GlobalFooter() {
                       <ToolIcon size={14} />
                     </span>
                     <span>{tool.name[language]}</span>
-                  </a>
+                  </Link>
                 </li>
               );
             })}
@@ -222,7 +223,7 @@ export function GlobalFooter() {
             rel="noreferrer"
             target="_blank"
           >
-            <img
+            <Image
               alt="Fr4n0m"
               data-gravatar-hash="45f9e6ff5a1ed8b109f19dc13f59c26e7d39fceb75f9344ac30ea6db18f6fbde"
               height={20}
@@ -244,14 +245,14 @@ export function GlobalFooter() {
           className="site-footer__legal"
           style={{ justifyContent: "flex-end" }}
         >
-          <a className="site-footer__legal-link" href="/privacy">
+          <Link className="site-footer__legal-link" href="/privacy">
             <IconShieldLock aria-hidden size={14} />
             {text.footer.privacyLink}
-          </a>
-          <a className="site-footer__legal-link" href="/terms">
+          </Link>
+          <Link className="site-footer__legal-link" href="/terms">
             <IconFileText aria-hidden size={14} />
             {text.footer.termsLink}
-          </a>
+          </Link>
           <a
             className="site-footer__legal-link"
             href={text.footer.reportUrl}

@@ -24,6 +24,8 @@
 .DS_Store
 *.pem
 lighthouse-*.json
+.lighthouseci/
+lighthouse-results/
 .vscode/
 .superpowers/
 

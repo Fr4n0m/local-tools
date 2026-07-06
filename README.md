@@ -1,6 +1,6 @@
 # LocalTools
 
-![Next.js](https://img.shields.io/badge/Next.js-16.2.4-000000?logo=next.js&logoColor=white)
+![Next.js](https://img.shields.io/badge/Next.js-16.2.9-000000?logo=next.js&logoColor=white)
 ![React](https://img.shields.io/badge/React-19.2.4-61DAFB?logo=react&logoColor=000)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.x-06B6D4?logo=tailwindcss&logoColor=white)
@@ -84,8 +84,26 @@ Scripts útiles:
 ```bash
 pnpm lint
 pnpm test
+pnpm typecheck
+pnpm lighthouse:ci
 pnpm build
 ```
+
+### 📊 Calidad verificada
+
+- React Doctor: `No issues found`
+- TypeScript: `pnpm typecheck` OK
+- Lighthouse CI: 5 rutas públicas auditadas, 3 pasadas por ruta
+
+| Ruta        | Performance | Accessibility | Best Practices | SEO |   LCP |
+| ----------- | ----------: | ------------: | -------------: | --: | ----: |
+| `/`         |          93 |           100 |            100 | 100 | 1.74s |
+| `/tools`    |          96 |           100 |            100 | 100 | 1.35s |
+| `/overview` |          92 |           100 |            100 | 100 | 1.76s |
+| `/privacy`  |          95 |           100 |            100 | 100 | 1.46s |
+| `/terms`    |          95 |           100 |            100 | 100 | 1.51s |
+
+Baseline actual medida localmente con `lighthouserc.json` y `pnpm lighthouse:ci`.
 
 ### 🏗️ Arquitectura y guía de herramientas
 
@@ -189,8 +207,26 @@ Useful scripts:
 ```bash
 pnpm lint
 pnpm test
+pnpm typecheck
+pnpm lighthouse:ci
 pnpm build
 ```
+
+### 📊 Verified quality
+
+- React Doctor: `No issues found`
+- TypeScript: `pnpm typecheck` OK
+- Lighthouse CI: 5 public routes audited, 3 runs per route
+
+| Route       | Performance | Accessibility | Best Practices | SEO |   LCP |
+| ----------- | ----------: | ------------: | -------------: | --: | ----: |
+| `/`         |          93 |           100 |            100 | 100 | 1.74s |
+| `/tools`    |          96 |           100 |            100 | 100 | 1.35s |
+| `/overview` |          92 |           100 |            100 | 100 | 1.76s |
+| `/privacy`  |          95 |           100 |            100 | 100 | 1.46s |
+| `/terms`    |          95 |           100 |            100 | 100 | 1.51s |
+
+Current baseline measured locally with `lighthouserc.json` and `pnpm lighthouse:ci`.
 
 ### 🏗️ Architecture and tool guide
 

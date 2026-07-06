@@ -61,23 +61,39 @@ export function PdfCompressorTool({ language }: Props) {
       const safeScale = clampScale(scale);
       const safeQuality = clampQuality(quality);
 
-      for (let i = 1; i <= srcPdf.numPages; i += 1) {
-        const page = await srcPdf.getPage(i);
-        const viewport = page.getViewport({ scale: safeScale });
-        const canvas = document.createElement("canvas");
-        canvas.width = Math.max(1, Math.floor(viewport.width));
-        canvas.height = Math.max(1, Math.floor(viewport.height));
-        const context = canvas.getContext("2d");
-        if (!context) continue;
+      const renderedPages = await Promise.all(
+        Array.from({ length: srcPdf.numPages }, async (_, index) => {
+          const page = await srcPdf.getPage(index + 1);
+          const viewport = page.getViewport({ scale: safeScale });
+          const canvas = document.createElement("canvas");
+          canvas.width = Math.max(1, Math.floor(viewport.width));
+          canvas.height = Math.max(1, Math.floor(viewport.height));
+          const context = canvas.getContext("2d");
+          if (!context) return null;
 
-        await page.render({ canvas, canvasContext: context, viewport }).promise;
+          await page.render({ canvas, canvasContext: context, viewport })
+            .promise;
 
-        const jpegDataUrl = canvas.toDataURL("image/jpeg", safeQuality);
-        const jpegBytes = Uint8Array.from(
-          atob(jpegDataUrl.split(",")[1]),
-          (c) => c.charCodeAt(0),
-        );
-        const image = await outPdf.embedJpg(jpegBytes);
+          const jpegDataUrl = canvas.toDataURL("image/jpeg", safeQuality);
+          const jpegBytes = Uint8Array.from(
+            atob(jpegDataUrl.split(",")[1]),
+            (c) => c.charCodeAt(0),
+          );
+
+          return { jpegBytes };
+        }),
+      );
+
+      const completedRenderedPages = renderedPages.filter(
+        (renderedPage) => renderedPage !== null,
+      );
+      const embeddedImages = await Promise.all(
+        completedRenderedPages.map((renderedPage) =>
+          outPdf.embedJpg(renderedPage.jpegBytes),
+        ),
+      );
+
+      for (const image of embeddedImages) {
         const outPage = outPdf.addPage([image.width, image.height]);
         outPage.drawImage(image, {
           x: 0,

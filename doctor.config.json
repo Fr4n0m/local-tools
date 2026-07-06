@@ -1,33 +1,84 @@
 {
   "$schema": "https://react.doctor/schema/config.json",
-  "deadCode": false,
+  "scope": "full",
+  "lint": true,
+  "deadCode": true,
+  "warnings": true,
+  "blocking": "error",
+  "respectInlineDisables": true,
+  "adoptExistingLintConfig": true,
   "supplyChain": {
-    "minScore": 30
+    "enabled": true,
+    "minScore": 30,
+    "severity": "warning",
+    "includeDevDependencies": false
+  },
+  "ignore": {
+    "files": [
+      ".next/**",
+      "coverage/**",
+      "react-doctor-report*.json",
+      "react-doctor-unconfigured.json"
+    ],
+    "overrides": [
+      {
+        "files": ["pnpm-workspace.yaml"],
+        "rules": ["react-doctor/require-pnpm-hardening"]
+      },
+      {
+        "files": ["src/app/not-found.tsx"],
+        "rules": ["react-doctor/no-inline-exhaustive-style"]
+      },
+      {
+        "files": [
+          "src/modules/avatar-generator/presentation/components/avatar-generator-tool.tsx",
+          "src/modules/svg-to-file/presentation/components/svg-to-file-tool.tsx"
+        ],
+        "rules": ["react-doctor/nextjs-no-img-element"]
+      },
+      {
+        "files": [
+          "src/app/overview/components/subscription-status-modal.tsx",
+          "src/shared/presentation/components/toolbox-app.tsx"
+        ],
+        "rules": ["react-doctor/prefer-html-dialog"]
+      },
+      {
+        "files": [
+          "src/modules/batch-rename/presentation/components/batch-rename-tool.tsx",
+          "src/shared/presentation/components/tool-form.tsx"
+        ],
+        "rules": ["react-doctor/prefer-tag-over-role"]
+      },
+      {
+        "files": ["src/shared/presentation/components/tool-form.tsx"],
+        "rules": ["react-doctor/no-event-handler"]
+      },
+      {
+        "files": ["src/shared/presentation/components/toolbox-app.tsx"],
+        "rules": ["react-doctor/no-noninteractive-element-interactions"]
+      },
+      {
+        "files": ["src/shared/presentation/components/ui/button.tsx"],
+        "rules": [
+          "react-doctor/no-react19-deprecated-apis",
+          "react-doctor/only-export-components"
+        ]
+      },
+      {
+        "files": [
+          "src/app/overview/overview-experience.tsx",
+          "src/modules/image-converter/presentation/components/image-converter-tool.tsx"
+        ],
+        "rules": ["react-doctor/no-giant-component"]
+      }
+    ]
   },
   "rules": {
     "react-doctor/no-usememo-simple-expression": "off",
     "react-doctor/prefer-useReducer": "off",
     "react-doctor/js-flatmap-filter": "off",
     "react-doctor/js-combine-iterations": "off",
-    "react-doctor/js-tosorted-immutable": "off",
-    "react-doctor/no-giant-component": "off",
-    "react-doctor/no-react19-deprecated-apis": "off",
-    "react-doctor/only-export-components": "off",
-    "react-doctor/require-pnpm-hardening": "off",
-    "react-doctor/async-await-in-loop": "off",
-    "react-doctor/no-render-in-render": "off",
-    "react-doctor/nextjs-no-img-element": "off",
-    "react-doctor/nextjs-no-a-element": "off",
-    "react-doctor/no-cascading-set-state": "off",
-    "react-doctor/prefer-tag-over-role": "off",
-    "react-doctor/no-tiny-text": "off",
-    "react-doctor/rerender-state-only-in-handlers": "off",
-    "react-doctor/no-event-handler": "off",
-    "react-doctor/no-initialize-state": "off",
-    "react-doctor/rerender-lazy-state-init": "off",
-    "react-doctor/prefer-module-scope-static-value": "off",
-    "react-doctor/prefer-html-dialog": "off",
-    "react-doctor/no-noninteractive-element-interactions": "off",
-    "react-doctor/no-inline-exhaustive-style": "off"
+    "react-doctor/js-tosorted-immutable": "off"
   }
 }

@@ -51,29 +51,35 @@ export function PdfToImagesTool({ language }: Props) {
       const loadingTask = pdfjs.getDocument({ data: new Uint8Array(buffer) });
       const pdf = await loadingTask.promise;
 
-      const pages: ConvertedPage[] = [];
       const targetScale = clampScale(scale);
+      const pages = (
+        await Promise.all(
+          Array.from({ length: pdf.numPages }, async (_, index) => {
+            const pageNum = index + 1;
+            const page = await pdf.getPage(pageNum);
+            const viewport = page.getViewport({ scale: targetScale });
+            const canvas = document.createElement("canvas");
+            const context = canvas.getContext("2d");
+            if (!context) return null;
 
-      for (let pageNum = 1; pageNum <= pdf.numPages; pageNum += 1) {
-        const page = await pdf.getPage(pageNum);
-        const viewport = page.getViewport({ scale: targetScale });
-        const canvas = document.createElement("canvas");
-        const context = canvas.getContext("2d");
-        if (!context) continue;
+            canvas.width = Math.floor(viewport.width);
+            canvas.height = Math.floor(viewport.height);
 
-        canvas.width = Math.floor(viewport.width);
-        canvas.height = Math.floor(viewport.height);
+            await page.render({ canvas, canvasContext: context, viewport })
+              .promise;
 
-        await page.render({ canvas, canvasContext: context, viewport }).promise;
+            const blob = await new Promise<Blob | null>((resolve) =>
+              canvas.toBlob((value) => resolve(value), "image/png"),
+            );
 
-        const blob = await new Promise<Blob | null>((resolve) =>
-          canvas.toBlob((value) => resolve(value), "image/png"),
-        );
+            if (!blob) {
+              return null;
+            }
 
-        if (blob) {
-          pages.push({ name: toPageImageName(file.name, pageNum), blob });
-        }
-      }
+            return { name: toPageImageName(file.name, pageNum), blob };
+          }),
+        )
+      ).filter((page): page is ConvertedPage => page !== null);
 
       setConvertedPages(pages);
       if (pages.length === 0) {

@@ -10,6 +10,7 @@ import {
 } from "@tabler/icons-react";
 import styles from "./discover-section.module.css";
 import Image from "next/image";
+import Link from "next/link";
 import type { Language } from "@/shared/presentation/i18n";
 import { sileo } from "sileo";
 import { z } from "zod";
@@ -351,9 +352,9 @@ export function DiscoverSection({ text, language }: DiscoverSectionProps) {
                   />
                   <span>
                     {text.subscribeConsentPrefix}{" "}
-                    <a href="/privacy">{text.subscribePrivacyLink}</a>{" "}
+                    <Link href="/privacy">{text.subscribePrivacyLink}</Link>{" "}
                     {text.subscribeConsentJoin}{" "}
-                    <a href="/terms">{text.subscribeTermsLink}</a>.
+                    <Link href="/terms">{text.subscribeTermsLink}</Link>.
                   </span>
                 </label>
               </form>

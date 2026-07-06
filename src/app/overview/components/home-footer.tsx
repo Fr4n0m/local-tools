@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import "@gravatar-com/hovercards/dist/style.css";
 import {
@@ -122,7 +123,7 @@ export function HomeFooter() {
         <div className="site-footer__inner">
           <div className="site-footer__grid">
             <section className="site-footer__column">
-              <Link aria-label="Go to home" className="inline-flex" href="/">
+              <Link className="inline-flex" href="/">
                 <AppLogo style={{ color: "#fff" }} />
               </Link>
               <p
@@ -140,7 +141,7 @@ export function HomeFooter() {
                   const ToolIcon = tool.icon;
                   return (
                     <li key={tool.id}>
-                      <a
+                      <Link
                         aria-label={tool.name[language]}
                         className="aside-tool-btn site-footer__tool-link"
                         href={`/tools?tool=${tool.id}`}
@@ -150,7 +151,7 @@ export function HomeFooter() {
                           <ToolIcon size={14} />
                         </span>
                         <span>{tool.name[language]}</span>
-                      </a>
+                      </Link>
                     </li>
                   );
                 })}
@@ -192,7 +193,7 @@ export function HomeFooter() {
                 rel="noreferrer"
                 target="_blank"
               >
-                <img
+                <Image
                   alt="Fr4n0m"
                   data-gravatar-hash="45f9e6ff5a1ed8b109f19dc13f59c26e7d39fceb75f9344ac30ea6db18f6fbde"
                   height={20}
@@ -214,14 +215,14 @@ export function HomeFooter() {
               className="site-footer__legal"
               style={{ justifyContent: "flex-end" }}
             >
-              <a className="site-footer__legal-link" href="/privacy">
+              <Link className="site-footer__legal-link" href="/privacy">
                 <IconShieldLock aria-hidden size={14} />
                 {text.footer.privacyLink}
-              </a>
-              <a className="site-footer__legal-link" href="/terms">
+              </Link>
+              <Link className="site-footer__legal-link" href="/terms">
                 <IconFileText aria-hidden size={14} />
                 {text.footer.termsLink}
-              </a>
+              </Link>
               <a
                 className="site-footer__legal-link"
                 href={text.footer.reportUrl}

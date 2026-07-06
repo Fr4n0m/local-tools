@@ -1,4 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
+
+import { encodeAdvancedCodec } from "@/modules/image-converter/infrastructure/browser/advanced-codecs";
 import {
   convertImageFile,
   convertedFileName,
@@ -6,16 +8,34 @@ import {
   ImageConversionError,
 } from "@/modules/image-converter/domain/image-converter";
 
+vi.mock(
+  "@/modules/image-converter/infrastructure/browser/advanced-codecs",
+  () => ({
+    encodeAdvancedCodec: vi.fn(),
+  }),
+);
+
+const encodeAdvancedCodecMock = vi.mocked(encodeAdvancedCodec);
+
 function fixture(options?: { context?: boolean; blob?: Blob | null }) {
   const fillRect = vi.fn();
   const drawImage = vi.fn();
+  const imageData = {
+    data: new Uint8ClampedArray(10 * 20 * 4),
+    width: 10,
+    height: 20,
+  } as ImageData;
   const toBlob = vi.fn((cb: BlobCallback, type?: string) =>
     cb(options?.blob === undefined ? new Blob([], { type }) : options.blob),
   );
   const context =
     options?.context === false
       ? null
-      : ({ fillRect, drawImage } as unknown as CanvasRenderingContext2D);
+      : ({
+          fillRect,
+          drawImage,
+          getImageData: vi.fn(() => imageData),
+        } as unknown as CanvasRenderingContext2D);
   const canvas = {
     width: 10,
     height: 20,
@@ -37,6 +57,7 @@ function fixture(options?: { context?: boolean; blob?: Blob | null }) {
     },
     drawImage,
     fillRect,
+    imageData,
     toBlob,
   };
 }
@@ -75,6 +96,29 @@ describe("image converter domain", () => {
       undefined,
     );
   });
+  it.each([["image/avif"], ["image/jxl"], ["image/qoi"]] as const)(
+    "delegates %s to the advanced codec adapter",
+    async (format) => {
+      const f = fixture();
+      const blob = new Blob(["advanced"], { type: format });
+      encodeAdvancedCodecMock.mockResolvedValueOnce(blob);
+
+      const output = await convertImageFile(
+        new File([], "x.png"),
+        format,
+        0.81,
+        f.browser,
+      );
+
+      expect(output).toBe(blob);
+      expect(encodeAdvancedCodecMock).toHaveBeenCalledWith(
+        f.imageData,
+        format,
+        0.81,
+      );
+      expect(f.toBlob).not.toHaveBeenCalled();
+    },
+  );
   it("resizes output when custom dimensions are provided", async () => {
     const f = fixture();
     await convertImageFile(
