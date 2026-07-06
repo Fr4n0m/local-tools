@@ -1,4 +1,4 @@
-export type QrType = "url" | "text" | "wifi";
+export type QrType = "url" | "text" | "wifi" | "email";
 
 export type WifiQrInput = {
   ssid: string;
@@ -10,6 +10,7 @@ export type WifiQrInput = {
 export type QrBuildInput =
   | { type: "url"; value: string }
   | { type: "text"; value: string }
+  | { type: "email"; email: string; subject?: string; body?: string }
   | { type: "wifi"; wifi: WifiQrInput };
 
 function escapeWifiValue(value: string): string {
@@ -19,6 +20,15 @@ function escapeWifiValue(value: string): string {
 export function buildQrPayload(input: QrBuildInput): string {
   if (input.type === "url" || input.type === "text") {
     return input.value.trim();
+  }
+
+  if (input.type === "email") {
+    const email = input.email.trim();
+    const params = new URLSearchParams();
+    if (input.subject?.trim()) params.set("subject", input.subject.trim());
+    if (input.body?.trim()) params.set("body", input.body.trim());
+    const query = params.toString();
+    return `mailto:${email}${query ? `?${query}` : ""}`;
   }
 
   const ssid = escapeWifiValue(input.wifi.ssid.trim());

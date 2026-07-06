@@ -26,4 +26,9 @@ describe("placeholder text", () => {
     });
     expect(output).toContain(".");
   });
+
+  it("can generate bullet output for names", () => {
+    const output = generatePlaceholderText("names", 1, 3, 3, true);
+    expect(output.startsWith("- ")).toBe(true);
+  });
 });

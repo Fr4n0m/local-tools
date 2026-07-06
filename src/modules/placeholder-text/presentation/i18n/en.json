@@ -6,11 +6,19 @@
   "modes": {
     "lorem": "Lorem Ipsum",
     "english-ish": "English-ish",
-    "cat": "Cat gibberish"
+    "cat": "Cat gibberish",
+    "headlines": "Headlines",
+    "names": "Names",
+    "emails": "Emails"
   },
+  "bulletMode": "Bullet list mode",
   "paragraphs": "Paragraphs",
   "sentences": "Sentences per paragraph",
   "words": "Words per sentence",
+  "preset": "Preset",
+  "presetShort": "Short",
+  "presetMedium": "Medium",
+  "presetLong": "Long",
   "generate": "Generate text",
   "output": "Output",
   "empty": "Generate text to see result."

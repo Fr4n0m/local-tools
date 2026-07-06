@@ -11,10 +11,30 @@ type JsonFormatError = {
   };
 };
 
+type JsonRepairSuccess = { ok: true; value: string };
+type JsonRepairError = JsonFormatError;
+
+type JsonPathResult =
+  | { ok: true; value: string }
+  | { ok: false; reason: "missing" | "invalid-path" };
+
 export type JsonFormatOptions = {
   minify?: boolean;
   sortKeys?: boolean;
 };
+
+function parseJsonLike(input: string): unknown {
+  const errors: ParseError[] = [];
+  const value = parse(input, errors, {
+    allowEmptyContent: false,
+    allowTrailingComma: true,
+    disallowComments: false,
+  });
+  if (errors.length > 0) {
+    throw new Error("Invalid JSON syntax");
+  }
+  return value;
+}
 
 function parseErrorPosition(message: string): {
   position: number | null;
@@ -119,5 +139,76 @@ export function formatJson(
         column,
       },
     };
+  }
+}
+
+export function repairJson(
+  input: string,
+  options: JsonFormatOptions = {},
+): JsonRepairSuccess | JsonRepairError {
+  try {
+    const parsed = parseJsonLike(input);
+    const value = options.sortKeys ? sortJsonValue(parsed) : parsed;
+    return {
+      ok: true,
+      value: JSON.stringify(value, null, options.minify ? 0 : 2),
+    };
+  } catch {
+    return formatJson(input, options);
+  }
+}
+
+function splitJsonPath(path: string): string[] {
+  return path
+    .trim()
+    .replace(/^\$\.?/, "")
+    .split(".")
+    .flatMap((segment) =>
+      segment
+        .split(/\[([0-9]+)\]/g)
+        .filter(Boolean)
+        .map((part) => part.trim()),
+    )
+    .filter(Boolean);
+}
+
+export function resolveJsonPath(input: string, path: string): JsonPathResult {
+  const segments = splitJsonPath(path);
+  if (segments.length === 0) {
+    return { ok: false, reason: "invalid-path" };
+  }
+
+  try {
+    let current: unknown = JSON.parse(input);
+    for (const segment of segments) {
+      if (Array.isArray(current)) {
+        const index = Number(segment);
+        if (!Number.isInteger(index) || index < 0 || index >= current.length) {
+          return { ok: false, reason: "missing" };
+        }
+        current = current[index];
+        continue;
+      }
+
+      if (!current || typeof current !== "object") {
+        return { ok: false, reason: "missing" };
+      }
+
+      if (!(segment in (current as Record<string, unknown>))) {
+        return { ok: false, reason: "missing" };
+      }
+
+      current = (current as Record<string, unknown>)[segment];
+    }
+
+    return {
+      ok: true,
+      value:
+        typeof current === "string"
+          ? current
+          : JSON.stringify(current, null, 2),
+    };
+  } catch {
+    return { ok: false, reason: "missing" };
   }
 }

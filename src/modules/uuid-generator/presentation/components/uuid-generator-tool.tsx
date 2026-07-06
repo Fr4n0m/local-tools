@@ -10,6 +10,7 @@ import { downloadTextFile } from "@/shared/lib/download";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import {
   ToolField,
+  ToolSelect,
   ToolOutputBlock,
   ToolSection,
   ToolSwitch,
@@ -25,12 +26,16 @@ export function UuidGeneratorTool({ language }: Props) {
   const text = useMemo(() => (language === "es" ? es : en), [language]);
   const sharedText = sharedMessages[language];
   const [amount, setAmount] = useState(5);
+  const [version, setVersion] = useState<"v4" | "v7" | "nil">("v4");
   const [stripHyphens, setStripHyphens] = useState(false);
+  const [uppercase, setUppercase] = useState(false);
   const [result, setResult] = useState<string[]>([]);
   const output = result.join("\n");
 
   const onGenerate = () => {
-    setResult(generateUuidsUseCase(amount, { stripHyphens }));
+    setResult(
+      generateUuidsUseCase(amount, { stripHyphens, uppercase, version }),
+    );
   };
 
   return (
@@ -44,8 +49,22 @@ export function UuidGeneratorTool({ language }: Props) {
           onChange={(event) => setAmount(Number(event.target.value || 1))}
         />
       </ToolField>
+      <ToolField label={text.version}>
+        <ToolSelect
+          options={[
+            { value: "v4", label: text.versionV4 },
+            { value: "v7", label: text.versionV7 },
+            { value: "nil", label: text.versionNil },
+          ]}
+          value={version}
+          onChange={(value) => setVersion(value as "v4" | "v7" | "nil")}
+        />
+      </ToolField>
       <ToolToggleField label={text.stripHyphens}>
         <ToolSwitch checked={stripHyphens} onChange={setStripHyphens} />
+      </ToolToggleField>
+      <ToolToggleField label={text.uppercase}>
+        <ToolSwitch checked={uppercase} onChange={setUppercase} />
       </ToolToggleField>
       <ToolActions
         actions={[
@@ -72,10 +91,17 @@ export function UuidGeneratorTool({ language }: Props) {
             label: sharedText.buttons.clear,
             onClick: () => {
               setAmount(5);
+              setVersion("v4");
               setStripHyphens(false);
+              setUppercase(false);
               setResult([]);
             },
-            disabled: amount === 5 && !stripHyphens && result.length === 0,
+            disabled:
+              amount === 5 &&
+              version === "v4" &&
+              !stripHyphens &&
+              !uppercase &&
+              result.length === 0,
           },
         ]}
       />

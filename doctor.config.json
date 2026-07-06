@@ -32,7 +32,8 @@
       {
         "files": [
           "src/modules/avatar-generator/presentation/components/avatar-generator-tool.tsx",
-          "src/modules/svg-to-file/presentation/components/svg-to-file-tool.tsx"
+          "src/modules/svg-to-file/presentation/components/svg-to-file-tool.tsx",
+          "src/modules/favicon-generator/presentation/components/favicon-generator-tool.tsx"
         ],
         "rules": ["react-doctor/nextjs-no-img-element"]
       },
@@ -68,9 +69,17 @@
       {
         "files": [
           "src/app/overview/overview-experience.tsx",
-          "src/modules/image-converter/presentation/components/image-converter-tool.tsx"
+          "src/modules/image-converter/presentation/components/image-converter-tool.tsx",
+          "src/modules/favicon-generator/presentation/components/favicon-generator-tool.tsx",
+          "src/modules/qr-generator/presentation/components/qr-generator-tool.tsx"
         ],
         "rules": ["react-doctor/no-giant-component"]
+      },
+      {
+        "files": [
+          "src/modules/favicon-generator/presentation/components/favicon-generator-tool.tsx"
+        ],
+        "rules": ["react-doctor/no-chain-state-updates"]
       }
     ]
   },

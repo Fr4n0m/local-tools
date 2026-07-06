@@ -23,4 +23,21 @@ describe("urlEncoderUseCase", () => {
 
     expect(output.ok).toBe(false);
   });
+
+  it("can encode full urls without escaping separators", () => {
+    const output = urlEncoderUseCase.encode("https://example.com/a b?x=1&y=2", {
+      mode: "full-url",
+    });
+
+    expect(output).toBe("https://example.com/a%20b?x=1&y=2");
+  });
+
+  it("can encode multiline content with plus spaces", () => {
+    const output = urlEncoderUseCase.encode("hello world\nnext line", {
+      multiline: true,
+      usePlusForSpaces: true,
+    });
+
+    expect(output).toBe("hello+world\nnext+line");
+  });
 });

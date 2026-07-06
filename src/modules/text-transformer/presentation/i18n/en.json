@@ -7,8 +7,16 @@
   "upper": "Uppercase",
   "lower": "Lowercase",
   "capitalize": "Capitalize",
+  "titleCase": "Title case",
   "trim": "Trim",
   "removeSpaces": "Remove spaces",
   "normalizeSpaces": "Normalize spaces",
-  "slugify": "Slugify"
+  "slugify": "Slugify",
+  "camelCase": "camelCase",
+  "pascalCase": "PascalCase",
+  "snakeCase": "snake_case",
+  "kebabCase": "kebab-case",
+  "constantCase": "CONSTANT_CASE",
+  "alternatingCase": "aLtErNaTiNg",
+  "download": "Download TXT"
 }

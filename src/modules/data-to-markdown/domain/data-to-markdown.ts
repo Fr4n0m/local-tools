@@ -1,4 +1,5 @@
 export type TabularRow = Record<string, string>;
+export type MarkdownAlignment = "left" | "center" | "right";
 
 function escapeCell(value: string): string {
   return value.replace(/\|/g, "\\|").replace(/\r?\n/g, " ").trim();
@@ -55,6 +56,10 @@ export function parseCsv(input: string): TabularRow[] {
   });
 }
 
+export function parseTsv(input: string): TabularRow[] {
+  return parseCsv(input.replace(/\t/g, ","));
+}
+
 export function parseJson(input: string): TabularRow[] {
   try {
     const parsed = JSON.parse(input);
@@ -81,7 +86,28 @@ export function parseJson(input: string): TabularRow[] {
   }
 }
 
-export function toMarkdownTable(rows: TabularRow[]): string {
+export function rowsFromMatrix(matrix: string[][]): TabularRow[] {
+  if (matrix.length < 2) return [];
+  const [headers, ...body] = matrix;
+  return body.map((values) => {
+    const row: TabularRow = {};
+    headers.forEach((header, index) => {
+      row[header || `column_${index + 1}`] = values[index] ?? "";
+    });
+    return row;
+  });
+}
+
+function separatorForAlignment(alignment: MarkdownAlignment): string {
+  if (alignment === "center") return ":---:";
+  if (alignment === "right") return "---:";
+  return ":---";
+}
+
+export function toMarkdownTable(
+  rows: TabularRow[],
+  alignment: MarkdownAlignment = "left",
+): string {
   if (rows.length === 0) return "";
 
   const headers = Array.from(
@@ -94,7 +120,7 @@ export function toMarkdownTable(rows: TabularRow[]): string {
   if (headers.length === 0) return "";
 
   const headerLine = `| ${headers.join(" | ")} |`;
-  const separatorLine = `| ${headers.map(() => "---").join(" | ")} |`;
+  const separatorLine = `| ${headers.map(() => separatorForAlignment(alignment)).join(" | ")} |`;
   const valueLines = rows.map((row) => {
     const cells = headers.map((header) => escapeCell(row[header] ?? ""));
     return `| ${cells.join(" | ")} |`;

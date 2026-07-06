@@ -8,11 +8,13 @@ export function generatePlaceholderUseCase(params: {
   paragraphs: number;
   sentencesPerParagraph: number;
   wordsPerSentence: number;
+  bulletMode?: boolean;
 }): string {
   return generatePlaceholderText(
     params.mode,
     params.paragraphs,
     params.sentencesPerParagraph,
     params.wordsPerSentence,
+    params.bulletMode ?? false,
   );
 }

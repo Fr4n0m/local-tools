@@ -1,9 +1,14 @@
 {
   "name": "UUID Generator",
-  "description": "Generate UUID v4 values instantly.",
+  "description": "Generate UUID v4, v7, or nil values instantly.",
   "title": "UUID Generator",
   "amount": "Amount",
+  "version": "Version",
+  "versionV4": "Version 4",
+  "versionV7": "Version 7",
+  "versionNil": "Nil UUID",
   "stripHyphens": "Remove hyphens",
+  "uppercase": "Uppercase output",
   "generate": "Generate UUIDs",
   "result": "Generated UUIDs",
   "download": "Download TXT"

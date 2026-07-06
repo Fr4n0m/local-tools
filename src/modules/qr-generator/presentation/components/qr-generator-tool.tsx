@@ -11,6 +11,7 @@ import { downloadBlob, downloadTextFile } from "@/shared/lib/download";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import {
   ToolField,
+  ToolColorPicker,
   ToolInput,
   ToolSection,
   ToolSelect,
@@ -29,11 +30,20 @@ export function QrGeneratorTool({ language }: Props) {
   const [type, setType] = useState<QrType>("url");
   const [urlValue, setUrlValue] = useState("");
   const [textValue, setTextValue] = useState("");
+  const [emailValue, setEmailValue] = useState("");
+  const [emailSubject, setEmailSubject] = useState("");
+  const [emailBody, setEmailBody] = useState("");
   const [ssid, setSsid] = useState("");
   const [password, setPassword] = useState("");
   const [encryption, setEncryption] = useState<"WPA" | "WEP" | "nopass">("WPA");
   const [hidden, setHidden] = useState(false);
   const [size, setSize] = useState(256);
+  const [margin, setMargin] = useState(2);
+  const [foreground, setForeground] = useState("#111111");
+  const [background, setBackground] = useState("#ffffff");
+  const [errorCorrectionLevel, setErrorCorrectionLevel] = useState<
+    "L" | "M" | "Q" | "H"
+  >("M");
   const [error, setError] = useState("");
   const [pngDataUrl, setPngDataUrl] = useState("");
   const [svgText, setSvgText] = useState("");
@@ -46,10 +56,17 @@ export function QrGeneratorTool({ language }: Props) {
         ? buildQrPayloadUseCase({ type, value: urlValue })
         : type === "text"
           ? buildQrPayloadUseCase({ type, value: textValue })
-          : buildQrPayloadUseCase({
-              type,
-              wifi: { ssid, password, encryption, hidden },
-            });
+          : type === "email"
+            ? buildQrPayloadUseCase({
+                type,
+                email: emailValue,
+                subject: emailSubject,
+                body: emailBody,
+              })
+            : buildQrPayloadUseCase({
+                type,
+                wifi: { ssid, password, encryption, hidden },
+              });
 
     if (!payloadResult.ok) {
       setError(text.invalid);
@@ -62,8 +79,19 @@ export function QrGeneratorTool({ language }: Props) {
     const payload = payloadResult.value;
     const QRCode = (await import("qrcode")).default;
     const [nextPng, nextSvg] = await Promise.all([
-      QRCode.toDataURL(payload, { width: size, margin: 2 }),
-      QRCode.toString(payload, { type: "svg", width: size, margin: 2 }),
+      QRCode.toDataURL(payload, {
+        width: size,
+        margin,
+        color: { dark: foreground, light: background },
+        errorCorrectionLevel,
+      }),
+      QRCode.toString(payload, {
+        type: "svg",
+        width: size,
+        margin,
+        color: { dark: foreground, light: background },
+        errorCorrectionLevel,
+      }),
     ]);
     setPngDataUrl(nextPng);
     setSvgText(nextSvg);
@@ -95,11 +123,18 @@ export function QrGeneratorTool({ language }: Props) {
     setType("url");
     setUrlValue("");
     setTextValue("");
+    setEmailValue("");
+    setEmailSubject("");
+    setEmailBody("");
     setSsid("");
     setPassword("");
     setEncryption("WPA");
     setHidden(false);
     setSize(256);
+    setMargin(2);
+    setForeground("#111111");
+    setBackground("#ffffff");
+    setErrorCorrectionLevel("M");
     setError("");
     setPngDataUrl("");
     setSvgText("");
@@ -113,6 +148,7 @@ export function QrGeneratorTool({ language }: Props) {
           options={[
             { value: "url", label: text.types.url },
             { value: "text", label: text.types.text },
+            { value: "email", label: text.types.email },
             { value: "wifi", label: text.types.wifi },
           ]}
           value={type}
@@ -137,6 +173,29 @@ export function QrGeneratorTool({ language }: Props) {
             onChange={(event) => setTextValue(event.target.value)}
           />
         </ToolField>
+      ) : null}
+
+      {type === "email" ? (
+        <div className="grid gap-4 md:grid-cols-2">
+          <ToolField label={text.emailValue}>
+            <ToolInput
+              value={emailValue}
+              onChange={(event) => setEmailValue(event.target.value)}
+            />
+          </ToolField>
+          <ToolField label={text.emailSubject}>
+            <ToolInput
+              value={emailSubject}
+              onChange={(event) => setEmailSubject(event.target.value)}
+            />
+          </ToolField>
+          <ToolField className="md:col-span-2" label={text.emailBody}>
+            <ToolInput
+              value={emailBody}
+              onChange={(event) => setEmailBody(event.target.value)}
+            />
+          </ToolField>
+        </div>
       ) : null}
 
       {type === "wifi" ? (
@@ -181,6 +240,41 @@ export function QrGeneratorTool({ language }: Props) {
           onChange={setSize}
         />
       </ToolField>
+      <div className="grid gap-4 md:grid-cols-2">
+        <ToolField label={text.foreground}>
+          <ToolColorPicker value={foreground} onChange={setForeground} />
+        </ToolField>
+        <ToolField label={text.background}>
+          <ToolColorPicker value={background} onChange={setBackground} />
+        </ToolField>
+      </div>
+      <div className="grid gap-4 md:grid-cols-2">
+        <ToolField label={text.margin}>
+          <ToolSlider
+            displayValue={String(margin)}
+            max={8}
+            min={0}
+            step={1}
+            value={margin}
+            onChange={setMargin}
+          />
+        </ToolField>
+        <ToolField label={text.errorCorrection}>
+          <ToolSelect
+            aria-label={text.errorCorrection}
+            options={[
+              { value: "L", label: "L" },
+              { value: "M", label: "M" },
+              { value: "Q", label: "Q" },
+              { value: "H", label: "H" },
+            ]}
+            value={errorCorrectionLevel}
+            onChange={(value) =>
+              setErrorCorrectionLevel(value as "L" | "M" | "Q" | "H")
+            }
+          />
+        </ToolField>
+      </div>
 
       <ToolActions
         actions={[
@@ -206,12 +300,19 @@ export function QrGeneratorTool({ language }: Props) {
             disabled:
               !urlValue &&
               !textValue &&
+              !emailValue &&
+              !emailSubject &&
+              !emailBody &&
               !ssid &&
               !password &&
               !pngDataUrl &&
               !svgText &&
               type === "url" &&
               size === 256 &&
+              margin === 2 &&
+              foreground === "#111111" &&
+              background === "#ffffff" &&
+              errorCorrectionLevel === "M" &&
               encryption === "WPA" &&
               !hidden,
           },

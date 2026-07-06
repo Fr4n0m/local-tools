@@ -16,4 +16,26 @@ describe("base64UseCase", () => {
   it("handles invalid input", () => {
     expect(base64UseCase.decode("%%%").ok).toBe(false);
   });
+
+  it("supports base64url", () => {
+    const encoded = base64UseCase.encodeUrl("hola ñ");
+    const decoded = base64UseCase.decodeUrl(encoded);
+
+    expect(base64UseCase.isValidUrl(encoded)).toBe(true);
+    expect(decoded.ok).toBe(true);
+    if (decoded.ok) {
+      expect(decoded.value).toBe("hola ñ");
+    }
+  });
+
+  it("parses data urls", () => {
+    const dataUrl = base64UseCase.toDataUrl("aGVsbG8=", "text/plain");
+    const parsed = base64UseCase.parseDataUrl(dataUrl);
+
+    expect(parsed.ok).toBe(true);
+    if (parsed.ok) {
+      expect(parsed.mimeType).toBe("text/plain");
+      expect(parsed.base64).toBe("aGVsbG8=");
+    }
+  });
 });

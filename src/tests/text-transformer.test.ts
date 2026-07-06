@@ -32,4 +32,25 @@ describe("textTransformerUseCase", () => {
       "hola-mundo-n",
     );
   });
+
+  it("builds camel and pascal case", () => {
+    expect(textTransformerUseCase.camelCase("hola mundo test")).toBe(
+      "holaMundoTest",
+    );
+    expect(textTransformerUseCase.pascalCase("hola mundo test")).toBe(
+      "HolaMundoTest",
+    );
+  });
+
+  it("builds snake kebab and constant case", () => {
+    expect(textTransformerUseCase.snakeCase("hola mundo test")).toBe(
+      "hola_mundo_test",
+    );
+    expect(textTransformerUseCase.kebabCase("hola mundo test")).toBe(
+      "hola-mundo-test",
+    );
+    expect(textTransformerUseCase.constantCase("hola mundo test")).toBe(
+      "HOLA_MUNDO_TEST",
+    );
+  });
 });

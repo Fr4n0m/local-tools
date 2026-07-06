@@ -43,4 +43,15 @@ describe("qr payload", () => {
       value: "local tools",
     });
   });
+
+  it("builds email payload", () => {
+    expect(
+      buildQrPayload({
+        type: "email",
+        email: "hello@example.com",
+        subject: "Hi",
+        body: "World",
+      }),
+    ).toBe("mailto:hello@example.com?subject=Hi&body=World");
+  });
 });

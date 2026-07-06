@@ -1,9 +1,14 @@
 {
   "name": "Generador UUID",
-  "description": "Genera UUID v4 al instante.",
+  "description": "Genera UUID v4, v7 o nil al instante.",
   "title": "Generador UUID",
   "amount": "Cantidad",
+  "version": "Versión",
+  "versionV4": "Versión 4",
+  "versionV7": "Versión 7",
+  "versionNil": "UUID nil",
   "stripHyphens": "Quitar guiones",
+  "uppercase": "Salida en mayúsculas",
   "generate": "Generar UUIDs",
   "result": "UUIDs generados",
   "download": "Descargar TXT"

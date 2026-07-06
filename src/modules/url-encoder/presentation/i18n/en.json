@@ -3,8 +3,14 @@
   "description": "Escape and unescape URL content.",
   "title": "URL Encoder / Decoder",
   "input": "Input",
+  "mode": "Encoding mode",
+  "modeComponent": "URL component",
+  "modeFullUrl": "Full URL",
+  "multiline": "Process line by line",
+  "plusSpaces": "Encode spaces as +",
   "output": "Output",
   "encode": "Encode URL",
   "decode": "Decode URL",
-  "error": "Invalid encoded URL string"
+  "error": "Invalid encoded URL string",
+  "download": "Download TXT"
 }

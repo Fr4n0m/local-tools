@@ -6,6 +6,7 @@ import { textTransformerUseCase } from "@/modules/text-transformer/application/t
 import en from "@/modules/text-transformer/presentation/i18n/en.json";
 import es from "@/modules/text-transformer/presentation/i18n/es.json";
 import { copyTextToClipboard } from "@/shared/lib/clipboard";
+import { downloadTextFile } from "@/shared/lib/download";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import {
   ToolField,
@@ -51,6 +52,11 @@ export function TextTransformerTool({ language }: Props) {
             disabled: input.trim().length === 0,
           },
           {
+            label: text.titleCase,
+            onClick: () => setOutput(textTransformerUseCase.titleCase(input)),
+            disabled: input.trim().length === 0,
+          },
+          {
             label: text.trim,
             onClick: () => setOutput(textTransformerUseCase.trim(input)),
             disabled: input.trim().length === 0,
@@ -73,9 +79,48 @@ export function TextTransformerTool({ language }: Props) {
             disabled: input.trim().length === 0,
           },
           {
+            label: text.camelCase,
+            onClick: () => setOutput(textTransformerUseCase.camelCase(input)),
+            disabled: input.trim().length === 0,
+          },
+          {
+            label: text.pascalCase,
+            onClick: () => setOutput(textTransformerUseCase.pascalCase(input)),
+            disabled: input.trim().length === 0,
+          },
+          {
+            label: text.snakeCase,
+            onClick: () => setOutput(textTransformerUseCase.snakeCase(input)),
+            disabled: input.trim().length === 0,
+          },
+          {
+            label: text.kebabCase,
+            onClick: () => setOutput(textTransformerUseCase.kebabCase(input)),
+            disabled: input.trim().length === 0,
+          },
+          {
+            label: text.constantCase,
+            onClick: () =>
+              setOutput(textTransformerUseCase.constantCase(input)),
+            disabled: input.trim().length === 0,
+          },
+          {
+            label: text.alternatingCase,
+            onClick: () =>
+              setOutput(textTransformerUseCase.alternatingCase(input)),
+            disabled: input.trim().length === 0,
+          },
+          {
             label: sharedText.buttons.copy,
             onClick: () => {
               void copyTextToClipboard(output);
+            },
+            disabled: output.trim().length === 0,
+          },
+          {
+            label: text.download,
+            onClick: () => {
+              downloadTextFile(output, "transformed-text.txt");
             },
             disabled: output.trim().length === 0,
           },

@@ -7,6 +7,7 @@ import type { PlaceholderMode } from "@/modules/placeholder-text/domain/placehol
 import en from "@/modules/placeholder-text/presentation/i18n/en.json";
 import es from "@/modules/placeholder-text/presentation/i18n/es.json";
 import { copyTextToClipboard } from "@/shared/lib/clipboard";
+import { downloadTextFile } from "@/shared/lib/download";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import {
   ToolField,
@@ -14,6 +15,8 @@ import {
   ToolOutputBlock,
   ToolSection,
   ToolSelect,
+  ToolSwitch,
+  ToolToggleField,
 } from "@/shared/presentation/components/tool-form";
 import type { Language } from "@/shared/presentation/i18n";
 import { sharedMessages } from "@/shared/presentation/i18n";
@@ -27,7 +30,26 @@ export function PlaceholderTextTool({ language }: Props) {
   const [paragraphs, setParagraphs] = useState(3);
   const [sentences, setSentences] = useState(4);
   const [words, setWords] = useState(10);
+  const [bulletMode, setBulletMode] = useState(false);
   const [output, setOutput] = useState("");
+
+  const applyPreset = (value: "short" | "medium" | "long") => {
+    if (value === "short") {
+      setParagraphs(1);
+      setSentences(2);
+      setWords(6);
+      return;
+    }
+    if (value === "long") {
+      setParagraphs(4);
+      setSentences(5);
+      setWords(12);
+      return;
+    }
+    setParagraphs(3);
+    setSentences(4);
+    setWords(10);
+  };
 
   const onGenerate = () => {
     setOutput(
@@ -36,6 +58,7 @@ export function PlaceholderTextTool({ language }: Props) {
         paragraphs,
         sentencesPerParagraph: sentences,
         wordsPerSentence: words,
+        bulletMode,
       }),
     );
   };
@@ -49,11 +72,33 @@ export function PlaceholderTextTool({ language }: Props) {
             { value: "lorem", label: text.modes.lorem },
             { value: "english-ish", label: text.modes["english-ish"] },
             { value: "cat", label: text.modes.cat },
+            { value: "headlines", label: text.modes.headlines },
+            { value: "names", label: text.modes.names },
+            { value: "emails", label: text.modes.emails },
           ]}
           value={mode}
           onChange={(value) => setMode(value as PlaceholderMode)}
         />
       </ToolField>
+      <ToolField label={text.preset}>
+        <ToolSelect
+          aria-label={text.preset}
+          options={[
+            { value: "short", label: text.presetShort },
+            { value: "medium", label: text.presetMedium },
+            { value: "long", label: text.presetLong },
+          ]}
+          value="medium"
+          onChange={(value) => {
+            if (value === "short" || value === "medium" || value === "long") {
+              applyPreset(value);
+            }
+          }}
+        />
+      </ToolField>
+      <ToolToggleField label={text.bulletMode}>
+        <ToolSwitch checked={bulletMode} onChange={setBulletMode} />
+      </ToolToggleField>
 
       <div className="grid gap-4 md:grid-cols-3">
         <ToolField label={text.paragraphs}>
@@ -93,12 +138,20 @@ export function PlaceholderTextTool({ language }: Props) {
             disabled: output.length === 0,
           },
           {
+            label: sharedText.buttons.download,
+            onClick: () => {
+              downloadTextFile(output, "placeholder-text.txt");
+            },
+            disabled: output.length === 0,
+          },
+          {
             label: sharedText.buttons.clear,
             onClick: () => {
               setMode("lorem");
               setParagraphs(3);
               setSentences(4);
               setWords(10);
+              setBulletMode(false);
               setOutput("");
             },
             disabled:
@@ -106,6 +159,7 @@ export function PlaceholderTextTool({ language }: Props) {
               paragraphs === 3 &&
               sentences === 4 &&
               words === 10 &&
+              !bulletMode &&
               output.length === 0,
           },
         ]}
