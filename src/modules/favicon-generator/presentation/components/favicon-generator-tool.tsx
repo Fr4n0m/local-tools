@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import NextImage from "next/image";
 import {
   IconBrandGoogle,
@@ -166,24 +166,29 @@ function FaviconPreviewTab({
   label,
   iconUrl,
   dark = false,
+  active = false,
 }: {
   label: string;
   iconUrl: string | null;
   dark?: boolean;
+  active?: boolean;
 }) {
   return (
     <div
-      className={`relative flex min-w-[182px] items-center gap-3 rounded-t-2xl border px-4 py-3 shadow-[0_16px_36px_rgba(0,0,0,0.18)] ${
+      className={`relative flex h-[72px] min-w-[190px] max-w-[230px] items-center gap-3 rounded-t-[18px] rounded-b-[10px] border px-4 py-3 shadow-[0_12px_30px_rgba(0,0,0,0.16)] ${
         dark
-          ? "border-white/10 bg-[#1f1f23] text-white/80"
-          : "border-black/10 bg-white text-black/72"
-      }`}
+          ? "border-white/8 bg-[#26262b] text-white/76"
+          : "border-black/10 bg-[#f7f7f8] text-black/72"
+      } ${active ? "z-10" : "z-0"}`}
     >
       <div
+        className={`absolute inset-x-3 top-0 h-px ${
+          dark ? "bg-white/12" : "bg-white/80"
+        }`}
+      />
+      <div
         className={`grid h-7 w-7 place-items-center rounded-md border ${
-          dark
-            ? "border-white/12 bg-white/6"
-            : "border-black/10 bg-black/[0.03]"
+          dark ? "border-white/12 bg-white/8" : "border-black/10 bg-white"
         }`}
       >
         {iconUrl ? (
@@ -204,7 +209,13 @@ function FaviconPreviewTab({
         )}
       </div>
       <div className="min-w-0">
-        <div className="truncate text-sm font-medium">{label}</div>
+        <div
+          className={`truncate text-sm font-medium ${
+            dark ? "text-white/72" : "text-black/78"
+          }`}
+        >
+          {label}
+        </div>
         <div
           className={`mt-0.5 h-1.5 w-16 rounded-full ${
             dark ? "bg-white/10" : "bg-black/8"
@@ -215,7 +226,7 @@ function FaviconPreviewTab({
   );
 }
 
-function PreviewChip({
+function PreviewHeading({
   icon: Icon,
   label,
 }: {
@@ -223,7 +234,7 @@ function PreviewChip({
   label: string;
 }) {
   return (
-    <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs text-white/72">
+    <div className="inline-flex items-center gap-2 text-sm font-medium text-white/72">
       <Icon className="h-3.5 w-3.5" />
       <span>{label}</span>
     </div>
@@ -232,17 +243,19 @@ function PreviewChip({
 
 function SearchPreviewCard({
   iconUrl,
+  siteLabel,
+  resultLabel,
   dark = false,
 }: {
   iconUrl: string | null;
+  siteLabel: string;
+  resultLabel: string;
   dark?: boolean;
 }) {
   return (
     <div
-      className={`rounded-[20px] border p-4 ${
-        dark
-          ? "border-white/10 bg-[#121216] text-white"
-          : "border-black/10 bg-white text-black"
+      className={`rounded-[20px] p-4 ${
+        dark ? "bg-[#121216] text-white" : "bg-white text-black"
       }`}
     >
       <div className="flex items-center gap-3">
@@ -273,35 +286,34 @@ function SearchPreviewCard({
         <div className="min-w-0">
           <div
             className={`truncate text-sm font-medium ${
-              dark ? "text-white/84" : "text-black/84"
+              dark ? "text-white/82" : "text-black/82"
             }`}
           >
-            Example
+            {siteLabel}
           </div>
           <div
             className={`truncate text-xs ${
-              dark ? "text-white/46" : "text-black/44"
+              dark ? "text-[#9aa0a6]" : "text-[#5f6368]"
             }`}
           >
             https://example.com
           </div>
         </div>
       </div>
-      <div className="mt-4 space-y-2">
+      <div className="mt-3 space-y-1.5">
         <div
           className={`text-sm font-semibold ${
-            dark ? "text-[#8ab4f8]" : "text-[#1a0dab]"
+            dark ? "text-[#9ec1ff]" : "text-[#1a4fd7]"
           }`}
         >
-          Lorem Ipsum
+          {resultLabel}
         </div>
         <p
           className={`text-xs leading-5 ${
             dark ? "text-white/58" : "text-black/56"
           }`}
         >
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         </p>
       </div>
     </div>
@@ -310,79 +322,138 @@ function SearchPreviewCard({
 
 function MobilePreviewCard({
   icon: Icon,
-  label,
   iconUrl,
+  appLabel,
   dark = false,
 }: {
   icon: typeof IconWorld;
-  label: string;
   iconUrl: string | null;
+  appLabel: string;
   dark?: boolean;
 }) {
   return (
     <div
-      className={`rounded-[20px] border p-4 ${
-        dark
-          ? "border-white/10 bg-[#121216] text-white"
-          : "border-black/10 bg-white text-black"
-      }`}
+      className={`rounded-[20px] p-4 ${
+        dark ? "bg-[#111111] text-white" : "bg-white text-black"
+      } h-full`}
     >
-      <div className="mb-4 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.18em] opacity-70">
-        <Icon className="h-3.5 w-3.5" />
-        <span>{label}</span>
-      </div>
-      <div
-        className={`mx-auto flex h-[168px] w-[92px] flex-col rounded-[24px] border p-3 ${
-          dark ? "border-white/10 bg-black/40" : "border-black/10 bg-[#f3f4f6]"
-        }`}
-      >
+      <div className="flex h-full items-center justify-center">
         <div
-          className={`mx-auto h-1.5 w-10 rounded-full ${
-            dark ? "bg-white/16" : "bg-black/12"
-          }`}
-        />
-        <div className="flex flex-1 items-center justify-center">
-          <div
-            className={`grid h-14 w-14 place-items-center rounded-[18px] border ${
-              dark
-                ? "border-white/10 bg-white/[0.05]"
-                : "border-black/10 bg-white"
-            }`}
-          >
-            {iconUrl ? (
-              <NextImage
-                alt=""
-                className="rounded-[14px]"
-                height={40}
-                src={iconUrl}
-                unoptimized
-                width={40}
-              />
-            ) : (
-              <div
-                className={`h-10 w-10 rounded-[14px] ${
-                  dark ? "bg-white/16" : "bg-black/12"
-                }`}
-              />
-            )}
-          </div>
-        </div>
-        <div
-          className={`rounded-xl px-2 py-1 text-center text-[11px] ${
+          className={`flex h-[168px] w-[92px] flex-col rounded-[24px] border p-3 ${
             dark
-              ? "bg-white/[0.05] text-white/70"
-              : "bg-black/[0.04] text-black/54"
+              ? "border-white/10 bg-[#0b0b0d]"
+              : "border-black/10 bg-[#f3f4f6]"
           }`}
         >
-          {projectNameFallback(label)}
+          <div
+            className={`mx-auto h-1.5 w-10 rounded-full ${
+              dark ? "bg-white/18" : "bg-black/12"
+            }`}
+          />
+          <div className="flex flex-1 items-center justify-center">
+            <div
+              className={`grid h-14 w-14 place-items-center rounded-[18px] border ${
+                dark
+                  ? "border-white/10 bg-[#171717]"
+                  : "border-black/10 bg-white"
+              }`}
+            >
+              {iconUrl ? (
+                <NextImage
+                  alt=""
+                  className="rounded-[14px]"
+                  height={40}
+                  src={iconUrl}
+                  unoptimized
+                  width={40}
+                />
+              ) : (
+                <div
+                  className={`h-10 w-10 rounded-[14px] ${
+                    dark ? "bg-white/16" : "bg-black/12"
+                  }`}
+                />
+              )}
+            </div>
+          </div>
+          <div
+            className={`rounded-xl px-2 py-1 text-center text-[11px] ${
+              dark
+                ? "bg-[#181818] text-white/78"
+                : "bg-black/[0.04] text-black/54"
+            }`}
+          >
+            {appLabel}
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-function projectNameFallback(label: string) {
-  return label.includes("Apple") ? "MyWebSite" : "MySite";
+function BrowserPreviewMock({
+  lightIconUrl,
+  darkIconUrl,
+  label,
+}: {
+  lightIconUrl: string | null;
+  darkIconUrl: string | null;
+  label: string;
+}) {
+  return (
+    <div className="overflow-hidden rounded-[24px] bg-[#202024]">
+      <div className="rounded-[24px] bg-[#2a2a2f] px-4 pb-4 pt-4">
+        <div className="flex items-end justify-center gap-3 overflow-x-auto overflow-y-visible rounded-[18px] px-2 pb-2">
+          <div className="opacity-72">
+            <FaviconPreviewTab dark iconUrl={darkIconUrl} label={label} />
+          </div>
+          <div className="opacity-100">
+            <FaviconPreviewTab active iconUrl={lightIconUrl} label={label} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PreviewSection({
+  header,
+  children,
+}: {
+  header: ReactNode;
+  children: ReactNode;
+}) {
+  return (
+    <section className="space-y-3">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        {header}
+      </div>
+      <div className="rounded-[22px] bg-[#141414] p-4">{children}</div>
+    </section>
+  );
+}
+
+function PreviewSubtleStack({ children }: { children: ReactNode }) {
+  return <div className="flex flex-col gap-3">{children}</div>;
+}
+
+function PreviewSettingsPanel({ children }: { children: ReactNode }) {
+  return <div className="rounded-[18px] bg-black/18 p-4">{children}</div>;
+}
+
+function PreviewSettingsField({
+  label,
+  children,
+}: {
+  label: string;
+  children: ReactNode;
+}) {
+  return (
+    <label className="grid gap-2">
+      <span className="text-sm font-medium text-white/78">{label}</span>
+      {children}
+    </label>
+  );
 }
 
 function FaviconFitModeButtons({
@@ -431,6 +502,12 @@ export function FaviconGeneratorTool({ language }: Props) {
   const [darkPreviewIconUrl, setDarkPreviewIconUrl] = useState<string | null>(
     null,
   );
+  const [appleIconMode, setAppleIconMode] = useState<"light" | "dark">("light");
+  const [androidIconMode, setAndroidIconMode] = useState<"light" | "dark">(
+    "dark",
+  );
+  const [applePreviewLabel, setApplePreviewLabel] = useState("MyWebSite");
+  const [androidPreviewLabel, setAndroidPreviewLabel] = useState("MySite");
   const [faviconPath, setFaviconPath] = useState("/");
   const [versionTag, setVersionTag] = useState("");
   const [renderSettings, setRenderSettings] = useState<FaviconRenderSettings>(
@@ -869,17 +946,17 @@ export function FaviconGeneratorTool({ language }: Props) {
             </div>
           </div>
 
-          <div className="rounded-[28px] border bg-[#131313] p-5 shadow-[0_24px_60px_rgba(0,0,0,0.14)] dark:border-white/10">
-            <div className="rounded-[24px] border border-white/6 bg-[#171717] p-5">
-              <div className="flex min-h-[380px] flex-col justify-between gap-6 rounded-[20px] border border-white/5 bg-[#101010] p-6">
-                <div className="grid flex-1 gap-5 xl:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between gap-3">
-                      <PreviewChip
+          <div className="rounded-[28px] bg-[#131313] p-5 shadow-[0_24px_60px_rgba(0,0,0,0.14)] dark:border-white/10">
+            <div className="flex min-h-[380px] flex-col justify-between gap-8 rounded-[24px] bg-[#171717] p-6">
+              <div className="flex flex-1 flex-col gap-6">
+                <PreviewSection
+                  header={
+                    <>
+                      <PreviewHeading
                         icon={IconWorld}
                         label={text.browserPreview}
                       />
-                      <PreviewChip
+                      <PreviewHeading
                         icon={useDedicatedDarkIcon ? IconMoonStars : IconSearch}
                         label={
                           useDedicatedDarkIcon
@@ -887,92 +964,194 @@ export function FaviconGeneratorTool({ language }: Props) {
                             : text.regularIconLabel
                         }
                       />
-                    </div>
-                    <div className="flex flex-wrap items-end justify-center gap-4 rounded-[20px] border border-white/6 bg-[#141414] p-6">
-                      <div className="relative translate-y-2 scale-[0.82] opacity-85">
-                        <FaviconPreviewTab
-                          dark
-                          iconUrl={file ? darkPreviewIconUrl : null}
-                          label="Your Website"
-                        />
-                      </div>
-                      <div className="relative z-10 scale-100">
-                        <FaviconPreviewTab
-                          iconUrl={file ? previewIconUrl : null}
-                          label="Your Website"
-                        />
-                      </div>
-                      <div className="relative translate-y-2 scale-[0.82] opacity-70">
-                        <FaviconPreviewTab
-                          dark
-                          iconUrl={file ? darkPreviewIconUrl : null}
-                          label="Your Website"
-                        />
-                      </div>
-                    </div>
-                  </div>
+                    </>
+                  }
+                >
+                  <BrowserPreviewMock
+                    darkIconUrl={file ? darkPreviewIconUrl : null}
+                    lightIconUrl={file ? previewIconUrl : null}
+                    label={normalizeShortName(shortName, projectName)}
+                  />
+                </PreviewSection>
 
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between gap-3">
-                      <PreviewChip
+                <PreviewSection
+                  header={
+                    <>
+                      <PreviewHeading
                         icon={IconBrandGoogle}
                         label={text.searchPreview}
                       />
-                      <PreviewChip
-                        icon={IconDeviceMobile}
+                      <PreviewHeading
+                        icon={IconMoonStars}
                         label={text.lightDarkPreview}
                       />
-                    </div>
-                    <div className="grid gap-3 md:grid-cols-2">
-                      <SearchPreviewCard
-                        iconUrl={file ? previewIconUrl : null}
-                      />
-                      <SearchPreviewCard
-                        dark
-                        iconUrl={file ? darkPreviewIconUrl : null}
-                      />
-                      <MobilePreviewCard
-                        icon={IconBrandApple}
-                        iconUrl={file ? previewIconUrl : null}
-                        label={text.applePreview}
-                      />
-                      <MobilePreviewCard
-                        dark
-                        icon={IconBrandAndroid}
-                        iconUrl={file ? previewIconUrl : null}
-                        label={text.androidPreview}
-                      />
-                    </div>
-                  </div>
-                </div>
+                    </>
+                  }
+                >
+                  <PreviewSubtleStack>
+                    <SearchPreviewCard
+                      iconUrl={file ? previewIconUrl : null}
+                      resultLabel={projectName}
+                      siteLabel={normalizeShortName(shortName, projectName)}
+                    />
+                    <SearchPreviewCard
+                      dark
+                      iconUrl={file ? darkPreviewIconUrl : null}
+                      resultLabel={projectName}
+                      siteLabel={normalizeShortName(shortName, projectName)}
+                    />
+                  </PreviewSubtleStack>
+                </PreviewSection>
 
-                <div className="rounded-[20px] border border-white/6 bg-white/[0.035] p-5 text-center">
-                  {file ? (
-                    <button
-                      className="rounded-full border border-white/10 bg-white/[0.08] px-5 py-2 text-sm text-white/90 transition-colors hover:bg-white/[0.14]"
-                      onClick={() => {
-                        if (previewIconUrl) {
-                          URL.revokeObjectURL(previewIconUrl);
-                        }
-                        if (darkPreviewIconUrl) {
-                          URL.revokeObjectURL(darkPreviewIconUrl);
-                        }
-                        setPreviewIconUrl(null);
-                        setDarkPreviewIconUrl(null);
-                        setFile(null);
-                        setDarkFile(null);
-                      }}
-                      type="button"
-                    >
-                      {text.replaceImage}
-                    </button>
-                  ) : (
-                    <p className="text-sm text-white/66">{text.previewEmpty}</p>
-                  )}
-                  <p className="mt-4 text-xs text-white/38">
-                    {text.previewFormats}
-                  </p>
-                </div>
+                <PreviewSection
+                  header={
+                    <PreviewHeading
+                      icon={IconBrandApple}
+                      label={text.applePreview}
+                    />
+                  }
+                >
+                  <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_280px] xl:items-stretch">
+                    <MobilePreviewCard
+                      appLabel={applePreviewLabel}
+                      icon={IconBrandApple}
+                      iconUrl={
+                        file
+                          ? appleIconMode === "dark"
+                            ? darkPreviewIconUrl
+                            : previewIconUrl
+                          : null
+                      }
+                      dark={appleIconMode === "dark"}
+                    />
+                    <PreviewSettingsPanel>
+                      <div className="grid h-full content-start gap-3">
+                        <PreviewSettingsField label="Icono Apple">
+                          <select
+                            className="h-11 w-full rounded-md border border-white/12 bg-white/6 px-3 text-sm text-white outline-none"
+                            onChange={(event) =>
+                              setAppleIconMode(
+                                event.target.value as "light" | "dark",
+                              )
+                            }
+                            value={appleIconMode}
+                          >
+                            <option value="light">Principal</option>
+                            <option value="dark">Dark</option>
+                          </select>
+                        </PreviewSettingsField>
+                        <PreviewSettingsField label="Nombre Apple">
+                          <ToolInput
+                            className="border-white/12 bg-white text-black"
+                            id="apple-preview-label"
+                            onChange={(event) =>
+                              setApplePreviewLabel(
+                                event.target.value || "MyWebSite",
+                              )
+                            }
+                            value={applePreviewLabel}
+                          />
+                        </PreviewSettingsField>
+                        <div className="text-xs text-white/46">
+                          Preview específica de Apple con icono y nombre
+                          independientes.
+                        </div>
+                      </div>
+                    </PreviewSettingsPanel>
+                  </div>
+                </PreviewSection>
+
+                <PreviewSection
+                  header={
+                    <PreviewHeading
+                      icon={IconBrandAndroid}
+                      label={text.androidPreview}
+                    />
+                  }
+                >
+                  <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_280px] xl:items-stretch">
+                    <MobilePreviewCard
+                      appLabel={androidPreviewLabel}
+                      dark={androidIconMode === "dark"}
+                      icon={IconBrandAndroid}
+                      iconUrl={
+                        file
+                          ? androidIconMode === "dark"
+                            ? darkPreviewIconUrl
+                            : previewIconUrl
+                          : null
+                      }
+                    />
+                    <PreviewSettingsPanel>
+                      <div className="grid h-full content-start gap-3">
+                        <PreviewSettingsField label="Icono Android">
+                          <select
+                            className="h-11 w-full rounded-md border border-white/12 bg-white/6 px-3 text-sm text-white outline-none"
+                            onChange={(event) =>
+                              setAndroidIconMode(
+                                event.target.value as "light" | "dark",
+                              )
+                            }
+                            value={androidIconMode}
+                          >
+                            <option value="light">Principal</option>
+                            <option value="dark">Dark</option>
+                          </select>
+                        </PreviewSettingsField>
+                        <PreviewSettingsField label="Nombre Android">
+                          <ToolInput
+                            className="border-white/12 bg-white text-black"
+                            id="android-preview-label"
+                            onChange={(event) =>
+                              setAndroidPreviewLabel(
+                                event.target.value || "MySite",
+                              )
+                            }
+                            value={androidPreviewLabel}
+                          />
+                        </PreviewSettingsField>
+                        <PreviewSettingsField label="Nombre corto">
+                          <ToolInput
+                            className="border-white/12 bg-white text-black"
+                            id="android-preview-short"
+                            onChange={(event) =>
+                              setShortName(event.target.value)
+                            }
+                            value={shortName}
+                          />
+                        </PreviewSettingsField>
+                      </div>
+                    </PreviewSettingsPanel>
+                  </div>
+                </PreviewSection>
+              </div>
+
+              <div className="rounded-[20px] border border-white/6 bg-white/[0.035] p-5 text-center">
+                {file ? (
+                  <button
+                    className="rounded-full border border-white/10 bg-white/[0.08] px-5 py-2 text-sm text-white/90 transition-colors hover:bg-white/[0.14]"
+                    onClick={() => {
+                      if (previewIconUrl) {
+                        URL.revokeObjectURL(previewIconUrl);
+                      }
+                      if (darkPreviewIconUrl) {
+                        URL.revokeObjectURL(darkPreviewIconUrl);
+                      }
+                      setPreviewIconUrl(null);
+                      setDarkPreviewIconUrl(null);
+                      setFile(null);
+                      setDarkFile(null);
+                    }}
+                    type="button"
+                  >
+                    {text.replaceImage}
+                  </button>
+                ) : (
+                  <p className="text-sm text-white/66">{text.previewEmpty}</p>
+                )}
+                <p className="mt-4 text-xs text-white/38">
+                  {text.previewFormats}
+                </p>
               </div>
             </div>
           </div>
