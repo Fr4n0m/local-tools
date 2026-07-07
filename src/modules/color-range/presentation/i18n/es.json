@@ -5,7 +5,17 @@
   "baseColor": "Color base",
   "scaleName": "Nombre de escala",
   "steps": "Pasos",
+  "modeLabel": "Modo de escala",
+  "modeBalanced": "Equilibrada",
+  "modeTints": "Sólo claros",
+  "modeShades": "Sólo oscuros",
+  "exportLabel": "Formato de exportación",
+  "exportCss": "Variables CSS",
+  "exportTailwind": "Paleta Tailwind",
   "copyCss": "Copiar variables CSS",
+  "copyTailwind": "Copiar paleta Tailwind",
+  "previewStrip": "Vista previa de la escala",
   "outputLabel": "Variables CSS",
+  "outputTailwindLabel": "Paleta Tailwind",
   "empty": "Elige un color para generar la gama."
 }

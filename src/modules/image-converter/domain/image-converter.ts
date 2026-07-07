@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 export type OutputFormat =
   | "image/png"
   | "image/jpeg"
@@ -49,6 +51,32 @@ export type ConvertImageOptions = {
   width?: number;
   height?: number;
 };
+
+const convertImageInputSchema = z.object({
+  format: z.enum([
+    "image/png",
+    "image/jpeg",
+    "image/webp",
+    "image/avif",
+    "image/jxl",
+    "image/qoi",
+  ]),
+  quality: z.coerce.number().min(0.1).max(1).catch(0.92),
+  options: z
+    .object({
+      width: z.preprocess(
+        (value) =>
+          typeof value === "number" && Number.isNaN(value) ? undefined : value,
+        z.coerce.number().int().positive().max(10_000).optional(),
+      ),
+      height: z.preprocess(
+        (value) =>
+          typeof value === "number" && Number.isNaN(value) ? undefined : value,
+        z.coerce.number().int().positive().max(10_000).optional(),
+      ),
+    })
+    .default({}),
+});
 
 function defaultLoadImage(file: File): Promise<DrawableImage> {
   return new Promise((resolve, reject) => {
@@ -125,6 +153,7 @@ export async function convertImageFile(
   const browser = isBrowserCandidate(optionsOrBrowser)
     ? optionsOrBrowser
     : (browserArg ?? defaultBrowser);
+  const parsed = convertImageInputSchema.parse({ format, quality, options });
   let image: DrawableImage;
   try {
     image = await browser.loadImage(file);
@@ -132,24 +161,28 @@ export async function convertImageFile(
     if (error instanceof ImageConversionError) throw error;
     throw new ImageConversionError("image-load-error");
   }
-  const outputWidth = sanitizeDimension(options.width, image.width);
-  const outputHeight = sanitizeDimension(options.height, image.height);
+  const outputWidth = sanitizeDimension(parsed.options.width, image.width);
+  const outputHeight = sanitizeDimension(parsed.options.height, image.height);
   const canvas = browser.createCanvas(outputWidth, outputHeight);
   const context = canvas.getContext("2d");
   if (!context) throw new ImageConversionError("canvas-unavailable");
-  if (format === "image/jpeg") {
+  if (parsed.format === "image/jpeg") {
     context.fillStyle = "#ffffff";
     context.fillRect(0, 0, canvas.width, canvas.height);
   }
   context.drawImage(image, 0, 0, canvas.width, canvas.height);
 
   if (
-    format === "image/avif" ||
-    format === "image/jxl" ||
-    format === "image/qoi"
+    parsed.format === "image/avif" ||
+    parsed.format === "image/jxl" ||
+    parsed.format === "image/qoi"
   ) {
     const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-    const blob = await encodeWithAdvancedCodec(imageData, format, quality);
+    const blob = await encodeWithAdvancedCodec(
+      imageData,
+      parsed.format,
+      parsed.quality,
+    );
     if (!blob) throw new ImageConversionError("conversion-failed");
     return blob;
   }
@@ -160,8 +193,8 @@ export async function convertImageFile(
         blob
           ? resolve(blob)
           : reject(new ImageConversionError("conversion-failed")),
-      format,
-      format === "image/png" ? undefined : quality,
+      parsed.format,
+      parsed.format === "image/png" ? undefined : parsed.quality,
     );
   });
 }

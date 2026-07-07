@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   buildColorPairs,
   parseColorList,
+  sortColorPairsByRatio,
 } from "@/modules/test-colors/domain/test-colors";
 
 describe("parseColorList", () => {
@@ -19,5 +20,22 @@ describe("buildColorPairs", () => {
     expect(pairs.some((item) => item.foreground === item.background)).toBe(
       false,
     );
+  });
+});
+
+describe("sortColorPairsByRatio", () => {
+  it("sorts weakest and strongest correctly", () => {
+    const rows = [
+      { ratio: 8, id: "high" },
+      { ratio: 2, id: "low" },
+      { ratio: 4.5, id: "mid" },
+    ];
+
+    expect(sortColorPairsByRatio(rows, "weakest").map((row) => row.id)).toEqual(
+      ["low", "mid", "high"],
+    );
+    expect(
+      sortColorPairsByRatio(rows, "strongest").map((row) => row.id),
+    ).toEqual(["high", "mid", "low"]);
   });
 });

@@ -13,6 +13,7 @@ import en from "@/modules/mesh-gradient/presentation/i18n/en.json";
 import es from "@/modules/mesh-gradient/presentation/i18n/es.json";
 import { copyTextToClipboard } from "@/shared/lib/clipboard";
 import { downloadBlob, downloadTextFile } from "@/shared/lib/download";
+import { sanitizeIntInput } from "@/shared/lib/safe-input";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import {
   ToolField,
@@ -243,7 +244,15 @@ export function MeshGradientTool({ language }: Props) {
                   setStops((previous) =>
                     previous.map((current) =>
                       current.id === stop.id
-                        ? { ...current, x: Number(event.target.value) }
+                        ? {
+                            ...current,
+                            x: sanitizeIntInput(
+                              event.target.value,
+                              current.x,
+                              0,
+                              100,
+                            ),
+                          }
                         : current,
                     ),
                   );
@@ -260,7 +269,15 @@ export function MeshGradientTool({ language }: Props) {
                   setStops((previous) =>
                     previous.map((current) =>
                       current.id === stop.id
-                        ? { ...current, y: Number(event.target.value) }
+                        ? {
+                            ...current,
+                            y: sanitizeIntInput(
+                              event.target.value,
+                              current.y,
+                              0,
+                              100,
+                            ),
+                          }
                         : current,
                     ),
                   );
@@ -314,7 +331,9 @@ export function MeshGradientTool({ language }: Props) {
             disabled={dimensionsDisabled}
             max={4000}
             min={64}
-            onChange={(event) => setWidth(Number(event.target.value))}
+            onChange={(event) =>
+              setWidth(sanitizeIntInput(event.target.value, 1200, 64, 4000))
+            }
             type="number"
             value={width}
           />
@@ -325,7 +344,9 @@ export function MeshGradientTool({ language }: Props) {
             disabled={dimensionsDisabled}
             max={4000}
             min={64}
-            onChange={(event) => setHeight(Number(event.target.value))}
+            onChange={(event) =>
+              setHeight(sanitizeIntInput(event.target.value, 800, 64, 4000))
+            }
             type="number"
             value={height}
           />

@@ -11,6 +11,7 @@ import {
 import en from "@/modules/avatar-generator/presentation/i18n/en.json";
 import es from "@/modules/avatar-generator/presentation/i18n/es.json";
 import { downloadBlob, downloadTextFile } from "@/shared/lib/download";
+import { sanitizeIntInput } from "@/shared/lib/safe-input";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import {
   ToolColorPicker,
@@ -111,7 +112,9 @@ export function AvatarGeneratorTool({ language }: Props) {
           <ToolInput
             max={1024}
             min={64}
-            onChange={(e) => setSize(Number(e.target.value))}
+            onChange={(e) =>
+              setSize(sanitizeIntInput(e.target.value, 256, 64, 1024))
+            }
             type="number"
             value={size}
           />

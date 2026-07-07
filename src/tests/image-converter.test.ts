@@ -146,4 +146,22 @@ describe("image converter domain", () => {
       convertImageFile(new File([], "x.png"), "image/png", 1, noBlob.browser),
     ).rejects.toBeInstanceOf(ImageConversionError);
   });
+
+  it("sanitizes invalid quality and dimensions through schema", async () => {
+    const f = fixture();
+    await convertImageFile(
+      new File([], "x.jpg"),
+      "image/webp",
+      Number.NaN,
+      { width: Number.NaN, height: 40 },
+      f.browser,
+    );
+
+    expect(f.browser.createCanvas).toHaveBeenCalledWith(10, 40);
+    expect(f.toBlob).toHaveBeenCalledWith(
+      expect.any(Function),
+      "image/webp",
+      0.92,
+    );
+  });
 });

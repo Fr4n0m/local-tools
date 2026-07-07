@@ -339,7 +339,11 @@ export function ToolColorPicker({
               </div>
             </div>
 
-            <HexColorPicker color={pickerColor} onChange={onChange} />
+            <HexColorPicker
+              className="!w-full"
+              color={pickerColor}
+              onChange={onChange}
+            />
           </div>
 
           <input
@@ -454,13 +458,15 @@ type ToolTextareaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement>;
 
 export function ToolTextarea({ className, ...props }: ToolTextareaProps) {
   return (
-    <textarea
-      className={cn(
-        "w-full rounded-md border bg-background/40 px-3 py-2",
-        className,
-      )}
-      {...props}
-    />
+    <div className="lt-textarea-shell">
+      <textarea
+        {...props}
+        className={cn(
+          "lt-scroll-fade-mask lt-scrollbar relative z-0 w-full resize-y border-0 bg-transparent px-3 py-2 outline-none focus-visible:outline-none",
+          className,
+        )}
+      />
+    </div>
   );
 }
 

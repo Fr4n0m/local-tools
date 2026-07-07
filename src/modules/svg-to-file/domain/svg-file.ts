@@ -1,3 +1,7 @@
+import { z } from "zod";
+
+const filenameSchema = z.string().trim().max(180).catch("image");
+
 export function normalizeSvgContent(input: string): string {
   return input.trim();
 }
@@ -13,11 +17,11 @@ export function toSvgDataUrl(svgContent: string): string {
 }
 
 export function toPngName(filename: string): string {
-  const base = filename.replace(/\.[^.]+$/, "");
+  const base = filenameSchema.parse(filename).replace(/\.[^.]+$/, "");
   return `${base || "image"}.png`;
 }
 
 export function toSvgName(filename: string): string {
-  const base = filename.replace(/\.[^.]+$/, "");
+  const base = filenameSchema.parse(filename).replace(/\.[^.]+$/, "");
   return `${base || "image"}.svg`;
 }

@@ -6,6 +6,7 @@ import {
   clampTimerInput,
   secondsToClock,
 } from "@/modules/custom-timer/domain/timer";
+import { sanitizeIntInput } from "@/shared/lib/safe-input";
 import en from "@/modules/custom-timer/presentation/i18n/en.json";
 import es from "@/modules/custom-timer/presentation/i18n/es.json";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
@@ -105,7 +106,9 @@ export function CustomTimerTool({ language }: Props) {
           <ToolInput
             max={24}
             min={0}
-            onChange={(e) => setHours(Number(e.target.value))}
+            onChange={(e) =>
+              setHours(sanitizeIntInput(e.target.value, 0, 0, 24))
+            }
             type="number"
             value={hours}
           />
@@ -114,7 +117,9 @@ export function CustomTimerTool({ language }: Props) {
           <ToolInput
             max={59}
             min={0}
-            onChange={(e) => setMinutes(Number(e.target.value))}
+            onChange={(e) =>
+              setMinutes(sanitizeIntInput(e.target.value, 5, 0, 59))
+            }
             type="number"
             value={minutes}
           />
@@ -123,7 +128,9 @@ export function CustomTimerTool({ language }: Props) {
           <ToolInput
             max={59}
             min={0}
-            onChange={(e) => setSeconds(Number(e.target.value))}
+            onChange={(e) =>
+              setSeconds(sanitizeIntInput(e.target.value, 0, 0, 59))
+            }
             type="number"
             value={seconds}
           />

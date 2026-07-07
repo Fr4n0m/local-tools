@@ -6,6 +6,12 @@
   "dropHint": "Drop an image or select one.",
   "maxColors": "Max colors",
   "extract": "Extract palette",
-  "empty": "Select an image to extract colors.",
+  "copyHex": "Copy HEX list",
+  "copyCss": "Copy CSS variables",
+  "preview": "Source image",
+  "paletteStrip": "Dominance preview",
+  "color": "Color",
+  "outputLabel": "CSS palette output",
+  "empty": "Select or drag an image to extract colors.",
   "invalid": "Invalid image file."
 }

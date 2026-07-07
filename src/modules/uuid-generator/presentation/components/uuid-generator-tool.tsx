@@ -7,6 +7,7 @@ import en from "@/modules/uuid-generator/presentation/i18n/en.json";
 import es from "@/modules/uuid-generator/presentation/i18n/es.json";
 import { copyTextToClipboard } from "@/shared/lib/clipboard";
 import { downloadTextFile } from "@/shared/lib/download";
+import { sanitizeIntInput } from "@/shared/lib/safe-input";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import {
   ToolField,
@@ -46,7 +47,9 @@ export function UuidGeneratorTool({ language }: Props) {
           min={1}
           max={100}
           value={amount}
-          onChange={(event) => setAmount(Number(event.target.value || 1))}
+          onChange={(event) =>
+            setAmount(sanitizeIntInput(event.target.value, 5, 1, 100))
+          }
         />
       </ToolField>
       <ToolField label={text.version}>

@@ -52,6 +52,11 @@ describe("uuid generator", () => {
     });
   });
 
+  it("use case tolerates invalid amount input", () => {
+    const values = generateUuidsUseCase(Number.NaN, { version: "nil" });
+    expect(values).toEqual(["00000000-0000-0000-0000-000000000000"]);
+  });
+
   it("generates nil uuid", () => {
     expect(generateNilUuid()).toBe("00000000-0000-0000-0000-000000000000");
   });

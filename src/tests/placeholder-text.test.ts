@@ -27,6 +27,16 @@ describe("placeholder text", () => {
     expect(output).toContain(".");
   });
 
+  it("use-case tolerates invalid numeric input", () => {
+    const output = generatePlaceholderUseCase({
+      mode: "english-ish",
+      paragraphs: Number.NaN,
+      sentencesPerParagraph: Number.NaN,
+      wordsPerSentence: Number.NaN,
+    });
+    expect(output.length).toBeGreaterThan(0);
+  });
+
   it("can generate bullet output for names", () => {
     const output = generatePlaceholderText("names", 1, 3, 3, true);
     expect(output.startsWith("- ")).toBe(true);

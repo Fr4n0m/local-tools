@@ -24,6 +24,8 @@ export type FaviconPackageOptions = {
   shortName?: string;
   themeColor: string;
   backgroundColor: string;
+  faviconPath?: string;
+  version?: string;
 };
 
 export type GeneratedPackageFile = {
@@ -71,10 +73,49 @@ export function normalizeShortName(value: string, appName: string): string {
   return normalized.slice(0, 24);
 }
 
-export function faviconFileName(size: number): string {
-  if (size === 180) return "apple-touch-icon.png";
-  if (size === 192) return "android-chrome-192x192.png";
-  if (size === 512) return "android-chrome-512x512.png";
+export function normalizeFaviconPath(value: string): string {
+  const normalized = value.trim();
+  if (!normalized || normalized === "/") return "/";
+  const withoutEdges = normalized.replace(/^\/+|\/+$/g, "");
+  return withoutEdges ? `/${withoutEdges}/` : "/";
+}
+
+export function normalizeVersionTag(value: string): string {
+  return value.trim().replace(/\s+/g, "-").slice(0, 64);
+}
+
+function buildAssetHref(
+  fileName: string,
+  options: FaviconPackageOptions,
+): string {
+  const path = normalizeFaviconPath(options.faviconPath ?? "/");
+  const version = normalizeVersionTag(options.version ?? "");
+  const href = `${path === "/" ? "/" : path}${fileName}`;
+  return version ? `${href}?v=${encodeURIComponent(version)}` : href;
+}
+
+export function faviconFileName(
+  size: number,
+  variant: "regular" | "dark" = "regular",
+): string {
+  if (size === 180) {
+    return variant === "dark"
+      ? "apple-touch-icon-dark.png"
+      : "apple-touch-icon.png";
+  }
+  if (size === 192) {
+    return variant === "dark"
+      ? "android-chrome-dark-192x192.png"
+      : "android-chrome-192x192.png";
+  }
+  if (size === 512) {
+    return variant === "dark"
+      ? "android-chrome-dark-512x512.png"
+      : "android-chrome-512x512.png";
+  }
+  if (variant === "dark") {
+    return `favicon-dark-${size}x${size}.png`;
+  }
   return `favicon-${size}x${size}.png`;
 }
 
@@ -195,7 +236,7 @@ export function buildManifestContent(
     .filter((icon) => icon.size >= 192)
     .sort((a, b) => a.size - b.size)
     .map((icon) => ({
-      src: `/${icon.fileName}`,
+      src: buildAssetHref(icon.fileName, options),
       sizes: `${icon.size}x${icon.size}`,
       type: "image/png",
       purpose: "any",
@@ -231,7 +272,7 @@ export function buildBrowserConfigContent(
     "<browserconfig>",
     "  <msapplication>",
     "    <tile>",
-    `      <square150x150logo src="/${tileIcon?.fileName ?? "favicon-150x150.png"}"/>`,
+    `      <square150x150logo src="${buildAssetHref(tileIcon?.fileName ?? "favicon-150x150.png", options)}"/>`,
     `      <TileColor>${backgroundColor}</TileColor>`,
     "    </tile>",
     "  </msapplication>",
@@ -242,6 +283,7 @@ export function buildBrowserConfigContent(
 export function buildHtmlSnippet(
   icons: GeneratedFaviconAsset[],
   options: FaviconPackageOptions,
+  darkIcons: GeneratedFaviconAsset[] = [],
 ): string {
   const themeColor = normalizeHexColor(options.themeColor, "#111111");
 
@@ -250,20 +292,32 @@ export function buildHtmlSnippet(
     .sort((a, b) => a.size - b.size)
     .map(
       (icon) =>
-        `<link rel="icon" type="image/png" sizes="${icon.size}x${icon.size}" href="/${icon.fileName}" />`,
+        `<link rel="icon" type="image/png" sizes="${icon.size}x${icon.size}" href="${buildAssetHref(icon.fileName, options)}" />`,
+    );
+  const darkFaviconIcons = darkIcons
+    .filter((icon) => icon.size === 16 || icon.size === 32)
+    .sort((a, b) => a.size - b.size)
+    .map(
+      (icon) =>
+        `<link rel="icon" type="image/png" sizes="${icon.size}x${icon.size}" href="${buildAssetHref(icon.fileName, options)}" media="(prefers-color-scheme: dark)" />`,
     );
 
   const appleIcon = icons.find((icon) => icon.size === 180);
+  const darkAppleIcon = darkIcons.find((icon) => icon.size === 180);
 
   return [
     ...faviconIcons,
-    `<link rel="icon" href="/favicon.ico" sizes="any" />`,
+    ...darkFaviconIcons,
+    `<link rel="icon" href="${buildAssetHref("favicon.ico", options)}" sizes="any" />`,
     appleIcon
-      ? `<link rel="apple-touch-icon" sizes="180x180" href="/${appleIcon.fileName}" />`
+      ? `<link rel="apple-touch-icon" sizes="180x180" href="${buildAssetHref(appleIcon.fileName, options)}" />`
       : null,
-    `<link rel="manifest" href="/site.webmanifest" />`,
+    darkAppleIcon
+      ? `<link rel="apple-touch-icon" sizes="180x180" href="${buildAssetHref(darkAppleIcon.fileName, options)}" media="(prefers-color-scheme: dark)" />`
+      : null,
+    `<link rel="manifest" href="${buildAssetHref("site.webmanifest", options)}" />`,
     `<meta name="theme-color" content="${themeColor}" />`,
-    `<meta name="msapplication-config" content="/browserconfig.xml" />`,
+    `<meta name="msapplication-config" content="${buildAssetHref("browserconfig.xml", options)}" />`,
   ]
     .filter(Boolean)
     .join("\n");
@@ -346,11 +400,18 @@ async function createIcoBlob(
 export async function buildFaviconPackage(
   icons: GeneratedFaviconAsset[],
   options: FaviconPackageOptions,
+  darkIcons: GeneratedFaviconAsset[] = [],
 ): Promise<GeneratedPackageFile[]> {
   const files: GeneratedPackageFile[] = icons.map((icon) => ({
     name: icon.fileName,
     blob: icon.blob,
   }));
+  files.push(
+    ...darkIcons.map((icon) => ({
+      name: icon.fileName,
+      blob: icon.blob,
+    })),
+  );
 
   const icoBlob = await createIcoBlob(icons);
   if (icoBlob) {
@@ -372,7 +433,7 @@ export async function buildFaviconPackage(
     },
     {
       name: "favicon-snippet.html",
-      blob: new Blob([buildHtmlSnippet(icons, options)], {
+      blob: new Blob([buildHtmlSnippet(icons, options, darkIcons)], {
         type: "text/html;charset=utf-8",
       }),
     },

@@ -5,8 +5,17 @@
   "inputLabel": "One color per line",
   "inputPlaceholder": "#14213d\n#fca311\n#ffffff",
   "analyze": "Analyze colors",
+  "sortLabel": "Sort results",
+  "sortWeakest": "Weakest first",
+  "sortStrongest": "Strongest first",
   "empty": "Add at least two valid hex colors.",
   "results": "Contrast results",
   "ratio": "Ratio",
-  "aa": "AA normal"
+  "aa": "AA normal",
+  "aaNormal": "AA normal",
+  "aaLarge": "AA large",
+  "aaaNormal": "AAA normal",
+  "totalPairs": "Pairs",
+  "passAA": "Pass AA",
+  "passAAA": "Pass AAA"
 }

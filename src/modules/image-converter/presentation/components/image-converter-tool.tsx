@@ -12,6 +12,7 @@ import en from "@/modules/image-converter/presentation/i18n/en.json";
 import es from "@/modules/image-converter/presentation/i18n/es.json";
 import { downloadBlob } from "@/shared/lib/download";
 import { createZipBlob } from "@/shared/lib/zip";
+import { sanitizeIntInput } from "@/shared/lib/safe-input";
 import { CameraDownloadButton } from "@/shared/presentation/components/camera-download-button";
 import { ImageCompareWorkbench } from "@/shared/presentation/components/image-compare-workbench";
 import { ToolDropSurface } from "@/shared/presentation/components/tool-drop-surface";
@@ -379,7 +380,14 @@ export function ImageConverterTool({ language }: Props) {
                 <ToolInput
                   min={1}
                   onChange={(event) =>
-                    onWidthChange(Number(event.target.value))
+                    onWidthChange(
+                      sanitizeIntInput(
+                        event.target.value,
+                        outputDimensions.width,
+                        1,
+                        10000,
+                      ),
+                    )
                   }
                   type="number"
                   value={outputDimensions.width}
@@ -389,7 +397,14 @@ export function ImageConverterTool({ language }: Props) {
                 <ToolInput
                   min={1}
                   onChange={(event) =>
-                    onHeightChange(Number(event.target.value))
+                    onHeightChange(
+                      sanitizeIntInput(
+                        event.target.value,
+                        outputDimensions.height,
+                        1,
+                        10000,
+                      ),
+                    )
                   }
                   type="number"
                   value={outputDimensions.height}

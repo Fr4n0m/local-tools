@@ -10,4 +10,8 @@ describe("loader maker domain", () => {
   it("builds dots css", () => {
     expect(buildLoaderCss("dots", "#fff", 40)).toContain("@keyframes dot");
   });
+
+  it("throws for invalid color", () => {
+    expect(() => buildLoaderCss("spinner", "bad", 40)).toThrow();
+  });
 });

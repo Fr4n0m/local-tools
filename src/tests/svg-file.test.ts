@@ -17,6 +17,7 @@ describe("svg-file helpers", () => {
   it("builds names with expected extension", () => {
     expect(toPngName("icon.svg")).toBe("icon.png");
     expect(toSvgName("icon.png")).toBe("icon.svg");
+    expect(toPngName("   ")).toBe("image.png");
   });
 
   it("creates data url", () => {

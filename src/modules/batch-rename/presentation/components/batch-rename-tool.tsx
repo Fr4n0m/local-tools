@@ -6,6 +6,7 @@ import { batchRenamePreviewUseCase } from "@/modules/batch-rename/application/ba
 import en from "@/modules/batch-rename/presentation/i18n/en.json";
 import es from "@/modules/batch-rename/presentation/i18n/es.json";
 import { copyTextToClipboard } from "@/shared/lib/clipboard";
+import { sanitizeIntInput } from "@/shared/lib/safe-input";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import {
   ToolField,
@@ -90,7 +91,7 @@ export function BatchRenameTool({ language }: Props) {
             type="number"
             value={startNumber}
             onChange={(event) =>
-              setStartNumber(Number(event.target.value || 0))
+              setStartNumber(sanitizeIntInput(event.target.value, 1, 0, 999999))
             }
           />
         </ToolField>
@@ -99,7 +100,9 @@ export function BatchRenameTool({ language }: Props) {
             min={1}
             type="number"
             value={padWidth}
-            onChange={(event) => setPadWidth(Number(event.target.value || 1))}
+            onChange={(event) =>
+              setPadWidth(sanitizeIntInput(event.target.value, 3, 1, 12))
+            }
           />
         </ToolField>
       </div>

@@ -7,7 +7,9 @@ import {
   buildManifestContent,
   faviconFileName,
   normalizeAppName,
+  normalizeFaviconPath,
   normalizeShortName,
+  normalizeVersionTag,
 } from "@/modules/favicon-generator/domain/favicon-generator";
 
 function createPngBlob(size: number) {
@@ -30,11 +32,16 @@ describe("favicon-generator domain", () => {
     expect(normalizeShortName("   Short   App  ", "Fallback")).toBe(
       "Short App",
     );
+    expect(normalizeFaviconPath("assets/favicons")).toBe("/assets/favicons/");
+    expect(normalizeFaviconPath("/")).toBe("/");
+    expect(normalizeVersionTag("  july 2026  ")).toBe("july-2026");
   });
 
   it("maps canonical favicon file names", () => {
     expect(faviconFileName(16)).toBe("favicon-16x16.png");
+    expect(faviconFileName(16, "dark")).toBe("favicon-dark-16x16.png");
     expect(faviconFileName(180)).toBe("apple-touch-icon.png");
+    expect(faviconFileName(180, "dark")).toBe("apple-touch-icon-dark.png");
     expect(faviconFileName(192)).toBe("android-chrome-192x192.png");
     expect(faviconFileName(512)).toBe("android-chrome-512x512.png");
   });
@@ -46,6 +53,8 @@ describe("favicon-generator domain", () => {
         shortName: "LT",
         themeColor: "#101010",
         backgroundColor: "#fafafa",
+        faviconPath: "/favicons/",
+        version: "2026-07",
       }),
     );
 
@@ -55,13 +64,13 @@ describe("favicon-generator domain", () => {
     expect(manifest.background_color).toBe("#fafafa");
     expect(manifest.icons).toEqual([
       {
-        src: "/android-chrome-192x192.png",
+        src: "/favicons/android-chrome-192x192.png?v=2026-07",
         sizes: "192x192",
         type: "image/png",
         purpose: "any",
       },
       {
-        src: "/android-chrome-512x512.png",
+        src: "/favicons/android-chrome-512x512.png?v=2026-07",
         sizes: "512x512",
         type: "image/png",
         purpose: "any",
@@ -69,34 +78,68 @@ describe("favicon-generator domain", () => {
     ]);
   });
 
-  it("builds browserconfig and html snippet", () => {
+  it("builds browserconfig and html snippet with dark variants", () => {
+    const darkIcons = [16, 32, 180].map((size) => ({
+      size,
+      fileName: faviconFileName(size, "dark"),
+      blob: createPngBlob(size),
+    }));
     const browserConfig = buildBrowserConfigContent(icons, {
       appName: "Local Tools",
       shortName: "LT",
       themeColor: "#101010",
       backgroundColor: "#fafafa",
+      faviconPath: "/favicons/",
+      version: "cache-bust",
     });
-    const snippet = buildHtmlSnippet(icons, {
-      appName: "Local Tools",
-      shortName: "LT",
-      themeColor: "#101010",
-      backgroundColor: "#fafafa",
-    });
+    const snippet = buildHtmlSnippet(
+      icons,
+      {
+        appName: "Local Tools",
+        shortName: "LT",
+        themeColor: "#101010",
+        backgroundColor: "#fafafa",
+        faviconPath: "/favicons/",
+        version: "cache-bust",
+      },
+      darkIcons,
+    );
 
-    expect(browserConfig).toContain("/favicon-150x150.png");
+    expect(browserConfig).toContain(
+      "/favicons/favicon-150x150.png?v=cache-bust",
+    );
     expect(browserConfig).toContain("<TileColor>#fafafa</TileColor>");
-    expect(snippet).toContain('href="/favicon.ico"');
-    expect(snippet).toContain('href="/apple-touch-icon.png"');
+    expect(snippet).toContain('href="/favicons/favicon.ico?v=cache-bust"');
+    expect(snippet).toContain(
+      'href="/favicons/apple-touch-icon.png?v=cache-bust"',
+    );
+    expect(snippet).toContain(
+      'href="/favicons/favicon-dark-16x16.png?v=cache-bust" media="(prefers-color-scheme: dark)"',
+    );
+    expect(snippet).toContain(
+      'href="/favicons/apple-touch-icon-dark.png?v=cache-bust" media="(prefers-color-scheme: dark)"',
+    );
     expect(snippet).toContain('content="#101010"');
   });
 
-  it("builds package files including ico and support files", async () => {
-    const files = await buildFaviconPackage(icons, {
-      appName: "Local Tools",
-      shortName: "LT",
-      themeColor: "#101010",
-      backgroundColor: "#fafafa",
-    });
+  it("builds package files including ico support files and dark assets", async () => {
+    const darkIcons = [16, 32, 180].map((size) => ({
+      size,
+      fileName: faviconFileName(size, "dark"),
+      blob: createPngBlob(size),
+    }));
+    const files = await buildFaviconPackage(
+      icons,
+      {
+        appName: "Local Tools",
+        shortName: "LT",
+        themeColor: "#101010",
+        backgroundColor: "#fafafa",
+        faviconPath: "/favicons/",
+        version: "v2",
+      },
+      darkIcons,
+    );
 
     expect(files.map((file) => file.name)).toEqual(
       expect.arrayContaining([
@@ -106,7 +149,10 @@ describe("favicon-generator domain", () => {
         "favicon-snippet.html",
         "favicon-16x16.png",
         "favicon-32x32.png",
+        "favicon-dark-16x16.png",
+        "favicon-dark-32x32.png",
         "apple-touch-icon.png",
+        "apple-touch-icon-dark.png",
         "android-chrome-192x192.png",
         "android-chrome-512x512.png",
       ]),

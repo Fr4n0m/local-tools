@@ -1,7 +1,22 @@
+import { z } from "zod";
+
 export type ColorStop = {
   step: number;
   hex: string;
 };
+
+export type ColorRangeMode = "balanced" | "tints" | "shades";
+
+const colorRangeInputSchema = z.object({
+  baseHex: z
+    .string()
+    .trim()
+    .regex(/^#(?:[0-9a-fA-F]{6}|[0-9a-fA-F]{3})$/),
+  stepsInput: z.coerce.number().int().catch(9),
+  mode: z.enum(["balanced", "tints", "shades"]).default("balanced"),
+});
+
+const tokenNameSchema = z.string().trim().max(120).catch("palette");
 
 function clamp(value: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, value));
@@ -13,10 +28,17 @@ function toHex(value: number): string {
 
 function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
   const normalized = hex.trim().replace(/^#/, "");
-  if (!/^[0-9a-fA-F]{6}$/.test(normalized)) return null;
-  const r = Number.parseInt(normalized.slice(0, 2), 16);
-  const g = Number.parseInt(normalized.slice(2, 4), 16);
-  const b = Number.parseInt(normalized.slice(4, 6), 16);
+  const expanded =
+    normalized.length === 3
+      ? normalized
+          .split("")
+          .map((char) => `${char}${char}`)
+          .join("")
+      : normalized;
+  if (!/^[0-9a-fA-F]{6}$/.test(expanded)) return null;
+  const r = Number.parseInt(expanded.slice(0, 2), 16);
+  const g = Number.parseInt(expanded.slice(2, 4), 16);
+  const b = Number.parseInt(expanded.slice(4, 6), 16);
   return { r, g, b };
 }
 
@@ -38,17 +60,30 @@ function mix(
 export function generateColorRange(
   baseHex: string,
   stepsInput: number,
+  mode: ColorRangeMode = "balanced",
 ): ColorStop[] {
-  const base = hexToRgb(baseHex);
+  const parsed = colorRangeInputSchema.safeParse({ baseHex, stepsInput, mode });
+  if (!parsed.success) return [];
+  const base = hexToRgb(parsed.data.baseHex);
   if (!base) return [];
 
-  const steps = clamp(Math.trunc(stepsInput), 3, 11);
+  const steps = clamp(Math.trunc(parsed.data.stepsInput), 3, 11);
   const middleIndex = Math.floor(steps / 2);
   const white = { r: 255, g: 255, b: 255 };
   const black = { r: 0, g: 0, b: 0 };
   const scale = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
 
   return Array.from({ length: steps }, (_, index) => {
+    if (parsed.data.mode === "tints") {
+      const ratio = index / Math.max(steps - 1, 1);
+      return { step: scale[index], hex: mix(base, white, ratio * 0.92) };
+    }
+
+    if (parsed.data.mode === "shades") {
+      const ratio = index / Math.max(steps - 1, 1);
+      return { step: scale[index], hex: mix(base, black, ratio * 0.88) };
+    }
+
     if (index === middleIndex) {
       return { step: scale[index], hex: rgbToHex(base.r, base.g, base.b) };
     }
@@ -67,7 +102,8 @@ export function generateColorRange(
 
 export function toCssVariables(name: string, colors: ColorStop[]): string {
   const tokenName =
-    name
+    tokenNameSchema
+      .parse(name)
       .trim()
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, "-")
@@ -76,4 +112,20 @@ export function toCssVariables(name: string, colors: ColorStop[]): string {
   return colors
     .map((item) => `--${tokenName}-${item.step}: ${item.hex};`)
     .join("\n");
+}
+
+export function toTailwindPalette(name: string, colors: ColorStop[]): string {
+  const tokenName =
+    tokenNameSchema
+      .parse(name)
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "") || "palette";
+
+  const entries = colors
+    .map((item) => `  ${item.step}: "${item.hex}",`)
+    .join("\n");
+
+  return `${tokenName}: {\n${entries}\n}`;
 }

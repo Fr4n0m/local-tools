@@ -14,4 +14,9 @@ describe("video compressor domain", () => {
   it("builds output filename", () => {
     expect(compressedVideoName("clip.mp4")).toBe("clip-compressed.webm");
   });
+
+  it("tolerates invalid bitrate and blank filename", () => {
+    expect(clampBitrateKbps(Number.NaN)).toBe(1200);
+    expect(compressedVideoName("   ")).toBe("video-compressed.webm");
+  });
 });

@@ -8,6 +8,7 @@ import en from "@/modules/placeholder-text/presentation/i18n/en.json";
 import es from "@/modules/placeholder-text/presentation/i18n/es.json";
 import { copyTextToClipboard } from "@/shared/lib/clipboard";
 import { downloadTextFile } from "@/shared/lib/download";
+import { sanitizeIntInput } from "@/shared/lib/safe-input";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import {
   ToolField,
@@ -106,7 +107,9 @@ export function PlaceholderTextTool({ language }: Props) {
             min={1}
             type="number"
             value={paragraphs}
-            onChange={(event) => setParagraphs(Number(event.target.value || 1))}
+            onChange={(event) =>
+              setParagraphs(sanitizeIntInput(event.target.value, 3, 1, 50))
+            }
           />
         </ToolField>
         <ToolField label={text.sentences}>
@@ -114,7 +117,9 @@ export function PlaceholderTextTool({ language }: Props) {
             min={1}
             type="number"
             value={sentences}
-            onChange={(event) => setSentences(Number(event.target.value || 1))}
+            onChange={(event) =>
+              setSentences(sanitizeIntInput(event.target.value, 4, 1, 20))
+            }
           />
         </ToolField>
         <ToolField label={text.words}>
@@ -122,7 +127,9 @@ export function PlaceholderTextTool({ language }: Props) {
             min={3}
             type="number"
             value={words}
-            onChange={(event) => setWords(Number(event.target.value || 3))}
+            onChange={(event) =>
+              setWords(sanitizeIntInput(event.target.value, 10, 3, 30))
+            }
           />
         </ToolField>
       </div>

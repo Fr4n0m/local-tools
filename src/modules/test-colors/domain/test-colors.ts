@@ -5,6 +5,8 @@ export type ColorPair = {
   background: string;
 };
 
+export type TestColorsSortMode = "weakest" | "strongest";
+
 export function parseColorList(input: string): string[] {
   const seen = new Set<string>();
   const normalized = input
@@ -28,4 +30,14 @@ export function buildColorPairs(colors: string[]): ColorPair[] {
     }
   }
   return pairs;
+}
+
+export function sortColorPairsByRatio<
+  T extends {
+    ratio: number;
+  },
+>(rows: T[], mode: TestColorsSortMode): T[] {
+  return [...rows].sort((a, b) =>
+    mode === "strongest" ? b.ratio - a.ratio : a.ratio - b.ratio,
+  );
 }

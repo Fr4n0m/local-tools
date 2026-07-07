@@ -14,4 +14,10 @@ describe("progressive blur domain", () => {
   it("builds css", () => {
     expect(buildProgressiveBlurCss(24, 4)).toContain("backdrop-filter");
   });
+
+  it("tolerates invalid numeric input", () => {
+    expect(buildProgressiveBlurCss(Number.NaN, Number.NaN)).toContain(
+      "blur(24px)",
+    );
+  });
 });

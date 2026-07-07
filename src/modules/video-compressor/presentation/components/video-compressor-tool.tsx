@@ -12,6 +12,7 @@ import en from "@/modules/video-compressor/presentation/i18n/en.json";
 import es from "@/modules/video-compressor/presentation/i18n/es.json";
 import { downloadBlob } from "@/shared/lib/download";
 import { notifyError } from "@/shared/lib/notify";
+import { sanitizeIntInput } from "@/shared/lib/safe-input";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import {
   ToolField,
@@ -122,7 +123,11 @@ export function VideoCompressorTool({ language }: Props) {
           className="w-full rounded-md border bg-background/40 p-3"
           max={6000}
           min={300}
-          onChange={(event) => setBitrateKbps(Number(event.target.value))}
+          onChange={(event) =>
+            setBitrateKbps(
+              sanitizeIntInput(event.target.value, 1200, 300, 6000),
+            )
+          }
           type="number"
           value={bitrateKbps}
         />

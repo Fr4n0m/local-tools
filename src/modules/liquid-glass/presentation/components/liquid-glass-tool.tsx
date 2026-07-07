@@ -6,6 +6,7 @@ import { buildLiquidGlassCss } from "@/modules/liquid-glass/domain/liquid-glass"
 import en from "@/modules/liquid-glass/presentation/i18n/en.json";
 import es from "@/modules/liquid-glass/presentation/i18n/es.json";
 import { copyTextToClipboard } from "@/shared/lib/clipboard";
+import { sanitizeFloatInput, sanitizeIntInput } from "@/shared/lib/safe-input";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import {
   ToolField,
@@ -32,7 +33,11 @@ export function LiquidGlassTool({ language }: Props) {
           <ToolInput
             max={0.8}
             min={0.05}
-            onChange={(event) => setOpacity(Number(event.target.value))}
+            onChange={(event) =>
+              setOpacity(
+                sanitizeFloatInput(event.target.value, 0.28, 0.05, 0.8),
+              )
+            }
             step={0.01}
             type="number"
             value={opacity}
@@ -42,7 +47,9 @@ export function LiquidGlassTool({ language }: Props) {
           <ToolInput
             max={40}
             min={4}
-            onChange={(event) => setBlur(Number(event.target.value))}
+            onChange={(event) =>
+              setBlur(sanitizeIntInput(event.target.value, 18, 4, 40))
+            }
             type="number"
             value={blur}
           />

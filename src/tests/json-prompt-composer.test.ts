@@ -20,4 +20,16 @@ describe("json prompt composer domain", () => {
     expect(parsed.role).toBe("r");
     expect(parsed.constraints).toEqual(["a", "b"]);
   });
+
+  it("throws for missing required fields", () => {
+    expect(() =>
+      buildPromptJson({
+        role: " ",
+        goal: "g",
+        context: "c",
+        constraints: "",
+        outputFormat: "o",
+      }),
+    ).toThrow();
+  });
 });

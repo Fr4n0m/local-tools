@@ -52,4 +52,18 @@ describe("batchRenamePreviewUseCase", () => {
       { original: "clip.mov", renamed: "08-new-clip-v2.mov" },
     ]);
   });
+
+  it("clamps sequence options through schema", () => {
+    const preview = batchRenamePreviewUseCase("file.txt", "", "", {
+      prefix: "",
+      suffix: "",
+      addSequence: true,
+      startNumber: -99,
+      padWidth: 999,
+    });
+
+    expect(preview).toEqual([
+      { original: "file.txt", renamed: "000000000000-file.txt" },
+    ]);
+  });
 });

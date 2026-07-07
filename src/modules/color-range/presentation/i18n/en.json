@@ -5,7 +5,17 @@
   "baseColor": "Base color",
   "scaleName": "Scale name",
   "steps": "Steps",
+  "modeLabel": "Scale mode",
+  "modeBalanced": "Balanced",
+  "modeTints": "Only lighter",
+  "modeShades": "Only darker",
+  "exportLabel": "Export format",
+  "exportCss": "CSS variables",
+  "exportTailwind": "Tailwind palette",
   "copyCss": "Copy CSS variables",
+  "copyTailwind": "Copy Tailwind palette",
+  "previewStrip": "Scale preview",
   "outputLabel": "CSS Variables",
+  "outputTailwindLabel": "Tailwind palette",
   "empty": "Pick a color to generate the range."
 }

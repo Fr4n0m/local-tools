@@ -12,6 +12,7 @@ import {
 import en from "@/modules/svg-to-file/presentation/i18n/en.json";
 import es from "@/modules/svg-to-file/presentation/i18n/es.json";
 import { downloadBlob, downloadTextFile } from "@/shared/lib/download";
+import { sanitizeIntInput } from "@/shared/lib/safe-input";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import {
   ToolField,
@@ -99,7 +100,9 @@ export function SvgToFileTool({ language }: Props) {
             id="svg-width"
             max={4000}
             min={32}
-            onChange={(event) => setWidth(Number(event.target.value))}
+            onChange={(event) =>
+              setWidth(sanitizeIntInput(event.target.value, 640, 32, 4000))
+            }
             type="number"
             value={width}
           />
@@ -109,7 +112,9 @@ export function SvgToFileTool({ language }: Props) {
             id="svg-height"
             max={4000}
             min={32}
-            onChange={(event) => setHeight(Number(event.target.value))}
+            onChange={(event) =>
+              setHeight(sanitizeIntInput(event.target.value, 360, 32, 4000))
+            }
             type="number"
             value={height}
           />

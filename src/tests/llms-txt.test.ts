@@ -20,4 +20,18 @@ describe("llms txt builder", () => {
     expect(output).toContain("## Guidance");
     expect(output).toContain("- Use docs first");
   });
+
+  it("throws for invalid url fields", () => {
+    expect(() =>
+      buildLlmsTxt({
+        projectName: "LocalTools",
+        projectUrl: "notaurl",
+        summary: "Toolbox",
+        docsUrl: "https://example.com/docs",
+        sourceUrl: "https://example.com/src",
+        license: "MIT",
+        rules: "Use docs first",
+      }),
+    ).toThrow();
+  });
 });

@@ -21,4 +21,10 @@ describe("mesh gradient domain", () => {
     expect(svg).toContain('width="1600"');
     expect(svg).toContain('height="900"');
   });
+
+  it("drops invalid stops via schema catch", () => {
+    expect(normalizeStops([{ color: "bad", x: 20, y: 30 } as never])).toEqual(
+      [],
+    );
+  });
 });

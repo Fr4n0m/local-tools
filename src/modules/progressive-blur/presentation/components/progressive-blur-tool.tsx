@@ -6,6 +6,7 @@ import { buildProgressiveBlurCss } from "@/modules/progressive-blur/domain/progr
 import en from "@/modules/progressive-blur/presentation/i18n/en.json";
 import es from "@/modules/progressive-blur/presentation/i18n/es.json";
 import { copyTextToClipboard } from "@/shared/lib/clipboard";
+import { sanitizeIntInput } from "@/shared/lib/safe-input";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import {
   ToolField,
@@ -32,7 +33,9 @@ export function ProgressiveBlurTool({ language }: Props) {
           <ToolInput
             max={80}
             min={2}
-            onChange={(event) => setMaxBlur(Number(event.target.value))}
+            onChange={(event) =>
+              setMaxBlur(sanitizeIntInput(event.target.value, 24, 2, 80))
+            }
             type="number"
             value={maxBlur}
           />
@@ -41,7 +44,9 @@ export function ProgressiveBlurTool({ language }: Props) {
           <ToolInput
             max={8}
             min={2}
-            onChange={(event) => setStops(Number(event.target.value))}
+            onChange={(event) =>
+              setStops(sanitizeIntInput(event.target.value, 4, 2, 8))
+            }
             type="number"
             value={stops}
           />

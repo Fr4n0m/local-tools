@@ -54,4 +54,13 @@ describe("qr payload", () => {
       }),
     ).toBe("mailto:hello@example.com?subject=Hi&body=World");
   });
+
+  it("throws for invalid email input", () => {
+    expect(() =>
+      buildQrPayload({
+        type: "email",
+        email: "not-an-email",
+      }),
+    ).toThrow();
+  });
 });

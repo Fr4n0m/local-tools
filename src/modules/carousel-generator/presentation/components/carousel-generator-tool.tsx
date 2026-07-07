@@ -10,6 +10,7 @@ import en from "@/modules/carousel-generator/presentation/i18n/en.json";
 import es from "@/modules/carousel-generator/presentation/i18n/es.json";
 import { copyTextToClipboard } from "@/shared/lib/clipboard";
 import { downloadTextFile } from "@/shared/lib/download";
+import { sanitizeIntInput } from "@/shared/lib/safe-input";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import {
   ToolField,
@@ -54,7 +55,11 @@ export function CarouselGeneratorTool({ language }: Props) {
           className="w-full rounded-md border bg-background/40 p-3"
           max={15000}
           min={1000}
-          onChange={(event) => setAutoplayMs(Number(event.target.value))}
+          onChange={(event) =>
+            setAutoplayMs(
+              sanitizeIntInput(event.target.value, 3000, 1000, 15000),
+            )
+          }
           step={100}
           type="number"
           value={autoplayMs}

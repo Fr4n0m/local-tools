@@ -1,11 +1,14 @@
 "use client";
 
+import type { ReactNode } from "react";
+
 import { Button } from "@/shared/presentation/components/ui/button";
 
 type ToolAction = {
   label: string;
   onClick: () => void;
   disabled?: boolean;
+  icon?: ReactNode;
 };
 
 type Props = {
@@ -24,6 +27,7 @@ export function ToolActions({ actions }: Props) {
           onClick={action.onClick}
           type="button"
         >
+          {action.icon ? <span aria-hidden>{action.icon}</span> : null}
           {action.label}
         </Button>
       ))}

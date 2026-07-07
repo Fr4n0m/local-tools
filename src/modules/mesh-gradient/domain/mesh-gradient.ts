@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 export type MeshStop = {
   color: string;
   x: number;
@@ -5,18 +7,35 @@ export type MeshStop = {
 };
 
 export type MeshGradientExportFormat =
-  "image/svg+xml" | "image/png" | "image/jpeg" | "image/webp";
+  | "image/svg+xml"
+  | "image/png"
+  | "image/jpeg"
+  | "image/webp";
+
+const meshStopSchema = z.object({
+  color: z
+    .string()
+    .trim()
+    .regex(/^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/),
+  x: z.coerce.number().finite(),
+  y: z.coerce.number().finite(),
+});
 
 function clamp(value: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, value));
 }
 
 export function normalizeStops(stops: MeshStop[]): MeshStop[] {
-  return stops.map((stop) => ({
-    color: stop.color,
-    x: clamp(stop.x, 0, 100),
-    y: clamp(stop.y, 0, 100),
-  }));
+  return z
+    .array(meshStopSchema)
+    .max(10)
+    .catch([])
+    .parse(stops)
+    .map((stop) => ({
+      color: stop.color,
+      x: clamp(stop.x, 0, 100),
+      y: clamp(stop.y, 0, 100),
+    }));
 }
 
 export function buildMeshGradientCss(stops: MeshStop[]): string {

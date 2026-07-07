@@ -14,4 +14,8 @@ describe("liquid glass domain", () => {
   it("builds css", () => {
     expect(buildLiquidGlassCss(0.3, 18)).toContain("backdrop-filter");
   });
+
+  it("tolerates invalid numeric input", () => {
+    expect(buildLiquidGlassCss(Number.NaN, Number.NaN)).toContain("blur(18px)");
+  });
 });

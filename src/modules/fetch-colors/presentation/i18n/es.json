@@ -6,6 +6,12 @@
   "dropHint": "Suelta una imagen o selecciónala.",
   "maxColors": "Máximo de colores",
   "extract": "Extraer paleta",
+  "copyHex": "Copiar lista HEX",
+  "copyCss": "Copiar variables CSS",
+  "preview": "Imagen origen",
+  "paletteStrip": "Vista de dominancia",
+  "color": "Color",
+  "outputLabel": "Salida CSS de la paleta",
   "empty": "Selecciona o arrastra una imagen para empezar.",
   "invalid": "Archivo de imagen inválido."
 }

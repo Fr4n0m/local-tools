@@ -9,6 +9,7 @@ import {
 import en from "@/modules/loader-maker/presentation/i18n/en.json";
 import es from "@/modules/loader-maker/presentation/i18n/es.json";
 import { copyTextToClipboard } from "@/shared/lib/clipboard";
+import { sanitizeIntInput } from "@/shared/lib/safe-input";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import {
   ToolColorPicker,
@@ -60,7 +61,9 @@ export function LoaderMakerTool({ language }: Props) {
           <ToolInput
             max={120}
             min={16}
-            onChange={(event) => setSize(Number(event.target.value))}
+            onChange={(event) =>
+              setSize(sanitizeIntInput(event.target.value, 48, 16, 120))
+            }
             type="number"
             value={size}
           />

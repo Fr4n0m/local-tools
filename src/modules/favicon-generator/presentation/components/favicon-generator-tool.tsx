@@ -2,6 +2,20 @@
 
 import { useEffect, useMemo, useState } from "react";
 import NextImage from "next/image";
+import {
+  IconBrandGoogle,
+  IconBrandApple,
+  IconBrandAndroid,
+  IconBraces,
+  IconClipboardText,
+  IconDownload,
+  IconDeviceMobile,
+  IconPhotoCog,
+  IconTrash,
+  IconMoonStars,
+  IconSearch,
+  IconWorld,
+} from "@tabler/icons-react";
 
 import {
   buildBrowserConfigContent,
@@ -17,7 +31,9 @@ import {
   type FaviconFitMode,
   type FaviconRenderSettings,
   normalizeAppName,
+  normalizeFaviconPath,
   normalizeShortName,
+  normalizeVersionTag,
   type GeneratedFaviconAsset as GeneratedFaviconPackageAsset,
 } from "@/modules/favicon-generator/domain/favicon-generator";
 import en from "@/modules/favicon-generator/presentation/i18n/en.json";
@@ -31,6 +47,7 @@ import {
   ToolColorPicker,
   ToolField,
   ToolFileDrop,
+  ToolInput,
   ToolSection,
   ToolSlider,
   ToolSwitch,
@@ -45,6 +62,103 @@ type Props = { language: Language };
 type GeneratedIcon = GeneratedFaviconPackageAsset & {
   url: string;
 };
+
+async function generateRenderedIcons(
+  file: File,
+  renderSettings: FaviconRenderSettings,
+  variant: "regular" | "dark" = "regular",
+): Promise<GeneratedIcon[]> {
+  const image = new Image();
+  const sourceUrl = URL.createObjectURL(file);
+  image.src = sourceUrl;
+  await new Promise<void>((resolve, reject) => {
+    image.onload = () => {
+      URL.revokeObjectURL(sourceUrl);
+      resolve();
+    };
+    image.onerror = () => {
+      URL.revokeObjectURL(sourceUrl);
+      reject(new Error("image-load-error"));
+    };
+  });
+
+  return (
+    await Promise.all(
+      FAVICON_SIZES.map(async (size) => {
+        const canvas = document.createElement("canvas");
+        canvas.width = size;
+        canvas.height = size;
+        const context = canvas.getContext("2d");
+        if (!context) return null;
+
+        drawFaviconSource(
+          context,
+          image,
+          size,
+          image.naturalWidth,
+          image.naturalHeight,
+          renderSettings,
+        );
+
+        const blob = await new Promise<Blob | null>((resolve) => {
+          canvas.toBlob(resolve, "image/png");
+        });
+        if (!blob) return null;
+
+        return {
+          size,
+          url: URL.createObjectURL(blob),
+          blob,
+          fileName: faviconFileName(size, variant),
+        };
+      }),
+    )
+  ).filter((icon): icon is GeneratedIcon => icon !== null);
+}
+
+async function generatePreviewIconUrl(
+  file: File,
+  renderSettings: FaviconRenderSettings,
+): Promise<string | null> {
+  const image = new Image();
+  const sourceUrl = URL.createObjectURL(file);
+  image.src = sourceUrl;
+  return new Promise((resolve) => {
+    image.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = 96;
+      canvas.height = 96;
+      const context = canvas.getContext("2d");
+      if (!context) {
+        URL.revokeObjectURL(sourceUrl);
+        resolve(null);
+        return;
+      }
+
+      drawFaviconSource(
+        context,
+        image,
+        96,
+        image.naturalWidth,
+        image.naturalHeight,
+        renderSettings,
+      );
+
+      canvas.toBlob((blob) => {
+        URL.revokeObjectURL(sourceUrl);
+        if (!blob) {
+          resolve(null);
+          return;
+        }
+        resolve(URL.createObjectURL(blob));
+      }, "image/png");
+    };
+    image.onerror = () => {
+      URL.revokeObjectURL(sourceUrl);
+      resolve(null);
+    };
+  });
+}
 
 const FAVICON_FIT_OPTIONS: FaviconFitMode[] = ["contain", "crop", "stretch"];
 
@@ -101,6 +215,176 @@ function FaviconPreviewTab({
   );
 }
 
+function PreviewChip({
+  icon: Icon,
+  label,
+}: {
+  icon: typeof IconWorld;
+  label: string;
+}) {
+  return (
+    <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs text-white/72">
+      <Icon className="h-3.5 w-3.5" />
+      <span>{label}</span>
+    </div>
+  );
+}
+
+function SearchPreviewCard({
+  iconUrl,
+  dark = false,
+}: {
+  iconUrl: string | null;
+  dark?: boolean;
+}) {
+  return (
+    <div
+      className={`rounded-[20px] border p-4 ${
+        dark
+          ? "border-white/10 bg-[#121216] text-white"
+          : "border-black/10 bg-white text-black"
+      }`}
+    >
+      <div className="flex items-center gap-3">
+        <div
+          className={`grid h-10 w-10 place-items-center rounded-xl border ${
+            dark
+              ? "border-white/10 bg-white/[0.04]"
+              : "border-black/10 bg-black/[0.03]"
+          }`}
+        >
+          {iconUrl ? (
+            <NextImage
+              alt=""
+              className="rounded-[6px]"
+              height={20}
+              src={iconUrl}
+              unoptimized
+              width={20}
+            />
+          ) : (
+            <div
+              className={`h-5 w-5 rounded-[6px] ${
+                dark ? "bg-white/16" : "bg-black/12"
+              }`}
+            />
+          )}
+        </div>
+        <div className="min-w-0">
+          <div
+            className={`truncate text-sm font-medium ${
+              dark ? "text-white/84" : "text-black/84"
+            }`}
+          >
+            Example
+          </div>
+          <div
+            className={`truncate text-xs ${
+              dark ? "text-white/46" : "text-black/44"
+            }`}
+          >
+            https://example.com
+          </div>
+        </div>
+      </div>
+      <div className="mt-4 space-y-2">
+        <div
+          className={`text-sm font-semibold ${
+            dark ? "text-[#8ab4f8]" : "text-[#1a0dab]"
+          }`}
+        >
+          Lorem Ipsum
+        </div>
+        <p
+          className={`text-xs leading-5 ${
+            dark ? "text-white/58" : "text-black/56"
+          }`}
+        >
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function MobilePreviewCard({
+  icon: Icon,
+  label,
+  iconUrl,
+  dark = false,
+}: {
+  icon: typeof IconWorld;
+  label: string;
+  iconUrl: string | null;
+  dark?: boolean;
+}) {
+  return (
+    <div
+      className={`rounded-[20px] border p-4 ${
+        dark
+          ? "border-white/10 bg-[#121216] text-white"
+          : "border-black/10 bg-white text-black"
+      }`}
+    >
+      <div className="mb-4 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.18em] opacity-70">
+        <Icon className="h-3.5 w-3.5" />
+        <span>{label}</span>
+      </div>
+      <div
+        className={`mx-auto flex h-[168px] w-[92px] flex-col rounded-[24px] border p-3 ${
+          dark ? "border-white/10 bg-black/40" : "border-black/10 bg-[#f3f4f6]"
+        }`}
+      >
+        <div
+          className={`mx-auto h-1.5 w-10 rounded-full ${
+            dark ? "bg-white/16" : "bg-black/12"
+          }`}
+        />
+        <div className="flex flex-1 items-center justify-center">
+          <div
+            className={`grid h-14 w-14 place-items-center rounded-[18px] border ${
+              dark
+                ? "border-white/10 bg-white/[0.05]"
+                : "border-black/10 bg-white"
+            }`}
+          >
+            {iconUrl ? (
+              <NextImage
+                alt=""
+                className="rounded-[14px]"
+                height={40}
+                src={iconUrl}
+                unoptimized
+                width={40}
+              />
+            ) : (
+              <div
+                className={`h-10 w-10 rounded-[14px] ${
+                  dark ? "bg-white/16" : "bg-black/12"
+                }`}
+              />
+            )}
+          </div>
+        </div>
+        <div
+          className={`rounded-xl px-2 py-1 text-center text-[11px] ${
+            dark
+              ? "bg-white/[0.05] text-white/70"
+              : "bg-black/[0.04] text-black/54"
+          }`}
+        >
+          {projectNameFallback(label)}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function projectNameFallback(label: string) {
+  return label.includes("Apple") ? "MyWebSite" : "MySite";
+}
+
 function FaviconFitModeButtons({
   value,
   onChange,
@@ -135,12 +419,20 @@ export function FaviconGeneratorTool({ language }: Props) {
   const text = useMemo(() => (language === "es" ? es : en), [language]);
   const sharedText = sharedMessages[language];
   const [file, setFile] = useState<File | null>(null);
+  const [darkFile, setDarkFile] = useState<File | null>(null);
+  const [useDedicatedDarkIcon, setUseDedicatedDarkIcon] = useState(false);
   const [generated, setGenerated] = useState<GeneratedIcon[]>([]);
+  const [generatedDark, setGeneratedDark] = useState<GeneratedIcon[]>([]);
   const [appName, setAppName] = useState("LocalTools");
   const [shortName, setShortName] = useState("LT");
   const [themeColor, setThemeColor] = useState("#111111");
   const [backgroundColor, setBackgroundColor] = useState("#ffffff");
   const [previewIconUrl, setPreviewIconUrl] = useState<string | null>(null);
+  const [darkPreviewIconUrl, setDarkPreviewIconUrl] = useState<string | null>(
+    null,
+  );
+  const [faviconPath, setFaviconPath] = useState("/");
+  const [versionTag, setVersionTag] = useState("");
   const [renderSettings, setRenderSettings] = useState<FaviconRenderSettings>(
     () => createDefaultFaviconRenderSettings(),
   );
@@ -165,8 +457,18 @@ export function FaviconGeneratorTool({ language }: Props) {
       shortName: normalizeShortName(shortName, projectName),
       themeColor,
       backgroundColor,
+      faviconPath,
+      version: versionTag,
     });
-  }, [backgroundColor, generated, projectName, shortName, themeColor]);
+  }, [
+    backgroundColor,
+    faviconPath,
+    generated,
+    projectName,
+    shortName,
+    themeColor,
+    versionTag,
+  ]);
 
   const browserConfigContent = useMemo(() => {
     if (generated.length === 0) {
@@ -178,75 +480,106 @@ export function FaviconGeneratorTool({ language }: Props) {
       shortName: normalizeShortName(shortName, projectName),
       themeColor,
       backgroundColor,
+      faviconPath,
+      version: versionTag,
     });
-  }, [backgroundColor, generated, projectName, shortName, themeColor]);
+  }, [
+    backgroundColor,
+    faviconPath,
+    generated,
+    projectName,
+    shortName,
+    themeColor,
+    versionTag,
+  ]);
 
   const htmlSnippet = useMemo(() => {
     if (generated.length === 0) {
       return "";
     }
 
-    return buildHtmlSnippet(generated, {
-      appName: projectName,
-      shortName: normalizeShortName(shortName, projectName),
-      themeColor,
-      backgroundColor,
-    });
-  }, [backgroundColor, generated, projectName, shortName, themeColor]);
+    return buildHtmlSnippet(
+      generated,
+      {
+        appName: projectName,
+        shortName: normalizeShortName(shortName, projectName),
+        themeColor,
+        backgroundColor,
+        faviconPath,
+        version: versionTag,
+      },
+      generatedDark,
+    );
+  }, [
+    backgroundColor,
+    faviconPath,
+    generated,
+    generatedDark,
+    projectName,
+    shortName,
+    themeColor,
+    versionTag,
+  ]);
 
   useEffect(() => {
     return () => {
       generated.forEach((icon) => {
         URL.revokeObjectURL(icon.url);
       });
+      generatedDark.forEach((icon) => {
+        URL.revokeObjectURL(icon.url);
+      });
       if (previewIconUrl) {
         URL.revokeObjectURL(previewIconUrl);
       }
+      if (darkPreviewIconUrl) {
+        URL.revokeObjectURL(darkPreviewIconUrl);
+      }
     };
-  }, [generated, previewIconUrl]);
+  }, [darkPreviewIconUrl, generated, generatedDark, previewIconUrl]);
 
   useEffect(() => {
-    if (!file) {
-      return;
-    }
+    let cancelled = false;
 
-    const image = new Image();
-    const sourceUrl = URL.createObjectURL(file);
-    image.src = sourceUrl;
-    image.onload = () => {
-      const canvas = document.createElement("canvas");
-      canvas.width = 96;
-      canvas.height = 96;
-      const context = canvas.getContext("2d");
-      if (!context) {
+    const run = async () => {
+      if (!file) {
+        setPreviewIconUrl((current) => {
+          if (current) URL.revokeObjectURL(current);
+          return null;
+        });
+        setDarkPreviewIconUrl((current) => {
+          if (current) URL.revokeObjectURL(current);
+          return null;
+        });
         return;
       }
 
-      drawFaviconSource(
-        context,
-        image,
-        96,
-        image.naturalWidth,
-        image.naturalHeight,
+      const regularPreview = await generatePreviewIconUrl(file, renderSettings);
+      if (!cancelled) {
+        setPreviewIconUrl((current) => {
+          if (current) URL.revokeObjectURL(current);
+          return regularPreview;
+        });
+      }
+
+      const sourceForDark = useDedicatedDarkIcon && darkFile ? darkFile : file;
+      const nextDarkPreview = await generatePreviewIconUrl(
+        sourceForDark,
         renderSettings,
       );
-
-      canvas.toBlob((blob) => {
-        URL.revokeObjectURL(sourceUrl);
-        if (!blob) return;
-        const nextIconUrl = URL.createObjectURL(blob);
-        setPreviewIconUrl((current) => {
-          if (current) {
-            URL.revokeObjectURL(current);
-          }
-          return nextIconUrl;
+      if (!cancelled) {
+        setDarkPreviewIconUrl((current) => {
+          if (current) URL.revokeObjectURL(current);
+          return nextDarkPreview;
         });
-      }, "image/png");
+      }
     };
-    image.onerror = () => {
-      URL.revokeObjectURL(sourceUrl);
+
+    void run();
+    return () => {
+      cancelled = true;
     };
-  }, [file, renderSettings]);
+  }, [darkFile, file, renderSettings, useDedicatedDarkIcon]);
 
   const onGenerate = async () => {
     if (!file) {
@@ -254,58 +587,17 @@ export function FaviconGeneratorTool({ language }: Props) {
     }
 
     generated.forEach((icon) => URL.revokeObjectURL(icon.url));
+    generatedDark.forEach((icon) => URL.revokeObjectURL(icon.url));
 
-    const image = new Image();
-    const sourceUrl = URL.createObjectURL(file);
-    image.src = sourceUrl;
-    await new Promise<void>((resolve, reject) => {
-      image.onload = () => {
-        URL.revokeObjectURL(sourceUrl);
-        resolve();
-      };
-      image.onerror = () => {
-        URL.revokeObjectURL(sourceUrl);
-        reject(new Error("image-load-error"));
-      };
-    });
-
-    const icons = (
-      await Promise.all(
-        FAVICON_SIZES.map(async (size) => {
-          const canvas = document.createElement("canvas");
-          canvas.width = size;
-          canvas.height = size;
-          const context = canvas.getContext("2d");
-          if (!context) {
-            return null;
-          }
-          drawFaviconSource(
-            context,
-            image,
-            size,
-            image.naturalWidth,
-            image.naturalHeight,
-            renderSettings,
-          );
-
-          const blob = await new Promise<Blob | null>((resolve) => {
-            canvas.toBlob(resolve, "image/png");
-          });
-          if (!blob) {
-            return null;
-          }
-
-          return {
-            size,
-            url: URL.createObjectURL(blob),
-            blob,
-            fileName: faviconFileName(size),
-          };
-        }),
-      )
-    ).filter((icon): icon is GeneratedIcon => icon !== null);
+    const icons = await generateRenderedIcons(file, renderSettings);
+    const darkSource = useDedicatedDarkIcon && darkFile ? darkFile : file;
+    const darkIcons =
+      useDedicatedDarkIcon || darkFile
+        ? await generateRenderedIcons(darkSource, renderSettings, "dark")
+        : [];
 
     setGenerated(icons);
+    setGeneratedDark(darkIcons);
   };
 
   const onDropFiles = (nextFiles: File[]) => {
@@ -323,17 +615,33 @@ export function FaviconGeneratorTool({ language }: Props) {
     setShortName(normalizeShortName("", nextProjectName));
   };
 
+  const onDropDarkFiles = (nextFiles: File[]) => {
+    const nextFile = nextFiles.find((candidate) =>
+      candidate.type.startsWith("image/"),
+    );
+    if (!nextFile) {
+      return;
+    }
+    setDarkFile(nextFile);
+  };
+
   const onDownloadZip = async () => {
     if (generated.length === 0) {
       return;
     }
 
-    const packageFiles = await buildFaviconPackage(generated, {
-      appName: projectName,
-      shortName: normalizeShortName(shortName, projectName),
-      themeColor,
-      backgroundColor,
-    });
+    const packageFiles = await buildFaviconPackage(
+      generated,
+      {
+        appName: projectName,
+        shortName: normalizeShortName(shortName, projectName),
+        themeColor,
+        backgroundColor,
+        faviconPath,
+        version: versionTag,
+      },
+      generatedDark,
+    );
     const zipBlob = await createZipBlob(packageFiles);
     const zipUrl = URL.createObjectURL(zipBlob);
     const anchor = document.createElement("a");
@@ -384,6 +692,32 @@ export function FaviconGeneratorTool({ language }: Props) {
               label={text.inputLabel}
               onSelectFiles={onDropFiles}
             />
+
+            <ToolToggleField label={text.darkIconToggleLabel}>
+              <ToolSwitch
+                aria-label={text.darkIconToggleLabel}
+                checked={useDedicatedDarkIcon}
+                onChange={(checked) => {
+                  setUseDedicatedDarkIcon(checked);
+                  if (!checked) {
+                    setDarkFile(null);
+                  }
+                }}
+              />
+            </ToolToggleField>
+
+            {useDedicatedDarkIcon ? (
+              <ToolFileDrop
+                accept="image/*"
+                currentFileText={
+                  darkFile ? `${text.darkCurrentFile}: ${darkFile.name}` : null
+                }
+                dropHint={text.darkDropHint}
+                inputAriaLabel={text.darkInputLabel}
+                label={text.darkInputLabel}
+                onSelectFiles={onDropDarkFiles}
+              />
+            ) : null}
 
             <ToolField label={text.fitLabel}>
               <FaviconFitModeButtons
@@ -510,32 +844,103 @@ export function FaviconGeneratorTool({ language }: Props) {
                   value={backgroundColor}
                 />
               </ToolField>
+              <ToolField htmlFor="favicon-path" label={text.pathLabel}>
+                <ToolInput
+                  aria-label={text.pathLabel}
+                  id="favicon-path"
+                  onChange={(event) =>
+                    setFaviconPath(normalizeFaviconPath(event.target.value))
+                  }
+                  placeholder="/"
+                  value={faviconPath}
+                />
+              </ToolField>
+              <ToolField htmlFor="favicon-version" label={text.versionLabel}>
+                <ToolInput
+                  aria-label={text.versionLabel}
+                  id="favicon-version"
+                  onChange={(event) =>
+                    setVersionTag(normalizeVersionTag(event.target.value))
+                  }
+                  placeholder="2026-07"
+                  value={versionTag}
+                />
+              </ToolField>
             </div>
           </div>
 
           <div className="rounded-[28px] border bg-[#131313] p-5 shadow-[0_24px_60px_rgba(0,0,0,0.14)] dark:border-white/10">
             <div className="rounded-[24px] border border-white/6 bg-[#171717] p-5">
               <div className="flex min-h-[380px] flex-col justify-between gap-6 rounded-[20px] border border-white/5 bg-[#101010] p-6">
-                <div className="flex flex-1 items-center justify-center">
-                  <div className="flex flex-wrap items-end justify-center gap-4">
-                    <div className="relative translate-y-2 scale-[0.82] opacity-85">
-                      <FaviconPreviewTab
-                        dark
-                        iconUrl={file ? previewIconUrl : null}
-                        label="Your Website"
+                <div className="grid flex-1 gap-5 xl:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between gap-3">
+                      <PreviewChip
+                        icon={IconWorld}
+                        label={text.browserPreview}
+                      />
+                      <PreviewChip
+                        icon={useDedicatedDarkIcon ? IconMoonStars : IconSearch}
+                        label={
+                          useDedicatedDarkIcon
+                            ? text.darkIconLabel
+                            : text.regularIconLabel
+                        }
                       />
                     </div>
-                    <div className="relative z-10 scale-100">
-                      <FaviconPreviewTab
-                        iconUrl={file ? previewIconUrl : null}
-                        label="Your Website"
+                    <div className="flex flex-wrap items-end justify-center gap-4 rounded-[20px] border border-white/6 bg-[#141414] p-6">
+                      <div className="relative translate-y-2 scale-[0.82] opacity-85">
+                        <FaviconPreviewTab
+                          dark
+                          iconUrl={file ? darkPreviewIconUrl : null}
+                          label="Your Website"
+                        />
+                      </div>
+                      <div className="relative z-10 scale-100">
+                        <FaviconPreviewTab
+                          iconUrl={file ? previewIconUrl : null}
+                          label="Your Website"
+                        />
+                      </div>
+                      <div className="relative translate-y-2 scale-[0.82] opacity-70">
+                        <FaviconPreviewTab
+                          dark
+                          iconUrl={file ? darkPreviewIconUrl : null}
+                          label="Your Website"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between gap-3">
+                      <PreviewChip
+                        icon={IconBrandGoogle}
+                        label={text.searchPreview}
+                      />
+                      <PreviewChip
+                        icon={IconDeviceMobile}
+                        label={text.lightDarkPreview}
                       />
                     </div>
-                    <div className="relative translate-y-2 scale-[0.82] opacity-70">
-                      <FaviconPreviewTab
-                        dark
+                    <div className="grid gap-3 md:grid-cols-2">
+                      <SearchPreviewCard
                         iconUrl={file ? previewIconUrl : null}
-                        label="Your Website"
+                      />
+                      <SearchPreviewCard
+                        dark
+                        iconUrl={file ? darkPreviewIconUrl : null}
+                      />
+                      <MobilePreviewCard
+                        icon={IconBrandApple}
+                        iconUrl={file ? previewIconUrl : null}
+                        label={text.applePreview}
+                      />
+                      <MobilePreviewCard
+                        dark
+                        icon={IconBrandAndroid}
+                        iconUrl={file ? previewIconUrl : null}
+                        label={text.androidPreview}
                       />
                     </div>
                   </div>
@@ -549,8 +954,13 @@ export function FaviconGeneratorTool({ language }: Props) {
                         if (previewIconUrl) {
                           URL.revokeObjectURL(previewIconUrl);
                         }
+                        if (darkPreviewIconUrl) {
+                          URL.revokeObjectURL(darkPreviewIconUrl);
+                        }
                         setPreviewIconUrl(null);
+                        setDarkPreviewIconUrl(null);
                         setFile(null);
+                        setDarkFile(null);
                       }}
                       type="button"
                     >
@@ -575,6 +985,7 @@ export function FaviconGeneratorTool({ language }: Props) {
                 void onGenerate();
               },
               disabled: !file,
+              icon: <IconPhotoCog className="h-4 w-4" />,
             },
             {
               label: sharedText.buttons.download,
@@ -582,6 +993,7 @@ export function FaviconGeneratorTool({ language }: Props) {
                 void onDownloadZip();
               },
               disabled: generated.length === 0,
+              icon: <IconDownload className="h-4 w-4" />,
             },
             {
               label: sharedText.buttons.clear,
@@ -589,14 +1001,28 @@ export function FaviconGeneratorTool({ language }: Props) {
                 generated.forEach((icon) => {
                   URL.revokeObjectURL(icon.url);
                 });
+                generatedDark.forEach((icon) => {
+                  URL.revokeObjectURL(icon.url);
+                });
                 if (previewIconUrl) {
                   URL.revokeObjectURL(previewIconUrl);
                 }
+                if (darkPreviewIconUrl) {
+                  URL.revokeObjectURL(darkPreviewIconUrl);
+                }
                 setPreviewIconUrl(null);
+                setDarkPreviewIconUrl(null);
                 setFile(null);
+                setDarkFile(null);
                 setGenerated([]);
+                setGeneratedDark([]);
               },
-              disabled: !file && generated.length === 0,
+              disabled:
+                !file &&
+                !darkFile &&
+                generated.length === 0 &&
+                generatedDark.length === 0,
+              icon: <IconTrash className="h-4 w-4" />,
             },
           ]}
         />
@@ -606,15 +1032,20 @@ export function FaviconGeneratorTool({ language }: Props) {
           <div className="space-y-3">
             <p className="text-sm">{text.result}</p>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {generated.map((icon) => (
+              {[...generated, ...generatedDark].map((icon) => (
                 <a
                   className="flex items-center justify-between rounded-md border p-3 text-sm"
                   download={icon.fileName}
                   href={icon.url}
-                  key={icon.size}
+                  key={icon.fileName}
                 >
-                  <span>
+                  <span className="inline-flex items-center gap-2">
                     {icon.size}x{icon.size}
+                    {icon.fileName.includes("-dark") ? (
+                      <span className="rounded-full border px-2 py-0.5 text-[10px] uppercase tracking-[0.18em]">
+                        dark
+                      </span>
+                    ) : null}
                   </span>
                   <span>{icon.fileName}</span>
                 </a>
@@ -636,11 +1067,13 @@ export function FaviconGeneratorTool({ language }: Props) {
                         void copyTextToClipboard(manifestContent);
                       },
                       disabled: manifestContent.length === 0,
+                      icon: <IconClipboardText className="h-4 w-4" />,
                     },
                     {
                       label: text.downloadManifest,
                       onClick: onDownloadManifest,
                       disabled: manifestContent.length === 0,
+                      icon: <IconDownload className="h-4 w-4" />,
                     },
                   ]}
                 />
@@ -660,11 +1093,13 @@ export function FaviconGeneratorTool({ language }: Props) {
                         void copyTextToClipboard(browserConfigContent);
                       },
                       disabled: browserConfigContent.length === 0,
+                      icon: <IconClipboardText className="h-4 w-4" />,
                     },
                     {
                       label: text.downloadBrowserConfig,
                       onClick: onDownloadBrowserConfig,
                       disabled: browserConfigContent.length === 0,
+                      icon: <IconDownload className="h-4 w-4" />,
                     },
                   ]}
                 />
@@ -684,6 +1119,7 @@ export function FaviconGeneratorTool({ language }: Props) {
                         void copyTextToClipboard(htmlSnippet);
                       },
                       disabled: htmlSnippet.length === 0,
+                      icon: <IconBraces className="h-4 w-4" />,
                     },
                   ]}
                 />
