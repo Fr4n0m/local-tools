@@ -121,8 +121,10 @@ export function ToolSwitch({
   );
 }
 
-const RECENT_COLORS_KEY = "localtools.recent-colors";
-const SAVED_COLORS_KEY = "localtools.saved-colors";
+const LEGACY_RECENT_COLORS_KEY = "localtools.recent-colors";
+const LEGACY_SAVED_COLORS_KEY = "localtools.saved-colors";
+const RECENT_COLORS_KEY = "localtools.recent-colors:v1";
+const SAVED_COLORS_KEY = "localtools.saved-colors:v1";
 const RECENT_COLORS_MAX = 10;
 const CUSTOM_COLOR_SLOTS = 10;
 const CUSTOM_COLOR_SLOT_IDS = Array.from(
@@ -146,9 +148,16 @@ const DEFAULT_COLOR_SWATCHES = [
   "#8a8a8a",
 ];
 
-function loadColors(key: string): string[] {
+function loadColors(key: string, legacyKey?: string): string[] {
   try {
     const raw = localStorage.getItem(key);
+    if (!raw && legacyKey) {
+      const legacyRaw = localStorage.getItem(legacyKey);
+      if (legacyRaw) {
+        localStorage.setItem(key, legacyRaw);
+        return loadColors(key);
+      }
+    }
     if (!raw) return [];
     const parsed = JSON.parse(raw);
     return Array.isArray(parsed)
@@ -160,11 +169,11 @@ function loadColors(key: string): string[] {
 }
 
 function loadRecentColors(): string[] {
-  return loadColors(RECENT_COLORS_KEY);
+  return loadColors(RECENT_COLORS_KEY, LEGACY_RECENT_COLORS_KEY);
 }
 
 function loadSavedColors(): string[] {
-  return loadColors(SAVED_COLORS_KEY);
+  return loadColors(SAVED_COLORS_KEY, LEGACY_SAVED_COLORS_KEY);
 }
 
 function saveRecentColor(color: string): string[] {
@@ -296,7 +305,7 @@ export function ToolColorPicker({
   return (
     <div className={cn("relative", className)} ref={rootRef}>
       <button
-        className="flex h-9 w-full items-center gap-2 rounded-md border bg-background/40 px-2.5 text-left text-xs"
+        className="lt-surface-raised--compact flex h-10 w-full items-center gap-2 rounded-xl border border-border/70 bg-background/78 px-3 text-left text-xs transition-[box-shadow,transform,border-color] hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/35 dark:border-white/18 dark:bg-white/[0.04] dark:hover:border-white/28"
         onClick={() =>
           setOpen((s) => {
             const next = !s;
@@ -312,7 +321,7 @@ export function ToolColorPicker({
       >
         <span
           aria-hidden
-          className="h-5 w-5 rounded-md border border-border/60 dark:border-white/22"
+          className="h-5 w-5 rounded-lg border border-border/70 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.28)] dark:border-white/24"
           style={{ backgroundColor: value }}
         />
         <span className="font-mono">{value}</span>
@@ -320,15 +329,15 @@ export function ToolColorPicker({
 
       {open ? (
         <div
-          className="absolute left-0 top-full z-50 mt-1 w-64 rounded-lg border bg-background p-3 shadow-lg"
+          className="lt-surface-raised absolute left-0 top-full z-50 mt-2 w-72 rounded-2xl border border-border/70 bg-background/96 p-3.5 shadow-none backdrop-blur dark:border-white/20 dark:bg-[#090b0d]/96"
           onClick={(e) => e.stopPropagation()}
           onPointerDown={(e) => e.stopPropagation()}
         >
           <div className="grid gap-3">
-            <div className="flex items-center gap-2 rounded-md border bg-background/45 p-2">
+            <div className="flex items-center gap-2 rounded-xl border border-border/60 bg-background/58 p-2 dark:border-white/16 dark:bg-white/[0.04]">
               <span
                 aria-hidden
-                className="h-8 w-8 rounded-md border border-border/60 dark:border-white/22"
+                className="h-8 w-8 rounded-lg border border-border/70 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.32)] dark:border-white/24"
                 style={{ backgroundColor: value }}
               />
               <div className="min-w-0">
@@ -340,7 +349,7 @@ export function ToolColorPicker({
             </div>
 
             <HexColorPicker
-              className="!w-full"
+              className="!h-40 !w-full [&_.react-colorful__hue]:!h-4 [&_.react-colorful__hue]:!rounded-full [&_.react-colorful__hue-pointer]:!h-5 [&_.react-colorful__hue-pointer]:!w-5 [&_.react-colorful__hue-pointer]:!border-2 [&_.react-colorful__saturation]:!rounded-xl [&_.react-colorful__saturation]:!border [&_.react-colorful__saturation]:!border-border/45"
               color={pickerColor}
               onChange={onChange}
             />
@@ -348,7 +357,7 @@ export function ToolColorPicker({
 
           <input
             aria-label="Custom hex color"
-            className="mt-2 w-full rounded-md border bg-background/40 px-2.5 py-1.5 font-mono text-xs"
+            className="mt-3 w-full rounded-xl border border-border/65 bg-background/70 px-3 py-2 font-mono text-xs outline-none transition-colors focus:border-foreground/50 dark:border-white/18 dark:bg-white/[0.04] dark:focus:border-white/40"
             onBlur={() => onChange(normalizeHex(draft))}
             onChange={(event) => setDraft(event.target.value)}
             onKeyDown={(e) => {
@@ -360,7 +369,7 @@ export function ToolColorPicker({
             }}
             value={draft}
           />
-          <div className="mt-3 border-t pt-3">
+          <div className="mt-3 border-t border-border/55 pt-3 dark:border-white/12">
             <div className="grid grid-cols-7 gap-2">
               {swatchColors.map((c) => {
                 const selected = c.toLowerCase() === pickerColor.toLowerCase();
@@ -369,7 +378,7 @@ export function ToolColorPicker({
                     aria-label={c}
                     aria-pressed={selected}
                     className={cn(
-                      "h-7 w-7 rounded-full border border-border/50 transition-transform hover:scale-110",
+                      "h-7 w-7 rounded-full border border-border/60 shadow-[1px_1px_0_var(--surface-shadow-color)] transition-transform hover:scale-110 dark:border-white/18",
                       selected &&
                         "ring-2 ring-foreground ring-offset-2 ring-offset-background",
                     )}
@@ -395,7 +404,7 @@ export function ToolColorPicker({
                   return id === firstEmptySlot ? (
                     <button
                       aria-label="Save current color"
-                      className="flex h-7 w-7 items-center justify-center rounded-full bg-foreground/15 text-foreground/55 transition-colors hover:bg-foreground/24"
+                      className="flex h-7 w-7 items-center justify-center rounded-full border border-border/55 bg-foreground/12 text-foreground/55 shadow-[1px_1px_0_var(--surface-shadow-color)] transition-colors hover:bg-foreground/22 dark:border-white/14"
                       key={id}
                       onClick={() => setSavedColors(toggleSavedColor(value))}
                       title="Save current color"
@@ -406,7 +415,7 @@ export function ToolColorPicker({
                   ) : (
                     <span
                       aria-hidden
-                      className="h-7 w-7 rounded-full bg-foreground/8"
+                      className="h-7 w-7 rounded-full border border-border/30 bg-foreground/8 dark:border-white/10"
                       key={id}
                     />
                   );
@@ -419,7 +428,7 @@ export function ToolColorPicker({
                       aria-label={c}
                       aria-pressed={selected}
                       className={cn(
-                        "h-7 w-7 rounded-full border border-border/50 transition-transform hover:scale-110",
+                        "h-7 w-7 rounded-full border border-border/60 shadow-[1px_1px_0_var(--surface-shadow-color)] transition-transform hover:scale-110 dark:border-white/18",
                         selected &&
                           "ring-2 ring-foreground ring-offset-2 ring-offset-background",
                       )}
@@ -433,7 +442,7 @@ export function ToolColorPicker({
                     />
                     <button
                       aria-label={`Remove ${c} from custom colors`}
-                      className="absolute -right-1 -top-1 hidden h-3.5 w-3.5 items-center justify-center rounded-full border bg-background shadow group-hover/swatch:flex"
+                      className="absolute -right-1 -top-1 hidden h-3.5 w-3.5 items-center justify-center rounded-full border border-border/60 bg-background shadow-[1px_1px_0_var(--surface-shadow-color)] group-hover/swatch:flex dark:border-white/20"
                       onClick={(e) => {
                         e.stopPropagation();
                         setSavedColors(toggleSavedColor(c));

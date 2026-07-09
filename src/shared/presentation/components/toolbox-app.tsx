@@ -459,7 +459,7 @@ export function ToolboxApp() {
               toolsToRender={filteredTools}
             />
           ) : (
-            <section className="tool-shell tools-tool-panel rounded-lg border border-border/50 bg-background/90 p-4 md:p-6">
+            <section className="tool-shell tools-tool-panel rounded-2xl p-4 md:p-6">
               <div className="tools-tool-topbar">
                 <PrivacyInfo text={text} />
               </div>

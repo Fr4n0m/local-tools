@@ -78,6 +78,35 @@ describe("favicon-generator domain", () => {
     ]);
   });
 
+  it("uses android-specific metadata and dark android icons when configured", () => {
+    const darkIcons = [192, 512].map((size) => ({
+      size,
+      fileName: faviconFileName(size, "dark"),
+      blob: createPngBlob(size),
+    }));
+
+    const manifest = JSON.parse(
+      buildManifestContent(
+        icons,
+        {
+          appName: "Local Tools",
+          shortName: "LT",
+          androidAppName: "Android Tools",
+          androidShortName: "AT",
+          androidIconVariant: "dark",
+          themeColor: "#101010",
+          backgroundColor: "#fafafa",
+        },
+        darkIcons,
+      ),
+    );
+
+    expect(manifest.name).toBe("Android Tools");
+    expect(manifest.short_name).toBe("AT");
+    expect(manifest.icons[0].src).toBe("/android-chrome-dark-192x192.png");
+    expect(manifest.icons[1].src).toBe("/android-chrome-dark-512x512.png");
+  });
+
   it("builds browserconfig and html snippet with dark variants", () => {
     const darkIcons = [16, 32, 180].map((size) => ({
       size,
@@ -120,6 +149,28 @@ describe("favicon-generator domain", () => {
       'href="/favicons/apple-touch-icon-dark.png?v=cache-bust" media="(prefers-color-scheme: dark)"',
     );
     expect(snippet).toContain('content="#101010"');
+  });
+
+  it("uses dark apple touch icon as primary apple icon when configured", () => {
+    const darkIcons = [16, 32, 180].map((size) => ({
+      size,
+      fileName: faviconFileName(size, "dark"),
+      blob: createPngBlob(size),
+    }));
+
+    const snippet = buildHtmlSnippet(
+      icons,
+      {
+        appName: "Local Tools",
+        shortName: "LT",
+        appleTouchIconVariant: "dark",
+        themeColor: "#101010",
+        backgroundColor: "#fafafa",
+      },
+      darkIcons,
+    );
+
+    expect(snippet).toContain('href="/apple-touch-icon-dark.png"');
   });
 
   it("builds package files including ico support files and dark assets", async () => {

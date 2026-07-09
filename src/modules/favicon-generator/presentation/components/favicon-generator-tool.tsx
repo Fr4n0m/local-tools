@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, type ReactNode } from "react";
-import NextImage from "next/image";
+import { useEffect, useMemo, useState } from "react";
 import {
   IconBrandGoogle,
   IconBrandApple,
@@ -43,11 +42,13 @@ import { downloadTextFile } from "@/shared/lib/download";
 import { createZipBlob } from "@/shared/lib/zip";
 import { ToolDropSurface } from "@/shared/presentation/components/tool-drop-surface";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
+import { SegmentedControl } from "@/shared/presentation/components/segmented-control";
 import {
   ToolColorPicker,
   ToolField,
   ToolFileDrop,
   ToolInput,
+  ToolSelect,
   ToolSection,
   ToolSlider,
   ToolSwitch,
@@ -56,6 +57,18 @@ import {
 } from "@/shared/presentation/components/tool-form";
 import type { Language } from "@/shared/presentation/i18n";
 import { sharedMessages } from "@/shared/presentation/i18n";
+import {
+  BrowserPreviewMock,
+  MobilePreviewCard,
+  PreviewHeading,
+  PreviewSection,
+  PreviewSettingsField,
+  PreviewSettingsPanel,
+  PreviewSubtleStack,
+  SearchPreviewCard,
+  previewDarkFieldClass,
+  previewDarkSelectClass,
+} from "./favicon-generator-previews";
 
 type Props = { language: Language };
 
@@ -63,9 +76,50 @@ type GeneratedIcon = GeneratedFaviconPackageAsset & {
   url: string;
 };
 
+type FaviconRenderTarget = "browser" | "apple" | "android";
+type FaviconRenderSettingsByTarget = Record<
+  FaviconRenderTarget,
+  FaviconRenderSettings
+>;
+type FaviconPreviewUrlsByTarget = Record<FaviconRenderTarget, string | null>;
+
+const FAVICON_RENDER_TARGETS: FaviconRenderTarget[] = [
+  "browser",
+  "apple",
+  "android",
+];
+
+function createDefaultFaviconRenderSettingsByTarget(): FaviconRenderSettingsByTarget {
+  return {
+    browser: createDefaultFaviconRenderSettings(),
+    apple: createDefaultFaviconRenderSettings(),
+    android: createDefaultFaviconRenderSettings(),
+  };
+}
+
+function createEmptyPreviewUrls(): FaviconPreviewUrlsByTarget {
+  return {
+    browser: null,
+    apple: null,
+    android: null,
+  };
+}
+
+function revokePreviewUrls(urls: FaviconPreviewUrlsByTarget) {
+  Object.values(urls).forEach((url) => {
+    if (url) URL.revokeObjectURL(url);
+  });
+}
+
+function faviconRenderTargetForSize(size: number): FaviconRenderTarget {
+  if (size === 180) return "apple";
+  if (size === 192 || size === 512) return "android";
+  return "browser";
+}
+
 async function generateRenderedIcons(
   file: File,
-  renderSettings: FaviconRenderSettings,
+  renderSettingsByTarget: FaviconRenderSettingsByTarget,
   variant: "regular" | "dark" = "regular",
 ): Promise<GeneratedIcon[]> {
   const image = new Image();
@@ -97,7 +151,7 @@ async function generateRenderedIcons(
           size,
           image.naturalWidth,
           image.naturalHeight,
-          renderSettings,
+          renderSettingsByTarget[faviconRenderTargetForSize(size)],
         );
 
         const blob = await new Promise<Blob | null>((resolve) => {
@@ -162,330 +216,6 @@ async function generatePreviewIconUrl(
 
 const FAVICON_FIT_OPTIONS: FaviconFitMode[] = ["contain", "crop", "stretch"];
 
-function FaviconPreviewTab({
-  label,
-  iconUrl,
-  dark = false,
-  active = false,
-}: {
-  label: string;
-  iconUrl: string | null;
-  dark?: boolean;
-  active?: boolean;
-}) {
-  return (
-    <div
-      className={`relative flex h-[72px] min-w-[190px] max-w-[230px] items-center gap-3 rounded-t-[18px] rounded-b-[10px] border px-4 py-3 shadow-[0_12px_30px_rgba(0,0,0,0.16)] ${
-        dark
-          ? "border-white/8 bg-[#26262b] text-white/76"
-          : "border-black/10 bg-[#f7f7f8] text-black/72"
-      } ${active ? "z-10" : "z-0"}`}
-    >
-      <div
-        className={`absolute inset-x-3 top-0 h-px ${
-          dark ? "bg-white/12" : "bg-white/80"
-        }`}
-      />
-      <div
-        className={`grid h-7 w-7 place-items-center rounded-md border ${
-          dark ? "border-white/12 bg-white/8" : "border-black/10 bg-white"
-        }`}
-      >
-        {iconUrl ? (
-          <NextImage
-            alt=""
-            className="rounded-[4px]"
-            height={16}
-            src={iconUrl}
-            unoptimized
-            width={16}
-          />
-        ) : (
-          <div
-            className={`h-4 w-4 rounded-[4px] ${
-              dark ? "bg-white/18" : "bg-black/12"
-            }`}
-          />
-        )}
-      </div>
-      <div className="min-w-0">
-        <div
-          className={`truncate text-sm font-medium ${
-            dark ? "text-white/72" : "text-black/78"
-          }`}
-        >
-          {label}
-        </div>
-        <div
-          className={`mt-0.5 h-1.5 w-16 rounded-full ${
-            dark ? "bg-white/10" : "bg-black/8"
-          }`}
-        />
-      </div>
-    </div>
-  );
-}
-
-function PreviewHeading({
-  icon: Icon,
-  label,
-}: {
-  icon: typeof IconWorld;
-  label: string;
-}) {
-  return (
-    <div className="inline-flex items-center gap-2 text-sm font-medium text-white/72">
-      <Icon className="h-3.5 w-3.5" />
-      <span>{label}</span>
-    </div>
-  );
-}
-
-function SearchPreviewCard({
-  iconUrl,
-  siteLabel,
-  resultLabel,
-  dark = false,
-}: {
-  iconUrl: string | null;
-  siteLabel: string;
-  resultLabel: string;
-  dark?: boolean;
-}) {
-  return (
-    <div
-      className={`rounded-[20px] p-4 ${
-        dark ? "bg-[#121216] text-white" : "bg-white text-black"
-      }`}
-    >
-      <div className="flex items-center gap-3">
-        <div
-          className={`grid h-10 w-10 place-items-center rounded-xl border ${
-            dark
-              ? "border-white/10 bg-white/[0.04]"
-              : "border-black/10 bg-black/[0.03]"
-          }`}
-        >
-          {iconUrl ? (
-            <NextImage
-              alt=""
-              className="rounded-[6px]"
-              height={20}
-              src={iconUrl}
-              unoptimized
-              width={20}
-            />
-          ) : (
-            <div
-              className={`h-5 w-5 rounded-[6px] ${
-                dark ? "bg-white/16" : "bg-black/12"
-              }`}
-            />
-          )}
-        </div>
-        <div className="min-w-0">
-          <div
-            className={`truncate text-sm font-medium ${
-              dark ? "text-white/82" : "text-black/82"
-            }`}
-          >
-            {siteLabel}
-          </div>
-          <div
-            className={`truncate text-xs ${
-              dark ? "text-[#9aa0a6]" : "text-[#5f6368]"
-            }`}
-          >
-            https://example.com
-          </div>
-        </div>
-      </div>
-      <div className="mt-3 space-y-1.5">
-        <div
-          className={`text-sm font-semibold ${
-            dark ? "text-[#9ec1ff]" : "text-[#1a4fd7]"
-          }`}
-        >
-          {resultLabel}
-        </div>
-        <p
-          className={`text-xs leading-5 ${
-            dark ? "text-white/58" : "text-black/56"
-          }`}
-        >
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        </p>
-      </div>
-    </div>
-  );
-}
-
-function MobilePreviewCard({
-  icon: Icon,
-  iconUrl,
-  appLabel,
-  dark = false,
-}: {
-  icon: typeof IconWorld;
-  iconUrl: string | null;
-  appLabel: string;
-  dark?: boolean;
-}) {
-  return (
-    <div
-      className={`rounded-[20px] p-4 ${
-        dark ? "bg-[#111111] text-white" : "bg-white text-black"
-      } h-full`}
-    >
-      <div className="flex h-full items-center justify-center">
-        <div
-          className={`flex h-[168px] w-[92px] flex-col rounded-[24px] border p-3 ${
-            dark
-              ? "border-white/10 bg-[#0b0b0d]"
-              : "border-black/10 bg-[#f3f4f6]"
-          }`}
-        >
-          <div
-            className={`mx-auto h-1.5 w-10 rounded-full ${
-              dark ? "bg-white/18" : "bg-black/12"
-            }`}
-          />
-          <div className="flex flex-1 items-center justify-center">
-            <div
-              className={`grid h-14 w-14 place-items-center rounded-[18px] border ${
-                dark
-                  ? "border-white/10 bg-[#171717]"
-                  : "border-black/10 bg-white"
-              }`}
-            >
-              {iconUrl ? (
-                <NextImage
-                  alt=""
-                  className="rounded-[14px]"
-                  height={40}
-                  src={iconUrl}
-                  unoptimized
-                  width={40}
-                />
-              ) : (
-                <div
-                  className={`h-10 w-10 rounded-[14px] ${
-                    dark ? "bg-white/16" : "bg-black/12"
-                  }`}
-                />
-              )}
-            </div>
-          </div>
-          <div
-            className={`rounded-xl px-2 py-1 text-center text-[11px] ${
-              dark
-                ? "bg-[#181818] text-white/78"
-                : "bg-black/[0.04] text-black/54"
-            }`}
-          >
-            {appLabel}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function BrowserPreviewMock({
-  lightIconUrl,
-  darkIconUrl,
-  label,
-}: {
-  lightIconUrl: string | null;
-  darkIconUrl: string | null;
-  label: string;
-}) {
-  return (
-    <div className="overflow-hidden rounded-[24px] bg-[#202024]">
-      <div className="rounded-[24px] bg-[#2a2a2f] px-4 pb-4 pt-4">
-        <div className="flex items-end justify-center gap-3 overflow-x-auto overflow-y-visible rounded-[18px] px-2 pb-2">
-          <div className="opacity-72">
-            <FaviconPreviewTab dark iconUrl={darkIconUrl} label={label} />
-          </div>
-          <div className="opacity-100">
-            <FaviconPreviewTab active iconUrl={lightIconUrl} label={label} />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function PreviewSection({
-  header,
-  children,
-}: {
-  header: ReactNode;
-  children: ReactNode;
-}) {
-  return (
-    <section className="space-y-3">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        {header}
-      </div>
-      <div className="rounded-[22px] bg-[#141414] p-4">{children}</div>
-    </section>
-  );
-}
-
-function PreviewSubtleStack({ children }: { children: ReactNode }) {
-  return <div className="flex flex-col gap-3">{children}</div>;
-}
-
-function PreviewSettingsPanel({ children }: { children: ReactNode }) {
-  return <div className="rounded-[18px] bg-black/18 p-4">{children}</div>;
-}
-
-function PreviewSettingsField({
-  label,
-  children,
-}: {
-  label: string;
-  children: ReactNode;
-}) {
-  return (
-    <label className="grid gap-2">
-      <span className="text-sm font-medium text-white/78">{label}</span>
-      {children}
-    </label>
-  );
-}
-
-function FaviconFitModeButtons({
-  value,
-  onChange,
-}: {
-  value: FaviconFitMode;
-  onChange: (value: FaviconFitMode) => void;
-}) {
-  return (
-    <div className="grid grid-cols-3 gap-2 rounded-xl border bg-background/35 p-1.5">
-      {FAVICON_FIT_OPTIONS.map((option) => {
-        const active = option === value;
-        return (
-          <button
-            className={`rounded-lg px-3 py-2 text-sm capitalize transition-colors ${
-              active
-                ? "bg-foreground text-background shadow-sm"
-                : "text-foreground/68 hover:bg-foreground/8"
-            }`}
-            key={option}
-            onClick={() => onChange(option)}
-            type="button"
-          >
-            {option}
-          </button>
-        );
-      })}
-    </div>
-  );
-}
-
 export function FaviconGeneratorTool({ language }: Props) {
   const text = useMemo(() => (language === "es" ? es : en), [language]);
   const sharedText = sharedMessages[language];
@@ -498,21 +228,35 @@ export function FaviconGeneratorTool({ language }: Props) {
   const [shortName, setShortName] = useState("LT");
   const [themeColor, setThemeColor] = useState("#111111");
   const [backgroundColor, setBackgroundColor] = useState("#ffffff");
-  const [previewIconUrl, setPreviewIconUrl] = useState<string | null>(null);
-  const [darkPreviewIconUrl, setDarkPreviewIconUrl] = useState<string | null>(
-    null,
-  );
+  const [previewIconUrls, setPreviewIconUrls] =
+    useState<FaviconPreviewUrlsByTarget>(() => createEmptyPreviewUrls());
+  const [darkPreviewIconUrls, setDarkPreviewIconUrls] =
+    useState<FaviconPreviewUrlsByTarget>(() => createEmptyPreviewUrls());
   const [appleIconMode, setAppleIconMode] = useState<"light" | "dark">("light");
   const [androidIconMode, setAndroidIconMode] = useState<"light" | "dark">(
     "dark",
   );
   const [applePreviewLabel, setApplePreviewLabel] = useState("MyWebSite");
   const [androidPreviewLabel, setAndroidPreviewLabel] = useState("MySite");
+  const [androidShortName, setAndroidShortName] = useState("LT");
   const [faviconPath, setFaviconPath] = useState("/");
   const [versionTag, setVersionTag] = useState("");
-  const [renderSettings, setRenderSettings] = useState<FaviconRenderSettings>(
-    () => createDefaultFaviconRenderSettings(),
-  );
+  const [activeRenderTarget, setActiveRenderTarget] =
+    useState<FaviconRenderTarget>("browser");
+  const [renderSettingsByTarget, setRenderSettingsByTarget] =
+    useState<FaviconRenderSettingsByTarget>(() =>
+      createDefaultFaviconRenderSettingsByTarget(),
+    );
+  const activeRenderSettings = renderSettingsByTarget[activeRenderTarget];
+
+  const updateActiveRenderSettings = (
+    update: (current: FaviconRenderSettings) => FaviconRenderSettings,
+  ) => {
+    setRenderSettingsByTarget((current) => ({
+      ...current,
+      [activeRenderTarget]: update(current[activeRenderTarget]),
+    }));
+  };
 
   const projectName = useMemo(() => {
     if (!file) {
@@ -529,18 +273,29 @@ export function FaviconGeneratorTool({ language }: Props) {
       return "";
     }
 
-    return buildManifestContent(generated, {
-      appName: projectName,
-      shortName: normalizeShortName(shortName, projectName),
-      themeColor,
-      backgroundColor,
-      faviconPath,
-      version: versionTag,
-    });
+    return buildManifestContent(
+      generated,
+      {
+        appName: projectName,
+        shortName: normalizeShortName(shortName, projectName),
+        themeColor,
+        backgroundColor,
+        faviconPath,
+        version: versionTag,
+        androidIconVariant: androidIconMode === "dark" ? "dark" : "regular",
+        androidAppName: androidPreviewLabel,
+        androidShortName,
+      },
+      generatedDark,
+    );
   }, [
+    androidIconMode,
+    androidPreviewLabel,
+    androidShortName,
     backgroundColor,
     faviconPath,
     generated,
+    generatedDark,
     projectName,
     shortName,
     themeColor,
@@ -584,10 +339,12 @@ export function FaviconGeneratorTool({ language }: Props) {
         backgroundColor,
         faviconPath,
         version: versionTag,
+        appleTouchIconVariant: appleIconMode === "dark" ? "dark" : "regular",
       },
       generatedDark,
     );
   }, [
+    appleIconMode,
     backgroundColor,
     faviconPath,
     generated,
@@ -606,48 +363,58 @@ export function FaviconGeneratorTool({ language }: Props) {
       generatedDark.forEach((icon) => {
         URL.revokeObjectURL(icon.url);
       });
-      if (previewIconUrl) {
-        URL.revokeObjectURL(previewIconUrl);
-      }
-      if (darkPreviewIconUrl) {
-        URL.revokeObjectURL(darkPreviewIconUrl);
-      }
+      revokePreviewUrls(previewIconUrls);
+      revokePreviewUrls(darkPreviewIconUrls);
     };
-  }, [darkPreviewIconUrl, generated, generatedDark, previewIconUrl]);
+  }, [darkPreviewIconUrls, generated, generatedDark, previewIconUrls]);
 
   useEffect(() => {
     let cancelled = false;
 
     const run = async () => {
       if (!file) {
-        setPreviewIconUrl((current) => {
-          if (current) URL.revokeObjectURL(current);
-          return null;
+        setPreviewIconUrls((current) => {
+          revokePreviewUrls(current);
+          return createEmptyPreviewUrls();
         });
-        setDarkPreviewIconUrl((current) => {
-          if (current) URL.revokeObjectURL(current);
-          return null;
+        setDarkPreviewIconUrls((current) => {
+          revokePreviewUrls(current);
+          return createEmptyPreviewUrls();
         });
         return;
       }
 
-      const regularPreview = await generatePreviewIconUrl(file, renderSettings);
+      const regularPreviewEntries = await Promise.all(
+        FAVICON_RENDER_TARGETS.map(async (target) => [
+          target,
+          await generatePreviewIconUrl(file, renderSettingsByTarget[target]),
+        ]),
+      );
       if (!cancelled) {
-        setPreviewIconUrl((current) => {
-          if (current) URL.revokeObjectURL(current);
-          return regularPreview;
+        setPreviewIconUrls((current) => {
+          revokePreviewUrls(current);
+          return Object.fromEntries(
+            regularPreviewEntries,
+          ) as FaviconPreviewUrlsByTarget;
         });
       }
 
       const sourceForDark = useDedicatedDarkIcon && darkFile ? darkFile : file;
-      const nextDarkPreview = await generatePreviewIconUrl(
-        sourceForDark,
-        renderSettings,
+      const darkPreviewEntries = await Promise.all(
+        FAVICON_RENDER_TARGETS.map(async (target) => [
+          target,
+          await generatePreviewIconUrl(
+            sourceForDark,
+            renderSettingsByTarget[target],
+          ),
+        ]),
       );
       if (!cancelled) {
-        setDarkPreviewIconUrl((current) => {
-          if (current) URL.revokeObjectURL(current);
-          return nextDarkPreview;
+        setDarkPreviewIconUrls((current) => {
+          revokePreviewUrls(current);
+          return Object.fromEntries(
+            darkPreviewEntries,
+          ) as FaviconPreviewUrlsByTarget;
         });
       }
     };
@@ -656,7 +423,7 @@ export function FaviconGeneratorTool({ language }: Props) {
     return () => {
       cancelled = true;
     };
-  }, [darkFile, file, renderSettings, useDedicatedDarkIcon]);
+  }, [darkFile, file, renderSettingsByTarget, useDedicatedDarkIcon]);
 
   const onGenerate = async () => {
     if (!file) {
@@ -666,11 +433,15 @@ export function FaviconGeneratorTool({ language }: Props) {
     generated.forEach((icon) => URL.revokeObjectURL(icon.url));
     generatedDark.forEach((icon) => URL.revokeObjectURL(icon.url));
 
-    const icons = await generateRenderedIcons(file, renderSettings);
+    const icons = await generateRenderedIcons(file, renderSettingsByTarget);
     const darkSource = useDedicatedDarkIcon && darkFile ? darkFile : file;
     const darkIcons =
       useDedicatedDarkIcon || darkFile
-        ? await generateRenderedIcons(darkSource, renderSettings, "dark")
+        ? await generateRenderedIcons(
+            darkSource,
+            renderSettingsByTarget,
+            "dark",
+          )
         : [];
 
     setGenerated(icons);
@@ -716,6 +487,10 @@ export function FaviconGeneratorTool({ language }: Props) {
         backgroundColor,
         faviconPath,
         version: versionTag,
+        appleTouchIconVariant: appleIconMode === "dark" ? "dark" : "regular",
+        androidIconVariant: androidIconMode === "dark" ? "dark" : "regular",
+        androidAppName: androidPreviewLabel,
+        androidShortName,
       },
       generatedDark,
     );
@@ -757,7 +532,7 @@ export function FaviconGeneratorTool({ language }: Props) {
         label={text.inputLabel}
         onSelectFiles={onDropFiles}
       >
-        <div className="grid gap-6 xl:grid-cols-[360px_minmax(0,1fr)]">
+        <div className="grid gap-6 xl:grid-cols-[minmax(300px,420px)_minmax(520px,1fr)]">
           <div className="space-y-4 rounded-2xl border bg-background/28 p-4">
             <ToolFileDrop
               accept="image/*"
@@ -796,69 +571,76 @@ export function FaviconGeneratorTool({ language }: Props) {
               />
             ) : null}
 
-            <ToolField label={text.fitLabel}>
-              <FaviconFitModeButtons
-                onChange={(fit) =>
-                  setRenderSettings((current) => ({ ...current, fit }))
+            <ToolField label={text.renderTargetLabel}>
+              <SegmentedControl
+                aria-label={text.renderTargetLabel}
+                onChange={(target) =>
+                  setActiveRenderTarget(target as FaviconRenderTarget)
                 }
-                value={renderSettings.fit}
+                options={[
+                  { value: "browser", label: text.browserTargetLabel },
+                  { value: "apple", label: text.appleTargetLabel },
+                  { value: "android", label: text.androidTargetLabel },
+                ]}
+                value={activeRenderTarget}
+              />
+            </ToolField>
+
+            <ToolField label={text.fitLabel}>
+              <SegmentedControl
+                aria-label={text.fitLabel}
+                onChange={(fit) =>
+                  updateActiveRenderSettings((current) => ({
+                    ...current,
+                    fit,
+                  }))
+                }
+                options={FAVICON_FIT_OPTIONS.map((option) => ({
+                  value: option,
+                  label: option[0].toUpperCase() + option.slice(1),
+                }))}
+                value={activeRenderSettings.fit}
               />
             </ToolField>
 
             <ToolField label={text.scaleLabel}>
               <ToolSlider
-                displayValue={`${Math.round(renderSettings.scale * 100)}%`}
+                displayValue={`${Math.round(activeRenderSettings.scale * 100)}%`}
                 max={2}
                 min={0}
                 onChange={(value) =>
-                  setRenderSettings((current) => ({
+                  updateActiveRenderSettings((current) => ({
                     ...current,
                     scale: clampFaviconScale(value),
                   }))
                 }
                 step={0.01}
-                value={renderSettings.scale}
-              />
-            </ToolField>
-
-            <ToolField label={text.roundnessLabel}>
-              <ToolSlider
-                displayValue={`${Math.round(renderSettings.roundness * 100)}%`}
-                max={1}
-                min={0}
-                onChange={(value) =>
-                  setRenderSettings((current) => ({
-                    ...current,
-                    roundness: clampFaviconRoundness(value),
-                  }))
-                }
-                step={0.01}
-                value={renderSettings.roundness}
+                value={activeRenderSettings.scale}
               />
             </ToolField>
 
             <ToolToggleField label={text.tintToggleLabel}>
               <ToolSwitch
                 aria-label={text.tintToggleLabel}
-                checked={renderSettings.tintEnabled}
+                checked={activeRenderSettings.tintEnabled}
                 onChange={(checked) =>
-                  setRenderSettings((current) => ({
+                  updateActiveRenderSettings((current) => ({
                     ...current,
                     tintEnabled: checked,
                   }))
                 }
               />
             </ToolToggleField>
-            {renderSettings.tintEnabled ? (
+            {activeRenderSettings.tintEnabled ? (
               <ToolField label={text.tintColorLabel}>
                 <ToolColorPicker
                   onChange={(value) =>
-                    setRenderSettings((current) => ({
+                    updateActiveRenderSettings((current) => ({
                       ...current,
                       tintColor: value,
                     }))
                   }
-                  value={renderSettings.tintColor}
+                  value={activeRenderSettings.tintColor}
                 />
               </ToolField>
             ) : null}
@@ -866,28 +648,49 @@ export function FaviconGeneratorTool({ language }: Props) {
             <ToolToggleField label={text.backgroundToggleLabel}>
               <ToolSwitch
                 aria-label={text.backgroundToggleLabel}
-                checked={renderSettings.backgroundEnabled}
+                checked={activeRenderSettings.backgroundEnabled}
                 onChange={(checked) =>
-                  setRenderSettings((current) => ({
+                  updateActiveRenderSettings((current) => ({
                     ...current,
                     backgroundEnabled: checked,
                   }))
                 }
               />
             </ToolToggleField>
-            {renderSettings.backgroundEnabled ? (
+            {activeRenderSettings.backgroundEnabled ? (
               <ToolField label={text.backgroundFillLabel}>
                 <ToolColorPicker
                   onChange={(value) =>
-                    setRenderSettings((current) => ({
+                    updateActiveRenderSettings((current) => ({
                       ...current,
                       backgroundColor: value,
                     }))
                   }
-                  value={renderSettings.backgroundColor}
+                  value={activeRenderSettings.backgroundColor}
                 />
               </ToolField>
             ) : null}
+
+            <ToolField label={text.roundnessLabel}>
+              <ToolSlider
+                displayValue={`${Math.round(activeRenderSettings.roundness * 100)}%`}
+                max={1}
+                min={0}
+                onChange={(value) =>
+                  updateActiveRenderSettings((current) => ({
+                    ...current,
+                    roundness: clampFaviconRoundness(value),
+                  }))
+                }
+                step={0.01}
+                value={activeRenderSettings.roundness}
+              />
+              <p className="text-xs text-foreground/55">
+                {activeRenderSettings.backgroundEnabled
+                  ? text.roundnessWithBackgroundHelp
+                  : text.roundnessWithoutBackgroundHelp}
+              </p>
+            </ToolField>
 
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-1">
               <ToolField htmlFor="favicon-app-name" label={text.appNameLabel}>
@@ -946,33 +749,30 @@ export function FaviconGeneratorTool({ language }: Props) {
             </div>
           </div>
 
-          <div className="rounded-[28px] bg-[#131313] p-5 shadow-[0_24px_60px_rgba(0,0,0,0.14)] dark:border-white/10">
-            <div className="flex min-h-[380px] flex-col justify-between gap-8 rounded-[24px] bg-[#171717] p-6">
+          <div className="bg-sidebar p-0 text-sidebar-foreground">
+            <div className="flex min-h-[380px] flex-col justify-between gap-8">
               <div className="flex flex-1 flex-col gap-6">
-                <PreviewSection
-                  header={
-                    <>
-                      <PreviewHeading
-                        icon={IconWorld}
-                        label={text.browserPreview}
-                      />
-                      <PreviewHeading
-                        icon={useDedicatedDarkIcon ? IconMoonStars : IconSearch}
-                        label={
-                          useDedicatedDarkIcon
-                            ? text.darkIconLabel
-                            : text.regularIconLabel
-                        }
-                      />
-                    </>
-                  }
-                >
+                <section className="space-y-3">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <PreviewHeading
+                      icon={IconWorld}
+                      label={text.browserPreview}
+                    />
+                    <PreviewHeading
+                      icon={useDedicatedDarkIcon ? IconMoonStars : IconSearch}
+                      label={
+                        useDedicatedDarkIcon
+                          ? text.darkIconLabel
+                          : text.regularIconLabel
+                      }
+                    />
+                  </div>
                   <BrowserPreviewMock
-                    darkIconUrl={file ? darkPreviewIconUrl : null}
-                    lightIconUrl={file ? previewIconUrl : null}
+                    darkIconUrl={file ? darkPreviewIconUrls.browser : null}
+                    lightIconUrl={file ? previewIconUrls.browser : null}
                     label={normalizeShortName(shortName, projectName)}
                   />
-                </PreviewSection>
+                </section>
 
                 <PreviewSection
                   header={
@@ -990,13 +790,13 @@ export function FaviconGeneratorTool({ language }: Props) {
                 >
                   <PreviewSubtleStack>
                     <SearchPreviewCard
-                      iconUrl={file ? previewIconUrl : null}
+                      iconUrl={file ? previewIconUrls.browser : null}
                       resultLabel={projectName}
                       siteLabel={normalizeShortName(shortName, projectName)}
                     />
                     <SearchPreviewCard
                       dark
-                      iconUrl={file ? darkPreviewIconUrl : null}
+                      iconUrl={file ? darkPreviewIconUrls.browser : null}
                       resultLabel={projectName}
                       siteLabel={normalizeShortName(shortName, projectName)}
                     />
@@ -1011,38 +811,37 @@ export function FaviconGeneratorTool({ language }: Props) {
                     />
                   }
                 >
-                  <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_280px] xl:items-stretch">
+                  <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_280px] lg:items-stretch">
                     <MobilePreviewCard
                       appLabel={applePreviewLabel}
-                      icon={IconBrandApple}
                       iconUrl={
                         file
                           ? appleIconMode === "dark"
-                            ? darkPreviewIconUrl
-                            : previewIconUrl
+                            ? darkPreviewIconUrls.apple
+                            : previewIconUrls.apple
                           : null
                       }
                       dark={appleIconMode === "dark"}
+                      platform="ios"
                     />
                     <PreviewSettingsPanel>
                       <div className="grid h-full content-start gap-3">
                         <PreviewSettingsField label="Icono Apple">
-                          <select
-                            className="h-11 w-full rounded-md border border-white/12 bg-white/6 px-3 text-sm text-white outline-none"
+                          <ToolSelect
                             onChange={(event) =>
-                              setAppleIconMode(
-                                event.target.value as "light" | "dark",
-                              )
+                              setAppleIconMode(event as "light" | "dark")
                             }
+                            options={[
+                              { value: "light", label: "Principal" },
+                              { value: "dark", label: "Dark" },
+                            ]}
                             value={appleIconMode}
-                          >
-                            <option value="light">Principal</option>
-                            <option value="dark">Dark</option>
-                          </select>
+                            className={previewDarkSelectClass}
+                          />
                         </PreviewSettingsField>
                         <PreviewSettingsField label="Nombre Apple">
                           <ToolInput
-                            className="border-white/12 bg-white text-black"
+                            className={previewDarkFieldClass}
                             id="apple-preview-label"
                             onChange={(event) =>
                               setApplePreviewLabel(
@@ -1069,38 +868,37 @@ export function FaviconGeneratorTool({ language }: Props) {
                     />
                   }
                 >
-                  <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_280px] xl:items-stretch">
+                  <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_280px] lg:items-stretch">
                     <MobilePreviewCard
                       appLabel={androidPreviewLabel}
                       dark={androidIconMode === "dark"}
-                      icon={IconBrandAndroid}
                       iconUrl={
                         file
                           ? androidIconMode === "dark"
-                            ? darkPreviewIconUrl
-                            : previewIconUrl
+                            ? darkPreviewIconUrls.android
+                            : previewIconUrls.android
                           : null
                       }
+                      platform="android"
                     />
                     <PreviewSettingsPanel>
                       <div className="grid h-full content-start gap-3">
                         <PreviewSettingsField label="Icono Android">
-                          <select
-                            className="h-11 w-full rounded-md border border-white/12 bg-white/6 px-3 text-sm text-white outline-none"
+                          <ToolSelect
                             onChange={(event) =>
-                              setAndroidIconMode(
-                                event.target.value as "light" | "dark",
-                              )
+                              setAndroidIconMode(event as "light" | "dark")
                             }
+                            options={[
+                              { value: "light", label: "Principal" },
+                              { value: "dark", label: "Dark" },
+                            ]}
                             value={androidIconMode}
-                          >
-                            <option value="light">Principal</option>
-                            <option value="dark">Dark</option>
-                          </select>
+                            className={previewDarkSelectClass}
+                          />
                         </PreviewSettingsField>
                         <PreviewSettingsField label="Nombre Android">
                           <ToolInput
-                            className="border-white/12 bg-white text-black"
+                            className={previewDarkFieldClass}
                             id="android-preview-label"
                             onChange={(event) =>
                               setAndroidPreviewLabel(
@@ -1112,12 +910,12 @@ export function FaviconGeneratorTool({ language }: Props) {
                         </PreviewSettingsField>
                         <PreviewSettingsField label="Nombre corto">
                           <ToolInput
-                            className="border-white/12 bg-white text-black"
+                            className={previewDarkFieldClass}
                             id="android-preview-short"
                             onChange={(event) =>
-                              setShortName(event.target.value)
+                              setAndroidShortName(event.target.value || "LT")
                             }
-                            value={shortName}
+                            value={androidShortName}
                           />
                         </PreviewSettingsField>
                       </div>
@@ -1126,19 +924,15 @@ export function FaviconGeneratorTool({ language }: Props) {
                 </PreviewSection>
               </div>
 
-              <div className="rounded-[20px] border border-white/6 bg-white/[0.035] p-5 text-center">
+              <div className="border-t border-white/10 pt-5 text-center">
                 {file ? (
                   <button
                     className="rounded-full border border-white/10 bg-white/[0.08] px-5 py-2 text-sm text-white/90 transition-colors hover:bg-white/[0.14]"
                     onClick={() => {
-                      if (previewIconUrl) {
-                        URL.revokeObjectURL(previewIconUrl);
-                      }
-                      if (darkPreviewIconUrl) {
-                        URL.revokeObjectURL(darkPreviewIconUrl);
-                      }
-                      setPreviewIconUrl(null);
-                      setDarkPreviewIconUrl(null);
+                      revokePreviewUrls(previewIconUrls);
+                      revokePreviewUrls(darkPreviewIconUrls);
+                      setPreviewIconUrls(createEmptyPreviewUrls());
+                      setDarkPreviewIconUrls(createEmptyPreviewUrls());
                       setFile(null);
                       setDarkFile(null);
                     }}
@@ -1183,14 +977,10 @@ export function FaviconGeneratorTool({ language }: Props) {
                 generatedDark.forEach((icon) => {
                   URL.revokeObjectURL(icon.url);
                 });
-                if (previewIconUrl) {
-                  URL.revokeObjectURL(previewIconUrl);
-                }
-                if (darkPreviewIconUrl) {
-                  URL.revokeObjectURL(darkPreviewIconUrl);
-                }
-                setPreviewIconUrl(null);
-                setDarkPreviewIconUrl(null);
+                revokePreviewUrls(previewIconUrls);
+                revokePreviewUrls(darkPreviewIconUrls);
+                setPreviewIconUrls(createEmptyPreviewUrls());
+                setDarkPreviewIconUrls(createEmptyPreviewUrls());
                 setFile(null);
                 setDarkFile(null);
                 setGenerated([]);

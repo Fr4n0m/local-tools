@@ -26,6 +26,10 @@ export type FaviconPackageOptions = {
   backgroundColor: string;
   faviconPath?: string;
   version?: string;
+  appleTouchIconVariant?: "regular" | "dark";
+  androidIconVariant?: "regular" | "dark";
+  androidAppName?: string;
+  androidShortName?: string;
 };
 
 export type GeneratedPackageFile = {
@@ -226,21 +230,34 @@ export function drawFaviconSource(
 export function buildManifestContent(
   icons: GeneratedFaviconAsset[],
   options: FaviconPackageOptions,
+  darkIcons: GeneratedFaviconAsset[] = [],
 ): string {
-  const appName = normalizeAppName(options.appName);
-  const shortName = normalizeShortName(options.shortName ?? "", appName);
+  const appName = normalizeAppName(options.androidAppName ?? options.appName);
+  const shortName = normalizeShortName(
+    options.androidShortName ?? options.shortName ?? "",
+    appName,
+  );
   const themeColor = normalizeHexColor(options.themeColor, "#111111");
   const backgroundColor = normalizeHexColor(options.backgroundColor, "#ffffff");
+  const androidVariant = options.androidIconVariant ?? "regular";
 
-  const manifestIcons = icons
-    .filter((icon) => icon.size >= 192)
-    .sort((a, b) => a.size - b.size)
-    .map((icon) => ({
-      src: buildAssetHref(icon.fileName, options),
-      sizes: `${icon.size}x${icon.size}`,
-      type: "image/png",
-      purpose: "any",
-    }));
+  const manifestIcons = [192, 512].flatMap((size) => {
+    const source =
+      androidVariant === "dark"
+        ? darkIcons.find((icon) => icon.size === size)
+        : undefined;
+    const fallback = icons.find((icon) => icon.size === size);
+    const icon = source ?? fallback;
+    if (!icon) return [];
+    return [
+      {
+        src: buildAssetHref(icon.fileName, options),
+        sizes: `${icon.size}x${icon.size}`,
+        type: "image/png",
+        purpose: "any",
+      },
+    ];
+  });
 
   return JSON.stringify(
     {
@@ -286,6 +303,7 @@ export function buildHtmlSnippet(
   darkIcons: GeneratedFaviconAsset[] = [],
 ): string {
   const themeColor = normalizeHexColor(options.themeColor, "#111111");
+  const appleVariant = options.appleTouchIconVariant ?? "regular";
 
   const faviconIcons = icons
     .filter((icon) => icon.size === 16 || icon.size === 32)
@@ -302,7 +320,11 @@ export function buildHtmlSnippet(
         `<link rel="icon" type="image/png" sizes="${icon.size}x${icon.size}" href="${buildAssetHref(icon.fileName, options)}" media="(prefers-color-scheme: dark)" />`,
     );
 
-  const appleIcon = icons.find((icon) => icon.size === 180);
+  const appleIcon =
+    appleVariant === "dark"
+      ? (darkIcons.find((icon) => icon.size === 180) ??
+        icons.find((icon) => icon.size === 180))
+      : icons.find((icon) => icon.size === 180);
   const darkAppleIcon = darkIcons.find((icon) => icon.size === 180);
 
   return [
@@ -421,7 +443,7 @@ export async function buildFaviconPackage(
   files.push(
     {
       name: "site.webmanifest",
-      blob: new Blob([buildManifestContent(icons, options)], {
+      blob: new Blob([buildManifestContent(icons, options, darkIcons)], {
         type: "application/manifest+json",
       }),
     },

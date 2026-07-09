@@ -1,4 +1,6 @@
 .tools-tool-panel {
+  border: none;
+  background: color-mix(in oklab, var(--color-background), transparent 8%);
   box-shadow: var(--surface-shadow-compact);
 }
 
@@ -10,8 +12,13 @@
 }
 
 .dark .tools-tool-panel {
-  background-color: var(--color-sidebar);
+  border: none;
+  background: var(--color-sidebar);
   color: var(--color-sidebar-foreground);
+  box-shadow:
+    var(--surface-shadow-dark),
+    0 42px 90px -36px rgba(0, 0, 0, 0.72),
+    0 12px 28px -18px rgba(0, 0, 0, 0.55);
 }
 
 .dark .tools-index-card,
