@@ -250,12 +250,6 @@ If LocalTools helps you, you can support it here:
 
 - https://buymeacoffee.com/fran11799
 
-### 💡 Support roadmap
-
-- Current phase (simple): support via Buy Me a Coffee / Patreon.
-- Optional phase: Stripe Payment Links (one-time or subscription) without custom backend.
-- Future phase: full Stripe integration only if the product evolves to a backend/auth model.
-
 ---
 
 Portfolio: **Fr4n0m** → https://codebyfran.es

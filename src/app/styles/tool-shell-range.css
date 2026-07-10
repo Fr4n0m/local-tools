@@ -4,11 +4,7 @@
   width: 100%;
   height: 6px;
   border-radius: 3px;
-  background: color-mix(
-    in oklab,
-    var(--color-border),
-    var(--color-secondary) 50%
-  );
+  background: color-mix(in oklab, var(--color-border), transparent 8%);
   border: none !important;
   padding: 0 !important;
   cursor: pointer;
@@ -51,11 +47,7 @@
 .tool-shell input[type="range"]::-moz-range-track {
   height: 6px;
   border-radius: 3px;
-  background: color-mix(
-    in oklab,
-    var(--color-border),
-    var(--color-secondary) 50%
-  );
+  background: color-mix(in oklab, var(--color-border), transparent 8%);
 }
 .dark .tool-shell input[type="range"]::-webkit-slider-thumb {
   border-color: #050607;

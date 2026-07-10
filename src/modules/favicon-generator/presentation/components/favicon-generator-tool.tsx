@@ -40,6 +40,10 @@ import es from "@/modules/favicon-generator/presentation/i18n/es.json";
 import { copyTextToClipboard } from "@/shared/lib/clipboard";
 import { downloadTextFile } from "@/shared/lib/download";
 import { createZipBlob } from "@/shared/lib/zip";
+import {
+  AnimatedLayoutGroup,
+  AnimatedLayoutItem,
+} from "@/shared/presentation/components/animated-layout";
 import { ToolDropSurface } from "@/shared/presentation/components/tool-drop-surface";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import { SegmentedControl } from "@/shared/presentation/components/segmented-control";
@@ -66,8 +70,6 @@ import {
   PreviewSettingsPanel,
   PreviewSubtleStack,
   SearchPreviewCard,
-  previewDarkFieldClass,
-  previewDarkSelectClass,
 } from "./favicon-generator-previews";
 
 type Props = { language: Language };
@@ -694,9 +696,8 @@ export function FaviconGeneratorTool({ language }: Props) {
 
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-1">
               <ToolField htmlFor="favicon-app-name" label={text.appNameLabel}>
-                <input
+                <ToolInput
                   aria-label={text.appNameLabel}
-                  className="w-full rounded-md border bg-background/60 px-3 py-2 text-sm"
                   id="favicon-app-name"
                   onChange={(event) => setAppName(event.target.value)}
                   value={appName}
@@ -706,9 +707,8 @@ export function FaviconGeneratorTool({ language }: Props) {
                 htmlFor="favicon-short-name"
                 label={text.shortNameLabel}
               >
-                <input
+                <ToolInput
                   aria-label={text.shortNameLabel}
-                  className="w-full rounded-md border bg-background/60 px-3 py-2 text-sm"
                   id="favicon-short-name"
                   maxLength={24}
                   onChange={(event) => setShortName(event.target.value)}
@@ -749,7 +749,7 @@ export function FaviconGeneratorTool({ language }: Props) {
             </div>
           </div>
 
-          <div className="bg-sidebar p-0 text-sidebar-foreground">
+          <div className="p-0 text-foreground">
             <div className="flex min-h-[380px] flex-col justify-between gap-8">
               <div className="flex flex-1 flex-col gap-6">
                 <section className="space-y-3">
@@ -836,12 +836,10 @@ export function FaviconGeneratorTool({ language }: Props) {
                               { value: "dark", label: "Dark" },
                             ]}
                             value={appleIconMode}
-                            className={previewDarkSelectClass}
                           />
                         </PreviewSettingsField>
                         <PreviewSettingsField label="Nombre Apple">
                           <ToolInput
-                            className={previewDarkFieldClass}
                             id="apple-preview-label"
                             onChange={(event) =>
                               setApplePreviewLabel(
@@ -851,7 +849,7 @@ export function FaviconGeneratorTool({ language }: Props) {
                             value={applePreviewLabel}
                           />
                         </PreviewSettingsField>
-                        <div className="text-xs text-white/46">
+                        <div className="text-xs text-foreground/55">
                           Preview específica de Apple con icono y nombre
                           independientes.
                         </div>
@@ -893,12 +891,10 @@ export function FaviconGeneratorTool({ language }: Props) {
                               { value: "dark", label: "Dark" },
                             ]}
                             value={androidIconMode}
-                            className={previewDarkSelectClass}
                           />
                         </PreviewSettingsField>
                         <PreviewSettingsField label="Nombre Android">
                           <ToolInput
-                            className={previewDarkFieldClass}
                             id="android-preview-label"
                             onChange={(event) =>
                               setAndroidPreviewLabel(
@@ -910,7 +906,6 @@ export function FaviconGeneratorTool({ language }: Props) {
                         </PreviewSettingsField>
                         <PreviewSettingsField label="Nombre corto">
                           <ToolInput
-                            className={previewDarkFieldClass}
                             id="android-preview-short"
                             onChange={(event) =>
                               setAndroidShortName(event.target.value || "LT")
@@ -924,10 +919,10 @@ export function FaviconGeneratorTool({ language }: Props) {
                 </PreviewSection>
               </div>
 
-              <div className="border-t border-white/10 pt-5 text-center">
+              <div className="border-t border-border/70 pt-5 text-center">
                 {file ? (
                   <button
-                    className="rounded-full border border-white/10 bg-white/[0.08] px-5 py-2 text-sm text-white/90 transition-colors hover:bg-white/[0.14]"
+                    className="lt-button lt-button--ghost mx-auto h-9 px-4 text-sm"
                     onClick={() => {
                       revokePreviewUrls(previewIconUrls);
                       revokePreviewUrls(darkPreviewIconUrls);
@@ -938,12 +933,15 @@ export function FaviconGeneratorTool({ language }: Props) {
                     }}
                     type="button"
                   >
-                    {text.replaceImage}
+                    <IconPhotoCog className="h-4 w-4" />
+                    <span>{text.replaceImage}</span>
                   </button>
                 ) : (
-                  <p className="text-sm text-white/66">{text.previewEmpty}</p>
+                  <p className="text-sm text-foreground/66">
+                    {text.previewEmpty}
+                  </p>
                 )}
-                <p className="mt-4 text-xs text-white/38">
+                <p className="mt-4 text-xs text-foreground/45">
                   {text.previewFormats}
                 </p>
               </div>
@@ -1000,31 +998,32 @@ export function FaviconGeneratorTool({ language }: Props) {
         ) : (
           <div className="space-y-3">
             <p className="text-sm">{text.result}</p>
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <AnimatedLayoutGroup className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {[...generated, ...generatedDark].map((icon) => (
-                <a
-                  className="flex items-center justify-between rounded-md border p-3 text-sm"
-                  download={icon.fileName}
-                  href={icon.url}
-                  key={icon.fileName}
-                >
-                  <span className="inline-flex items-center gap-2">
-                    {icon.size}x{icon.size}
-                    {icon.fileName.includes("-dark") ? (
-                      <span className="rounded-full border px-2 py-0.5 text-[10px] uppercase tracking-[0.18em]">
-                        dark
-                      </span>
-                    ) : null}
-                  </span>
-                  <span>{icon.fileName}</span>
-                </a>
+                <AnimatedLayoutItem className="h-full" key={icon.fileName}>
+                  <a
+                    className="flex h-full items-center justify-between rounded-lg border border-border/70 bg-background/45 p-3 text-sm shadow-[4px_4px_0_var(--surface-shadow-color)] transition-[transform,box-shadow,border-color,background-color] hover:-translate-y-0.5 hover:bg-background/65 hover:shadow-[5px_5px_0_var(--surface-shadow-color)] dark:border-white/18 dark:bg-white/[0.025]"
+                    download={icon.fileName}
+                    href={icon.url}
+                  >
+                    <span className="inline-flex items-center gap-2">
+                      {icon.size}x{icon.size}
+                      {icon.fileName.includes("-dark") ? (
+                        <span className="rounded-full border px-2 py-0.5 text-[10px] uppercase tracking-[0.18em]">
+                          dark
+                        </span>
+                      ) : null}
+                    </span>
+                    <span>{icon.fileName}</span>
+                  </a>
+                </AnimatedLayoutItem>
               ))}
-            </div>
+            </AnimatedLayoutGroup>
             <div className="grid gap-4 xl:grid-cols-3">
               <div className="space-y-2 rounded-md border bg-background/40 p-3">
                 <p className="text-sm">{text.manifest}</p>
                 <ToolTextarea
-                  className="h-40 bg-background/60 text-xs"
+                  className="h-40 text-xs"
                   readOnly
                   value={manifestContent}
                 />
@@ -1050,7 +1049,7 @@ export function FaviconGeneratorTool({ language }: Props) {
               <div className="space-y-2 rounded-md border bg-background/40 p-3">
                 <p className="text-sm">{text.browserConfig}</p>
                 <ToolTextarea
-                  className="h-40 bg-background/60 text-xs"
+                  className="h-40 text-xs"
                   readOnly
                   value={browserConfigContent}
                 />
@@ -1076,7 +1075,7 @@ export function FaviconGeneratorTool({ language }: Props) {
               <div className="space-y-2 rounded-md border bg-background/40 p-3">
                 <p className="text-sm">{text.snippet}</p>
                 <ToolTextarea
-                  className="h-40 bg-background/60 text-xs"
+                  className="h-40 text-xs"
                   readOnly
                   value={htmlSnippet}
                 />

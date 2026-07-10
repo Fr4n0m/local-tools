@@ -80,7 +80,7 @@ export function SegmentedControl<TValue extends string>({
     <div
       aria-label={ariaLabel}
       className={cn(
-        "relative grid overflow-hidden rounded-xl border bg-background/35 p-1.5",
+        "relative grid overflow-hidden rounded-lg border border-border/85 bg-[var(--tool-control-bg)] p-1.5 shadow-[4px_4px_0_var(--surface-shadow-color)] transition-[border-color,box-shadow,background-color] focus-within:border-foreground/45 focus-within:shadow-[2px_2px_0_var(--surface-shadow-color)] dark:border-white/22 dark:focus-within:border-white/38",
         className,
       )}
       role="radiogroup"
@@ -93,7 +93,7 @@ export function SegmentedControl<TValue extends string>({
     >
       <span
         aria-hidden
-        className="pointer-events-none absolute bottom-1.5 top-1.5 rounded-lg bg-foreground shadow-sm transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none"
+        className="pointer-events-none absolute bottom-1.5 top-1.5 rounded-md bg-foreground shadow-[2px_2px_0_var(--button-shadow-color)] transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none"
         style={{
           left: "0.375rem",
           transform: "translateX(calc(var(--segmented-index) * 100%))",

@@ -4,6 +4,11 @@
   box-shadow: var(--surface-shadow-compact);
 }
 
+#main-content:focus,
+#main-content:focus-visible {
+  outline: none;
+}
+
 .tools-tool-panel {
   position: relative;
   transition:

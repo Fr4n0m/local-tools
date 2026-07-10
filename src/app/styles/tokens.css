@@ -66,6 +66,21 @@
   --surface-shadow-dark: 8px 8px 0 var(--surface-shadow-dark-color);
   --surface-shadow-dark-compact: 5px 5px 0 var(--surface-shadow-dark-color);
   --button-shadow-dark-color: var(--button-shadow-color);
+  --tool-control-bg: color-mix(
+    in oklab,
+    var(--color-background),
+    var(--color-secondary) 18%
+  );
+  --tool-control-hover-bg: color-mix(
+    in oklab,
+    var(--color-background),
+    var(--color-secondary) 34%
+  );
+  --tool-control-active-bg: color-mix(
+    in oklab,
+    var(--color-background),
+    var(--color-secondary) 46%
+  );
 }
 
 .dark {
@@ -100,6 +115,9 @@
   );
   --surface-shadow-dark-color: var(--surface-shadow-color);
   --button-shadow-dark-color: var(--button-shadow-color);
+  --tool-control-bg: #101010;
+  --tool-control-hover-bg: #181818;
+  --tool-control-active-bg: #222222;
 }
 
 @theme inline {

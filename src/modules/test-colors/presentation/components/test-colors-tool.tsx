@@ -12,6 +12,10 @@ import {
 } from "@/modules/test-colors/domain/test-colors";
 import en from "@/modules/test-colors/presentation/i18n/en.json";
 import es from "@/modules/test-colors/presentation/i18n/es.json";
+import {
+  AnimatedLayoutGroup,
+  AnimatedLayoutItem,
+} from "@/shared/presentation/components/animated-layout";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import {
   ToolField,
@@ -132,86 +136,88 @@ export function TestColorsTool({ language }: Props) {
           ) : (
             <>
               <p className="text-sm">{text.results}</p>
-              {rows.map((row) => (
-                <div
-                  className="rounded-2xl border bg-background/45 p-3"
-                  key={`${row.foreground}-${row.background}`}
-                >
-                  <div className="flex flex-wrap items-center justify-between gap-3">
-                    <div className="flex items-center gap-3">
-                      <span
-                        className="inline-flex h-9 w-9 items-center justify-center rounded-xl border text-[0.6rem] font-bold"
-                        style={{
-                          backgroundColor: row.foreground,
-                          color: row.background,
-                        }}
-                      >
-                        Aa
-                      </span>
-                      <span
-                        className="inline-flex h-9 w-9 items-center justify-center rounded-xl border text-[0.6rem] font-bold"
-                        style={{
-                          backgroundColor: row.background,
-                          color: row.foreground,
-                        }}
-                      >
-                        Bg
-                      </span>
-                      <div className="text-sm">
-                        <p className="font-semibold">{`${row.foreground} / ${row.background}`}</p>
-                        <p className="text-muted-foreground">
-                          {text.ratio}: {row.ratio.toFixed(2)}:1
-                        </p>
+              <AnimatedLayoutGroup className="space-y-3">
+                {rows.map((row) => (
+                  <AnimatedLayoutItem
+                    className="rounded-2xl border bg-background/45 p-3"
+                    key={`${row.foreground}-${row.background}`}
+                  >
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                      <div className="flex items-center gap-3">
+                        <span
+                          className="inline-flex h-9 w-9 items-center justify-center rounded-xl border text-[0.6rem] font-bold"
+                          style={{
+                            backgroundColor: row.foreground,
+                            color: row.background,
+                          }}
+                        >
+                          Aa
+                        </span>
+                        <span
+                          className="inline-flex h-9 w-9 items-center justify-center rounded-xl border text-[0.6rem] font-bold"
+                          style={{
+                            backgroundColor: row.background,
+                            color: row.foreground,
+                          }}
+                        >
+                          Bg
+                        </span>
+                        <div className="text-sm">
+                          <p className="font-semibold">{`${row.foreground} / ${row.background}`}</p>
+                          <p className="text-muted-foreground">
+                            {text.ratio}: {row.ratio.toFixed(2)}:1
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex flex-wrap items-center gap-2 text-xs">
+                        <span
+                          className={
+                            row.aaNormal
+                              ? "inline-flex items-center gap-1 rounded-full bg-emerald-500/12 px-2 py-1 text-emerald-600 dark:text-emerald-300"
+                              : "inline-flex items-center gap-1 rounded-full bg-rose-500/12 px-2 py-1 text-rose-600 dark:text-rose-300"
+                          }
+                        >
+                          {row.aaNormal ? (
+                            <IconCircleCheck size={14} />
+                          ) : (
+                            <IconCircleX size={14} />
+                          )}
+                          {text.aaNormal}
+                        </span>
+                        <span
+                          className={
+                            row.aaLarge
+                              ? "inline-flex items-center gap-1 rounded-full bg-sky-500/12 px-2 py-1 text-sky-700 dark:text-sky-300"
+                              : "inline-flex items-center gap-1 rounded-full bg-rose-500/12 px-2 py-1 text-rose-600 dark:text-rose-300"
+                          }
+                        >
+                          {row.aaLarge ? (
+                            <IconCircleCheck size={14} />
+                          ) : (
+                            <IconCircleX size={14} />
+                          )}
+                          {text.aaLarge}
+                        </span>
+                        <span
+                          className={
+                            row.aaaNormal
+                              ? "inline-flex items-center gap-1 rounded-full bg-violet-500/12 px-2 py-1 text-violet-700 dark:text-violet-300"
+                              : "inline-flex items-center gap-1 rounded-full bg-rose-500/12 px-2 py-1 text-rose-600 dark:text-rose-300"
+                          }
+                        >
+                          {row.aaaNormal ? (
+                            <IconCircleCheck size={14} />
+                          ) : (
+                            <IconCircleX size={14} />
+                          )}
+                          {text.aaaNormal}
+                        </span>
                       </div>
                     </div>
-
-                    <div className="flex flex-wrap items-center gap-2 text-xs">
-                      <span
-                        className={
-                          row.aaNormal
-                            ? "inline-flex items-center gap-1 rounded-full bg-emerald-500/12 px-2 py-1 text-emerald-600 dark:text-emerald-300"
-                            : "inline-flex items-center gap-1 rounded-full bg-rose-500/12 px-2 py-1 text-rose-600 dark:text-rose-300"
-                        }
-                      >
-                        {row.aaNormal ? (
-                          <IconCircleCheck size={14} />
-                        ) : (
-                          <IconCircleX size={14} />
-                        )}
-                        {text.aaNormal}
-                      </span>
-                      <span
-                        className={
-                          row.aaLarge
-                            ? "inline-flex items-center gap-1 rounded-full bg-sky-500/12 px-2 py-1 text-sky-700 dark:text-sky-300"
-                            : "inline-flex items-center gap-1 rounded-full bg-rose-500/12 px-2 py-1 text-rose-600 dark:text-rose-300"
-                        }
-                      >
-                        {row.aaLarge ? (
-                          <IconCircleCheck size={14} />
-                        ) : (
-                          <IconCircleX size={14} />
-                        )}
-                        {text.aaLarge}
-                      </span>
-                      <span
-                        className={
-                          row.aaaNormal
-                            ? "inline-flex items-center gap-1 rounded-full bg-violet-500/12 px-2 py-1 text-violet-700 dark:text-violet-300"
-                            : "inline-flex items-center gap-1 rounded-full bg-rose-500/12 px-2 py-1 text-rose-600 dark:text-rose-300"
-                        }
-                      >
-                        {row.aaaNormal ? (
-                          <IconCircleCheck size={14} />
-                        ) : (
-                          <IconCircleX size={14} />
-                        )}
-                        {text.aaaNormal}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              ))}
+                  </AnimatedLayoutItem>
+                ))}
+              </AnimatedLayoutGroup>
             </>
           )}
         </div>

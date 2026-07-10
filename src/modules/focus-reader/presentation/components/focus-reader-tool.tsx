@@ -9,6 +9,10 @@ import {
 import en from "@/modules/focus-reader/presentation/i18n/en.json";
 import es from "@/modules/focus-reader/presentation/i18n/es.json";
 import {
+  AnimatedLayoutGroup,
+  AnimatedLayoutItem,
+} from "@/shared/presentation/components/animated-layout";
+import {
   ToolField,
   ToolSection,
   ToolSwitch,
@@ -46,20 +50,21 @@ export function FocusReaderTool({ language }: Props) {
         {text.readTime}: {readMinutes} {text.minutes}
       </p>
 
-      <div className="space-y-3">
+      <AnimatedLayoutGroup className="space-y-3">
         {paragraphs.map((paragraph) => (
-          <p
-            className={
-              focusMode
-                ? "mx-auto max-w-3xl text-[1.05rem] leading-8"
-                : "text-sm leading-7"
-            }
-            key={paragraph}
-          >
-            {paragraph}
-          </p>
+          <AnimatedLayoutItem key={paragraph}>
+            <p
+              className={
+                focusMode
+                  ? "mx-auto max-w-3xl text-[1.05rem] leading-8"
+                  : "text-sm leading-7"
+              }
+            >
+              {paragraph}
+            </p>
+          </AnimatedLayoutItem>
         ))}
-      </div>
+      </AnimatedLayoutGroup>
     </ToolSection>
   );
 }

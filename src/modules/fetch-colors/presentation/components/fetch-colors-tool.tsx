@@ -18,6 +18,10 @@ import en from "@/modules/fetch-colors/presentation/i18n/en.json";
 import es from "@/modules/fetch-colors/presentation/i18n/es.json";
 import { copyTextToClipboard } from "@/shared/lib/clipboard";
 import { sanitizeIntInput } from "@/shared/lib/safe-input";
+import {
+  AnimatedLayoutGroup,
+  AnimatedLayoutItem,
+} from "@/shared/presentation/components/animated-layout";
 import { ToolDropSurface } from "@/shared/presentation/components/tool-drop-surface";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import {
@@ -247,41 +251,42 @@ export function FetchColorsTool({ language }: Props) {
                   </div>
                 </div>
 
-                <div className="grid gap-3 md:grid-cols-2">
+                <AnimatedLayoutGroup className="grid gap-3 md:grid-cols-2">
                   {colorsWithShare.map((item, index) => (
-                    <button
-                      className="rounded-2xl border bg-background/55 p-3 text-left transition-colors hover:bg-background/80"
-                      key={item.hex}
-                      onClick={() => {
-                        void copyTextToClipboard(item.hex);
-                      }}
-                      type="button"
-                    >
-                      <div
-                        className="flex min-h-28 flex-col justify-between rounded-xl border p-3 shadow-sm"
-                        style={{
-                          backgroundColor: item.hex,
-                          color: getTextColor(item.hex),
+                    <AnimatedLayoutItem className="h-full" key={item.hex}>
+                      <button
+                        className="h-full w-full rounded-xl border border-border/70 bg-background/55 p-3 text-left shadow-[4px_4px_0_var(--surface-shadow-color)] transition-[transform,box-shadow,background-color] hover:-translate-y-0.5 hover:bg-background/80 hover:shadow-[5px_5px_0_var(--surface-shadow-color)] dark:border-white/18 dark:bg-white/[0.025]"
+                        onClick={() => {
+                          void copyTextToClipboard(item.hex);
                         }}
+                        type="button"
                       >
-                        <div className="flex items-center justify-between gap-2 text-xs font-semibold uppercase tracking-[0.18em] opacity-80">
-                          <span>{text.color}</span>
-                          <span>#{index + 1}</span>
-                        </div>
-                        <div>
-                          <p className="text-lg font-black">{item.hex}</p>
-                          <div className="mt-2 flex items-center gap-3 text-xs font-medium opacity-85">
-                            <span className="inline-flex items-center gap-1">
-                              <IconDropletHalf2 size={14} />
-                              {item.share}%
-                            </span>
-                            <span>{item.count}</span>
+                        <div
+                          className="flex min-h-28 flex-col justify-between rounded-lg border p-3 shadow-sm"
+                          style={{
+                            backgroundColor: item.hex,
+                            color: getTextColor(item.hex),
+                          }}
+                        >
+                          <div className="flex items-center justify-between gap-2 text-xs font-semibold uppercase tracking-[0.18em] opacity-80">
+                            <span>{text.color}</span>
+                            <span>#{index + 1}</span>
+                          </div>
+                          <div>
+                            <p className="text-lg font-black">{item.hex}</p>
+                            <div className="mt-2 flex items-center gap-3 text-xs font-medium opacity-85">
+                              <span className="inline-flex items-center gap-1">
+                                <IconDropletHalf2 size={14} />
+                                {item.share}%
+                              </span>
+                              <span>{item.count}</span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </button>
+                      </button>
+                    </AnimatedLayoutItem>
                   ))}
-                </div>
+                </AnimatedLayoutGroup>
 
                 <ToolOutputBlock
                   label={text.outputLabel}

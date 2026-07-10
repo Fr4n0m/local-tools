@@ -7,6 +7,10 @@ import en from "@/modules/batch-rename/presentation/i18n/en.json";
 import es from "@/modules/batch-rename/presentation/i18n/es.json";
 import { copyTextToClipboard } from "@/shared/lib/clipboard";
 import { sanitizeIntInput } from "@/shared/lib/safe-input";
+import {
+  AnimatedLayoutGroup,
+  AnimatedLayoutItem,
+} from "@/shared/presentation/components/animated-layout";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import {
   ToolField,
@@ -160,31 +164,33 @@ export function BatchRenameTool({ language }: Props) {
                   {text.after}
                 </span>
               </div>
-              {preview.map((item) => {
-                const changed = item.original !== item.renamed;
-                return (
-                  <div
-                    className="grid grid-cols-2 gap-4 py-1"
-                    key={`${item.original}-${item.renamed}`}
-                    role="row"
-                  >
-                    <span
-                      className={`truncate text-sm ${changed ? "text-foreground/50" : "text-foreground/70"}`}
-                      role="cell"
-                      title={item.original}
+              <AnimatedLayoutGroup>
+                {preview.map((item) => {
+                  const changed = item.original !== item.renamed;
+                  return (
+                    <AnimatedLayoutItem
+                      className="grid grid-cols-2 gap-4 py-1"
+                      key={`${item.original}-${item.renamed}`}
+                      role="row"
                     >
-                      {item.original}
-                    </span>
-                    <span
-                      className={`truncate text-sm font-medium ${changed ? "text-primary" : "text-foreground/50"}`}
-                      role="cell"
-                      title={item.renamed}
-                    >
-                      {item.renamed}
-                    </span>
-                  </div>
-                );
-              })}
+                      <span
+                        className={`truncate text-sm ${changed ? "text-foreground/50" : "text-foreground/70"}`}
+                        role="cell"
+                        title={item.original}
+                      >
+                        {item.original}
+                      </span>
+                      <span
+                        className={`truncate text-sm font-medium ${changed ? "text-primary" : "text-foreground/50"}`}
+                        role="cell"
+                        title={item.renamed}
+                      >
+                        {item.renamed}
+                      </span>
+                    </AnimatedLayoutItem>
+                  );
+                })}
+              </AnimatedLayoutGroup>
             </div>
           ) : null}
         </div>

@@ -9,14 +9,63 @@ import {
   PIXEL_9_PRO_FRAME_SVG,
 } from "./telephone-frame-svgs";
 
+const IPHONE_APP_ICON_BASE = "/assets/ios-app-icons";
+const IPHONE_DARK_APP_ICON_BASE = `${IPHONE_APP_ICON_BASE}/dark`;
+
 const IPHONE_DECORATIVE_APPS = [
-  ["#a7f88f", "#41c144"],
-  ["#cecdd5", "#89888d"],
-  ["#1ac5fb", "#1d71f2"],
-  ["#fe9b01", "#f67324"],
-  ["#cb65f0", "#8628bb"],
-  ["#1d71f2", "#1ac8fd"],
-  ["#f3f4f6", "#94a3b8"],
+  {
+    id: "messages",
+    lightSrc: `${IPHONE_APP_ICON_BASE}/imessages.png`,
+    darkSrc: `${IPHONE_DARK_APP_ICON_BASE}/imessages.png`,
+  },
+  {
+    id: "camera",
+    lightSrc: `${IPHONE_APP_ICON_BASE}/camera.png`,
+    darkSrc: `${IPHONE_DARK_APP_ICON_BASE}/camera.png`,
+  },
+  {
+    id: "safari",
+    lightSrc: `${IPHONE_APP_ICON_BASE}/safari.png`,
+    darkSrc: `${IPHONE_DARK_APP_ICON_BASE}/safari.png`,
+  },
+  {
+    id: "photos",
+    lightSrc: `${IPHONE_APP_ICON_BASE}/photos.png`,
+    darkSrc: `${IPHONE_DARK_APP_ICON_BASE}/photos.png`,
+  },
+  {
+    id: "mail",
+    lightSrc: `${IPHONE_APP_ICON_BASE}/mail.png`,
+    darkSrc: `${IPHONE_DARK_APP_ICON_BASE}/mail.png`,
+  },
+  {
+    id: "settings",
+    lightSrc: `${IPHONE_APP_ICON_BASE}/settings.png`,
+    darkSrc: `${IPHONE_DARK_APP_ICON_BASE}/settings.png`,
+  },
+] as const;
+
+const IPHONE_DOCK_APPS = [
+  {
+    id: "phone",
+    lightSrc: `${IPHONE_APP_ICON_BASE}/phone.png`,
+    darkSrc: `${IPHONE_DARK_APP_ICON_BASE}/phone.png`,
+  },
+  {
+    id: "safari",
+    lightSrc: `${IPHONE_APP_ICON_BASE}/safari.png`,
+    darkSrc: `${IPHONE_DARK_APP_ICON_BASE}/safari.png`,
+  },
+  {
+    id: "messages",
+    lightSrc: `${IPHONE_APP_ICON_BASE}/imessages.png`,
+    darkSrc: `${IPHONE_DARK_APP_ICON_BASE}/imessages.png`,
+  },
+  {
+    id: "mail",
+    lightSrc: `${IPHONE_APP_ICON_BASE}/mail.png`,
+    darkSrc: `${IPHONE_DARK_APP_ICON_BASE}/mail.png`,
+  },
 ] as const;
 
 type PreviewIcon = React.ComponentType<{ className?: string }>;
@@ -193,7 +242,7 @@ export function PreviewHeading({
   label: string;
 }) {
   return (
-    <div className="inline-flex items-center gap-2 text-sm font-medium text-white/72">
+    <div className="inline-flex items-center gap-2 text-sm font-medium text-foreground/72">
       <Icon className="h-3.5 w-3.5" />
       <span>{label}</span>
     </div>
@@ -342,12 +391,17 @@ function IPhonePreviewMock({
           <div
             className={`${previewStyles.iphoneWidget} ${previewStyles.iphoneWeather}`}
           >
-            <span>Local</span>
+            <span className={previewStyles.iphoneWidgetTitle}>Local</span>
             <strong>24°</strong>
+            <span className={previewStyles.iphoneWeatherMeta}>Sunny</span>
           </div>
           <div
             className={`${previewStyles.iphoneWidget} ${previewStyles.iphoneMap}`}
-          />
+          >
+            <span className={previewStyles.iphoneMapRoad} />
+            <span className={previewStyles.iphoneMapRoadAlt} />
+            <span className={previewStyles.iphoneMapPin} />
+          </div>
           <div className={previewStyles.iphoneFaviconApp}>
             {iconUrl ? (
               <NextImage
@@ -363,17 +417,39 @@ function IPhonePreviewMock({
             )}
             <div className={previewStyles.iphoneAppLabel}>{appLabel}</div>
           </div>
-          {IPHONE_DECORATIVE_APPS.map(([start, end], index) => (
+          {IPHONE_DECORATIVE_APPS.map(({ darkSrc, id, lightSrc }) => (
             <div
               className={previewStyles.iphoneApp}
-              key={`iphone-app-${index}`}
-              style={
-                {
-                  "--app-bg-1": start,
-                  "--app-bg-2": end,
-                } as CSSProperties
-              }
-            />
+              data-ios-app={id}
+              key={`iphone-app-${id}`}
+            >
+              <NextImage
+                alt=""
+                className={previewStyles.iphoneAppImage}
+                height={60}
+                src={dark ? darkSrc : lightSrc}
+                unoptimized
+                width={60}
+              />
+            </div>
+          ))}
+        </div>
+        <div className={previewStyles.iphoneDock} aria-hidden>
+          {IPHONE_DOCK_APPS.map(({ darkSrc, id, lightSrc }) => (
+            <span
+              className={previewStyles.iphoneDockApp}
+              data-ios-app={id}
+              key={`iphone-dock-${id}`}
+            >
+              <NextImage
+                alt=""
+                className={previewStyles.iphoneDockImage}
+                height={60}
+                src={dark ? darkSrc : lightSrc}
+                unoptimized
+                width={60}
+              />
+            </span>
           ))}
         </div>
         <div className={previewStyles.phoneGestureBar} />
@@ -385,16 +461,20 @@ function IPhonePreviewMock({
 function AndroidPreviewMock({
   iconUrl,
   appLabel,
+  dark = false,
 }: {
   iconUrl: string | null;
   appLabel: string;
+  dark?: boolean;
 }) {
   const ghostApps = Array.from({ length: 11 });
 
   return (
     <TelephoneFrame platform="android">
       <div
-        className={`${previewStyles.telephoneHome} ${previewStyles.androidHome}`}
+        className={`${previewStyles.telephoneHome} ${previewStyles.androidHome} ${
+          dark ? "" : previewStyles.androidHomeLight
+        }`}
       >
         <div className={previewStyles.androidSearchBar}>
           <span className={previewStyles.androidSearchDot} />
@@ -457,7 +537,7 @@ export function MobilePreviewCard({
 
   return (
     <div className="flex h-full min-h-[340px] items-center justify-center text-white">
-      <AndroidPreviewMock appLabel={appLabel} iconUrl={iconUrl} />
+      <AndroidPreviewMock appLabel={appLabel} dark={dark} iconUrl={iconUrl} />
     </div>
   );
 }
@@ -576,14 +656,8 @@ export function PreviewSettingsField({
 }) {
   return (
     <label className="grid gap-2">
-      <span className="text-sm font-medium text-white/78">{label}</span>
+      <span className="text-sm font-medium text-foreground/78">{label}</span>
       {children}
     </label>
   );
 }
-
-export const previewDarkFieldClass =
-  "!h-10 !w-full !rounded-[14px] !border !border-white/14 !bg-[#101010] !px-3 !text-sm !text-white !outline-none !placeholder:text-white/34 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] focus-visible:!border-white/24";
-
-export const previewDarkSelectClass =
-  "[&>button]:!h-10 [&>button]:!rounded-[14px] [&>button]:!border-white/14 [&>button]:!bg-[#101010] [&>button]:!text-white [&>button]:shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] [&>button:focus-visible]:!border-white/24 [&_svg]:!text-white/58 [&_[role=listbox]]:!rounded-[14px] [&_[role=listbox]]:!border-white/14 [&_[role=listbox]]:!bg-[#101010] [&_[role=listbox]]:!shadow-[0_18px_38px_rgba(0,0,0,0.45)] [&_[role=option]]:!text-white/86 [&_[role=option]:hover]:!bg-white/[0.08] [&_[role=option][aria-selected=true]]:!text-white";

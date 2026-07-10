@@ -10,11 +10,7 @@
   width: 100%;
   border-radius: 0.5rem;
   border: 1px solid color-mix(in oklab, var(--color-border), transparent 15%);
-  background-color: color-mix(
-    in oklab,
-    var(--color-background),
-    var(--color-secondary) 18%
-  );
+  background-color: var(--tool-control-bg);
   padding: 0.52rem 0.72rem;
   font-size: 0.875rem;
   line-height: 1.3;
@@ -26,11 +22,7 @@
 .dark .tool-shell select,
 .dark .tool-shell textarea {
   border-color: color-mix(in oklab, var(--color-border), transparent 5%);
-  background-color: color-mix(
-    in oklab,
-    var(--color-background),
-    var(--color-secondary) 32%
-  );
+  background-color: var(--tool-control-bg);
 }
 
 .tool-shell textarea {

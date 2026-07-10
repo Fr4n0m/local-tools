@@ -80,7 +80,7 @@ export function ToolToggleField({
   return (
     <label
       className={cn(
-        "flex items-center gap-2 rounded-md border bg-background/25 p-2.5 text-sm",
+        "flex items-center gap-2 rounded-lg border border-border/85 bg-[var(--tool-control-bg)] p-2.5 text-sm shadow-[4px_4px_0_var(--surface-shadow-color)] transition-[border-color,box-shadow,background-color] focus-within:border-foreground/45 focus-within:shadow-[2px_2px_0_var(--surface-shadow-color)] dark:border-white/22 dark:focus-within:border-white/38",
         className,
       )}
     >
@@ -305,7 +305,7 @@ export function ToolColorPicker({
   return (
     <div className={cn("relative", className)} ref={rootRef}>
       <button
-        className="lt-surface-raised--compact flex h-10 w-full items-center gap-2 rounded-xl border border-border/70 bg-background/78 px-3 text-left text-xs transition-[box-shadow,transform,border-color] hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/35 dark:border-white/18 dark:bg-white/[0.04] dark:hover:border-white/28"
+        className="flex h-10 w-full items-center gap-2 rounded-lg border border-border/85 bg-[var(--tool-control-bg)] px-3 text-left text-xs shadow-[4px_4px_0_var(--surface-shadow-color)] outline-none transition-[border-color,box-shadow,background-color] focus-visible:border-foreground/45 focus-visible:shadow-[2px_2px_0_var(--surface-shadow-color)] dark:border-white/22 dark:focus-visible:border-white/38"
         onClick={() =>
           setOpen((s) => {
             const next = !s;
@@ -329,12 +329,12 @@ export function ToolColorPicker({
 
       {open ? (
         <div
-          className="lt-surface-raised absolute left-0 top-full z-50 mt-2 w-72 rounded-2xl border border-border/70 bg-background/96 p-3.5 shadow-none backdrop-blur dark:border-white/20 dark:bg-[#090b0d]/96"
+          className="lt-surface-raised absolute left-0 top-full z-50 mt-2 w-72 rounded-2xl border border-border/70 bg-[var(--tool-control-bg)] p-3.5 shadow-none backdrop-blur dark:border-white/20"
           onClick={(e) => e.stopPropagation()}
           onPointerDown={(e) => e.stopPropagation()}
         >
           <div className="grid gap-3">
-            <div className="flex items-center gap-2 rounded-xl border border-border/60 bg-background/58 p-2 dark:border-white/16 dark:bg-white/[0.04]">
+            <div className="flex items-center gap-2 rounded-xl border border-border/60 bg-[var(--tool-control-hover-bg)] p-2 dark:border-white/16">
               <span
                 aria-hidden
                 className="h-8 w-8 rounded-lg border border-border/70 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.32)] dark:border-white/24"
@@ -357,7 +357,7 @@ export function ToolColorPicker({
 
           <input
             aria-label="Custom hex color"
-            className="mt-3 w-full rounded-xl border border-border/65 bg-background/70 px-3 py-2 font-mono text-xs outline-none transition-colors focus:border-foreground/50 dark:border-white/18 dark:bg-white/[0.04] dark:focus:border-white/40"
+            className="mt-3 w-full rounded-xl border border-border/65 bg-[var(--tool-control-bg)] px-3 py-2 font-mono text-xs outline-none transition-colors focus:border-foreground/50 dark:border-white/18 dark:focus:border-white/40"
             onBlur={() => onChange(normalizeHex(draft))}
             onChange={(event) => setDraft(event.target.value)}
             onKeyDown={(e) => {
@@ -485,7 +485,7 @@ export function ToolInput({ className, ...props }: ToolInputProps) {
   return (
     <input
       className={cn(
-        "w-full rounded-md border bg-background/40 px-3 py-2",
+        "w-full rounded-lg border border-border/85 bg-[var(--tool-control-bg)] px-3 py-2 text-sm shadow-[4px_4px_0_var(--surface-shadow-color)] outline-none transition-[border-color,box-shadow,background-color] focus-visible:border-foreground/45 focus-visible:shadow-[2px_2px_0_var(--surface-shadow-color)] dark:border-white/22 dark:focus-visible:border-white/38",
         className,
       )}
       {...props}
@@ -582,7 +582,7 @@ export function ToolSelect({
         aria-haspopup="listbox"
         aria-label={ariaLabel}
         className={cn(
-          "flex w-full items-center justify-between gap-2 rounded-md border bg-background/40 text-sm",
+          "flex w-full items-center justify-between gap-2 rounded-lg border border-border/85 bg-[var(--tool-control-bg)] text-sm shadow-[4px_4px_0_var(--surface-shadow-color)] outline-none transition-[border-color,box-shadow,background-color] focus-visible:border-foreground/45 focus-visible:shadow-[2px_2px_0_var(--surface-shadow-color)] dark:border-white/22 dark:focus-visible:border-white/38",
           sizeClass,
         )}
         onClick={() => (open ? closeDropdown() : openDropdown())}
@@ -601,7 +601,7 @@ export function ToolSelect({
       </button>
       {open ? (
         <div
-          className="absolute left-0 top-full z-50 mt-1 w-full overflow-hidden rounded-md border bg-background shadow-lg"
+          className="absolute left-0 top-full z-50 mt-2 w-full overflow-hidden rounded-lg border border-border/85 bg-[var(--tool-control-bg)] shadow-[var(--surface-shadow-compact),0_18px_38px_rgba(0,0,0,0.22)] dark:border-white/22"
           id={listboxId}
           role="listbox"
         >
@@ -611,8 +611,8 @@ export function ToolSelect({
               className={cn(
                 "w-full px-3 py-2 text-left text-sm transition-colors",
                 index === highlighted
-                  ? "bg-secondary/60"
-                  : "hover:bg-secondary/30",
+                  ? "bg-[var(--tool-control-active-bg)]"
+                  : "hover:bg-[var(--tool-control-hover-bg)]",
                 option.value === value
                   ? "font-medium text-primary"
                   : "text-foreground",
@@ -685,7 +685,12 @@ export function ToolSlider({
   }, [parsed]);
 
   return (
-    <div className={cn("flex items-center gap-3", className)}>
+    <div
+      className={cn(
+        "flex items-center gap-3 rounded-lg border border-border/85 bg-[var(--tool-control-bg)] px-3 py-2 shadow-[4px_4px_0_var(--surface-shadow-color)] transition-[border-color,box-shadow,background-color] focus-within:border-foreground/45 focus-within:shadow-[2px_2px_0_var(--surface-shadow-color)] dark:border-white/22 dark:focus-within:border-white/38",
+        className,
+      )}
+    >
       <input
         aria-label={displayValue}
         className="flex-1"
@@ -782,7 +787,6 @@ export function ToolFileDrop({
         <ToolInput
           accept={accept}
           aria-label={inputAriaLabel ?? label}
-          className="bg-background/60"
           multiple={multiple}
           onChange={(event) =>
             onSelectFiles(Array.from(event.target.files ?? []))

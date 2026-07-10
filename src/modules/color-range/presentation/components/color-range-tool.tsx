@@ -12,6 +12,10 @@ import en from "@/modules/color-range/presentation/i18n/en.json";
 import es from "@/modules/color-range/presentation/i18n/es.json";
 import { copyTextToClipboard } from "@/shared/lib/clipboard";
 import { sanitizeIntInput } from "@/shared/lib/safe-input";
+import {
+  AnimatedLayoutGroup,
+  AnimatedLayoutItem,
+} from "@/shared/presentation/components/animated-layout";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import {
   ToolColorPicker,
@@ -167,10 +171,10 @@ export function ColorRangeTool({ language }: Props) {
                 </div>
               </div>
 
-              <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+              <AnimatedLayoutGroup className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
                 {colors.map((item) => (
-                  <div
-                    className="rounded-2xl border p-3 shadow-sm"
+                  <AnimatedLayoutItem
+                    className="rounded-xl border border-border/70 p-3 shadow-[4px_4px_0_var(--surface-shadow-color)] dark:border-white/18"
                     key={`${item.step}-${item.hex}`}
                     style={{
                       backgroundColor: item.hex,
@@ -182,9 +186,9 @@ export function ColorRangeTool({ language }: Props) {
                     </p>
                     <p className="mt-4 text-xl font-black">{item.hex}</p>
                     <p className="mt-1 text-xs opacity-80">{`${scaleName || "palette"}-${item.step}`}</p>
-                  </div>
+                  </AnimatedLayoutItem>
                 ))}
-              </div>
+              </AnimatedLayoutGroup>
 
               <ToolOutputBlock
                 label={

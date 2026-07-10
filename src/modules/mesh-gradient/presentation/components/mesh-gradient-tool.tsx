@@ -14,6 +14,10 @@ import es from "@/modules/mesh-gradient/presentation/i18n/es.json";
 import { copyTextToClipboard } from "@/shared/lib/clipboard";
 import { downloadBlob, downloadTextFile } from "@/shared/lib/download";
 import { sanitizeIntInput } from "@/shared/lib/safe-input";
+import {
+  AnimatedLayoutGroup,
+  AnimatedLayoutItem,
+} from "@/shared/presentation/components/animated-layout";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import {
   ToolField,
@@ -201,9 +205,12 @@ export function MeshGradientTool({ language }: Props) {
           <span>{text.addColor}</span>
         </button>
       </div>
-      <div className="grid gap-3 md:grid-cols-2">
+      <AnimatedLayoutGroup className="grid gap-3 md:grid-cols-2">
         {stops.map((stop, index) => (
-          <div className="rounded-md border p-3" key={stop.id}>
+          <AnimatedLayoutItem
+            className="rounded-xl border border-border/70 bg-background/45 p-3 shadow-[4px_4px_0_var(--surface-shadow-color)] dark:border-white/18 dark:bg-white/[0.025]"
+            key={stop.id}
+          >
             <div className="mb-3 flex items-center justify-between gap-3">
               <p className="text-sm font-medium text-foreground/78">
                 {text.colorStopLabel.replace("{index}", String(index + 1))}
@@ -235,9 +242,8 @@ export function MeshGradientTool({ language }: Props) {
                 }}
                 value={stop.color}
               />
-              <input
+              <ToolInput
                 aria-label={`${text.stops} X ${index + 1}`}
-                className="w-full rounded-md border bg-background/40 p-2 text-sm"
                 max={100}
                 min={0}
                 onChange={(event) => {
@@ -260,9 +266,8 @@ export function MeshGradientTool({ language }: Props) {
                 type="number"
                 value={stop.x}
               />
-              <input
+              <ToolInput
                 aria-label={`${text.stops} Y ${index + 1}`}
-                className="w-full rounded-md border bg-background/40 p-2 text-sm"
                 max={100}
                 min={0}
                 onChange={(event) => {
@@ -286,9 +291,9 @@ export function MeshGradientTool({ language }: Props) {
                 value={stop.y}
               />
             </div>
-          </div>
+          </AnimatedLayoutItem>
         ))}
-      </div>
+      </AnimatedLayoutGroup>
 
       <ToolActions
         actions={[
