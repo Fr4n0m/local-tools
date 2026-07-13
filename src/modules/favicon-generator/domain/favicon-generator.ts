@@ -1,11 +1,21 @@
 export const FAVICON_SIZES = [16, 32, 48, 64, 128, 150, 180, 192, 256, 512];
 
 export type FaviconFitMode = "contain" | "crop" | "stretch";
+export const FAVICON_CORNER_SHAPES = [
+  "square",
+  "round",
+  "squircle",
+  "bevel",
+  "scoop",
+  "notch",
+] as const;
+export type FaviconCornerShape = (typeof FAVICON_CORNER_SHAPES)[number];
 
 export type FaviconRenderSettings = {
   fit: FaviconFitMode;
   scale: number;
   roundness: number;
+  cornerShape: FaviconCornerShape;
   tintEnabled: boolean;
   tintColor: string;
   backgroundEnabled: boolean;
@@ -42,6 +52,7 @@ export function createDefaultFaviconRenderSettings(): FaviconRenderSettings {
     fit: "contain",
     scale: 1,
     roundness: 0,
+    cornerShape: "round",
     tintEnabled: false,
     tintColor: "#111111",
     backgroundEnabled: false,
@@ -123,17 +134,124 @@ export function faviconFileName(
   return `favicon-${size}x${size}.png`;
 }
 
-function buildRoundedRectPath(
+function buildCornerShapePath(
   context: CanvasRenderingContext2D,
   x: number,
   y: number,
   width: number,
   height: number,
   radius: number,
+  shape: FaviconCornerShape,
 ) {
   const safeRadius = Math.min(radius, width / 2, height / 2);
   context.beginPath();
+
+  if (shape === "square" || safeRadius === 0) {
+    context.rect(x, y, width, height);
+    context.closePath();
+    return;
+  }
+
   context.moveTo(x + safeRadius, y);
+
+  if (shape === "bevel") {
+    context.lineTo(x + width - safeRadius, y);
+    context.lineTo(x + width, y + safeRadius);
+    context.lineTo(x + width, y + height - safeRadius);
+    context.lineTo(x + width - safeRadius, y + height);
+    context.lineTo(x + safeRadius, y + height);
+    context.lineTo(x, y + height - safeRadius);
+    context.lineTo(x, y + safeRadius);
+    context.closePath();
+    return;
+  }
+
+  if (shape === "notch") {
+    context.lineTo(x + width - safeRadius, y);
+    context.lineTo(x + width - safeRadius, y + safeRadius);
+    context.lineTo(x + width, y + safeRadius);
+    context.lineTo(x + width, y + height - safeRadius);
+    context.lineTo(x + width - safeRadius, y + height - safeRadius);
+    context.lineTo(x + width - safeRadius, y + height);
+    context.lineTo(x + safeRadius, y + height);
+    context.lineTo(x + safeRadius, y + height - safeRadius);
+    context.lineTo(x, y + height - safeRadius);
+    context.lineTo(x, y + safeRadius);
+    context.lineTo(x + safeRadius, y + safeRadius);
+    context.closePath();
+    return;
+  }
+
+  if (shape === "scoop") {
+    context.lineTo(x + width - safeRadius, y);
+    context.quadraticCurveTo(
+      x + width - safeRadius,
+      y + safeRadius,
+      x + width,
+      y + safeRadius,
+    );
+    context.lineTo(x + width, y + height - safeRadius);
+    context.quadraticCurveTo(
+      x + width - safeRadius,
+      y + height - safeRadius,
+      x + width - safeRadius,
+      y + height,
+    );
+    context.lineTo(x + safeRadius, y + height);
+    context.quadraticCurveTo(
+      x + safeRadius,
+      y + height - safeRadius,
+      x,
+      y + height - safeRadius,
+    );
+    context.lineTo(x, y + safeRadius);
+    context.quadraticCurveTo(x + safeRadius, y + safeRadius, x + safeRadius, y);
+    context.closePath();
+    return;
+  }
+
+  if (shape === "squircle") {
+    const shoulder = safeRadius * 0.82;
+    context.lineTo(x + width - safeRadius, y);
+    context.bezierCurveTo(
+      x + width - safeRadius + shoulder,
+      y,
+      x + width,
+      y + safeRadius - shoulder,
+      x + width,
+      y + safeRadius,
+    );
+    context.lineTo(x + width, y + height - safeRadius);
+    context.bezierCurveTo(
+      x + width,
+      y + height - safeRadius + shoulder,
+      x + width - safeRadius + shoulder,
+      y + height,
+      x + width - safeRadius,
+      y + height,
+    );
+    context.lineTo(x + safeRadius, y + height);
+    context.bezierCurveTo(
+      x + safeRadius - shoulder,
+      y + height,
+      x,
+      y + height - safeRadius + shoulder,
+      x,
+      y + height - safeRadius,
+    );
+    context.lineTo(x, y + safeRadius);
+    context.bezierCurveTo(
+      x,
+      y + safeRadius - shoulder,
+      x + safeRadius - shoulder,
+      y,
+      x + safeRadius,
+      y,
+    );
+    context.closePath();
+    return;
+  }
+
   context.arcTo(x + width, y, x + width, y + height, safeRadius);
   context.arcTo(x + width, y + height, x, y + height, safeRadius);
   context.arcTo(x, y + height, x, y, safeRadius);
@@ -162,13 +280,14 @@ export function drawFaviconSource(
 
   if (settings.backgroundEnabled || roundness > 0) {
     context.save();
-    buildRoundedRectPath(
+    buildCornerShapePath(
       context,
       0,
       0,
       outputSize,
       outputSize,
       outputSize * roundness * 0.5,
+      settings.cornerShape,
     );
     context.clip();
     if (settings.backgroundEnabled) {

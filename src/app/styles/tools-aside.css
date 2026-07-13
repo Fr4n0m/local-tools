@@ -136,7 +136,8 @@
   right: 0;
   top: calc(100% + 0.35rem);
   z-index: 30;
-  width: 9.5rem;
+  width: min(15rem, calc(100vw - 2rem));
+  overflow: hidden;
   margin: 0;
   border-radius: var(--radius-squircle);
   background: #050505;
@@ -153,7 +154,8 @@
   border: none;
   border-radius: calc(var(--radius-squircle) - 8px);
   padding: 0.42rem 0.45rem;
-  display: flex;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   gap: 0.45rem;
   color: color-mix(in oklab, var(--color-sidebar-foreground), transparent 18%);
@@ -187,10 +189,15 @@
 }
 
 .aside-language-pending {
-  margin-left: auto;
-  font-size: 0.75rem;
+  min-width: 0;
+  max-width: 100%;
+  justify-self: end;
+  overflow: hidden;
+  font-size: 0.62rem;
   font-weight: 800;
   text-transform: uppercase;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   color: color-mix(in oklab, var(--color-sidebar-foreground), transparent 46%);
 }
 

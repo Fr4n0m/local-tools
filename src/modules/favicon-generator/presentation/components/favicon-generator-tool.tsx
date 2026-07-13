@@ -25,9 +25,11 @@ import {
   createDefaultFaviconRenderSettings,
   drawFaviconSource,
   buildManifestContent,
+  FAVICON_CORNER_SHAPES,
   FAVICON_SIZES,
   faviconFileName,
   type FaviconFitMode,
+  type FaviconCornerShape,
   type FaviconRenderSettings,
   normalizeAppName,
   normalizeFaviconPath,
@@ -63,13 +65,15 @@ import type { Language } from "@/shared/presentation/i18n";
 import { sharedMessages } from "@/shared/presentation/i18n";
 import {
   BrowserPreviewMock,
+  SearchPreviewCard,
+} from "@/shared/presentation/components/browser-search-mocks";
+import {
   MobilePreviewCard,
   PreviewHeading,
   PreviewSection,
   PreviewSettingsField,
   PreviewSettingsPanel,
   PreviewSubtleStack,
-  SearchPreviewCard,
 } from "./favicon-generator-previews";
 
 type Props = { language: Language };
@@ -92,10 +96,14 @@ const FAVICON_RENDER_TARGETS: FaviconRenderTarget[] = [
 ];
 
 function createDefaultFaviconRenderSettingsByTarget(): FaviconRenderSettingsByTarget {
+  const browser = createDefaultFaviconRenderSettings();
+  const apple = createDefaultFaviconRenderSettings();
+  const android = createDefaultFaviconRenderSettings();
+
   return {
-    browser: createDefaultFaviconRenderSettings(),
-    apple: createDefaultFaviconRenderSettings(),
-    android: createDefaultFaviconRenderSettings(),
+    browser: { ...browser, cornerShape: "round", roundness: 0.33 },
+    apple: { ...apple, cornerShape: "squircle", roundness: 0.33 },
+    android: { ...android, cornerShape: "squircle", roundness: 0.33 },
   };
 }
 
@@ -218,6 +226,158 @@ async function generatePreviewIconUrl(
 
 const FAVICON_FIT_OPTIONS: FaviconFitMode[] = ["contain", "crop", "stretch"];
 
+type FaviconText = typeof en;
+
+function RenderSettingsFields({
+  compact = false,
+  settings,
+  text,
+  updateSettings,
+}: {
+  compact?: boolean;
+  settings: FaviconRenderSettings;
+  text: FaviconText;
+  updateSettings: (
+    update: (current: FaviconRenderSettings) => FaviconRenderSettings,
+  ) => void;
+}) {
+  return (
+    <div
+      className={
+        compact
+          ? "grid grid-cols-2 content-start gap-3 [&>*:first-child]:col-span-2 [&>*:nth-child(2)]:col-span-2"
+          : "grid content-start gap-3"
+      }
+    >
+      <ToolField label={text.fitLabel}>
+        <SegmentedControl
+          aria-label={text.fitLabel}
+          onChange={(fit) =>
+            updateSettings((current) => ({
+              ...current,
+              fit: fit as FaviconFitMode,
+            }))
+          }
+          options={FAVICON_FIT_OPTIONS.map((option) => ({
+            value: option,
+            label: option[0].toUpperCase() + option.slice(1),
+          }))}
+          value={settings.fit}
+        />
+      </ToolField>
+
+      <ToolField label={text.scaleLabel}>
+        <ToolSlider
+          displayValue={`${Math.round(settings.scale * 100)}%`}
+          max={2}
+          min={0}
+          onChange={(value) =>
+            updateSettings((current) => ({
+              ...current,
+              scale: clampFaviconScale(value),
+            }))
+          }
+          step={0.01}
+          value={settings.scale}
+        />
+      </ToolField>
+
+      <ToolToggleField label={text.tintToggleLabel}>
+        <ToolSwitch
+          aria-label={text.tintToggleLabel}
+          checked={settings.tintEnabled}
+          onChange={(checked) =>
+            updateSettings((current) => ({
+              ...current,
+              tintEnabled: checked,
+            }))
+          }
+        />
+      </ToolToggleField>
+      {settings.tintEnabled ? (
+        <ToolField label={text.tintColorLabel}>
+          <ToolColorPicker
+            onChange={(value) =>
+              updateSettings((current) => ({
+                ...current,
+                tintColor: value,
+              }))
+            }
+            value={settings.tintColor}
+          />
+        </ToolField>
+      ) : null}
+
+      <ToolToggleField label={text.backgroundToggleLabel}>
+        <ToolSwitch
+          aria-label={text.backgroundToggleLabel}
+          checked={settings.backgroundEnabled}
+          onChange={(checked) =>
+            updateSettings((current) => ({
+              ...current,
+              backgroundEnabled: checked,
+            }))
+          }
+        />
+      </ToolToggleField>
+      {settings.backgroundEnabled ? (
+        <ToolField label={text.backgroundFillLabel}>
+          <ToolColorPicker
+            onChange={(value) =>
+              updateSettings((current) => ({
+                ...current,
+                backgroundColor: value,
+              }))
+            }
+            value={settings.backgroundColor}
+          />
+        </ToolField>
+      ) : null}
+
+      <ToolField label={text.cornerShapeLabel}>
+        <ToolSelect
+          aria-label={text.cornerShapeLabel}
+          onChange={(value) =>
+            updateSettings((current) => ({
+              ...current,
+              cornerShape: value as FaviconCornerShape,
+            }))
+          }
+          options={FAVICON_CORNER_SHAPES.map((shape) => ({
+            value: shape,
+            label: text.cornerShapeOptions[shape],
+          }))}
+          value={settings.cornerShape}
+        />
+      </ToolField>
+
+      <ToolField label={text.roundnessLabel}>
+        <ToolSlider
+          disabled={settings.cornerShape === "square"}
+          displayValue={`${Math.round(settings.roundness * 100)}%`}
+          max={1}
+          min={0}
+          onChange={(value) =>
+            updateSettings((current) => ({
+              ...current,
+              roundness: clampFaviconRoundness(value),
+            }))
+          }
+          step={0.01}
+          value={settings.roundness}
+        />
+        <p className="text-xs text-foreground/55">
+          {settings.cornerShape === "square"
+            ? text.roundnessSquareHelp
+            : settings.backgroundEnabled
+              ? text.roundnessWithBackgroundHelp
+              : text.roundnessWithoutBackgroundHelp}
+        </p>
+      </ToolField>
+    </div>
+  );
+}
+
 export function FaviconGeneratorTool({ language }: Props) {
   const text = useMemo(() => (language === "es" ? es : en), [language]);
   const sharedText = sharedMessages[language];
@@ -234,29 +394,22 @@ export function FaviconGeneratorTool({ language }: Props) {
     useState<FaviconPreviewUrlsByTarget>(() => createEmptyPreviewUrls());
   const [darkPreviewIconUrls, setDarkPreviewIconUrls] =
     useState<FaviconPreviewUrlsByTarget>(() => createEmptyPreviewUrls());
-  const [appleIconMode, setAppleIconMode] = useState<"light" | "dark">("light");
-  const [androidIconMode, setAndroidIconMode] = useState<"light" | "dark">(
-    "dark",
-  );
   const [applePreviewLabel, setApplePreviewLabel] = useState("MyWebSite");
   const [androidPreviewLabel, setAndroidPreviewLabel] = useState("MySite");
   const [androidShortName, setAndroidShortName] = useState("LT");
   const [faviconPath, setFaviconPath] = useState("/");
   const [versionTag, setVersionTag] = useState("");
-  const [activeRenderTarget, setActiveRenderTarget] =
-    useState<FaviconRenderTarget>("browser");
   const [renderSettingsByTarget, setRenderSettingsByTarget] =
     useState<FaviconRenderSettingsByTarget>(() =>
       createDefaultFaviconRenderSettingsByTarget(),
     );
-  const activeRenderSettings = renderSettingsByTarget[activeRenderTarget];
-
-  const updateActiveRenderSettings = (
+  const updateRenderSettings = (
+    target: FaviconRenderTarget,
     update: (current: FaviconRenderSettings) => FaviconRenderSettings,
   ) => {
     setRenderSettingsByTarget((current) => ({
       ...current,
-      [activeRenderTarget]: update(current[activeRenderTarget]),
+      [target]: update(current[target]),
     }));
   };
 
@@ -284,14 +437,13 @@ export function FaviconGeneratorTool({ language }: Props) {
         backgroundColor,
         faviconPath,
         version: versionTag,
-        androidIconVariant: androidIconMode === "dark" ? "dark" : "regular",
+        androidIconVariant: "regular",
         androidAppName: androidPreviewLabel,
         androidShortName,
       },
       generatedDark,
     );
   }, [
-    androidIconMode,
     androidPreviewLabel,
     androidShortName,
     backgroundColor,
@@ -341,12 +493,11 @@ export function FaviconGeneratorTool({ language }: Props) {
         backgroundColor,
         faviconPath,
         version: versionTag,
-        appleTouchIconVariant: appleIconMode === "dark" ? "dark" : "regular",
+        appleTouchIconVariant: "regular",
       },
       generatedDark,
     );
   }, [
-    appleIconMode,
     backgroundColor,
     faviconPath,
     generated,
@@ -489,8 +640,8 @@ export function FaviconGeneratorTool({ language }: Props) {
         backgroundColor,
         faviconPath,
         version: versionTag,
-        appleTouchIconVariant: appleIconMode === "dark" ? "dark" : "regular",
-        androidIconVariant: androidIconMode === "dark" ? "dark" : "regular",
+        appleTouchIconVariant: "regular",
+        androidIconVariant: "regular",
         androidAppName: androidPreviewLabel,
         androidShortName,
       },
@@ -573,127 +724,6 @@ export function FaviconGeneratorTool({ language }: Props) {
               />
             ) : null}
 
-            <ToolField label={text.renderTargetLabel}>
-              <SegmentedControl
-                aria-label={text.renderTargetLabel}
-                onChange={(target) =>
-                  setActiveRenderTarget(target as FaviconRenderTarget)
-                }
-                options={[
-                  { value: "browser", label: text.browserTargetLabel },
-                  { value: "apple", label: text.appleTargetLabel },
-                  { value: "android", label: text.androidTargetLabel },
-                ]}
-                value={activeRenderTarget}
-              />
-            </ToolField>
-
-            <ToolField label={text.fitLabel}>
-              <SegmentedControl
-                aria-label={text.fitLabel}
-                onChange={(fit) =>
-                  updateActiveRenderSettings((current) => ({
-                    ...current,
-                    fit,
-                  }))
-                }
-                options={FAVICON_FIT_OPTIONS.map((option) => ({
-                  value: option,
-                  label: option[0].toUpperCase() + option.slice(1),
-                }))}
-                value={activeRenderSettings.fit}
-              />
-            </ToolField>
-
-            <ToolField label={text.scaleLabel}>
-              <ToolSlider
-                displayValue={`${Math.round(activeRenderSettings.scale * 100)}%`}
-                max={2}
-                min={0}
-                onChange={(value) =>
-                  updateActiveRenderSettings((current) => ({
-                    ...current,
-                    scale: clampFaviconScale(value),
-                  }))
-                }
-                step={0.01}
-                value={activeRenderSettings.scale}
-              />
-            </ToolField>
-
-            <ToolToggleField label={text.tintToggleLabel}>
-              <ToolSwitch
-                aria-label={text.tintToggleLabel}
-                checked={activeRenderSettings.tintEnabled}
-                onChange={(checked) =>
-                  updateActiveRenderSettings((current) => ({
-                    ...current,
-                    tintEnabled: checked,
-                  }))
-                }
-              />
-            </ToolToggleField>
-            {activeRenderSettings.tintEnabled ? (
-              <ToolField label={text.tintColorLabel}>
-                <ToolColorPicker
-                  onChange={(value) =>
-                    updateActiveRenderSettings((current) => ({
-                      ...current,
-                      tintColor: value,
-                    }))
-                  }
-                  value={activeRenderSettings.tintColor}
-                />
-              </ToolField>
-            ) : null}
-
-            <ToolToggleField label={text.backgroundToggleLabel}>
-              <ToolSwitch
-                aria-label={text.backgroundToggleLabel}
-                checked={activeRenderSettings.backgroundEnabled}
-                onChange={(checked) =>
-                  updateActiveRenderSettings((current) => ({
-                    ...current,
-                    backgroundEnabled: checked,
-                  }))
-                }
-              />
-            </ToolToggleField>
-            {activeRenderSettings.backgroundEnabled ? (
-              <ToolField label={text.backgroundFillLabel}>
-                <ToolColorPicker
-                  onChange={(value) =>
-                    updateActiveRenderSettings((current) => ({
-                      ...current,
-                      backgroundColor: value,
-                    }))
-                  }
-                  value={activeRenderSettings.backgroundColor}
-                />
-              </ToolField>
-            ) : null}
-
-            <ToolField label={text.roundnessLabel}>
-              <ToolSlider
-                displayValue={`${Math.round(activeRenderSettings.roundness * 100)}%`}
-                max={1}
-                min={0}
-                onChange={(value) =>
-                  updateActiveRenderSettings((current) => ({
-                    ...current,
-                    roundness: clampFaviconRoundness(value),
-                  }))
-                }
-                step={0.01}
-                value={activeRenderSettings.roundness}
-              />
-              <p className="text-xs text-foreground/55">
-                {activeRenderSettings.backgroundEnabled
-                  ? text.roundnessWithBackgroundHelp
-                  : text.roundnessWithoutBackgroundHelp}
-              </p>
-            </ToolField>
-
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-1">
               <ToolField htmlFor="favicon-app-name" label={text.appNameLabel}>
                 <ToolInput
@@ -767,11 +797,31 @@ export function FaviconGeneratorTool({ language }: Props) {
                       }
                     />
                   </div>
-                  <BrowserPreviewMock
-                    darkIconUrl={file ? darkPreviewIconUrls.browser : null}
-                    lightIconUrl={file ? previewIconUrls.browser : null}
-                    label={normalizeShortName(shortName, projectName)}
-                  />
+                  <div className="grid gap-4 lg:grid-cols-[minmax(300px,1fr)_minmax(380px,0.85fr)] lg:items-start">
+                    <BrowserPreviewMock
+                      darkIconUrl={file ? darkPreviewIconUrls.browser : null}
+                      lightIconUrl={file ? previewIconUrls.browser : null}
+                      label={normalizeShortName(shortName, projectName)}
+                    />
+                    <PreviewSettingsPanel>
+                      <section aria-labelledby="browser-icon-settings">
+                        <h3
+                          className="mb-3 text-sm font-semibold"
+                          id="browser-icon-settings"
+                        >
+                          {text.previewSettingsLabel}
+                        </h3>
+                        <RenderSettingsFields
+                          compact
+                          settings={renderSettingsByTarget.browser}
+                          text={text}
+                          updateSettings={(update) =>
+                            updateRenderSettings("browser", update)
+                          }
+                        />
+                      </section>
+                    </PreviewSettingsPanel>
+                  </div>
                 </section>
 
                 <PreviewSection
@@ -795,10 +845,10 @@ export function FaviconGeneratorTool({ language }: Props) {
                       siteLabel={normalizeShortName(shortName, projectName)}
                     />
                     <SearchPreviewCard
-                      dark
                       iconUrl={file ? darkPreviewIconUrls.browser : null}
                       resultLabel={projectName}
                       siteLabel={normalizeShortName(shortName, projectName)}
+                      theme="dark"
                     />
                   </PreviewSubtleStack>
                 </PreviewSection>
@@ -811,36 +861,53 @@ export function FaviconGeneratorTool({ language }: Props) {
                     />
                   }
                 >
-                  <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_280px] lg:items-stretch">
-                    <MobilePreviewCard
-                      appLabel={applePreviewLabel}
-                      iconUrl={
-                        file
-                          ? appleIconMode === "dark"
-                            ? darkPreviewIconUrls.apple
-                            : previewIconUrls.apple
-                          : null
-                      }
-                      dark={appleIconMode === "dark"}
-                      language={language}
-                      platform="ios"
-                    />
+                  <div className="grid gap-4 lg:grid-cols-[minmax(300px,1fr)_280px] lg:items-start">
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="grid gap-2">
+                        <span className="text-center text-xs font-medium text-foreground/65">
+                          {text.lightPreviewLabel}
+                        </span>
+                        <MobilePreviewCard
+                          appLabel={applePreviewLabel}
+                          iconUrl={file ? previewIconUrls.apple : null}
+                          language={language}
+                          platform="ios"
+                        />
+                      </div>
+                      <div className="grid gap-2">
+                        <span className="text-center text-xs font-medium text-foreground/65">
+                          {text.darkPreviewLabel}
+                        </span>
+                        <MobilePreviewCard
+                          appLabel={applePreviewLabel}
+                          dark
+                          iconUrl={file ? darkPreviewIconUrls.apple : null}
+                          language={language}
+                          platform="ios"
+                        />
+                      </div>
+                    </div>
                     <PreviewSettingsPanel>
-                      <div className="grid h-full content-start gap-3">
-                        <PreviewSettingsField label="Icono Apple">
-                          <ToolSelect
-                            onChange={(event) =>
-                              setAppleIconMode(event as "light" | "dark")
-                            }
-                            options={[
-                              { value: "light", label: "Principal" },
-                              { value: "dark", label: "Dark" },
-                            ]}
-                            value={appleIconMode}
-                          />
-                        </PreviewSettingsField>
-                        <PreviewSettingsField label="Nombre Apple">
+                      <section
+                        aria-labelledby="apple-icon-settings"
+                        className="grid h-full content-start gap-3"
+                      >
+                        <h3
+                          className="text-sm font-semibold"
+                          id="apple-icon-settings"
+                        >
+                          {text.previewSettingsLabel}
+                        </h3>
+                        <RenderSettingsFields
+                          settings={renderSettingsByTarget.apple}
+                          text={text}
+                          updateSettings={(update) =>
+                            updateRenderSettings("apple", update)
+                          }
+                        />
+                        <PreviewSettingsField label={text.appleNameLabel}>
                           <ToolInput
+                            aria-label={text.appleNameLabel}
                             id="apple-preview-label"
                             onChange={(event) =>
                               setApplePreviewLabel(
@@ -850,11 +917,7 @@ export function FaviconGeneratorTool({ language }: Props) {
                             value={applePreviewLabel}
                           />
                         </PreviewSettingsField>
-                        <div className="text-xs text-foreground/55">
-                          Preview específica de Apple con icono y nombre
-                          independientes.
-                        </div>
-                      </div>
+                      </section>
                     </PreviewSettingsPanel>
                   </div>
                 </PreviewSection>
@@ -867,36 +930,53 @@ export function FaviconGeneratorTool({ language }: Props) {
                     />
                   }
                 >
-                  <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_280px] lg:items-stretch">
-                    <MobilePreviewCard
-                      appLabel={androidPreviewLabel}
-                      dark={androidIconMode === "dark"}
-                      iconUrl={
-                        file
-                          ? androidIconMode === "dark"
-                            ? darkPreviewIconUrls.android
-                            : previewIconUrls.android
-                          : null
-                      }
-                      language={language}
-                      platform="android"
-                    />
+                  <div className="grid gap-4 lg:grid-cols-[minmax(300px,1fr)_280px] lg:items-start">
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="grid gap-2">
+                        <span className="text-center text-xs font-medium text-foreground/65">
+                          {text.lightPreviewLabel}
+                        </span>
+                        <MobilePreviewCard
+                          appLabel={androidPreviewLabel}
+                          iconUrl={file ? previewIconUrls.android : null}
+                          language={language}
+                          platform="android"
+                        />
+                      </div>
+                      <div className="grid gap-2">
+                        <span className="text-center text-xs font-medium text-foreground/65">
+                          {text.darkPreviewLabel}
+                        </span>
+                        <MobilePreviewCard
+                          appLabel={androidPreviewLabel}
+                          dark
+                          iconUrl={file ? darkPreviewIconUrls.android : null}
+                          language={language}
+                          platform="android"
+                        />
+                      </div>
+                    </div>
                     <PreviewSettingsPanel>
-                      <div className="grid h-full content-start gap-3">
-                        <PreviewSettingsField label="Icono Android">
-                          <ToolSelect
-                            onChange={(event) =>
-                              setAndroidIconMode(event as "light" | "dark")
-                            }
-                            options={[
-                              { value: "light", label: "Principal" },
-                              { value: "dark", label: "Dark" },
-                            ]}
-                            value={androidIconMode}
-                          />
-                        </PreviewSettingsField>
-                        <PreviewSettingsField label="Nombre Android">
+                      <section
+                        aria-labelledby="android-icon-settings"
+                        className="grid h-full content-start gap-3"
+                      >
+                        <h3
+                          className="text-sm font-semibold"
+                          id="android-icon-settings"
+                        >
+                          {text.previewSettingsLabel}
+                        </h3>
+                        <RenderSettingsFields
+                          settings={renderSettingsByTarget.android}
+                          text={text}
+                          updateSettings={(update) =>
+                            updateRenderSettings("android", update)
+                          }
+                        />
+                        <PreviewSettingsField label={text.androidNameLabel}>
                           <ToolInput
+                            aria-label={text.androidNameLabel}
                             id="android-preview-label"
                             onChange={(event) =>
                               setAndroidPreviewLabel(
@@ -906,8 +986,11 @@ export function FaviconGeneratorTool({ language }: Props) {
                             value={androidPreviewLabel}
                           />
                         </PreviewSettingsField>
-                        <PreviewSettingsField label="Nombre corto">
+                        <PreviewSettingsField
+                          label={text.androidShortNameLabel}
+                        >
                           <ToolInput
+                            aria-label={text.androidShortNameLabel}
                             id="android-preview-short"
                             onChange={(event) =>
                               setAndroidShortName(event.target.value || "LT")
@@ -915,7 +998,7 @@ export function FaviconGeneratorTool({ language }: Props) {
                             value={androidShortName}
                           />
                         </PreviewSettingsField>
-                      </div>
+                      </section>
                     </PreviewSettingsPanel>
                   </div>
                 </PreviewSection>

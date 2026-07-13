@@ -306,17 +306,15 @@ export function ToolColorPicker({
     <div className={cn("relative", className)} ref={rootRef}>
       <button
         className="flex h-10 w-full items-center gap-2 rounded-lg border border-border/85 bg-[var(--tool-control-bg)] px-3 text-left text-xs shadow-[4px_4px_0_var(--surface-shadow-color)] outline-none transition-[border-color,box-shadow,background-color] focus-visible:border-foreground/45 focus-visible:shadow-[2px_2px_0_var(--surface-shadow-color)] dark:border-white/22 dark:focus-visible:border-white/38"
-        onClick={() =>
-          setOpen((s) => {
-            const next = !s;
-            if (next) {
-              setDraft(pickerColor);
-            } else {
-              setRecentColors(saveRecentColor(pickerColor));
-            }
-            return next;
-          })
-        }
+        onClick={() => {
+          const next = !open;
+          if (next) {
+            setDraft(pickerColor);
+          } else {
+            setRecentColors(saveRecentColor(pickerColor));
+          }
+          setOpen(next);
+        }}
         type="button"
       >
         <span
@@ -672,6 +670,10 @@ export function ToolSlider({
     () => parseDisplayValue(displayValue),
     [displayValue],
   );
+  const effectiveStep =
+    parsed?.suffix.trim() === "%"
+      ? Math.min(step, Math.abs(max - min) / 1000)
+      : step;
   const [anim, dispatchAnim] = React.useReducer(
     (state: { from: number; to: number }, to: number) => ({
       from: state.to,
@@ -698,7 +700,7 @@ export function ToolSlider({
         max={max}
         min={min}
         onChange={(e) => onChange(Number(e.target.value))}
-        step={step}
+        step={effectiveStep}
         type="range"
         value={value}
       />

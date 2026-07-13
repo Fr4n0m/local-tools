@@ -35,6 +35,13 @@
   "toolsIndexOpenLabel": "Open tool",
   "toolsIndexEmptyTitle": "No tools found",
   "toolsIndexEmptyText": "Clear the search or try another term.",
+  "toolConstruction": {
+    "eyebrow": "WORK IN PROGRESS",
+    "title": "Tool under construction",
+    "description": "{tool} is not available yet. We are still refining it before opening it for use.",
+    "action": "Back to Favicon Generator",
+    "closeLabel": "Close construction notice"
+  },
   "support": "Support",
   "supportCta": "Support LocalTools",
   "supportHint": "Keep the project free and open-source",

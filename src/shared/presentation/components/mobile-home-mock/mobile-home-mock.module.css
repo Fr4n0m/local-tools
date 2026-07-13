@@ -426,7 +426,7 @@
 .androidAppImage.androidAppImage {
   height: 20px;
   width: 20px;
-  border-radius: 9999px !important;
+  object-fit: contain;
 }
 
 .androidAppLabel.androidAppLabel {

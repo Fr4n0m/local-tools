@@ -5,6 +5,9 @@ import {
   buildFaviconPackage,
   buildHtmlSnippet,
   buildManifestContent,
+  createDefaultFaviconRenderSettings,
+  drawFaviconSource,
+  FAVICON_CORNER_SHAPES,
   faviconFileName,
   normalizeAppName,
   normalizeFaviconPath,
@@ -25,6 +28,53 @@ const icons = [16, 32, 48, 150, 180, 192, 512].map((size) => ({
 }));
 
 describe("favicon-generator domain", () => {
+  it("offers the six corner shapes with round as the generic default", () => {
+    expect(FAVICON_CORNER_SHAPES).toEqual([
+      "square",
+      "round",
+      "squircle",
+      "bevel",
+      "scoop",
+      "notch",
+    ]);
+    expect(createDefaultFaviconRenderSettings().cornerShape).toBe("round");
+  });
+
+  it("renders every corner shape as a distinct canvas clipping path", () => {
+    const expectedPathCommand = {
+      square: "rect",
+      round: "arcTo",
+      squircle: "bezierCurveTo",
+      bevel: "lineTo",
+      scoop: "quadraticCurveTo",
+      notch: "lineTo",
+    } as const;
+
+    for (const cornerShape of FAVICON_CORNER_SHAPES) {
+      const commands: string[] = [];
+      const context = new Proxy(
+        {},
+        {
+          get: (_target, property) => {
+            if (property === "canvas") return { width: 96, height: 96 };
+            return (..._args: unknown[]) => commands.push(String(property));
+          },
+          set: () => true,
+        },
+      ) as CanvasRenderingContext2D;
+
+      drawFaviconSource(context, {} as CanvasImageSource, 96, 96, 96, {
+        ...createDefaultFaviconRenderSettings(),
+        cornerShape,
+        fit: "stretch",
+        roundness: 0.5,
+      });
+
+      expect(commands).toContain("clip");
+      expect(commands).toContain(expectedPathCommand[cornerShape]);
+    }
+  });
+
   it("normalizes app and short names", () => {
     expect(normalizeAppName("   My   App   ")).toBe("My App");
     expect(normalizeAppName("   ")).toBe("LocalTools");

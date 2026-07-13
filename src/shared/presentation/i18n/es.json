@@ -35,6 +35,13 @@
   "toolsIndexOpenLabel": "Abrir tool",
   "toolsIndexEmptyTitle": "No hay tools",
   "toolsIndexEmptyText": "Limpia la búsqueda o prueba con otro término.",
+  "toolConstruction": {
+    "eyebrow": "EN DESARROLLO",
+    "title": "Tool en construcción",
+    "description": "{tool} todavía no está disponible. La estamos terminando antes de abrirla para su uso.",
+    "action": "Volver al Generador de Favicons",
+    "closeLabel": "Cerrar aviso de construcción"
+  },
   "support": "Apoyar",
   "supportCta": "Apoya LocalTools",
   "supportHint": "Mantén el proyecto libre y open source",

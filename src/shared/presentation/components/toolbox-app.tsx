@@ -18,10 +18,20 @@ import Link from "next/link";
 
 import { AppLogo } from "@/shared/presentation/components/app-logo";
 import { LanguageSelector } from "@/shared/presentation/components/language-selector";
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
 import { tools } from "@/modules/tool-registry/application/tools";
-import type { ToolId } from "@/modules/tool-registry/domain/tool";
+import {
+  isToolAvailable,
+  type ToolId,
+} from "@/modules/tool-registry/domain/tool";
 import {
   resolveInitialLanguage,
   sharedMessages,
@@ -32,8 +42,11 @@ import {
   setThemeWithTransition,
   type Theme,
 } from "@/shared/lib/theme";
+import { ToolConstructionModal } from "@/shared/presentation/components/tool-construction-modal";
 
 const toolIds = new Set<ToolId>(tools.map((tool) => tool.id));
+const AVAILABLE_TOOL_ID: ToolId = "favicon-generator";
+const availableTool = tools.find((tool) => tool.id === AVAILABLE_TOOL_ID)!;
 
 function isToolId(value: string): value is ToolId {
   return toolIds.has(value as ToolId);
@@ -140,7 +153,7 @@ function getInitialToolId(): ToolId {
     return stored;
   }
 
-  return tools[0].id;
+  return AVAILABLE_TOOL_ID;
 }
 
 function getInitialView(): ToolView {
@@ -202,7 +215,11 @@ export function ToolboxApp() {
   const [theme, setTheme] = useState<Theme>("light");
   const [density, setDensity] = useState<Density>("comfortable");
   const [view, setView] = useState<ToolView>("grid");
-  const [selectedToolId, setSelectedToolId] = useState<ToolId>(tools[0].id);
+  const [selectedToolId, setSelectedToolId] =
+    useState<ToolId>(AVAILABLE_TOOL_ID);
+  const [constructionToolId, setConstructionToolId] = useState<ToolId | null>(
+    null,
+  );
   const [search, setSearch] = useState("");
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [isReady, setIsReady] = useState(false);
@@ -212,8 +229,25 @@ export function ToolboxApp() {
       setLanguage(resolveInitialLanguage());
       setTheme(readInitialTheme());
       setDensity(readInitialDensity());
-      setView(getInitialView());
-      setSelectedToolId(getInitialToolId());
+      const initialView = getInitialView();
+      const initialToolId = getInitialToolId();
+      const initialTool = tools.find((tool) => tool.id === initialToolId);
+
+      setView(initialView);
+      if (
+        initialView === "tool" &&
+        initialTool &&
+        !isToolAvailable(initialTool)
+      ) {
+        setSelectedToolId(AVAILABLE_TOOL_ID);
+        setConstructionToolId(initialTool.id);
+      } else {
+        setSelectedToolId(
+          initialTool && isToolAvailable(initialTool)
+            ? initialTool.id
+            : AVAILABLE_TOOL_ID,
+        );
+      }
       setIsReady(true);
     });
 
@@ -238,6 +272,12 @@ export function ToolboxApp() {
   }
 
   function selectTool(toolId: ToolId) {
+    const tool = tools.find((candidate) => candidate.id === toolId);
+    if (!tool || !isToolAvailable(tool)) {
+      if (tool) setConstructionToolId(tool.id);
+      return;
+    }
+
     setSelectedToolId(toolId);
     setView("tool");
     focusMainContent();
@@ -291,7 +331,14 @@ export function ToolboxApp() {
       setView(readViewFromUrl());
       const fromUrl = readToolFromUrl();
       if (fromUrl) {
-        setSelectedToolId(fromUrl);
+        const tool = tools.find((candidate) => candidate.id === fromUrl);
+        if (tool && isToolAvailable(tool)) {
+          setSelectedToolId(fromUrl);
+        } else if (tool) {
+          setSelectedToolId(AVAILABLE_TOOL_ID);
+          setView("tool");
+          setConstructionToolId(tool.id);
+        }
       }
     };
 
@@ -346,8 +393,16 @@ export function ToolboxApp() {
   }, [search]);
 
   const selectedTool =
-    tools.find((tool) => tool.id === selectedToolId) ?? tools[0];
+    tools.find((tool) => tool.id === selectedToolId) ?? availableTool;
   const SelectedToolComponent = selectedTool.component;
+  const constructionTool = constructionToolId
+    ? tools.find((tool) => tool.id === constructionToolId)
+    : null;
+  const closeConstructionModal = useCallback(() => {
+    setConstructionToolId(null);
+    setSelectedToolId(AVAILABLE_TOOL_ID);
+    setView("tool");
+  }, []);
 
   return (
     <div
@@ -468,6 +523,19 @@ export function ToolboxApp() {
           )}
         </main>
       </div>
+      {constructionTool ? (
+        <ToolConstructionModal
+          actionLabel={text.toolConstruction.action}
+          closeLabel={text.toolConstruction.closeLabel}
+          description={text.toolConstruction.description.replace(
+            "{tool}",
+            constructionTool.name[language],
+          )}
+          eyebrow={text.toolConstruction.eyebrow}
+          onClose={closeConstructionModal}
+          title={text.toolConstruction.title}
+        />
+      ) : null}
     </div>
   );
 }

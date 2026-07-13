@@ -178,7 +178,8 @@
   top: calc(100% + 0.85rem);
   right: 0;
   z-index: 50;
-  width: 10.5rem;
+  width: min(15rem, calc(100vw - 2rem));
+  overflow: hidden;
   margin: 0;
   border: 1px solid color-mix(in oklab, var(--color-border), transparent 15%);
   border-radius: var(--radius-squircle);
@@ -196,7 +197,8 @@
   border: 0;
   border-radius: calc(var(--radius-squircle) - 8px);
   padding: 0.48rem;
-  display: flex;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   gap: 0.5rem;
   color: var(--color-foreground);
@@ -226,11 +228,16 @@
 }
 
 .header-language-pending {
-  margin-left: auto;
+  min-width: 0;
+  max-width: 100%;
+  justify-self: end;
+  overflow: hidden;
   color: color-mix(in oklab, var(--color-foreground), transparent 45%);
-  font-size: 0.75rem;
+  font-size: 0.62rem;
   font-weight: 800;
   text-transform: uppercase;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 @keyframes header-language-menu-in {

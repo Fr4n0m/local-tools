@@ -135,7 +135,22 @@ describe("tool-form", () => {
     );
 
     expect(screen.getByText("90%")).toBeInTheDocument();
-    expect(screen.getByRole("slider")).toBeInTheDocument();
+    expect(screen.getByRole("slider")).toHaveAttribute("step", "0.001");
+  });
+
+  it("keeps explicit steps for non-percentage sliders", () => {
+    render(
+      <ToolSlider
+        displayValue="256 px"
+        max={512}
+        min={128}
+        step={16}
+        value={256}
+        onChange={() => undefined}
+      />,
+    );
+
+    expect(screen.getByRole("slider")).toHaveAttribute("step", "16");
   });
 
   it("renders output block with label and value", () => {

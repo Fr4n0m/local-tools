@@ -43,9 +43,14 @@ export type ToolComponentProps = {
 
 export type Tool = {
   id: ToolId;
+  availability?: "available" | "construction";
   category: "files-media" | "data-encoding" | "text-code" | "advanced";
   icon: TablerIcon;
   component: ComponentType<ToolComponentProps>;
   name: Record<Language, string>;
   description: Record<Language, string>;
 };
+
+export function isToolAvailable(tool: Tool): boolean {
+  return tool.availability === "available";
+}

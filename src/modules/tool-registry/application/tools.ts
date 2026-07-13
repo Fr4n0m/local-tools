@@ -177,6 +177,7 @@ export const tools: Tool[] = [
   },
   {
     id: "favicon-generator",
+    availability: "available",
     category: "files-media",
     icon: IconFileTypePng,
     component: FaviconGeneratorTool,
