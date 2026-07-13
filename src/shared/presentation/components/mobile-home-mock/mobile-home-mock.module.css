@@ -25,6 +25,7 @@
 }
 
 .mockViewport {
+  container-type: inline-size;
   display: flex;
   height: 100%;
   align-items: center;
@@ -33,10 +34,10 @@
 }
 
 .mockViewportIos {
-  min-height: 320px;
+  min-height: clamp(320px, 100cqi, 430px);
 }
 .mockViewportAndroid {
-  min-height: 340px;
+  min-height: clamp(340px, 105cqi, 450px);
 }
 
 .telephoneFrame.telephoneFrame {
@@ -46,12 +47,12 @@
 }
 
 .telephoneFrameIphone.telephoneFrameIphone {
-  --telephone-width: 142px;
+  --telephone-width: clamp(142px, 44cqi, 190px);
   width: var(--telephone-width);
 }
 
 .telephoneFramePixel.telephoneFramePixel {
-  --telephone-width: 146px;
+  --telephone-width: clamp(146px, 45cqi, 194px);
   width: var(--telephone-width);
 }
 
@@ -149,9 +150,12 @@
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   align-content: start;
-  gap: 13px 8px;
+  gap: calc(var(--telephone-width) * 0.0866667)
+    calc(var(--telephone-width) * 0.0533333);
   min-height: 100%;
-  padding: 25px 10px 58px;
+  padding: calc(var(--telephone-width) * 0.1666667)
+    calc(var(--telephone-width) * 0.0666667)
+    calc(var(--telephone-width) * 0.3866667);
 }
 
 .iphoneApp.iphoneApp {
@@ -180,19 +184,23 @@
   display: block;
   height: 100%;
   width: 100%;
-  border-radius: 20% !important;
   object-fit: cover;
+}
+
+.iphoneFallbackImage.iphoneFallbackImage {
+  overflow: hidden;
+  border-radius: 22% !important;
 }
 
 .iphoneAppLabel.iphoneAppLabel {
   position: absolute;
-  top: calc(100% + 2px);
+  top: calc(100% + var(--telephone-width) * 0.0133333);
   left: 50%;
-  width: 30px;
+  width: calc(var(--telephone-width) * 0.2);
   transform: translateX(-50%);
   overflow: hidden;
   color: inherit;
-  font-size: 4.75px;
+  font-size: calc(var(--telephone-width) * 0.0316667);
   line-height: 1;
   text-align: center;
   text-overflow: ellipsis;
@@ -202,19 +210,20 @@
 .iphoneDock.iphoneDock {
   position: absolute;
   z-index: 2;
-  right: 4px;
-  bottom: 5px;
-  left: 4px;
+  right: calc(var(--telephone-width) * 0.0266667);
+  bottom: calc(var(--telephone-width) * 0.0333333);
+  left: calc(var(--telephone-width) * 0.0266667);
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 7px;
-  padding: 7px;
+  gap: calc(var(--telephone-width) * 0.0466667);
+  padding: calc(var(--telephone-width) * 0.0466667);
   border: 0;
-  border-radius: 14px !important;
+  border-radius: calc(var(--telephone-width) * 0.0933333) !important;
   background: rgba(226, 232, 240, 0.62);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.08),
-    0 7px 18px rgba(0, 0, 0, 0.28);
+    0 calc(var(--telephone-width) * 0.0466667)
+      calc(var(--telephone-width) * 0.12) rgba(0, 0, 0, 0.28);
   backdrop-filter: blur(20px) saturate(1.12);
 }
 
@@ -225,22 +234,23 @@
 .iphoneSearchPill.iphoneSearchPill {
   position: absolute;
   z-index: 2;
-  bottom: 49px;
+  bottom: calc(var(--telephone-width) * 0.3266667);
   left: 50%;
   display: flex;
-  height: 10px;
+  height: calc(var(--telephone-width) * 0.0666667);
   align-items: center;
-  gap: 1.5px;
-  padding: 0 4px;
+  gap: calc(var(--telephone-width) * 0.01);
+  padding: 0 calc(var(--telephone-width) * 0.0266667);
   transform: translateX(-50%);
   border-radius: 9999px !important;
   background: rgba(226, 232, 240, 0.62);
   color: rgba(255, 255, 255, 0.96);
-  font-size: 4.25px;
+  font-size: calc(var(--telephone-width) * 0.0283333);
   line-height: 1;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.08),
-    0 3px 8px rgba(0, 0, 0, 0.2);
+    0 calc(var(--telephone-width) * 0.02)
+      calc(var(--telephone-width) * 0.0533333) rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(20px) saturate(1.12);
 }
 
@@ -249,9 +259,9 @@
 }
 
 .iphoneSearchIcon.iphoneSearchIcon {
-  height: 4.5px;
-  width: 4.5px;
-  transform: translateY(-0.35px);
+  height: calc(var(--telephone-width) * 0.03);
+  width: calc(var(--telephone-width) * 0.03);
+  transform: translateY(calc(var(--telephone-width) * -0.0023333));
   fill: none;
   stroke: currentColor;
   stroke-linecap: round;
@@ -393,7 +403,7 @@
 
 .androidApps.androidApps {
   display: grid;
-  grid-template-columns: repeat(5, 20px);
+  grid-template-columns: repeat(5, 22px);
   justify-content: space-between;
   align-content: start;
   gap: 0;
@@ -410,8 +420,8 @@
 
 .androidAppTile.androidAppTile {
   display: grid;
-  height: 20px;
-  width: 20px;
+  height: 22px;
+  width: 22px;
   place-items: center;
   border-radius: 9999px !important;
   background: transparent;
@@ -419,14 +429,19 @@
 
 .androidDecorativeImage.androidDecorativeImage {
   display: block;
-  height: 20px;
-  width: 20px;
+  height: 22px;
+  width: 22px;
 }
 
 .androidAppImage.androidAppImage {
-  height: 20px;
-  width: 20px;
+  height: 22px;
+  width: 22px;
   object-fit: contain;
+}
+
+.androidFallbackImage.androidFallbackImage {
+  overflow: hidden;
+  border-radius: 9999px !important;
 }
 
 .androidAppLabel.androidAppLabel {

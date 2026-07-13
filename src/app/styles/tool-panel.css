@@ -1,7 +1,9 @@
 .tools-tool-panel {
   border: none;
   background: color-mix(in oklab, var(--color-background), transparent 8%);
-  box-shadow: var(--surface-shadow-compact);
+  box-shadow:
+    var(--surface-shadow),
+    0 32px 70px -42px rgba(33, 37, 41, 0.3);
 }
 
 #main-content:focus,

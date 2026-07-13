@@ -6,11 +6,52 @@
   box-shadow: 0 16px 34px rgb(0 0 0 / 24%);
 }
 
+.browserFrameDark {
+  color: #fff;
+}
+
+.browserFrameLight {
+  border-color: rgb(0 0 0 / 8%);
+  background: #dfe1e5;
+  color: #202124;
+  box-shadow: 0 16px 34px rgb(15 23 42 / 16%);
+}
+
+.browserFrameLight .tabStrip {
+  background: #dfe1e5;
+}
+
+.browserFrameLight .toolbar {
+  background: #fff;
+}
+
+.browserFrameLight .toolbarIcon {
+  color: rgb(32 33 36 / 72%);
+}
+
+.browserFrameLight .toolbarIconMuted {
+  color: rgb(32 33 36 / 32%);
+}
+
+.browserFrameLight .addressBar {
+  border-color: rgb(32 33 36 / 10%);
+  background: #f1f3f4;
+  color: #202124;
+}
+
+.browserFrameLight .addressLabel {
+  color: rgb(32 33 36 / 82%);
+}
+
+.browserFrameLight .newTab {
+  color: rgb(32 33 36 / 78%);
+}
+
 .tabStrip {
   display: flex;
   height: 40px;
   align-items: flex-end;
-  gap: 4px;
+  gap: 12px;
   overflow: hidden;
   padding: 8px 8px 0;
   background: #202124;
@@ -52,10 +93,11 @@
 .tab {
   position: relative;
   display: flex;
-  width: 168px;
-  max-width: 34vw;
+  width: auto;
+  min-width: 0;
+  max-width: 168px;
   height: 32px;
-  flex: 0 0 auto;
+  flex: 1 1 168px;
   align-items: center;
   gap: 6px;
   padding-inline: 10px;
@@ -64,16 +106,45 @@
 
 .tabDark {
   z-index: 30;
-  background: #3c4043;
+  background: #35363a;
   color: rgb(255 255 255 / 88%);
 }
 .tabLight {
   z-index: 10;
-  background: #eef0f2;
+  background: #fff;
   color: rgb(0 0 0 / 78%);
 }
 .tabActive {
+  z-index: 30;
   margin-right: 4px;
+}
+
+.tabInactive.tabDark {
+  z-index: 10;
+  background: #292a2d;
+  color: rgb(255 255 255 / 68%);
+}
+
+.tabInactive.tabLight {
+  z-index: 10;
+  background: #cfd2d7;
+  color: rgb(0 0 0 / 62%);
+}
+
+.tabInactive.tabDark::before {
+  box-shadow: 5px 5px 0 5px #292a2d;
+}
+
+.tabInactive.tabDark::after {
+  box-shadow: -5px 5px 0 5px #292a2d;
+}
+
+.tabInactive.tabLight::before {
+  box-shadow: 5px 5px 0 5px #cfd2d7;
+}
+
+.tabInactive.tabLight::after {
+  box-shadow: -5px 5px 0 5px #cfd2d7;
 }
 
 .tabCurved::before,
@@ -97,17 +168,17 @@
 }
 
 .tabDark::before {
-  box-shadow: 5px 5px 0 5px #3c4043;
+  box-shadow: 5px 5px 0 5px #35363a;
 }
 .tabDark::after {
-  box-shadow: -5px 5px 0 5px #3c4043;
+  box-shadow: -5px 5px 0 5px #35363a;
 }
 
 .tabLight::before {
-  box-shadow: 5px 5px 0 5px #eef0f2;
+  box-shadow: 5px 5px 0 5px #fff;
 }
 .tabLight::after {
-  box-shadow: -5px 5px 0 5px #eef0f2;
+  box-shadow: -5px 5px 0 5px #fff;
 }
 
 .tabIcon {
@@ -130,8 +201,12 @@
   background: rgb(0 0 0 / 4%);
   color: #000;
 }
+.tabIconLoaded {
+  border-color: transparent;
+  background: transparent;
+}
 .tabFavicon {
-  border-radius: 3px;
+  display: block;
   object-fit: contain;
 }
 .tabFallback {
@@ -186,7 +261,7 @@
   align-items: center;
   gap: 10px;
   padding: 8px 12px;
-  background: #3c4043;
+  background: #35363a;
 }
 .toolbarIcon {
   width: 20px;
@@ -213,7 +288,7 @@
   padding-inline: 10px;
   border: 1px solid rgb(255 255 255 / 18%);
   border-radius: 9999px;
-  background: #3b3b3b;
+  background: #202124;
   color: #fff;
 }
 .addressLabel {
@@ -245,23 +320,22 @@
 }
 .searchIconBox {
   display: grid;
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   flex: 0 0 auto;
   place-items: center;
-  border: 1px solid;
-  border-radius: 12px;
+  border: 0;
+  border-radius: 9999px;
+  background: #fff;
 }
 .searchLight .searchIconBox {
-  border-color: rgb(0 0 0 / 10%);
-  background: rgb(0 0 0 / 3%);
+  background: #fff;
 }
 .searchDark .searchIconBox {
-  border-color: rgb(255 255 255 / 10%);
-  background: rgb(255 255 255 / 4%);
+  background: #fff;
 }
 .searchIcon {
-  border-radius: 6px;
+  display: block;
   object-fit: contain;
 }
 .searchFallback {
@@ -335,8 +409,7 @@
     display: none;
   }
   .tab {
-    width: 150px;
-    max-width: 43vw;
+    max-width: 150px;
   }
   .toolbar {
     gap: 7px;

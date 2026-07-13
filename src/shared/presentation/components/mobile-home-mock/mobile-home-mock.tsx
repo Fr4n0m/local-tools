@@ -307,7 +307,9 @@ function IPhonePreviewMock({
           <div className={styles.iphoneFaviconApp}>
             <NextImage
               alt=""
-              className={styles.iphoneFaviconImage}
+              className={`${styles.iphoneFaviconImage} ${
+                iconUrl ? "" : styles.iphoneFallbackImage
+              }`}
               height={24}
               src={iconUrl ?? FALLBACK_APP_ICON}
               unoptimized
@@ -378,7 +380,9 @@ function AndroidPreviewMock({
             <div className={styles.androidAppTile}>
               <NextImage
                 alt=""
-                className={styles.androidAppImage}
+                className={`${styles.androidAppImage} ${
+                  iconUrl ? "" : styles.androidFallbackImage
+                }`}
                 height={20}
                 src={iconUrl ?? FALLBACK_APP_ICON}
                 unoptimized

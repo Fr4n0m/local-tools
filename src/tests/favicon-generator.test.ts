@@ -57,7 +57,7 @@ describe("favicon-generator domain", () => {
         {
           get: (_target, property) => {
             if (property === "canvas") return { width: 96, height: 96 };
-            return (..._args: unknown[]) => commands.push(String(property));
+            return () => commands.push(String(property));
           },
           set: () => true,
         },
