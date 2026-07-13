@@ -822,6 +822,7 @@ export function FaviconGeneratorTool({ language }: Props) {
                           : null
                       }
                       dark={appleIconMode === "dark"}
+                      language={language}
                       platform="ios"
                     />
                     <PreviewSettingsPanel>
@@ -877,6 +878,7 @@ export function FaviconGeneratorTool({ language }: Props) {
                             : previewIconUrls.android
                           : null
                       }
+                      language={language}
                       platform="android"
                     />
                     <PreviewSettingsPanel>

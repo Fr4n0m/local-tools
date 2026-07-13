@@ -4,73 +4,17 @@ import type { CSSProperties, ReactNode } from "react";
 import NextImage from "next/image";
 
 import previewStyles from "./favicon-generator-preview.module.css";
-import {
-  IPHONE_16_MAX_FRAME_SVG,
-  PIXEL_9_PRO_FRAME_SVG,
-} from "./telephone-frame-svgs";
-
-const IPHONE_APP_ICON_BASE = "/assets/ios-app-icons";
-const IPHONE_DARK_APP_ICON_BASE = `${IPHONE_APP_ICON_BASE}/dark`;
-
-const IPHONE_DECORATIVE_APPS = [
-  {
-    id: "messages",
-    lightSrc: `${IPHONE_APP_ICON_BASE}/imessages.png`,
-    darkSrc: `${IPHONE_DARK_APP_ICON_BASE}/imessages.png`,
-  },
-  {
-    id: "camera",
-    lightSrc: `${IPHONE_APP_ICON_BASE}/camera.png`,
-    darkSrc: `${IPHONE_DARK_APP_ICON_BASE}/camera.png`,
-  },
-  {
-    id: "safari",
-    lightSrc: `${IPHONE_APP_ICON_BASE}/safari.png`,
-    darkSrc: `${IPHONE_DARK_APP_ICON_BASE}/safari.png`,
-  },
-  {
-    id: "photos",
-    lightSrc: `${IPHONE_APP_ICON_BASE}/photos.png`,
-    darkSrc: `${IPHONE_DARK_APP_ICON_BASE}/photos.png`,
-  },
-  {
-    id: "mail",
-    lightSrc: `${IPHONE_APP_ICON_BASE}/mail.png`,
-    darkSrc: `${IPHONE_DARK_APP_ICON_BASE}/mail.png`,
-  },
-  {
-    id: "settings",
-    lightSrc: `${IPHONE_APP_ICON_BASE}/settings.png`,
-    darkSrc: `${IPHONE_DARK_APP_ICON_BASE}/settings.png`,
-  },
-] as const;
-
-const IPHONE_DOCK_APPS = [
-  {
-    id: "phone",
-    lightSrc: `${IPHONE_APP_ICON_BASE}/phone.png`,
-    darkSrc: `${IPHONE_DARK_APP_ICON_BASE}/phone.png`,
-  },
-  {
-    id: "safari",
-    lightSrc: `${IPHONE_APP_ICON_BASE}/safari.png`,
-    darkSrc: `${IPHONE_DARK_APP_ICON_BASE}/safari.png`,
-  },
-  {
-    id: "messages",
-    lightSrc: `${IPHONE_APP_ICON_BASE}/imessages.png`,
-    darkSrc: `${IPHONE_DARK_APP_ICON_BASE}/imessages.png`,
-  },
-  {
-    id: "mail",
-    lightSrc: `${IPHONE_APP_ICON_BASE}/mail.png`,
-    darkSrc: `${IPHONE_DARK_APP_ICON_BASE}/mail.png`,
-  },
-] as const;
+import { MobileHomeMock } from "@/shared/presentation/components/mobile-home-mock";
 
 type PreviewIcon = React.ComponentType<{ className?: string }>;
 
-function GoogleMark({ className }: { className?: string }) {
+function GoogleMark({
+  className,
+  multicolor = false,
+}: {
+  className?: string;
+  multicolor?: boolean;
+}) {
   return (
     <svg
       aria-hidden
@@ -80,19 +24,19 @@ function GoogleMark({ className }: { className?: string }) {
     >
       <path
         d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-        fill="currentColor"
+        fill={multicolor ? "#4285F4" : "currentColor"}
       />
       <path
         d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.24 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-        fill="currentColor"
+        fill={multicolor ? "#34A853" : "currentColor"}
       />
       <path
         d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"
-        fill="currentColor"
+        fill={multicolor ? "#FBBC05" : "currentColor"}
       />
       <path
         d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84C6.71 7.31 9.14 5.38 12 5.38z"
-        fill="currentColor"
+        fill={multicolor ? "#EA4335" : "currentColor"}
       />
     </svg>
   );
@@ -328,217 +272,27 @@ export function SearchPreviewCard({
   );
 }
 
-function TelephoneFrame({
-  children,
-  platform,
-}: {
-  children: ReactNode;
-  platform: "ios" | "android";
-}) {
-  const isIos = platform === "ios";
-
-  return (
-    <div
-      className={`${previewStyles.telephoneFrame} ${
-        isIos
-          ? previewStyles.telephoneFrameIphone
-          : previewStyles.telephoneFramePixel
-      }`}
-    >
-      <div
-        className={`${previewStyles.telephoneScreenshot} ${
-          isIos
-            ? previewStyles.telephoneScreenshotIphone
-            : previewStyles.telephoneScreenshotPixel
-        }`}
-      >
-        {children}
-      </div>
-      <div
-        aria-hidden="true"
-        className={previewStyles.telephoneSvg}
-        dangerouslySetInnerHTML={{
-          __html: isIos ? IPHONE_16_MAX_FRAME_SVG : PIXEL_9_PRO_FRAME_SVG,
-        }}
-      />
-    </div>
-  );
-}
-
-function IPhonePreviewMock({
-  iconUrl,
-  appLabel,
-  dark = false,
-}: {
-  iconUrl: string | null;
-  appLabel: string;
-  dark?: boolean;
-}) {
-  return (
-    <TelephoneFrame platform="ios">
-      <div
-        className={`${previewStyles.telephoneHome} ${previewStyles.iphoneHome} ${
-          dark ? previewStyles.iphoneHomeDark : ""
-        }`}
-      >
-        <div className={previewStyles.iphoneWallpaper}>
-          <div className={previewStyles.iphoneWallpaperSection} />
-          <div
-            className={`${previewStyles.iphoneWallpaperSection} ${previewStyles.iphoneWallpaperSectionBottom}`}
-          />
-        </div>
-        <div className={previewStyles.iphoneAppGrid}>
-          <div
-            className={`${previewStyles.iphoneWidget} ${previewStyles.iphoneWeather}`}
-          >
-            <span className={previewStyles.iphoneWidgetTitle}>Local</span>
-            <strong>24°</strong>
-            <span className={previewStyles.iphoneWeatherMeta}>Sunny</span>
-          </div>
-          <div
-            className={`${previewStyles.iphoneWidget} ${previewStyles.iphoneMap}`}
-          >
-            <span className={previewStyles.iphoneMapRoad} />
-            <span className={previewStyles.iphoneMapRoadAlt} />
-            <span className={previewStyles.iphoneMapPin} />
-          </div>
-          <div className={previewStyles.iphoneFaviconApp}>
-            {iconUrl ? (
-              <NextImage
-                alt=""
-                className={previewStyles.iphoneFaviconImage}
-                height={24}
-                src={iconUrl}
-                unoptimized
-                width={24}
-              />
-            ) : (
-              <div className={previewStyles.iphoneFaviconPlaceholder} />
-            )}
-            <div className={previewStyles.iphoneAppLabel}>{appLabel}</div>
-          </div>
-          {IPHONE_DECORATIVE_APPS.map(({ darkSrc, id, lightSrc }) => (
-            <div
-              className={previewStyles.iphoneApp}
-              data-ios-app={id}
-              key={`iphone-app-${id}`}
-            >
-              <NextImage
-                alt=""
-                className={previewStyles.iphoneAppImage}
-                height={60}
-                src={dark ? darkSrc : lightSrc}
-                unoptimized
-                width={60}
-              />
-            </div>
-          ))}
-        </div>
-        <div className={previewStyles.iphoneDock} aria-hidden>
-          {IPHONE_DOCK_APPS.map(({ darkSrc, id, lightSrc }) => (
-            <span
-              className={previewStyles.iphoneDockApp}
-              data-ios-app={id}
-              key={`iphone-dock-${id}`}
-            >
-              <NextImage
-                alt=""
-                className={previewStyles.iphoneDockImage}
-                height={60}
-                src={dark ? darkSrc : lightSrc}
-                unoptimized
-                width={60}
-              />
-            </span>
-          ))}
-        </div>
-        <div className={previewStyles.phoneGestureBar} />
-      </div>
-    </TelephoneFrame>
-  );
-}
-
-function AndroidPreviewMock({
-  iconUrl,
-  appLabel,
-  dark = false,
-}: {
-  iconUrl: string | null;
-  appLabel: string;
-  dark?: boolean;
-}) {
-  const ghostApps = Array.from({ length: 11 });
-
-  return (
-    <TelephoneFrame platform="android">
-      <div
-        className={`${previewStyles.telephoneHome} ${previewStyles.androidHome} ${
-          dark ? "" : previewStyles.androidHomeLight
-        }`}
-      >
-        <div className={previewStyles.androidSearchBar}>
-          <span className={previewStyles.androidSearchDot} />
-          <span className={previewStyles.androidSearchText} />
-        </div>
-        <div className={previewStyles.androidApps}>
-          <div className={previewStyles.androidAppSlot}>
-            <div className={previewStyles.androidAppTile}>
-              {iconUrl ? (
-                <NextImage
-                  alt=""
-                  className={previewStyles.androidAppImage}
-                  height={22}
-                  src={iconUrl}
-                  unoptimized
-                  width={22}
-                />
-              ) : (
-                <div className={previewStyles.androidAppPlaceholder} />
-              )}
-            </div>
-            <div className={previewStyles.androidAppLabel} title={appLabel}>
-              {appLabel}
-            </div>
-          </div>
-          {ghostApps.map((_, index) => (
-            <div
-              className={previewStyles.androidAppSlot}
-              key={`android-app-${index}`}
-            >
-              <div className={previewStyles.androidGhostTile} />
-              <div className={previewStyles.androidLabelLine} />
-            </div>
-          ))}
-        </div>
-        <div className={previewStyles.androidGesture} />
-      </div>
-    </TelephoneFrame>
-  );
-}
-
 export function MobilePreviewCard({
   iconUrl,
   appLabel,
   platform,
   dark = false,
+  language,
 }: {
   iconUrl: string | null;
   appLabel: string;
   platform: "ios" | "android";
   dark?: boolean;
+  language: "en" | "es";
 }) {
-  if (platform === "ios") {
-    return (
-      <div className="flex h-full min-h-[320px] items-center justify-center text-white">
-        <IPhonePreviewMock appLabel={appLabel} dark={dark} iconUrl={iconUrl} />
-      </div>
-    );
-  }
-
   return (
-    <div className="flex h-full min-h-[340px] items-center justify-center text-white">
-      <AndroidPreviewMock appLabel={appLabel} dark={dark} iconUrl={iconUrl} />
-    </div>
+    <MobileHomeMock
+      appIconUrl={iconUrl}
+      appName={appLabel}
+      language={language}
+      platform={platform}
+      theme={dark ? "dark" : "light"}
+    />
   );
 }
 
