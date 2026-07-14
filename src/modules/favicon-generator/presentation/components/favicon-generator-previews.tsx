@@ -42,6 +42,7 @@ export function MobilePreviewCard({
   platform,
   dark = false,
   language,
+  compact = false,
 }: {
   iconUrl: string | null;
   appLabel: string;
@@ -49,6 +50,7 @@ export function MobilePreviewCard({
   platform: "ios" | "android";
   dark?: boolean;
   language: "en" | "es";
+  compact?: boolean;
 }) {
   return (
     <PreviewModeCard
@@ -59,6 +61,7 @@ export function MobilePreviewCard({
       <MobileHomeMock
         appIconUrl={iconUrl}
         appName={appLabel}
+        compact={compact}
         language={language}
         platform={platform}
         theme={dark ? "dark" : "light"}

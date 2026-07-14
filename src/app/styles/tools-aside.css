@@ -79,18 +79,17 @@
   outline-offset: 2px;
 }
 
-.tools-aside-panel button[aria-label="Density"],
-.tools-aside-panel button[aria-label="Densidad"],
-.tools-aside-panel button[aria-label="Theme"],
-.tools-aside-panel button[aria-label="Tema"] {
-  transition:
-    transform 150ms ease,
-    box-shadow 150ms ease,
-    background-color 150ms ease,
-    color 150ms ease;
-}
-
 .aside-top-control {
+  display: inline-flex;
+  width: 1.5rem;
+  height: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 0.375rem;
+  background: transparent;
+  color: color-mix(in oklab, var(--color-sidebar-foreground), transparent 30%);
+  cursor: pointer;
   transition:
     transform 150ms ease,
     box-shadow 150ms ease,
@@ -98,29 +97,27 @@
     color 150ms ease;
 }
 
-.tools-aside-panel button[aria-label="Density"]:hover,
-.tools-aside-panel button[aria-label="Density"]:focus-visible,
-.tools-aside-panel button[aria-label="Densidad"]:hover,
-.tools-aside-panel button[aria-label="Densidad"]:focus-visible,
-.tools-aside-panel button[aria-label="Theme"]:hover,
-.tools-aside-panel button[aria-label="Theme"]:focus-visible,
-.tools-aside-panel button[aria-label="Tema"]:hover,
-.tools-aside-panel button[aria-label="Tema"]:focus-visible {
+.aside-top-control:hover,
+.aside-top-control:focus-visible,
+.aside-language-select:has(.aside-language-menu) .aside-top-control {
+  background: color-mix(
+    in oklab,
+    var(--color-sidebar-foreground),
+    transparent 88%
+  );
+  color: var(--color-sidebar-foreground);
   transform: translateY(-1px);
   box-shadow: 4px 4px 0 var(--aside-control-shadow);
 }
 
-.aside-language-trigger:active,
-.tools-aside-panel button[aria-label="Density"]:active,
-.tools-aside-panel button[aria-label="Densidad"]:active,
-.tools-aside-panel button[aria-label="Theme"]:active,
-.tools-aside-panel button[aria-label="Tema"]:active {
-  transform: translateY(1px) scale(0.96);
-  box-shadow: 1px 1px 0 var(--aside-control-shadow);
+.aside-top-control:focus-visible {
+  outline: 2px solid
+    color-mix(in oklab, var(--color-sidebar-foreground), transparent 52%);
+  outline-offset: 2px;
 }
 
 .aside-top-control:active {
-  transform: translateY(1px) scale(0.92);
+  transform: translateY(1px) scale(0.96);
   box-shadow: 1px 1px 0 var(--aside-control-shadow);
 }
 

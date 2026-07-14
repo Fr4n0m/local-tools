@@ -56,8 +56,7 @@ const paletteTheme: Record<Theme, CommandTheme> = {
     borderColor: "rgba(33, 37, 41, 0.16)",
     overlayColor: "rgba(248, 249, 250, 0.72)",
     radius: "22px",
-    shadow:
-      "5px 5px 0 rgba(33, 37, 41, 0.18), 0 20px 48px rgba(33, 37, 41, 0.14)",
+    shadow: "var(--surface-shadow)",
   },
   dark: {
     accentColor: "#ced4da",
@@ -73,8 +72,7 @@ const paletteTheme: Record<Theme, CommandTheme> = {
     borderColor: "rgba(248, 249, 250, 0.18)",
     overlayColor: "rgba(0, 0, 0, 0.72)",
     radius: "22px",
-    shadow:
-      "5px 5px 0 rgba(248, 249, 250, 0.14), 0 22px 54px rgba(0, 0, 0, 0.46)",
+    shadow: "var(--surface-shadow-dark)",
   },
 };
 
@@ -529,6 +527,12 @@ export function GlobalCommandPalette() {
         </span>
       </button>
       <CommandPalette
+        classNames={{
+          closeButton: "lt-command-close",
+          dialog: "lt-command-dialog",
+          input: "lt-command-input",
+          item: "lt-command-item",
+        }}
         messages={{
           noResults:
             language === "es"

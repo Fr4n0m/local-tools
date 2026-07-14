@@ -4,6 +4,7 @@ import {
   IconArrowRight,
   IconCheck,
   IconGridDots,
+  IconInfoCircle,
   IconLayoutRows,
   IconLayoutDistributeVertical,
   IconLayoutDashboard,
@@ -25,6 +26,7 @@ import {
   useMemo,
   useRef,
   useState,
+  type ReactNode,
 } from "react";
 
 import { tools } from "@/modules/tool-registry/application/tools";
@@ -116,7 +118,9 @@ function readToolFromUrl(): ToolId | null {
     return null;
   }
 
-  const raw = new URL(window.location.href).searchParams.get("tool");
+  const currentUrl = new URL(window.location.href);
+  const pathToolId = currentUrl.pathname.match(/^\/tools\/([^/]+)\/?$/)?.[1];
+  const raw = pathToolId ?? currentUrl.searchParams.get("tool");
   if (!raw) {
     return null;
   }
@@ -200,14 +204,23 @@ function getCategoryStyles(category: string) {
   };
 }
 
-export function ToolboxApp() {
+type ToolboxAppProps = {
+  initialToolId?: ToolId;
+  toolInfo?: {
+    content: Record<Language, ReactNode>;
+    label: Record<Language, string>;
+  };
+};
+
+export function ToolboxApp({ initialToolId, toolInfo }: ToolboxAppProps = {}) {
   const mainRef = useRef<HTMLElement | null>(null);
   const [language, setLanguage] = useState<Language>("en");
   const [theme, setTheme] = useState<Theme>("light");
   const [density, setDensity] = useState<ToolExperienceMode>("comfortable");
-  const [view, setView] = useState<ToolView>("grid");
-  const [selectedToolId, setSelectedToolId] =
-    useState<ToolId>(AVAILABLE_TOOL_ID);
+  const [view, setView] = useState<ToolView>(initialToolId ? "tool" : "grid");
+  const [selectedToolId, setSelectedToolId] = useState<ToolId>(
+    initialToolId ?? AVAILABLE_TOOL_ID,
+  );
   const [constructionToolId, setConstructionToolId] = useState<ToolId | null>(
     null,
   );
@@ -221,9 +234,11 @@ export function ToolboxApp() {
       setTheme(readInitialTheme());
       setDensity("comfortable");
       window.localStorage.removeItem("localtools.density");
-      const initialView = getInitialView();
-      const initialToolId = getInitialToolId();
-      const initialTool = tools.find((tool) => tool.id === initialToolId);
+      const initialView = initialToolId ? "tool" : getInitialView();
+      const resolvedInitialToolId = initialToolId ?? getInitialToolId();
+      const initialTool = tools.find(
+        (tool) => tool.id === resolvedInitialToolId,
+      );
 
       setView(initialView);
       if (
@@ -236,7 +251,7 @@ export function ToolboxApp() {
       } else {
         setSelectedToolId(
           initialTool && isToolAvailable(initialTool)
-            ? initialTool.id
+            ? resolvedInitialToolId
             : AVAILABLE_TOOL_ID,
         );
       }
@@ -254,7 +269,7 @@ export function ToolboxApp() {
       window.cancelAnimationFrame(frame);
       window.removeEventListener("localtools:theme-change", onThemeChange);
     };
-  }, []);
+  }, [initialToolId]);
 
   function focusMainContent() {
     window.requestAnimationFrame(() => {
@@ -307,11 +322,13 @@ export function ToolboxApp() {
     const nextUrl = new URL(window.location.href);
 
     if (view === "grid") {
+      nextUrl.pathname = "/tools";
       nextUrl.searchParams.set("view", "grid");
       nextUrl.searchParams.delete("tool");
     } else {
       window.localStorage.setItem("localtools.tool", selectedToolId);
-      nextUrl.searchParams.set("tool", selectedToolId);
+      nextUrl.pathname = `/tools/${selectedToolId}`;
+      nextUrl.searchParams.delete("tool");
       nextUrl.searchParams.delete("view");
     }
 
@@ -511,6 +528,12 @@ export function ToolboxApp() {
           ) : (
             <section className="tool-shell tools-tool-panel rounded-2xl p-4 md:p-6">
               <div className="tools-tool-topbar">
+                {toolInfo ? (
+                  <ToolInfoPopover
+                    content={toolInfo.content[language]}
+                    label={toolInfo.label[language]}
+                  />
+                ) : null}
                 <PrivacyInfo text={text} />
               </div>
               <SelectedToolComponent
@@ -605,7 +628,8 @@ function Sidebar({
           />
           <button
             aria-label={text.density}
-            className="aside-top-control flex h-6 w-6 items-center justify-center rounded-md text-sidebar-foreground/70 transition-colors hover:bg-sidebar-foreground/12 hover:text-sidebar-foreground"
+            aria-pressed={density === "compact"}
+            className="aside-top-control"
             onClick={onDensityToggle}
             title={`${text.density}: ${density === "compact" ? text.compact : text.comfortable}`}
             type="button"
@@ -618,7 +642,8 @@ function Sidebar({
           </button>
           <button
             aria-label={text.theme}
-            className="aside-top-control flex h-6 w-6 items-center justify-center rounded-md text-sidebar-foreground/70 transition-colors hover:bg-sidebar-foreground/12 hover:text-sidebar-foreground"
+            aria-pressed={theme === "dark"}
+            className="aside-top-control"
             onClick={onThemeToggle}
             type="button"
           >
@@ -730,6 +755,27 @@ function PrivacyInfo({ text }: PrivacyInfoProps) {
   );
 }
 
+function ToolInfoPopover({
+  content,
+  label,
+}: {
+  content: ReactNode;
+  label: string;
+}) {
+  return (
+    <details className="tools-privacy-popover tools-info-popover">
+      <summary
+        aria-label={label}
+        className="tools-privacy-trigger tools-info-trigger"
+        title={label}
+      >
+        <IconInfoCircle aria-hidden size={15} />
+      </summary>
+      <div className="tools-privacy-card tools-info-card">{content}</div>
+    </details>
+  );
+}
+
 type CategorySectionProps = {
   category: string;
   categoryTools: typeof tools;
@@ -789,20 +835,23 @@ function CategorySection({
           const Icon = tool.icon;
           const isActive = tool.id === selectedToolId;
           return (
-            <button
-              aria-pressed={isActive}
+            <Link
+              aria-current={isActive ? "page" : undefined}
               className={`aside-tool-btn group flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sidebar-foreground ${isActive ? `${styles.active} font-semibold` : styles.inactive}`}
               data-tool-id={tool.id}
+              href={isToolAvailable(tool) ? `/tools/${tool.id}` : "/tools"}
               key={tool.id}
-              onClick={() => onSelectTool(tool.id)}
-              type="button"
+              onClick={(event) => {
+                event.preventDefault();
+                onSelectTool(tool.id);
+              }}
             >
               <span aria-hidden className="tool-marker-dot h-1.5 w-1.5" />
               <span aria-hidden className="shrink-0">
                 <Icon size={15} />
               </span>
               <span className="font-medium">{tool.name[language]}</span>
-            </button>
+            </Link>
           );
         })}
       </div>
@@ -938,10 +987,13 @@ function ToolIndexCard({
     text.categories[tool.category as keyof typeof text.categories];
 
   return (
-    <button
+    <Link
       className="tools-index-card"
-      onClick={() => onSelectTool(tool.id)}
-      type="button"
+      href={isToolAvailable(tool) ? `/tools/${tool.id}` : "/tools"}
+      onClick={(event) => {
+        event.preventDefault();
+        onSelectTool(tool.id);
+      }}
     >
       <span className="tools-index-card-top">
         <span className="tools-index-card-icon" aria-hidden>
@@ -961,6 +1013,6 @@ function ToolIndexCard({
         {text.toolsIndexOpenLabel}
         <IconArrowRight aria-hidden size={15} />
       </span>
-    </button>
+    </Link>
   );
 }

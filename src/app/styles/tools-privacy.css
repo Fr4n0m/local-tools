@@ -72,6 +72,27 @@
   transform: translateY(0) scale(1);
 }
 
+.tools-info-popover[open] .tools-info-card {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
+
+.tools-info-trigger {
+  list-style: none;
+}
+
+.tools-info-trigger::-webkit-details-marker {
+  display: none;
+}
+
+.tools-info-card {
+  width: min(44rem, calc(100vw - 3rem));
+  max-height: min(70dvh, 42rem);
+  overflow-y: auto;
+  padding: 1.25rem;
+}
+
 .tools-privacy-card p {
   margin: 0;
   font-size: 0.82rem;

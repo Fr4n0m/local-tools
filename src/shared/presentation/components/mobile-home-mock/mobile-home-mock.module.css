@@ -40,6 +40,19 @@
   min-height: clamp(340px, 105cqi, 450px);
 }
 
+.mockViewportCompact.mockViewportCompact {
+  min-height: 0;
+  align-items: flex-start;
+}
+
+.mockViewportCompact .telephoneFrameIphone.telephoneFrameIphone {
+  --telephone-width: clamp(150px, 38cqi, 174px);
+}
+
+.mockViewportCompact .telephoneFramePixel.telephoneFramePixel {
+  --telephone-width: clamp(152px, 39cqi, 176px);
+}
+
 .telephoneFrame.telephoneFrame {
   position: relative;
   line-height: 0;
@@ -322,11 +335,12 @@
 
 .androidSearchBar.androidSearchBar {
   display: flex;
-  height: 20px;
+  height: calc(var(--telephone-width) * 0.103093);
   align-items: center;
-  gap: 6px;
-  margin: 0 10px 18px;
-  padding: 0 8px;
+  gap: calc(var(--telephone-width) * 0.030928);
+  margin: 0 calc(var(--telephone-width) * 0.051546)
+    calc(var(--telephone-width) * 0.092784);
+  padding: 0 calc(var(--telephone-width) * 0.041237);
   border-radius: 9999px !important;
   background: rgba(42, 47, 52, 0.9);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
@@ -338,13 +352,13 @@
 }
 
 .androidGoogleMark.androidGoogleMark {
-  height: 10px;
-  width: 10px;
+  height: calc(var(--telephone-width) * 0.051546);
+  width: calc(var(--telephone-width) * 0.051546);
 }
 
 .androidSearchText.androidSearchText {
-  height: 4px;
-  width: 46px;
+  height: calc(var(--telephone-width) * 0.020619);
+  width: calc(var(--telephone-width) * 0.237113);
   border-radius: 9999px !important;
   background: transparent;
 }
@@ -352,19 +366,20 @@
 .androidAssistantIcon.androidAssistantIcon {
   display: block;
   margin-left: auto;
-  height: 9px;
-  width: 9px;
+  height: calc(var(--telephone-width) * 0.046392);
+  width: calc(var(--telephone-width) * 0.046392);
 }
 
 .androidDate.androidDate {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 7px;
-  padding: 34px 14px 0;
+  gap: calc(var(--telephone-width) * 0.036082);
+  padding: calc(var(--telephone-width) * 0.175258)
+    calc(var(--telephone-width) * 0.072165) 0;
   color: rgba(255, 255, 255, 0.96);
   font-family: "Mobile Mock Google Sans", "Mobile Mock Roboto", sans-serif;
-  font-size: 8.5px;
+  font-size: calc(var(--telephone-width) * 0.043814);
   font-weight: 400;
   font-optical-sizing: auto;
   letter-spacing: -0.015em;
@@ -375,53 +390,56 @@
 .androidWeather.androidWeather {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: calc(var(--telephone-width) * 0.020619);
   line-height: 1;
 }
 
 .androidWeatherIcon.androidWeatherIcon {
   position: relative;
   display: inline-block;
-  height: 7px;
-  width: 7px;
+  height: calc(var(--telephone-width) * 0.036082);
+  width: calc(var(--telephone-width) * 0.036082);
   flex: 0 0 auto;
   border-radius: 9999px !important;
   background: #ffd43b;
-  box-shadow: 0 0 2px rgba(255, 212, 59, 0.38);
+  box-shadow: 0 0 calc(var(--telephone-width) * 0.010309)
+    rgba(255, 212, 59, 0.38);
 }
 
 .androidWeatherIcon::after {
   content: "";
   position: absolute;
-  right: -1px;
-  bottom: -1px;
-  height: 3px;
-  width: 5px;
+  right: calc(var(--telephone-width) * -0.005155);
+  bottom: calc(var(--telephone-width) * -0.005155);
+  height: calc(var(--telephone-width) * 0.015464);
+  width: calc(var(--telephone-width) * 0.025773);
   border-radius: 9999px !important;
   background: rgba(255, 255, 255, 0.96);
 }
 
 .androidApps.androidApps {
   display: grid;
-  grid-template-columns: repeat(5, 22px);
+  grid-template-columns: repeat(5, calc(var(--telephone-width) * 0.113402));
   justify-content: space-between;
   align-content: start;
   gap: 0;
   margin-top: auto;
-  padding: 0 14px 10px 9px;
+  padding: 0 calc(var(--telephone-width) * 0.072165)
+    calc(var(--telephone-width) * 0.051546)
+    calc(var(--telephone-width) * 0.046392);
 }
 
 .androidAppSlot.androidAppSlot {
   display: grid;
   justify-items: center;
-  gap: 4px;
+  gap: calc(var(--telephone-width) * 0.020619);
   min-width: 0;
 }
 
 .androidAppTile.androidAppTile {
   display: grid;
-  height: 22px;
-  width: 22px;
+  height: calc(var(--telephone-width) * 0.113402);
+  width: calc(var(--telephone-width) * 0.113402);
   place-items: center;
   border-radius: 9999px !important;
   background: transparent;
@@ -429,13 +447,13 @@
 
 .androidDecorativeImage.androidDecorativeImage {
   display: block;
-  height: 22px;
-  width: 22px;
+  height: calc(var(--telephone-width) * 0.113402);
+  width: calc(var(--telephone-width) * 0.113402);
 }
 
 .androidAppImage.androidAppImage {
-  height: 22px;
-  width: 22px;
+  height: calc(var(--telephone-width) * 0.113402);
+  width: calc(var(--telephone-width) * 0.113402);
   object-fit: contain;
 }
 
@@ -445,10 +463,10 @@
 }
 
 .androidAppLabel.androidAppLabel {
-  width: 24px;
+  width: calc(var(--telephone-width) * 0.123711);
   overflow: hidden;
   color: rgba(245, 249, 255, 0.92);
-  font-size: 3.75px;
+  font-size: calc(var(--telephone-width) * 0.01933);
   line-height: 1;
   text-align: center;
   text-overflow: ellipsis;
@@ -457,10 +475,10 @@
 
 .androidGesture.androidGesture {
   position: absolute;
-  bottom: 8px;
+  bottom: calc(var(--telephone-width) * 0.041237);
   left: 50%;
-  height: 3px;
-  width: 42px;
+  height: calc(var(--telephone-width) * 0.015464);
+  width: calc(var(--telephone-width) * 0.216495);
   transform: translateX(-50%);
   border-radius: 9999px !important;
   background: rgba(255, 255, 255, 0.74);

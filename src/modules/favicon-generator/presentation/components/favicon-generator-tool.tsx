@@ -5,13 +5,12 @@ import {
   IconBrandGoogle,
   IconBrandApple,
   IconBrandAndroid,
-  IconBraces,
-  IconClipboardText,
   IconDownload,
   IconPhotoCog,
   IconTrash,
   IconMoonStars,
   IconPalette,
+  IconLoader2,
   IconWorld,
   IconWorldWww,
 } from "@tabler/icons-react";
@@ -48,10 +47,6 @@ import {
 import { copyTextToClipboard } from "@/shared/lib/clipboard";
 import { downloadTextFile } from "@/shared/lib/download";
 import { createZipBlob } from "@/shared/lib/zip";
-import {
-  AnimatedLayoutGroup,
-  AnimatedLayoutItem,
-} from "@/shared/presentation/components/animated-layout";
 import { ToolDropSurface } from "@/shared/presentation/components/tool-drop-surface";
 import { GuidedToolFlow } from "@/shared/presentation/components/guided-tool-flow";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
@@ -63,7 +58,6 @@ import {
   ToolInput,
   ToolSection,
   ToolSwitch,
-  ToolTextarea,
 } from "@/shared/presentation/components/tool-form";
 import type { Language } from "@/shared/presentation/i18n";
 import type { ToolExperienceMode } from "@/modules/tool-registry/domain/tool";
@@ -85,6 +79,7 @@ import {
   SettingsHeading,
   StyleOverrideButton,
 } from "./favicon-render-settings-fields";
+import { FaviconGeneratedResults } from "./favicon-generated-results";
 
 type Props = {
   language: Language;
@@ -98,6 +93,44 @@ type GlobalIconStyle = Pick<
   "backgroundColor" | "backgroundEnabled" | "tintColor" | "tintEnabled"
 >;
 type TargetStyleOverrides = Record<FaviconRenderTarget, boolean>;
+
+function FaviconProcessingStatus({
+  description,
+  label,
+}: {
+  description: string;
+  label: string;
+}) {
+  return (
+    <div
+      aria-live="polite"
+      className="grid gap-3 rounded-2xl bg-[var(--tool-control-bg)] p-4"
+      role="status"
+    >
+      <div className="flex items-center gap-3">
+        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-foreground text-background">
+          <IconLoader2
+            aria-hidden
+            className="h-5 w-5 animate-spin motion-reduce:animate-none"
+          />
+        </span>
+        <div className="min-w-0">
+          <p className="font-semibold text-foreground">{label}</p>
+          <p className="mt-0.5 text-xs leading-5 text-foreground/60">
+            {description}
+          </p>
+        </div>
+      </div>
+      <div
+        aria-label={label}
+        className="h-2 overflow-hidden rounded-full bg-foreground/10"
+        role="progressbar"
+      >
+        <span className="favicon-generation-progress block h-full w-2/5 rounded-full bg-foreground" />
+      </div>
+    </div>
+  );
+}
 
 const DEFAULT_PWA_BACKGROUND_COLOR = "#ffffff";
 const DEFAULT_PWA_THEME_COLOR = "#111111";
@@ -413,9 +446,12 @@ export function FaviconGeneratorTool({
     };
   }, [darkFile, file, renderSettingsByTarget, useDedicatedDarkIcon]);
 
-  useEffect(() => () => {
-    generationJobRef.current += 1;
-  });
+  useEffect(
+    () => () => {
+      generationJobRef.current += 1;
+    },
+    [],
+  );
 
   const onGenerate = async () => {
     if (!file) {
@@ -839,6 +875,7 @@ export function FaviconGeneratorTool({
             <div className="grid grid-cols-2 gap-3">
               <MobilePreviewCard
                 appLabel={projectName}
+                compact
                 iconUrl={file ? previewIconUrls.apple : null}
                 language={language}
                 modeLabel={text.lightPreviewLabel}
@@ -846,6 +883,7 @@ export function FaviconGeneratorTool({
               />
               <MobilePreviewCard
                 appLabel={projectName}
+                compact
                 dark
                 iconUrl={file ? darkPreviewIconUrls.apple : null}
                 language={language}
@@ -891,6 +929,7 @@ export function FaviconGeneratorTool({
             <div className="grid grid-cols-2 gap-3">
               <MobilePreviewCard
                 appLabel={projectName}
+                compact
                 iconUrl={file ? previewIconUrls.android : null}
                 language={language}
                 modeLabel={text.lightPreviewLabel}
@@ -898,6 +937,7 @@ export function FaviconGeneratorTool({
               />
               <MobilePreviewCard
                 appLabel={projectName}
+                compact
                 dark
                 iconUrl={file ? darkPreviewIconUrls.android : null}
                 language={language}
@@ -948,20 +988,13 @@ export function FaviconGeneratorTool({
                   disabled: !file || generationStatus === "processing",
                   icon: <IconPhotoCog className="h-4 w-4" />,
                 },
-                {
-                  label: sharedText.buttons.download,
-                  onClick: () => void onDownloadZip(),
-                  disabled:
-                    exportedGenerated.length === 0 ||
-                    generationStatus === "processing",
-                  icon: <IconDownload className="h-4 w-4" />,
-                },
               ]}
             />
             {generationStatus === "processing" ? (
-              <p className="text-sm text-foreground/64" role="status">
-                {text.processing}
-              </p>
+              <FaviconProcessingStatus
+                description={text.processingDescription}
+                label={text.processing}
+              />
             ) : generationStatus === "error" ? (
               <p className="text-sm font-medium text-destructive" role="alert">
                 {text.generationError}
@@ -972,23 +1005,48 @@ export function FaviconGeneratorTool({
                 {text.empty}
               </p>
             ) : (
-              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                {[...exportedGenerated, ...exportedGeneratedDark].map(
-                  (icon) => (
-                    <a
-                      className="flex items-center justify-between gap-3 rounded-xl border border-border/70 bg-background/55 p-3 text-sm shadow-[3px_3px_0_var(--surface-shadow-color)] dark:border-white/18"
-                      download={icon.fileName}
-                      href={icon.url}
-                      key={icon.fileName}
-                    >
-                      <span>
-                        {icon.size}×{icon.size}
-                      </span>
-                      <span className="truncate">{icon.fileName}</span>
-                    </a>
-                  ),
-                )}
-              </div>
+              <FaviconGeneratedResults
+                compact
+                browserConfig={{
+                  actions: {
+                    copy: text.copyBrowserConfig,
+                    download: text.downloadBrowserConfig,
+                  },
+                  content: browserConfigContent,
+                  label: text.browserConfig,
+                }}
+                groupLabels={{
+                  android: text.androidFiles,
+                  apple: text.appleFiles,
+                  browser: text.browserFiles,
+                }}
+                icons={[...exportedGenerated, ...exportedGeneratedDark]}
+                manifest={{
+                  actions: {
+                    copy: text.copyManifest,
+                    download: text.downloadManifest,
+                  },
+                  content: manifestContent,
+                  label: text.manifest,
+                }}
+                onCopy={(content) => {
+                  void copyTextToClipboard(content);
+                }}
+                onDownloadBrowserConfig={onDownloadBrowserConfig}
+                onDownloadManifest={onDownloadManifest}
+                onDownloadPackage={() => void onDownloadZip()}
+                resultCountLabel={text.resultCount}
+                resultLabel={text.result}
+                snippet={{
+                  actions: { copy: text.copySnippet },
+                  content: htmlSnippet,
+                  label: text.snippet,
+                }}
+                technicalFilesDescription={text.technicalFilesDescription}
+                technicalFilesLabel={text.technicalFiles}
+                downloadPackageHint={text.downloadPackageHint}
+                downloadPackageLabel={text.downloadPackage}
+              />
             )}
           </div>
         ),
@@ -1452,16 +1510,6 @@ export function FaviconGeneratorTool({
               icon: <IconPhotoCog className="h-4 w-4" />,
             },
             {
-              label: sharedText.buttons.download,
-              onClick: () => {
-                void onDownloadZip();
-              },
-              disabled:
-                exportedGenerated.length === 0 ||
-                generationStatus === "processing",
-              icon: <IconDownload className="h-4 w-4" />,
-            },
-            {
               label: sharedText.buttons.clear,
               onClick: () => {
                 generated.forEach((icon) => {
@@ -1493,9 +1541,10 @@ export function FaviconGeneratorTool({
           ]}
         />
         {generationStatus === "processing" ? (
-          <p className="text-sm text-foreground/64" role="status">
-            {text.processing}
-          </p>
+          <FaviconProcessingStatus
+            description={text.processingDescription}
+            label={text.processing}
+          />
         ) : generationStatus === "error" ? (
           <p className="text-sm font-medium text-destructive" role="alert">
             {text.generationError}
@@ -1504,104 +1553,47 @@ export function FaviconGeneratorTool({
         {exportedGenerated.length === 0 ? (
           <p className="text-sm">{text.empty}</p>
         ) : (
-          <div className="space-y-3">
-            <p className="text-sm">{text.result}</p>
-            <AnimatedLayoutGroup className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {[...exportedGenerated, ...exportedGeneratedDark].map((icon) => (
-                <AnimatedLayoutItem className="h-full" key={icon.fileName}>
-                  <a
-                    className="flex h-full items-center justify-between rounded-lg border border-border/70 bg-background/45 p-3 text-sm shadow-[4px_4px_0_var(--surface-shadow-color)] transition-[transform,box-shadow,border-color,background-color] hover:-translate-y-0.5 hover:bg-background/65 hover:shadow-[5px_5px_0_var(--surface-shadow-color)] dark:border-white/18 dark:bg-white/[0.025]"
-                    download={icon.fileName}
-                    href={icon.url}
-                  >
-                    <span className="inline-flex items-center gap-2">
-                      {icon.size}x{icon.size}
-                      {icon.fileName.includes("-dark") ? (
-                        <span className="rounded-full border px-2 py-0.5 text-[10px] uppercase tracking-[0.18em]">
-                          dark
-                        </span>
-                      ) : null}
-                    </span>
-                    <span>{icon.fileName}</span>
-                  </a>
-                </AnimatedLayoutItem>
-              ))}
-            </AnimatedLayoutGroup>
-            <div className="grid gap-4 xl:grid-cols-3">
-              <div className="space-y-2 rounded-md border bg-background/40 p-3">
-                <p className="text-sm">{text.manifest}</p>
-                <ToolTextarea
-                  className="h-40 text-xs"
-                  readOnly
-                  value={manifestContent}
-                />
-                <ToolActions
-                  actions={[
-                    {
-                      label: text.copyManifest,
-                      onClick: () => {
-                        void copyTextToClipboard(manifestContent);
-                      },
-                      disabled: manifestContent.length === 0,
-                      icon: <IconClipboardText className="h-4 w-4" />,
-                    },
-                    {
-                      label: text.downloadManifest,
-                      onClick: onDownloadManifest,
-                      disabled: manifestContent.length === 0,
-                      icon: <IconDownload className="h-4 w-4" />,
-                    },
-                  ]}
-                />
-              </div>
-              <div className="space-y-2 rounded-md border bg-background/40 p-3">
-                <p className="text-sm">{text.browserConfig}</p>
-                <ToolTextarea
-                  className="h-40 text-xs"
-                  readOnly
-                  value={browserConfigContent}
-                />
-                <ToolActions
-                  actions={[
-                    {
-                      label: text.copyBrowserConfig,
-                      onClick: () => {
-                        void copyTextToClipboard(browserConfigContent);
-                      },
-                      disabled: browserConfigContent.length === 0,
-                      icon: <IconClipboardText className="h-4 w-4" />,
-                    },
-                    {
-                      label: text.downloadBrowserConfig,
-                      onClick: onDownloadBrowserConfig,
-                      disabled: browserConfigContent.length === 0,
-                      icon: <IconDownload className="h-4 w-4" />,
-                    },
-                  ]}
-                />
-              </div>
-              <div className="space-y-2 rounded-md border bg-background/40 p-3">
-                <p className="text-sm">{text.snippet}</p>
-                <ToolTextarea
-                  className="h-40 text-xs"
-                  readOnly
-                  value={htmlSnippet}
-                />
-                <ToolActions
-                  actions={[
-                    {
-                      label: text.copySnippet,
-                      onClick: () => {
-                        void copyTextToClipboard(htmlSnippet);
-                      },
-                      disabled: htmlSnippet.length === 0,
-                      icon: <IconBraces className="h-4 w-4" />,
-                    },
-                  ]}
-                />
-              </div>
-            </div>
-          </div>
+          <FaviconGeneratedResults
+            browserConfig={{
+              actions: {
+                copy: text.copyBrowserConfig,
+                download: text.downloadBrowserConfig,
+              },
+              content: browserConfigContent,
+              label: text.browserConfig,
+            }}
+            groupLabels={{
+              android: text.androidFiles,
+              apple: text.appleFiles,
+              browser: text.browserFiles,
+            }}
+            icons={[...exportedGenerated, ...exportedGeneratedDark]}
+            manifest={{
+              actions: {
+                copy: text.copyManifest,
+                download: text.downloadManifest,
+              },
+              content: manifestContent,
+              label: text.manifest,
+            }}
+            onCopy={(content) => {
+              void copyTextToClipboard(content);
+            }}
+            onDownloadBrowserConfig={onDownloadBrowserConfig}
+            onDownloadManifest={onDownloadManifest}
+            onDownloadPackage={() => void onDownloadZip()}
+            resultCountLabel={text.resultCount}
+            resultLabel={text.result}
+            snippet={{
+              actions: { copy: text.copySnippet },
+              content: htmlSnippet,
+              label: text.snippet,
+            }}
+            technicalFilesDescription={text.technicalFilesDescription}
+            technicalFilesLabel={text.technicalFiles}
+            downloadPackageHint={text.downloadPackageHint}
+            downloadPackageLabel={text.downloadPackage}
+          />
         )}
       </ToolDropSurface>
     </ToolSection>

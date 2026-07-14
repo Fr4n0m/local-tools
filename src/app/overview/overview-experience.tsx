@@ -1,6 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { useRouter } from "next/navigation";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -84,7 +90,7 @@ export function OverviewExperience() {
     };
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const root = rootRef.current;
     if (!root) return;
     let storyResizeObserver: ResizeObserver | null = null;
@@ -485,7 +491,7 @@ export function OverviewExperience() {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
       ctx.revert();
     };
-  }, [language]);
+  }, []);
 
   const t = sharedMessages[language].overview;
 

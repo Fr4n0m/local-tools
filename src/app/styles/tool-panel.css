@@ -41,5 +41,26 @@
   right: 1.5rem;
   z-index: 10;
   display: flex;
+  gap: 0.5rem;
   justify-content: flex-end;
+}
+@keyframes favicon-generation-progress {
+  0% {
+    transform: translateX(-120%);
+  }
+
+  100% {
+    transform: translateX(350%);
+  }
+}
+
+.favicon-generation-progress {
+  animation: favicon-generation-progress 1.15s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .favicon-generation-progress {
+    animation: none;
+    transform: translateX(75%);
+  }
 }

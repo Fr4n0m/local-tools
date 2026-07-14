@@ -72,17 +72,17 @@ export function GuidedToolFlow({
       <section
         aria-labelledby={`guided-step-${currentStep.id}`}
         className={cn(
-          "flex min-h-[min(720px,calc(100dvh-7rem))] flex-col overflow-hidden rounded-3xl bg-secondary/45 dark:bg-[#111]",
+          "flex h-[calc(100dvh-12rem)] min-h-0 flex-col overflow-hidden rounded-3xl bg-secondary/45 dark:bg-[#111] md:h-[calc(100dvh-10rem)]",
           className,
         )}
       >
-        <header className="flex flex-col gap-4 border-b border-border/60 px-4 py-4 dark:border-white/12 sm:px-6">
+        <header className="flex flex-col gap-2 border-b border-border/60 px-4 py-3 dark:border-white/12 sm:px-6">
           <div className="flex items-center justify-between gap-4">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.12em] text-foreground/48">
                 {stepLabel(currentIndex + 1, steps.length)}
               </p>
-              <p className="mt-1 text-sm font-medium text-foreground/72">
+              <p className="mt-0.5 text-sm font-medium text-foreground/72">
                 {progressLabel}
               </p>
             </div>
@@ -110,9 +110,7 @@ export function GuidedToolFlow({
                   <button
                     aria-current={active ? "step" : undefined}
                     aria-label={`${index + 1}. ${step.title}`}
-                    className={cn(
-                      "group grid h-8 w-full place-items-center rounded-md outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-                    )}
+                    className="group grid h-6 w-full place-items-center rounded-md outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                     disabled={!available || active}
                     onClick={() => goTo(index)}
                     type="button"
@@ -139,7 +137,7 @@ export function GuidedToolFlow({
           <AnimatePresence initial={false} mode="wait" custom={direction}>
             <m.div
               animate={{ opacity: 1, x: 0 }}
-              className="flex min-h-0 flex-1 flex-col overflow-y-auto px-4 py-6 sm:px-6 lg:px-8"
+              className="flex min-h-0 flex-1 flex-col overflow-hidden px-4 py-4 sm:px-6 lg:px-8"
               custom={direction}
               exit={
                 reducedMotion
@@ -161,11 +159,11 @@ export function GuidedToolFlow({
               }}
             >
               <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col">
-                <div className="mb-6 grid grid-cols-[3rem_minmax(0,1fr)] items-center gap-x-3">
+                <div className="mb-4 grid grid-cols-[2.5rem_minmax(0,1fr)] items-center gap-x-3">
                   {currentStep.icon ? (
                     <span
                       aria-hidden
-                      className="grid h-12 w-12 place-items-center rounded-2xl bg-secondary/55 text-foreground/78 [&>svg]:h-7 [&>svg]:w-7 dark:bg-[#1b1b1b]"
+                      className="grid h-10 w-10 place-items-center rounded-xl bg-secondary/55 text-foreground/78 [&>svg]:h-6 [&>svg]:w-6 dark:bg-[#1b1b1b]"
                     >
                       {currentStep.icon}
                     </span>
@@ -174,7 +172,7 @@ export function GuidedToolFlow({
                   )}
                   <div className="min-w-0">
                     <h2
-                      className="text-2xl font-semibold leading-tight tracking-[-0.025em] outline-none sm:text-3xl"
+                      className="text-xl font-semibold leading-tight tracking-[-0.025em] outline-none sm:text-2xl"
                       id={`guided-step-${currentStep.id}`}
                       ref={headingRef}
                       tabIndex={-1}
@@ -183,7 +181,7 @@ export function GuidedToolFlow({
                     </h2>
                   </div>
                   {currentStep.description ? (
-                    <p className="col-start-2 mt-2 max-w-2xl text-sm leading-6 text-foreground/62">
+                    <p className="col-start-2 mt-1 max-w-2xl text-sm leading-5 text-foreground/62">
                       {currentStep.description}
                     </p>
                   ) : null}
@@ -194,7 +192,7 @@ export function GuidedToolFlow({
           </AnimatePresence>
         </div>
 
-        <footer className="flex items-center justify-between gap-3 border-t border-border/60 px-4 py-4 dark:border-white/12 sm:px-6">
+        <footer className="flex items-center justify-between gap-3 px-4 pb-3 pt-2 sm:px-6">
           <Button
             disabled={currentIndex === 0}
             onClick={() => goTo(currentIndex - 1)}

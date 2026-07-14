@@ -437,6 +437,7 @@ export interface MobileHomeMockProps {
   appIconUrl?: string | null;
   appName: string;
   className?: string;
+  compact?: boolean;
   language?: MobileHomeMockLanguage;
   platform: MobileHomeMockPlatform;
   theme?: MobileHomeMockTheme;
@@ -446,6 +447,7 @@ export function MobileHomeMock({
   appIconUrl = null,
   appName,
   className,
+  compact = false,
   language = "en",
   platform,
   theme = "light",
@@ -454,6 +456,7 @@ export function MobileHomeMock({
   const rootClassName = [
     styles.mockViewport,
     platform === "ios" ? styles.mockViewportIos : styles.mockViewportAndroid,
+    compact ? styles.mockViewportCompact : null,
     className,
   ]
     .filter(Boolean)

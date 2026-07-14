@@ -98,6 +98,90 @@
     background-color 160ms ease;
 }
 
+/* CMD-KIT owns its layout inline; these hooks align only its visual states
+   with the shared LocalTools control and raised-surface tokens. */
+.lt-command-dialog {
+  box-shadow: var(--surface-shadow) !important;
+}
+
+.dark .lt-command-dialog {
+  box-shadow: var(--surface-shadow-dark) !important;
+}
+
+.lt-command-input {
+  background: var(--tool-control-bg) !important;
+  border-color: var(--color-border) !important;
+  box-shadow: 4px 4px 0 var(--surface-shadow-color);
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease;
+}
+
+.lt-command-input:focus {
+  border-color: color-mix(
+    in oklab,
+    var(--color-foreground),
+    transparent 55%
+  ) !important;
+  box-shadow: 2px 2px 0 var(--surface-shadow-color);
+}
+
+.lt-command-item {
+  border-radius: 12px !important;
+  corner-shape: round;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease !important;
+}
+
+.lt-command-item[aria-selected="true"] {
+  transform: translate(-1px, -1px);
+  border-color: color-mix(
+    in oklab,
+    var(--color-border),
+    var(--color-foreground) 20%
+  ) !important;
+  background: var(--tool-control-active-bg) !important;
+  box-shadow: 3px 3px 0 var(--surface-shadow-color);
+}
+
+.lt-command-item:active:not(:disabled) {
+  transform: translate(0, 0);
+  box-shadow: 1px 1px 0 var(--surface-shadow-color);
+}
+
+.lt-command-close {
+  border-radius: 10px !important;
+  corner-shape: round;
+  background: var(--tool-control-bg) !important;
+  color: var(--color-foreground) !important;
+  box-shadow: 3px 3px 0 var(--button-shadow-color);
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease !important;
+}
+
+.lt-command-close:hover,
+.lt-command-close:focus-visible {
+  background: var(--tool-control-hover-bg) !important;
+  box-shadow: 4px 4px 0 var(--button-shadow-color);
+}
+
+.lt-command-close:active {
+  transform: translateY(0) !important;
+  box-shadow: 1px 1px 0 var(--button-shadow-color);
+}
+
+.lt-command-close:focus-visible {
+  outline: 2px solid var(--button-focus-ring);
+  outline-offset: 3px;
+}
+
 .lt-command-row__icon {
   display: inline-flex;
   align-items: center;
@@ -208,7 +292,14 @@
 
 @media (prefers-reduced-motion: reduce) {
   .lt-command-floating-trigger,
-  .lt-command-row__icon {
+  .lt-command-row__icon,
+  .lt-command-input,
+  .lt-command-item,
+  .lt-command-close {
     transition: none;
+  }
+
+  .lt-command-item[aria-selected="true"] {
+    transform: none;
   }
 }
