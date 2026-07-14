@@ -978,18 +978,17 @@ export function FaviconGeneratorTool({
         title: guidedText.exportTitle,
         description: guidedText.exportDescription,
         icon: <IconDownload className="h-5 w-5" />,
+        scrollable: true,
+        onEnter: () => {
+          if (
+            generationStatus !== "processing" &&
+            exportedGenerated.length === 0
+          ) {
+            void onGenerate();
+          }
+        },
         content: (
           <div className="mx-auto grid w-full max-w-5xl gap-5">
-            <ToolActions
-              actions={[
-                {
-                  label: text.generate,
-                  onClick: () => void onGenerate(),
-                  disabled: !file || generationStatus === "processing",
-                  icon: <IconPhotoCog className="h-4 w-4" />,
-                },
-              ]}
-            />
             {generationStatus === "processing" ? (
               <FaviconProcessingStatus
                 description={text.processingDescription}

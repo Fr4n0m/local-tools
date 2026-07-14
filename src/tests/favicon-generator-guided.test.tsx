@@ -140,6 +140,10 @@ describe("FaviconGeneratorTool guided experience", () => {
 
     expect(screen.getByText("Paso 6 de 6")).toBeInTheDocument();
     expect(
+      screen.queryByRole("button", { name: "Generar set de favicons" }),
+    ).not.toBeInTheDocument();
+    expect(await screen.findByText("favicon-32x32.png")).toBeInTheDocument();
+    expect(
       screen.getAllByRole("button", { name: "Volver al editor" }),
     ).toHaveLength(2);
   });

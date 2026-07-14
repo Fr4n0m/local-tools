@@ -7,7 +7,7 @@
     position: sticky;
     top: 0.75rem;
     align-self: flex-start;
-    height: calc(100dvh - 1.5rem);
+    height: calc(100dvh - 2rem);
   }
 
   .tools-page-shell > aside > .tools-aside-panel,
@@ -55,7 +55,8 @@
   }
 
   .tools-tool-panel,
-  .tools-index-card {
+  .tools-index-card,
+  .aside-top-control {
     transition: none;
   }
 
@@ -65,18 +66,9 @@
   .aside-language-trigger:hover,
   .aside-language-trigger:focus-visible,
   .aside-language-trigger:active,
-  .tools-aside-panel button[aria-label="Density"]:hover,
-  .tools-aside-panel button[aria-label="Density"]:focus-visible,
-  .tools-aside-panel button[aria-label="Density"]:active,
-  .tools-aside-panel button[aria-label="Densidad"]:hover,
-  .tools-aside-panel button[aria-label="Densidad"]:focus-visible,
-  .tools-aside-panel button[aria-label="Densidad"]:active,
-  .tools-aside-panel button[aria-label="Theme"]:hover,
-  .tools-aside-panel button[aria-label="Theme"]:focus-visible,
-  .tools-aside-panel button[aria-label="Theme"]:active,
-  .tools-aside-panel button[aria-label="Tema"]:hover,
-  .tools-aside-panel button[aria-label="Tema"]:focus-visible,
-  .tools-aside-panel button[aria-label="Tema"]:active {
+  .aside-top-control:hover,
+  .aside-top-control:focus-visible,
+  .aside-top-control:active {
     transform: none;
   }
 }

@@ -1,6 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import { IconArrowLeft, IconArrowRight, IconX } from "@tabler/icons-react";
 import {
   AnimatePresence,
@@ -21,6 +27,8 @@ export type GuidedToolStep = {
   content: ReactNode;
   canContinue?: boolean;
   blockedMessage?: string;
+  scrollable?: boolean;
+  onEnter?: () => void;
 };
 
 type GuidedToolFlowProps = {
@@ -33,6 +41,55 @@ type GuidedToolFlowProps = {
   onExit: () => void;
   className?: string;
 };
+
+function GuidedScrollArea({ children }: { children: ReactNode }) {
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [overflow, setOverflow] = useState({ top: false, bottom: false });
+
+  const updateOverflow = useCallback(() => {
+    const viewport = viewportRef.current;
+    if (!viewport) return;
+
+    const maxScroll = viewport.scrollHeight - viewport.clientHeight;
+    setOverflow({
+      top: viewport.scrollTop > 2,
+      bottom: maxScroll - viewport.scrollTop > 2,
+    });
+  }, []);
+
+  useEffect(() => {
+    updateOverflow();
+    if (typeof ResizeObserver === "undefined") {
+      window.addEventListener("resize", updateOverflow);
+      return () => window.removeEventListener("resize", updateOverflow);
+    }
+    const observer = new ResizeObserver(updateOverflow);
+    if (viewportRef.current) observer.observe(viewportRef.current);
+    if (contentRef.current) observer.observe(contentRef.current);
+    return () => observer.disconnect();
+  }, [updateOverflow]);
+
+  const maskImage =
+    overflow.top && overflow.bottom
+      ? "linear-gradient(to bottom, transparent 0, black 1.25rem, black calc(100% - 1.25rem), transparent 100%)"
+      : overflow.top
+        ? "linear-gradient(to bottom, transparent 0, black 1.25rem, black 100%)"
+        : overflow.bottom
+          ? "linear-gradient(to bottom, black 0, black calc(100% - 1.25rem), transparent 100%)"
+          : undefined;
+
+  return (
+    <div
+      className="hide-scrollbar h-full min-h-0 overflow-y-auto overscroll-contain pr-1"
+      onScroll={updateOverflow}
+      ref={viewportRef}
+      style={{ maskImage, WebkitMaskImage: maskImage }}
+    >
+      <div ref={contentRef}>{children}</div>
+    </div>
+  );
+}
 
 export function GuidedToolFlow({
   steps,
@@ -61,6 +118,7 @@ export function GuidedToolFlow({
 
   const goTo = (nextIndex: number) => {
     if (nextIndex < 0 || nextIndex >= steps.length) return;
+    steps[nextIndex]?.onEnter?.();
     setNavigation({
       currentIndex: nextIndex,
       direction: nextIndex > currentIndex ? 1 : -1,
@@ -158,7 +216,7 @@ export function GuidedToolFlow({
                 ease: [0.22, 1, 0.36, 1],
               }}
             >
-              <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col">
+              <div className="mx-auto flex min-h-0 w-full max-w-6xl flex-1 flex-col">
                 <div className="mb-4 grid grid-cols-[2.5rem_minmax(0,1fr)] items-center gap-x-3">
                   {currentStep.icon ? (
                     <span
@@ -186,7 +244,18 @@ export function GuidedToolFlow({
                     </p>
                   ) : null}
                 </div>
-                <div className="flex-1">{currentStep.content}</div>
+                <div
+                  className={cn(
+                    "flex-1",
+                    currentStep.scrollable && "min-h-0 overflow-hidden",
+                  )}
+                >
+                  {currentStep.scrollable ? (
+                    <GuidedScrollArea>{currentStep.content}</GuidedScrollArea>
+                  ) : (
+                    currentStep.content
+                  )}
+                </div>
               </div>
             </m.div>
           </AnimatePresence>
