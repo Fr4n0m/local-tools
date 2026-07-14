@@ -39,7 +39,11 @@ export type ToolId =
 
 export type ToolComponentProps = {
   language: Language;
+  experienceMode: ToolExperienceMode;
+  onExperienceModeChange: (mode: ToolExperienceMode) => void;
 };
+
+export type ToolExperienceMode = "comfortable" | "compact";
 
 export type Tool = {
   id: ToolId;

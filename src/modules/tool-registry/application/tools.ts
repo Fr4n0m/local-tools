@@ -9,7 +9,6 @@ import {
   IconDroplet,
   IconEye,
   IconFileDescription,
-  IconFileTypePng,
   IconFileTypePdf,
   IconFileTypeSvg,
   IconFileTypography,
@@ -31,6 +30,7 @@ import {
   IconSparkles,
   IconUserCircle,
   IconVideo,
+  IconWorldWww,
 } from "@tabler/icons-react";
 
 import { Base64Tool } from "@/modules/base64-tool/presentation/components/base64-tool";
@@ -179,7 +179,7 @@ export const tools: Tool[] = [
     id: "favicon-generator",
     availability: "available",
     category: "files-media",
-    icon: IconFileTypePng,
+    icon: IconWorldWww,
     component: FaviconGeneratorTool,
     name: { en: faviconEn.name, es: faviconEs.name },
     description: { en: faviconEn.description, es: faviconEs.description },

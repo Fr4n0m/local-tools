@@ -6,11 +6,14 @@ type ZipInputFile = {
 };
 
 export async function createZipBlob(files: ZipInputFile[]): Promise<Blob> {
-  const entries: Record<string, Uint8Array> = {};
-
-  for (const file of files) {
-    entries[file.name] = new Uint8Array(await file.blob.arrayBuffer());
-  }
+  const entries = Object.fromEntries(
+    await Promise.all(
+      files.map(async (file) => [
+        file.name,
+        new Uint8Array(await file.blob.arrayBuffer()),
+      ]),
+    ),
+  ) as Record<string, Uint8Array>;
 
   const archive = zipSync(entries, { level: 6 });
   const copy = new Uint8Array(archive.length);

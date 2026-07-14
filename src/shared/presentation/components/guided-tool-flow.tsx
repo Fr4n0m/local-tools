@@ -1,0 +1,234 @@
+"use client";
+
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import { IconArrowLeft, IconArrowRight, IconX } from "@tabler/icons-react";
+import {
+  AnimatePresence,
+  domAnimation,
+  LazyMotion,
+  m,
+  useReducedMotion,
+} from "motion/react";
+
+import { cn } from "@/shared/lib/utils";
+import { Button } from "@/shared/presentation/components/ui/button";
+
+export type GuidedToolStep = {
+  id: string;
+  title: string;
+  description?: string;
+  icon?: ReactNode;
+  content: ReactNode;
+  canContinue?: boolean;
+  blockedMessage?: string;
+};
+
+type GuidedToolFlowProps = {
+  steps: GuidedToolStep[];
+  backLabel: string;
+  continueLabel: string;
+  exitLabel: string;
+  progressLabel: string;
+  stepLabel: (current: number, total: number) => string;
+  onExit: () => void;
+  className?: string;
+};
+
+export function GuidedToolFlow({
+  steps,
+  backLabel,
+  continueLabel,
+  exitLabel,
+  progressLabel,
+  stepLabel,
+  onExit,
+  className,
+}: GuidedToolFlowProps) {
+  const [{ currentIndex, direction }, setNavigation] = useState({
+    currentIndex: 0,
+    direction: 1 as 1 | -1,
+  });
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const reducedMotion = useReducedMotion();
+  const currentStep = steps[currentIndex];
+  const isLastStep = currentIndex === steps.length - 1;
+
+  useEffect(() => {
+    headingRef.current?.focus({ preventScroll: true });
+  }, [currentIndex]);
+
+  if (!currentStep) return null;
+
+  const goTo = (nextIndex: number) => {
+    if (nextIndex < 0 || nextIndex >= steps.length) return;
+    setNavigation({
+      currentIndex: nextIndex,
+      direction: nextIndex > currentIndex ? 1 : -1,
+    });
+  };
+
+  return (
+    <LazyMotion features={domAnimation}>
+      <section
+        aria-labelledby={`guided-step-${currentStep.id}`}
+        className={cn(
+          "flex min-h-[min(720px,calc(100dvh-7rem))] flex-col overflow-hidden rounded-3xl bg-secondary/45 dark:bg-[#111]",
+          className,
+        )}
+      >
+        <header className="flex flex-col gap-4 border-b border-border/60 px-4 py-4 dark:border-white/12 sm:px-6">
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-foreground/48">
+                {stepLabel(currentIndex + 1, steps.length)}
+              </p>
+              <p className="mt-1 text-sm font-medium text-foreground/72">
+                {progressLabel}
+              </p>
+            </div>
+            <Button
+              aria-label={exitLabel}
+              className="shrink-0"
+              onClick={onExit}
+              size="sm"
+              variant="ghost"
+            >
+              <IconX aria-hidden className="h-4 w-4" />
+              <span>{exitLabel}</span>
+            </Button>
+          </div>
+
+          <ol
+            aria-label={progressLabel}
+            className="grid grid-flow-col auto-cols-fr gap-1.5"
+          >
+            {steps.map((step, index) => {
+              const active = index === currentIndex;
+              const available = index <= currentIndex;
+              return (
+                <li key={step.id}>
+                  <button
+                    aria-current={active ? "step" : undefined}
+                    aria-label={`${index + 1}. ${step.title}`}
+                    className={cn(
+                      "group grid h-8 w-full place-items-center rounded-md outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                    )}
+                    disabled={!available || active}
+                    onClick={() => goTo(index)}
+                    type="button"
+                  >
+                    <span
+                      aria-hidden
+                      className={cn(
+                        "h-2 w-full rounded-full transition-[background-color,transform] duration-200 motion-reduce:transition-none",
+                        active
+                          ? "scale-y-125 bg-foreground"
+                          : index < currentIndex
+                            ? "bg-foreground/42 group-hover:bg-foreground/58"
+                            : "bg-foreground/12",
+                      )}
+                    />
+                  </button>
+                </li>
+              );
+            })}
+          </ol>
+        </header>
+
+        <div className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
+          <AnimatePresence initial={false} mode="wait" custom={direction}>
+            <m.div
+              animate={{ opacity: 1, x: 0 }}
+              className="flex min-h-0 flex-1 flex-col overflow-y-auto px-4 py-6 sm:px-6 lg:px-8"
+              custom={direction}
+              exit={
+                reducedMotion
+                  ? { opacity: 0 }
+                  : { opacity: 0, x: direction > 0 ? -24 : 24 }
+              }
+              initial={
+                reducedMotion
+                  ? { opacity: 0 }
+                  : { opacity: 0, x: direction > 0 ? 24 : -24 }
+              }
+              key={currentStep.id}
+              onAnimationComplete={() =>
+                headingRef.current?.focus({ preventScroll: true })
+              }
+              transition={{
+                duration: reducedMotion ? 0.01 : 0.22,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+            >
+              <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col">
+                <div className="mb-6 grid grid-cols-[3rem_minmax(0,1fr)] items-center gap-x-3">
+                  {currentStep.icon ? (
+                    <span
+                      aria-hidden
+                      className="grid h-12 w-12 place-items-center rounded-2xl bg-secondary/55 text-foreground/78 [&>svg]:h-7 [&>svg]:w-7 dark:bg-[#1b1b1b]"
+                    >
+                      {currentStep.icon}
+                    </span>
+                  ) : (
+                    <span aria-hidden />
+                  )}
+                  <div className="min-w-0">
+                    <h2
+                      className="text-2xl font-semibold leading-tight tracking-[-0.025em] outline-none sm:text-3xl"
+                      id={`guided-step-${currentStep.id}`}
+                      ref={headingRef}
+                      tabIndex={-1}
+                    >
+                      {currentStep.title}
+                    </h2>
+                  </div>
+                  {currentStep.description ? (
+                    <p className="col-start-2 mt-2 max-w-2xl text-sm leading-6 text-foreground/62">
+                      {currentStep.description}
+                    </p>
+                  ) : null}
+                </div>
+                <div className="flex-1">{currentStep.content}</div>
+              </div>
+            </m.div>
+          </AnimatePresence>
+        </div>
+
+        <footer className="flex items-center justify-between gap-3 border-t border-border/60 px-4 py-4 dark:border-white/12 sm:px-6">
+          <Button
+            disabled={currentIndex === 0}
+            onClick={() => goTo(currentIndex - 1)}
+            size="sm"
+            variant="outline"
+          >
+            <IconArrowLeft aria-hidden className="h-4 w-4" />
+            <span>{backLabel}</span>
+          </Button>
+
+          {!isLastStep ? (
+            <div className="flex flex-col items-end gap-1.5">
+              <Button
+                disabled={currentStep.canContinue === false}
+                onClick={() => goTo(currentIndex + 1)}
+                size="sm"
+              >
+                <span>{continueLabel}</span>
+                <IconArrowRight aria-hidden className="h-4 w-4" />
+              </Button>
+              {currentStep.canContinue === false &&
+              currentStep.blockedMessage ? (
+                <p className="text-xs text-foreground/52" role="status">
+                  {currentStep.blockedMessage}
+                </p>
+              ) : null}
+            </div>
+          ) : (
+            <Button onClick={onExit} size="sm" variant="outline">
+              <span>{exitLabel}</span>
+            </Button>
+          )}
+        </footer>
+      </section>
+    </LazyMotion>
+  );
+}

@@ -15,7 +15,7 @@
         "title": "2. Herramientas locales y datos del navegador",
         "paragraphs": [
           "Los textos, archivos y demás contenidos introducidos en las herramientas se procesan localmente en el navegador y LocalTools no los sube a un servidor.",
-          "El navegador guarda preferencias funcionales en localStorage, como idioma, tema, densidad, herramienta seleccionada y colores recientes o guardados. Esta información permanece en el dispositivo y no se usa para analítica, publicidad, seguimiento entre sitios ni elaboración de perfiles."
+          "El navegador guarda preferencias funcionales en localStorage, como idioma, tema, herramienta seleccionada y colores recientes o guardados. Esta información permanece en el dispositivo y no se usa para analítica, publicidad, seguimiento entre sitios ni elaboración de perfiles."
         ]
       },
       {

@@ -89,10 +89,14 @@ export function normalizeShortName(value: string, appName: string): string {
 }
 
 export function normalizeFaviconPath(value: string): string {
-  const normalized = value.trim();
+  const normalized = value.trim().replace(/\\/g, "/");
   if (!normalized || normalized === "/") return "/";
-  const withoutEdges = normalized.replace(/^\/+|\/+$/g, "");
-  return withoutEdges ? `/${withoutEdges}/` : "/";
+  const safeSegments = normalized
+    .split("/")
+    .map((segment) => segment.trim())
+    .filter((segment) => segment && segment !== "." && segment !== "..")
+    .map((segment) => encodeURIComponent(segment));
+  return safeSegments.length > 0 ? `/${safeSegments.join("/")}/` : "/";
 }
 
 export function normalizeVersionTag(value: string): string {
@@ -132,6 +136,13 @@ export function faviconFileName(
     return `favicon-dark-${size}x${size}.png`;
   }
   return `favicon-${size}x${size}.png`;
+}
+
+export function faviconMaskableFileName(
+  size: 192 | 512,
+  variant: "regular" | "dark" = "regular",
+): string {
+  return `android-chrome-${variant === "dark" ? "dark-" : ""}maskable-${size}x${size}.png`;
 }
 
 function buildCornerShapePath(
@@ -377,6 +388,25 @@ export function buildManifestContent(
       },
     ];
   });
+  const maskableIcons = [192, 512].flatMap((size) => {
+    const expectedFileName = faviconMaskableFileName(
+      size as 192 | 512,
+      androidVariant,
+    );
+    const selectedIcons = androidVariant === "dark" ? darkIcons : icons;
+    const icon = selectedIcons.find(
+      (candidate) => candidate.fileName === expectedFileName,
+    );
+    if (!icon) return [];
+    return [
+      {
+        src: buildAssetHref(icon.fileName, options),
+        sizes: `${icon.size}x${icon.size}`,
+        type: "image/png",
+        purpose: "maskable",
+      },
+    ];
+  });
 
   return JSON.stringify(
     {
@@ -386,7 +416,7 @@ export function buildManifestContent(
       display: "standalone",
       background_color: backgroundColor,
       theme_color: themeColor,
-      icons: manifestIcons,
+      icons: [...manifestIcons, ...maskableIcons],
     },
     null,
     2,

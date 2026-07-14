@@ -30,6 +30,7 @@ import {
 import { tools } from "@/modules/tool-registry/application/tools";
 import {
   isToolAvailable,
+  type ToolExperienceMode,
   type ToolId,
 } from "@/modules/tool-registry/domain/tool";
 import {
@@ -52,7 +53,6 @@ function isToolId(value: string): value is ToolId {
   return toolIds.has(value as ToolId);
 }
 
-type Density = "comfortable" | "compact";
 type ToolView = "grid" | "tool";
 
 const SEARCH_SYNONYMS: Record<string, string[]> = {
@@ -109,15 +109,6 @@ function expandSearchTerms(value: string): string[] {
   return Array.from(
     new Set(terms.flatMap((term) => [term, ...(SEARCH_SYNONYMS[term] ?? [])])),
   );
-}
-
-function readInitialDensity(): Density {
-  if (typeof window === "undefined") {
-    return "comfortable";
-  }
-
-  const storedDensity = window.localStorage.getItem("localtools.density");
-  return storedDensity === "compact" ? "compact" : "comfortable";
 }
 
 function readToolFromUrl(): ToolId | null {
@@ -213,7 +204,7 @@ export function ToolboxApp() {
   const mainRef = useRef<HTMLElement | null>(null);
   const [language, setLanguage] = useState<Language>("en");
   const [theme, setTheme] = useState<Theme>("light");
-  const [density, setDensity] = useState<Density>("comfortable");
+  const [density, setDensity] = useState<ToolExperienceMode>("comfortable");
   const [view, setView] = useState<ToolView>("grid");
   const [selectedToolId, setSelectedToolId] =
     useState<ToolId>(AVAILABLE_TOOL_ID);
@@ -228,7 +219,8 @@ export function ToolboxApp() {
     const frame = window.requestAnimationFrame(() => {
       setLanguage(resolveInitialLanguage());
       setTheme(readInitialTheme());
-      setDensity(readInitialDensity());
+      setDensity("comfortable");
+      window.localStorage.removeItem("localtools.density");
       const initialView = getInitialView();
       const initialToolId = getInitialToolId();
       const initialTool = tools.find((tool) => tool.id === initialToolId);
@@ -279,6 +271,7 @@ export function ToolboxApp() {
     }
 
     setSelectedToolId(toolId);
+    setDensity("comfortable");
     setView("tool");
     focusMainContent();
   }
@@ -304,7 +297,6 @@ export function ToolboxApp() {
 
   useEffect(() => {
     if (!isReady) return;
-    window.localStorage.setItem("localtools.density", density);
     window.dispatchEvent(
       new CustomEvent("localtools:density-change", { detail: density }),
     );
@@ -401,13 +393,12 @@ export function ToolboxApp() {
   const closeConstructionModal = useCallback(() => {
     setConstructionToolId(null);
     setSelectedToolId(AVAILABLE_TOOL_ID);
+    setDensity("comfortable");
     setView("tool");
   }, []);
 
   return (
-    <div
-      className={`min-h-screen text-foreground ${density === "compact" ? "density-compact" : ""}`}
-    >
+    <div className="min-h-screen text-foreground">
       <a className="skip-link" href="#main-content">
         {text.skipToContent}
       </a>
@@ -433,7 +424,10 @@ export function ToolboxApp() {
               onLanguageSelect={(lang) => setLanguage(lang)}
               onSearchChange={setSearch}
               onSelectTool={selectTool}
-              onShowGrid={() => setView("grid")}
+              onShowGrid={() => {
+                setDensity("comfortable");
+                setView("grid");
+              }}
               onThemeToggle={toggleTheme}
               selectedToolId={selectedToolId}
               view={view}
@@ -474,6 +468,7 @@ export function ToolboxApp() {
                   setIsMobileSidebarOpen(false);
                 }}
                 onShowGrid={() => {
+                  setDensity("comfortable");
                   setView("grid");
                   setIsMobileSidebarOpen(false);
                 }}
@@ -518,7 +513,11 @@ export function ToolboxApp() {
               <div className="tools-tool-topbar">
                 <PrivacyInfo text={text} />
               </div>
-              <SelectedToolComponent language={language} />
+              <SelectedToolComponent
+                experienceMode={density}
+                language={language}
+                onExperienceModeChange={setDensity}
+              />
             </section>
           )}
         </main>
@@ -541,7 +540,7 @@ export function ToolboxApp() {
 }
 
 type SidebarProps = {
-  density: Density;
+  density: ToolExperienceMode;
   language: Language;
   search: string;
   theme: Theme;

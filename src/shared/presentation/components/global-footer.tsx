@@ -58,28 +58,17 @@ export function GlobalFooter() {
   useEffect(() => {
     dispatchFooter({
       language: resolveInitialLanguage(),
-      density:
-        window.localStorage.getItem("localtools.density") === "compact"
-          ? "compact"
-          : "comfortable",
+      density: "comfortable",
     });
   }, []);
 
   useEffect(() => {
     const onStorage = (event: StorageEvent) => {
-      if (
-        event.key !== "localtools.language" &&
-        event.key !== "localtools.density"
-      ) {
+      if (event.key !== "localtools.language") {
         return;
       }
       if (event.key === "localtools.language") {
         dispatchFooter({ language: resolveInitialLanguage() });
-      }
-      if (event.key === "localtools.density") {
-        dispatchFooter({
-          density: event.newValue === "compact" ? "compact" : "comfortable",
-        });
       }
     };
     const onDensityChange = (event: Event) => {

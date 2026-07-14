@@ -15,7 +15,7 @@
         "title": "2. Local tools and browser data",
         "paragraphs": [
           "Text, files, and other content entered into the tools are processed locally in the browser and are not uploaded to a LocalTools server.",
-          "The browser stores functional preferences in localStorage, including language, theme, density, selected tool, and recent or saved colors. This information stays on the device and is not used for analytics, advertising, cross-site tracking, or profiling."
+          "The browser stores functional preferences in localStorage, including language, theme, selected tool, and recent or saved colors. This information stays on the device and is not used for analytics, advertising, cross-site tracking, or profiling."
         ]
       },
       {

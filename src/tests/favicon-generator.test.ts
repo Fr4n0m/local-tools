@@ -87,6 +87,30 @@ describe("favicon-generator domain", () => {
     expect(normalizeVersionTag("  july 2026  ")).toBe("july-2026");
   });
 
+  it("makes favicon paths safe for generated HTML, XML, and JSON", () => {
+    const unsafePath = '/assets/../favicons/\" onload=\"alert(1)/';
+    const normalized = normalizeFaviconPath(unsafePath);
+    const snippet = buildHtmlSnippet(icons, {
+      appName: "Safe app",
+      faviconPath: unsafePath,
+      themeColor: "#111111",
+      backgroundColor: "#ffffff",
+    });
+    const browserConfig = buildBrowserConfigContent(icons, {
+      appName: "Safe app",
+      faviconPath: unsafePath,
+      themeColor: "#111111",
+      backgroundColor: "#ffffff",
+    });
+
+    expect(normalized).toBe("/assets/favicons/%22%20onload%3D%22alert(1)/");
+    expect(snippet).not.toContain('" onload="');
+    expect(browserConfig).not.toContain('" onload="');
+    expect(snippet).toContain(
+      'href="/assets/favicons/%22%20onload%3D%22alert(1)/favicon.ico"',
+    );
+  });
+
   it("maps canonical favicon file names", () => {
     expect(faviconFileName(16)).toBe("favicon-16x16.png");
     expect(faviconFileName(16, "dark")).toBe("favicon-dark-16x16.png");
@@ -97,8 +121,16 @@ describe("favicon-generator domain", () => {
   });
 
   it("builds manifest with app metadata and large icons", () => {
+    const manifestIcons = [
+      ...icons,
+      ...[192, 512].map((size) => ({
+        size,
+        fileName: `android-chrome-maskable-${size}x${size}.png`,
+        blob: createPngBlob(size),
+      })),
+    ];
     const manifest = JSON.parse(
-      buildManifestContent(icons, {
+      buildManifestContent(manifestIcons, {
         appName: "Local Tools",
         shortName: "LT",
         themeColor: "#101010",
@@ -124,6 +156,18 @@ describe("favicon-generator domain", () => {
         sizes: "512x512",
         type: "image/png",
         purpose: "any",
+      },
+      {
+        src: "/favicons/android-chrome-maskable-192x192.png?v=2026-07",
+        sizes: "192x192",
+        type: "image/png",
+        purpose: "maskable",
+      },
+      {
+        src: "/favicons/android-chrome-maskable-512x512.png?v=2026-07",
+        sizes: "512x512",
+        type: "image/png",
+        purpose: "maskable",
       },
     ]);
   });

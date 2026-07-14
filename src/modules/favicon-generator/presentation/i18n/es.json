@@ -58,5 +58,34 @@
   "copySnippet": "Copiar snippet",
   "replaceImage": "Cambiar imagen",
   "previewEmpty": "Elige una imagen para previsualizar el favicon en pestañas.",
-  "previewFormats": "Soporta: .jpg .jpeg .png .gif .webp .bmp y .svg"
+  "previewFormats": "Soporta: .jpg .jpeg .png .gif .webp .bmp y .svg",
+  "processing": "Procesando…",
+  "generationError": "No se pudo generar el paquete. Revisa la imagen e inténtalo de nuevo.",
+  "fileErrors": {
+    "too-large": "La imagen supera el límite de 20 MB.",
+    "unsupported-type": "El archivo no es una imagen PNG, JPEG, WebP, GIF, BMP o SVG válida.",
+    "unsafe-svg": "El SVG contiene scripts, eventos o recursos externos no permitidos.",
+    "invalid-image": "La imagen está dañada o el navegador no puede decodificarla.",
+    "dimensions-too-large": "La imagen supera 8192 px o 40 megapíxeles. Reduce sus dimensiones."
+  },
+  "guided": {
+    "progress": "Configuración guiada del favicon",
+    "step": "Paso {current} de {total}",
+    "continue": "Continuar",
+    "back": "Atrás",
+    "exit": "Volver al editor",
+    "sourceTitle": "Elige la imagen principal",
+    "sourceDescription": "Sube el icono que usaremos como origen. Puedes añadir una variante específica para fondos oscuros.",
+    "sourceBlocked": "Selecciona una imagen para continuar.",
+    "identityTitle": "Define la identidad de la app",
+    "identityDescription": "Configura nombres, ruta y apariencia general antes de ajustar cada plataforma.",
+    "browserTitle": "Revisa el navegador",
+    "browserDescription": "Comprueba el favicon en pestañas claras y oscuras.",
+    "appleTitle": "Ajusta Apple",
+    "appleDescription": "Revisa el icono en la pantalla de inicio de iPhone y personaliza su render si lo necesitas.",
+    "androidTitle": "Ajusta Android",
+    "androidDescription": "Revisa el icono en Pixel y adapta forma, escala o color para Android.",
+    "exportTitle": "Genera y descarga",
+    "exportDescription": "Genera el paquete final, revisa los archivos y descarga el ZIP o los recursos individuales."
+  }
 }

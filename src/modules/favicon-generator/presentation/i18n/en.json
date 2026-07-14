@@ -58,5 +58,34 @@
   "copySnippet": "Copy snippet",
   "replaceImage": "Replace image",
   "previewEmpty": "Choose an image to preview your favicon in browser tabs.",
-  "previewFormats": "Supports: .jpg .jpeg .png .gif .webp .bmp & .svg"
+  "previewFormats": "Supports: .jpg .jpeg .png .gif .webp .bmp & .svg",
+  "processing": "Processing…",
+  "generationError": "The package could not be generated. Check the image and try again.",
+  "fileErrors": {
+    "too-large": "The image exceeds the 20 MB limit.",
+    "unsupported-type": "The file is not a valid PNG, JPEG, WebP, GIF, BMP, or SVG image.",
+    "unsafe-svg": "The SVG contains disallowed scripts, events, or external resources.",
+    "invalid-image": "The image is damaged or cannot be decoded by this browser.",
+    "dimensions-too-large": "The image exceeds 8192 px or 40 megapixels. Reduce its dimensions."
+  },
+  "guided": {
+    "progress": "Guided favicon setup",
+    "step": "Step {current} of {total}",
+    "continue": "Continue",
+    "back": "Back",
+    "exit": "Back to editor",
+    "sourceTitle": "Choose the main image",
+    "sourceDescription": "Upload the source icon. You can also add a dedicated variant for dark backgrounds.",
+    "sourceBlocked": "Select an image to continue.",
+    "identityTitle": "Define the app identity",
+    "identityDescription": "Set names, path, and global appearance before adjusting each platform.",
+    "browserTitle": "Review the browser",
+    "browserDescription": "Check the favicon in light and dark tabs.",
+    "appleTitle": "Adjust Apple",
+    "appleDescription": "Review the icon on the iPhone home screen and customize its rendering when needed.",
+    "androidTitle": "Adjust Android",
+    "androidDescription": "Review the icon on Pixel and adapt shape, scale, or color for Android.",
+    "exportTitle": "Generate and download",
+    "exportDescription": "Generate the final package, review its files, and download the ZIP or individual resources."
+  }
 }

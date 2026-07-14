@@ -27,7 +27,7 @@ export function PreviewHeading({
 
   return (
     <h2 className="inline-flex items-center gap-3 text-[1.625rem] font-semibold tracking-[-0.04em] text-foreground">
-      <span className="grid h-11 w-11 place-items-center rounded-2xl border border-border/75 bg-[var(--tool-control-bg)] shadow-[2px_2px_0_var(--surface-shadow-color)] dark:border-white/20">
+      <span className="grid h-11 w-11 place-items-center rounded-xl bg-secondary/55 text-foreground/78 dark:bg-[#1b1b1b]">
         <Icon aria-hidden="true" className="h-5.5 w-5.5" />
       </span>
       <span>{label}</span>
@@ -118,19 +118,4 @@ export function PreviewSubtleStack({ children }: { children: ReactNode }) {
 
 export function PreviewSettingsPanel({ children }: { children: ReactNode }) {
   return <div className="p-0 lg:pl-2">{children}</div>;
-}
-
-export function PreviewSettingsField({
-  label,
-  children,
-}: {
-  label: string;
-  children: ReactNode;
-}) {
-  return (
-    <label className="grid gap-2">
-      <span className="text-sm font-medium text-foreground/78">{label}</span>
-      {children}
-    </label>
-  );
 }

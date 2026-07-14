@@ -31,12 +31,17 @@ export function ToolSection({
   return (
     <div className={cn("space-y-4", className)}>
       {title ? (
-        <h2 className="flex items-center gap-2 text-xl font-semibold">
-          <span aria-hidden className="text-foreground/75">
-            {titleIcon ?? <IconHexagon size={18} />}
+        <header className="flex min-w-0 items-center gap-3 border-b border-border/60 pb-4 dark:border-white/12">
+          <span
+            aria-hidden
+            className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-[var(--tool-control-bg)] text-foreground/75 [&>svg]:h-7 [&>svg]:w-7"
+          >
+            {titleIcon ?? <IconHexagon />}
           </span>
-          <span>{title}</span>
-        </h2>
+          <h1 className="min-w-0 truncate text-2xl font-semibold tracking-[-0.025em] text-foreground sm:text-[1.75rem] sm:leading-tight">
+            {title}
+          </h1>
+        </header>
       ) : null}
       {children}
     </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   IconBrandGoogle,
   IconBrandApple,
@@ -12,33 +12,39 @@ import {
   IconTrash,
   IconMoonStars,
   IconPalette,
-  IconSettings,
   IconWorld,
+  IconWorldWww,
 } from "@tabler/icons-react";
 
 import {
   buildBrowserConfigContent,
   buildFaviconPackage,
   buildHtmlSnippet,
-  clampFaviconRoundness,
-  clampFaviconScale,
-  createDefaultFaviconRenderSettings,
-  drawFaviconSource,
   buildManifestContent,
-  FAVICON_CORNER_SHAPES,
-  FAVICON_SIZES,
-  faviconFileName,
-  type FaviconFitMode,
-  type FaviconCornerShape,
   type FaviconRenderSettings,
   normalizeAppName,
   normalizeFaviconPath,
   normalizeShortName,
   normalizeVersionTag,
-  type GeneratedFaviconAsset as GeneratedFaviconPackageAsset,
 } from "@/modules/favicon-generator/domain/favicon-generator";
 import en from "@/modules/favicon-generator/presentation/i18n/en.json";
 import es from "@/modules/favicon-generator/presentation/i18n/es.json";
+import {
+  validateFaviconImageFile,
+  type FaviconImageValidationError,
+} from "@/modules/favicon-generator/application/validate-favicon-image";
+import {
+  createDefaultFaviconRenderSettingsByTarget,
+  createEmptyPreviewUrls,
+  FAVICON_RENDER_TARGETS,
+  generatePreviewIconUrl,
+  generateRenderedIcons,
+  revokePreviewUrls,
+  type FaviconPreviewUrlsByTarget,
+  type FaviconRenderSettingsByTarget,
+  type FaviconRenderTarget,
+  type GeneratedIcon,
+} from "@/modules/favicon-generator/application/favicon-rendering";
 import { copyTextToClipboard } from "@/shared/lib/clipboard";
 import { downloadTextFile } from "@/shared/lib/download";
 import { createZipBlob } from "@/shared/lib/zip";
@@ -47,20 +53,20 @@ import {
   AnimatedLayoutItem,
 } from "@/shared/presentation/components/animated-layout";
 import { ToolDropSurface } from "@/shared/presentation/components/tool-drop-surface";
+import { GuidedToolFlow } from "@/shared/presentation/components/guided-tool-flow";
 import { ToolActions } from "@/shared/presentation/components/tool-actions";
 import { Button } from "@/shared/presentation/components/ui/button";
-import { SegmentedControl } from "@/shared/presentation/components/segmented-control";
 import {
   ToolColorPicker,
   ToolField,
   ToolFileDrop,
   ToolInput,
   ToolSection,
-  ToolSlider,
   ToolSwitch,
   ToolTextarea,
 } from "@/shared/presentation/components/tool-form";
 import type { Language } from "@/shared/presentation/i18n";
+import type { ToolExperienceMode } from "@/modules/tool-registry/domain/tool";
 import { sharedMessages } from "@/shared/presentation/i18n";
 import {
   BrowserPreviewMock,
@@ -74,98 +80,19 @@ import {
   PreviewSettingsPanel,
   PreviewSubtleStack,
 } from "./favicon-generator-previews";
+import {
+  RenderSettingsFields,
+  SettingsHeading,
+  StyleOverrideButton,
+} from "./favicon-render-settings-fields";
 
-type Props = { language: Language };
-
-const CORNER_SHAPE_PATHS: Record<FaviconCornerShape, string> = {
-  square: "M5 5H35V35H5Z",
-  round:
-    "M15 5H25A10 10 0 0 1 35 15V25A10 10 0 0 1 25 35H15A10 10 0 0 1 5 25V15A10 10 0 0 1 15 5Z",
-  squircle:
-    "M15 5H25C33.2 5 35 6.8 35 15V25C35 33.2 33.2 35 25 35H15C6.8 35 5 33.2 5 25V15C5 6.8 6.8 5 15 5Z",
-  bevel: "M15 5H25L35 15V25L25 35H15L5 25V15Z",
-  scoop: "M15 5H25Q25 15 35 15V25Q25 25 25 35H15Q15 25 5 25V15Q15 15 15 5Z",
-  notch: "M15 5H25V15H35V25H25V35H15V25H5V15H15Z",
+type Props = {
+  language: Language;
+  experienceMode: ToolExperienceMode;
+  onExperienceModeChange: (mode: ToolExperienceMode) => void;
 };
 
-function SettingsHeading({ id, label }: { id: string; label: string }) {
-  return (
-    <h3 className="flex items-center gap-2 text-sm font-semibold" id={id}>
-      <IconSettings aria-hidden className="h-4 w-4" />
-      {label}
-    </h3>
-  );
-}
-
-function CornerShapePicker({
-  label,
-  labels,
-  onChange,
-  value,
-}: {
-  label: string;
-  labels: FaviconText["cornerShapeOptions"];
-  onChange: (shape: FaviconCornerShape) => void;
-  value: FaviconCornerShape;
-}) {
-  const groupName = useId();
-
-  return (
-    <fieldset className="grid grid-cols-3 gap-2">
-      <legend className="sr-only">{label}</legend>
-      {FAVICON_CORNER_SHAPES.map((shape) => (
-        <label className="group relative cursor-pointer" key={shape}>
-          <input
-            checked={value === shape}
-            className="peer sr-only"
-            name={groupName}
-            onChange={() => onChange(shape)}
-            type="radio"
-            value={shape}
-          />
-          <span className="flex min-h-16 flex-col items-center justify-center gap-1.5 rounded-xl border border-border/85 bg-[var(--tool-control-bg)] px-2 py-2 text-xs font-medium text-foreground/70 shadow-[2px_2px_0_var(--surface-shadow-color)] transition-[background-color,color,box-shadow,transform] group-hover:-translate-y-0.5 group-hover:bg-[var(--tool-control-hover-bg)] peer-checked:border-foreground peer-checked:bg-foreground peer-checked:text-background peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-foreground dark:border-white/22">
-            <svg
-              aria-hidden="true"
-              className="h-7 w-7 fill-current"
-              viewBox="0 0 40 40"
-            >
-              <path d={CORNER_SHAPE_PATHS[shape]} />
-            </svg>
-            <span>{labels[shape]}</span>
-          </span>
-        </label>
-      ))}
-    </fieldset>
-  );
-}
-
-function StyleOverrideButton({
-  active,
-  label,
-  onClick,
-}: {
-  active: boolean;
-  label: string;
-  onClick: () => void;
-}) {
-  return (
-    <Button aria-pressed={active} onClick={onClick} size="sm" type="button">
-      <IconPalette aria-hidden className="h-4 w-4" />
-      {label}
-    </Button>
-  );
-}
-
-type GeneratedIcon = GeneratedFaviconPackageAsset & {
-  url: string;
-};
-
-type FaviconRenderTarget = "browser" | "apple" | "android";
-type FaviconRenderSettingsByTarget = Record<
-  FaviconRenderTarget,
-  FaviconRenderSettings
->;
-type FaviconPreviewUrlsByTarget = Record<FaviconRenderTarget, string | null>;
+const EMPTY_GENERATED_ICONS: GeneratedIcon[] = [];
 type GlobalIconStyle = Pick<
   FaviconRenderSettings,
   "backgroundColor" | "backgroundEnabled" | "tintColor" | "tintEnabled"
@@ -174,311 +101,34 @@ type TargetStyleOverrides = Record<FaviconRenderTarget, boolean>;
 
 const DEFAULT_PWA_BACKGROUND_COLOR = "#ffffff";
 const DEFAULT_PWA_THEME_COLOR = "#111111";
+const FAVICON_IMAGE_ACCEPT =
+  "image/png,image/jpeg,image/webp,image/gif,image/bmp,image/svg+xml";
 
-const FAVICON_RENDER_TARGETS: FaviconRenderTarget[] = [
-  "browser",
-  "apple",
-  "android",
-];
-
-function createDefaultFaviconRenderSettingsByTarget(): FaviconRenderSettingsByTarget {
-  const browser = createDefaultFaviconRenderSettings();
-  const apple = createDefaultFaviconRenderSettings();
-  const android = createDefaultFaviconRenderSettings();
-
-  return {
-    browser: { ...browser, cornerShape: "round", roundness: 0.33 },
-    apple: { ...apple, cornerShape: "squircle", roundness: 0.33 },
-    android: { ...android, cornerShape: "squircle", roundness: 0.33 },
-  };
-}
-
-function createEmptyPreviewUrls(): FaviconPreviewUrlsByTarget {
-  return {
-    browser: null,
-    apple: null,
-    android: null,
-  };
-}
-
-function revokePreviewUrls(urls: FaviconPreviewUrlsByTarget) {
-  Object.values(urls).forEach((url) => {
-    if (url) URL.revokeObjectURL(url);
-  });
-}
-
-function faviconRenderTargetForSize(size: number): FaviconRenderTarget {
-  if (size === 180) return "apple";
-  if (size === 192 || size === 512) return "android";
-  return "browser";
-}
-
-async function generateRenderedIcons(
-  file: File,
-  renderSettingsByTarget: FaviconRenderSettingsByTarget,
-  variant: "regular" | "dark" = "regular",
-): Promise<GeneratedIcon[]> {
-  const image = new Image();
-  const sourceUrl = URL.createObjectURL(file);
-  image.src = sourceUrl;
-  await new Promise<void>((resolve, reject) => {
-    image.onload = () => {
-      URL.revokeObjectURL(sourceUrl);
-      resolve();
-    };
-    image.onerror = () => {
-      URL.revokeObjectURL(sourceUrl);
-      reject(new Error("image-load-error"));
-    };
-  });
-
-  return (
-    await Promise.all(
-      FAVICON_SIZES.map(async (size) => {
-        const canvas = document.createElement("canvas");
-        canvas.width = size;
-        canvas.height = size;
-        const context = canvas.getContext("2d");
-        if (!context) return null;
-
-        drawFaviconSource(
-          context,
-          image,
-          size,
-          image.naturalWidth,
-          image.naturalHeight,
-          renderSettingsByTarget[faviconRenderTargetForSize(size)],
-        );
-
-        const blob = await new Promise<Blob | null>((resolve) => {
-          canvas.toBlob(resolve, "image/png");
-        });
-        if (!blob) return null;
-
-        return {
-          size,
-          url: URL.createObjectURL(blob),
-          blob,
-          fileName: faviconFileName(size, variant),
-        };
-      }),
-    )
-  ).filter((icon): icon is GeneratedIcon => icon !== null);
-}
-
-async function generatePreviewIconUrl(
-  file: File,
-  renderSettings: FaviconRenderSettings,
-): Promise<string | null> {
-  const image = new Image();
-  const sourceUrl = URL.createObjectURL(file);
-  image.src = sourceUrl;
-  return new Promise((resolve) => {
-    image.onload = () => {
-      const canvas = document.createElement("canvas");
-      canvas.width = 96;
-      canvas.height = 96;
-      const context = canvas.getContext("2d");
-      if (!context) {
-        URL.revokeObjectURL(sourceUrl);
-        resolve(null);
-        return;
-      }
-
-      drawFaviconSource(
-        context,
-        image,
-        96,
-        image.naturalWidth,
-        image.naturalHeight,
-        renderSettings,
-      );
-
-      canvas.toBlob((blob) => {
-        URL.revokeObjectURL(sourceUrl);
-        if (!blob) {
-          resolve(null);
-          return;
-        }
-        resolve(URL.createObjectURL(blob));
-      }, "image/png");
-    };
-    image.onerror = () => {
-      URL.revokeObjectURL(sourceUrl);
-      resolve(null);
-    };
-  });
-}
-
-const FAVICON_FIT_OPTIONS: FaviconFitMode[] = ["contain", "crop", "stretch"];
-
-type FaviconText = typeof en;
-
-function RenderSettingsFields({
-  compact = false,
-  settings,
-  showColorControls = true,
-  text,
-  updateSettings,
-}: {
-  compact?: boolean;
-  settings: FaviconRenderSettings;
-  showColorControls?: boolean;
-  text: FaviconText;
-  updateSettings: (
-    update: (current: FaviconRenderSettings) => FaviconRenderSettings,
-  ) => void;
-}) {
-  return (
-    <div
-      className={
-        compact
-          ? "grid grid-cols-2 content-start gap-3 [&>*:first-child]:col-span-2 [&>*:nth-child(2)]:col-span-2"
-          : "grid content-start gap-3"
-      }
-    >
-      <ToolField label={text.fitLabel}>
-        <SegmentedControl
-          aria-label={text.fitLabel}
-          onChange={(fit) =>
-            updateSettings((current) => ({
-              ...current,
-              fit: fit as FaviconFitMode,
-            }))
-          }
-          options={FAVICON_FIT_OPTIONS.map((option) => ({
-            value: option,
-            label: option[0].toUpperCase() + option.slice(1),
-          }))}
-          value={settings.fit}
-        />
-      </ToolField>
-
-      <ToolField label={text.scaleLabel}>
-        <ToolSlider
-          displayValue={`${Math.round(settings.scale * 100)}%`}
-          max={2}
-          min={0}
-          onChange={(value) =>
-            updateSettings((current) => ({
-              ...current,
-              scale: clampFaviconScale(value),
-            }))
-          }
-          step={0.01}
-          value={settings.scale}
-        />
-      </ToolField>
-
-      {showColorControls ? (
-        <>
-          <div className="flex items-center gap-2 rounded-xl border border-border/85 bg-[var(--tool-control-bg)] px-3 py-2 shadow-[2px_2px_0_var(--surface-shadow-color)] dark:border-white/22">
-            <ToolSwitch
-              aria-label={text.tintToggleLabel}
-              checked={settings.tintEnabled}
-              onChange={(checked) =>
-                updateSettings((current) => ({
-                  ...current,
-                  tintEnabled: checked,
-                }))
-              }
-            />
-            <span className="min-w-0 flex-1 text-xs font-medium text-foreground/75">
-              {text.tintToggleLabel}
-            </span>
-            <ToolColorPicker
-              className="w-24 shrink-0"
-              compact
-              disabled={!settings.tintEnabled}
-              onChange={(value) =>
-                updateSettings((current) => ({
-                  ...current,
-                  tintColor: value,
-                }))
-              }
-              value={settings.tintColor}
-            />
-          </div>
-
-          <div className="flex items-center gap-2 rounded-xl border border-border/85 bg-[var(--tool-control-bg)] px-3 py-2 shadow-[2px_2px_0_var(--surface-shadow-color)] dark:border-white/22">
-            <ToolSwitch
-              aria-label={text.backgroundToggleLabel}
-              checked={settings.backgroundEnabled}
-              onChange={(checked) =>
-                updateSettings((current) => ({
-                  ...current,
-                  backgroundEnabled: checked,
-                }))
-              }
-            />
-            <span className="min-w-0 flex-1 text-xs font-medium text-foreground/75">
-              {text.backgroundToggleLabel}
-            </span>
-            <ToolColorPicker
-              className="w-24 shrink-0"
-              compact
-              disabled={!settings.backgroundEnabled}
-              onChange={(value) =>
-                updateSettings((current) => ({
-                  ...current,
-                  backgroundColor: value,
-                }))
-              }
-              value={settings.backgroundColor}
-            />
-          </div>
-        </>
-      ) : null}
-
-      <ToolField label={text.cornerShapeLabel}>
-        <CornerShapePicker
-          label={text.cornerShapeLabel}
-          labels={text.cornerShapeOptions}
-          onChange={(cornerShape) =>
-            updateSettings((current) => ({
-              ...current,
-              cornerShape,
-            }))
-          }
-          value={settings.cornerShape}
-        />
-      </ToolField>
-
-      <ToolField label={text.roundnessLabel}>
-        <ToolSlider
-          disabled={settings.cornerShape === "square"}
-          displayValue={`${Math.round(settings.roundness * 100)}%`}
-          max={1}
-          min={0}
-          onChange={(value) =>
-            updateSettings((current) => ({
-              ...current,
-              roundness: clampFaviconRoundness(value),
-            }))
-          }
-          step={0.01}
-          value={settings.roundness}
-        />
-        <p className="text-xs text-foreground/55">
-          {settings.cornerShape === "square"
-            ? text.roundnessSquareHelp
-            : settings.backgroundEnabled
-              ? text.roundnessWithBackgroundHelp
-              : text.roundnessWithoutBackgroundHelp}
-        </p>
-      </ToolField>
-    </div>
-  );
-}
-
-export function FaviconGeneratorTool({ language }: Props) {
+export function FaviconGeneratorTool({
+  language,
+  experienceMode,
+  onExperienceModeChange,
+}: Props) {
   const text = useMemo(() => (language === "es" ? es : en), [language]);
   const sharedText = sharedMessages[language];
   const [file, setFile] = useState<File | null>(null);
   const [darkFile, setDarkFile] = useState<File | null>(null);
+  const [sourceFilePreviewUrl, setSourceFilePreviewUrl] = useState("");
+  const [darkSourceFilePreviewUrl, setDarkSourceFilePreviewUrl] = useState("");
+  const [fileError, setFileError] =
+    useState<FaviconImageValidationError | null>(null);
+  const [darkFileError, setDarkFileError] =
+    useState<FaviconImageValidationError | null>(null);
   const [useDedicatedDarkIcon, setUseDedicatedDarkIcon] = useState(false);
   const [generated, setGenerated] = useState<GeneratedIcon[]>([]);
   const [generatedDark, setGeneratedDark] = useState<GeneratedIcon[]>([]);
+  const [generatedFingerprint, setGeneratedFingerprint] = useState("");
+  const [generationStatus, setGenerationStatus] = useState<
+    "idle" | "processing" | "error"
+  >("idle");
+  const generationJobRef = useRef(0);
+  const regularValidationJobRef = useRef(0);
+  const darkValidationJobRef = useRef(0);
   const [appName, setAppName] = useState("LocalTools");
   const [shortName, setShortName] = useState("LT");
   const [globalIconStyle, setGlobalIconStyle] = useState<GlobalIconStyle>({
@@ -511,7 +161,40 @@ export function FaviconGeneratorTool({ language }: Props) {
       apple: false,
       browser: false,
     });
+  const generationFingerprint = useMemo(
+    () =>
+      JSON.stringify({
+        file: file
+          ? [file.name, file.size, file.type, file.lastModified]
+          : null,
+        darkFile:
+          useDedicatedDarkIcon && darkFile
+            ? [
+                darkFile.name,
+                darkFile.size,
+                darkFile.type,
+                darkFile.lastModified,
+              ]
+            : null,
+        renderSettingsByTarget,
+        useDedicatedDarkIcon,
+      }),
+    [darkFile, file, renderSettingsByTarget, useDedicatedDarkIcon],
+  );
+  const exportedGenerated =
+    generatedFingerprint === generationFingerprint
+      ? generated
+      : EMPTY_GENERATED_ICONS;
+  const exportedGeneratedDark =
+    generatedFingerprint === generationFingerprint
+      ? generatedDark
+      : EMPTY_GENERATED_ICONS;
+  const invalidatePendingGeneration = () => {
+    generationJobRef.current += 1;
+    setGenerationStatus("idle");
+  };
   const updateGlobalIconStyle = (update: Partial<GlobalIconStyle>) => {
+    invalidatePendingGeneration();
     const nextStyle = { ...globalIconStyle, ...update };
     setGlobalIconStyle(nextStyle);
     setRenderSettingsByTarget((current) =>
@@ -527,6 +210,7 @@ export function FaviconGeneratorTool({ language }: Props) {
     );
   };
   const toggleTargetStyleOverride = (target: FaviconRenderTarget) => {
+    invalidatePendingGeneration();
     const willOverride = !targetStyleOverrides[target];
     setTargetStyleOverrides((current) => ({
       ...current,
@@ -543,21 +227,26 @@ export function FaviconGeneratorTool({ language }: Props) {
     target: FaviconRenderTarget,
     update: (current: FaviconRenderSettings) => FaviconRenderSettings,
   ) => {
+    invalidatePendingGeneration();
     setRenderSettingsByTarget((current) => ({
       ...current,
       [target]: update(current[target]),
     }));
   };
+  const onDedicatedDarkIconChange = (checked: boolean) => {
+    invalidatePendingGeneration();
+    setUseDedicatedDarkIcon(checked);
+  };
 
   const projectName = useMemo(() => normalizeAppName(appName), [appName]);
 
   const manifestContent = useMemo(() => {
-    if (generated.length === 0) {
+    if (exportedGenerated.length === 0) {
       return "";
     }
 
     return buildManifestContent(
-      generated,
+      exportedGenerated,
       {
         appName: projectName,
         shortName: normalizeShortName(shortName, projectName),
@@ -567,13 +256,13 @@ export function FaviconGeneratorTool({ language }: Props) {
         version: versionTag,
         androidIconVariant: "regular",
       },
-      generatedDark,
+      exportedGeneratedDark,
     );
   }, [
     backgroundColor,
     faviconPath,
-    generated,
-    generatedDark,
+    exportedGenerated,
+    exportedGeneratedDark,
     projectName,
     shortName,
     themeColor,
@@ -581,11 +270,11 @@ export function FaviconGeneratorTool({ language }: Props) {
   ]);
 
   const browserConfigContent = useMemo(() => {
-    if (generated.length === 0) {
+    if (exportedGenerated.length === 0) {
       return "";
     }
 
-    return buildBrowserConfigContent(generated, {
+    return buildBrowserConfigContent(exportedGenerated, {
       appName: projectName,
       shortName: normalizeShortName(shortName, projectName),
       themeColor,
@@ -596,7 +285,7 @@ export function FaviconGeneratorTool({ language }: Props) {
   }, [
     backgroundColor,
     faviconPath,
-    generated,
+    exportedGenerated,
     projectName,
     shortName,
     themeColor,
@@ -604,12 +293,12 @@ export function FaviconGeneratorTool({ language }: Props) {
   ]);
 
   const htmlSnippet = useMemo(() => {
-    if (generated.length === 0) {
+    if (exportedGenerated.length === 0) {
       return "";
     }
 
     return buildHtmlSnippet(
-      generated,
+      exportedGenerated,
       {
         appName: projectName,
         shortName: normalizeShortName(shortName, projectName),
@@ -619,18 +308,34 @@ export function FaviconGeneratorTool({ language }: Props) {
         version: versionTag,
         appleTouchIconVariant: "regular",
       },
-      generatedDark,
+      exportedGeneratedDark,
     );
   }, [
     backgroundColor,
     faviconPath,
-    generated,
-    generatedDark,
+    exportedGenerated,
+    exportedGeneratedDark,
     projectName,
     shortName,
     themeColor,
     versionTag,
   ]);
+
+  useEffect(
+    () => () => {
+      if (sourceFilePreviewUrl) URL.revokeObjectURL(sourceFilePreviewUrl);
+    },
+    [sourceFilePreviewUrl],
+  );
+
+  useEffect(
+    () => () => {
+      if (darkSourceFilePreviewUrl) {
+        URL.revokeObjectURL(darkSourceFilePreviewUrl);
+      }
+    },
+    [darkSourceFilePreviewUrl],
+  );
 
   useEffect(() => {
     return () => {
@@ -648,115 +353,185 @@ export function FaviconGeneratorTool({ language }: Props) {
   useEffect(() => {
     let cancelled = false;
 
-    const run = async () => {
-      if (!file) {
-        setPreviewIconUrls((current) => {
-          revokePreviewUrls(current);
-          return createEmptyPreviewUrls();
-        });
-        setDarkPreviewIconUrls((current) => {
-          revokePreviewUrls(current);
-          return createEmptyPreviewUrls();
-        });
-        return;
-      }
+    if (!file) {
+      return;
+    }
 
-      const regularPreviewEntries = await Promise.all(
-        FAVICON_RENDER_TARGETS.map(async (target) => [
-          target,
-          await generatePreviewIconUrl(file, renderSettingsByTarget[target]),
-        ]),
-      );
-      if (!cancelled) {
-        setPreviewIconUrls((current) => {
-          revokePreviewUrls(current);
-          return Object.fromEntries(
-            regularPreviewEntries,
-          ) as FaviconPreviewUrlsByTarget;
-        });
-      }
-
-      const sourceForDark = useDedicatedDarkIcon && darkFile ? darkFile : file;
-      const darkPreviewEntries = await Promise.all(
-        FAVICON_RENDER_TARGETS.map(async (target) => [
-          target,
-          await generatePreviewIconUrl(
-            sourceForDark,
-            renderSettingsByTarget[target],
+    const timeout = window.setTimeout(() => {
+      const run = async () => {
+        const sourceForDark =
+          useDedicatedDarkIcon && darkFile ? darkFile : file;
+        const [regularPreviewEntries, darkPreviewEntries] = await Promise.all([
+          Promise.all(
+            FAVICON_RENDER_TARGETS.map(async (target) => [
+              target,
+              await generatePreviewIconUrl(
+                file,
+                renderSettingsByTarget[target],
+              ),
+            ]),
           ),
-        ]),
-      );
-      if (!cancelled) {
+          Promise.all(
+            FAVICON_RENDER_TARGETS.map(async (target) => [
+              target,
+              await generatePreviewIconUrl(
+                sourceForDark,
+                renderSettingsByTarget[target],
+              ),
+            ]),
+          ),
+        ]);
+
+        const regularUrls = Object.fromEntries(
+          regularPreviewEntries,
+        ) as FaviconPreviewUrlsByTarget;
+        const darkUrls = Object.fromEntries(
+          darkPreviewEntries,
+        ) as FaviconPreviewUrlsByTarget;
+        if (cancelled) {
+          revokePreviewUrls(regularUrls);
+          revokePreviewUrls(darkUrls);
+          return;
+        }
+
+        setPreviewIconUrls((current) => {
+          revokePreviewUrls(current);
+          return regularUrls;
+        });
         setDarkPreviewIconUrls((current) => {
           revokePreviewUrls(current);
-          return Object.fromEntries(
-            darkPreviewEntries,
-          ) as FaviconPreviewUrlsByTarget;
+          return darkUrls;
         });
-      }
-    };
+      };
 
-    void run();
+      void run();
+    }, 140);
+
     return () => {
       cancelled = true;
+      window.clearTimeout(timeout);
     };
   }, [darkFile, file, renderSettingsByTarget, useDedicatedDarkIcon]);
+
+  useEffect(() => () => {
+    generationJobRef.current += 1;
+  });
 
   const onGenerate = async () => {
     if (!file) {
       return;
     }
 
-    generated.forEach((icon) => URL.revokeObjectURL(icon.url));
-    generatedDark.forEach((icon) => URL.revokeObjectURL(icon.url));
+    const jobId = generationJobRef.current + 1;
+    generationJobRef.current = jobId;
+    const requestedFingerprint = generationFingerprint;
+    setGenerationStatus("processing");
 
-    const icons = await generateRenderedIcons(file, renderSettingsByTarget);
-    const darkSource = useDedicatedDarkIcon && darkFile ? darkFile : file;
-    const darkIcons =
-      useDedicatedDarkIcon || darkFile
-        ? await generateRenderedIcons(
-            darkSource,
-            renderSettingsByTarget,
-            "dark",
-          )
-        : [];
+    try {
+      const results = await Promise.allSettled([
+        generateRenderedIcons(file, renderSettingsByTarget),
+        useDedicatedDarkIcon && darkFile
+          ? generateRenderedIcons(darkFile, renderSettingsByTarget, "dark")
+          : Promise.resolve([]),
+      ]);
+      const [regularResult, darkResult] = results;
+      if (
+        regularResult.status === "rejected" ||
+        darkResult.status === "rejected"
+      ) {
+        results.forEach((result) => {
+          if (result.status === "fulfilled") {
+            result.value.forEach((icon) => URL.revokeObjectURL(icon.url));
+          }
+        });
+        throw new Error("favicon-generation-failed");
+      }
+      const icons = regularResult.value;
+      const darkIcons = darkResult.value;
 
-    setGenerated(icons);
-    setGeneratedDark(darkIcons);
+      if (generationJobRef.current !== jobId) {
+        icons.forEach((icon) => URL.revokeObjectURL(icon.url));
+        darkIcons.forEach((icon) => URL.revokeObjectURL(icon.url));
+        return;
+      }
+
+      generated.forEach((icon) => URL.revokeObjectURL(icon.url));
+      generatedDark.forEach((icon) => URL.revokeObjectURL(icon.url));
+      setGenerated(icons);
+      setGeneratedDark(darkIcons);
+      setGeneratedFingerprint(requestedFingerprint);
+      setGenerationStatus("idle");
+    } catch {
+      if (generationJobRef.current === jobId) {
+        setGenerationStatus("error");
+      }
+    }
   };
 
-  const onDropFiles = (nextFiles: File[]) => {
-    const nextFile = nextFiles.find((candidate) =>
-      candidate.type.startsWith("image/"),
-    );
+  const onDropFiles = async (nextFiles: File[]) => {
+    const nextFile = nextFiles[0];
     if (!nextFile) {
+      return;
+    }
+    const appNameBeforeValidation = appName;
+    const shortNameBeforeValidation = shortName;
+    const validationJob = regularValidationJobRef.current + 1;
+    regularValidationJobRef.current = validationJob;
+    const validation = await validateFaviconImageFile(nextFile);
+    if (regularValidationJobRef.current !== validationJob) {
+      return;
+    }
+    if (!validation.ok) {
+      setFileError(validation.error);
       return;
     }
     const nextProjectName = normalizeAppName(
       nextFile.name.replace(/\.[^.]+$/, "") || nextFile.name,
     );
+    generationJobRef.current += 1;
+    setGenerationStatus("idle");
+    setFileError(null);
     setFile(nextFile);
-    setAppName(nextProjectName);
-    setShortName(normalizeShortName("", nextProjectName));
+    setSourceFilePreviewUrl(URL.createObjectURL(nextFile));
+    setAppName((current) =>
+      current === appNameBeforeValidation ? nextProjectName : current,
+    );
+    setShortName((current) =>
+      current === shortNameBeforeValidation
+        ? normalizeShortName("", nextProjectName)
+        : current,
+    );
   };
 
-  const onDropDarkFiles = (nextFiles: File[]) => {
-    const nextFile = nextFiles.find((candidate) =>
-      candidate.type.startsWith("image/"),
-    );
+  const onDropDarkFiles = async (nextFiles: File[]) => {
+    const nextFile = nextFiles[0];
     if (!nextFile) {
       return;
     }
+    const validationJob = darkValidationJobRef.current + 1;
+    darkValidationJobRef.current = validationJob;
+    const validation = await validateFaviconImageFile(nextFile);
+    if (darkValidationJobRef.current !== validationJob) {
+      return;
+    }
+    if (!validation.ok) {
+      setDarkFileError(validation.error);
+      return;
+    }
+    generationJobRef.current += 1;
+    setGenerationStatus("idle");
+    setDarkFileError(null);
     setDarkFile(nextFile);
+    setDarkSourceFilePreviewUrl(URL.createObjectURL(nextFile));
   };
 
   const onDownloadZip = async () => {
-    if (generated.length === 0) {
+    if (exportedGenerated.length === 0) {
       return;
     }
 
     const packageFiles = await buildFaviconPackage(
-      generated,
+      exportedGenerated,
       {
         appName: projectName,
         shortName: normalizeShortName(shortName, projectName),
@@ -767,7 +542,7 @@ export function FaviconGeneratorTool({ language }: Props) {
         appleTouchIconVariant: "regular",
         androidIconVariant: "regular",
       },
-      generatedDark,
+      exportedGeneratedDark,
     );
     const zipBlob = await createZipBlob(packageFiles);
     const zipUrl = URL.createObjectURL(zipBlob);
@@ -800,8 +575,459 @@ export function FaviconGeneratorTool({ language }: Props) {
     );
   };
 
+  if (experienceMode === "compact") {
+    const guidedText = text.guided;
+    const guidedSteps = [
+      {
+        id: "source",
+        title: guidedText.sourceTitle,
+        description: guidedText.sourceDescription,
+        icon: <IconPhotoCog className="h-5 w-5" />,
+        canContinue: Boolean(file),
+        blockedMessage: guidedText.sourceBlocked,
+        content: (
+          <div className="mx-auto grid w-full max-w-2xl gap-4">
+            <ToolFileDrop
+              accept={FAVICON_IMAGE_ACCEPT}
+              currentFileText={
+                file ? `${text.currentFile}: ${file.name}` : null
+              }
+              dropHint={text.dropHint}
+              inputAriaLabel={text.inputLabel}
+              label={text.inputLabel}
+              onSelectFiles={onDropFiles}
+            />
+            {fileError ? (
+              <p className="text-sm font-medium text-destructive" role="alert">
+                {text.fileErrors[fileError]}
+              </p>
+            ) : null}
+            {file && sourceFilePreviewUrl ? (
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div className="flex min-w-0 items-center gap-3 rounded-2xl bg-secondary/60 p-3 dark:bg-[#181818]">
+                  <div
+                    aria-label={`${text.currentFile}: ${file.name}`}
+                    className="h-16 w-16 shrink-0 rounded-[22%] bg-contain bg-center bg-no-repeat"
+                    role="img"
+                    style={{
+                      backgroundImage: `url(${sourceFilePreviewUrl})`,
+                    }}
+                  />
+                  <div className="min-w-0">
+                    <p className="text-xs font-semibold uppercase tracking-[0.08em] text-foreground/48">
+                      {text.lightPreviewLabel}
+                    </p>
+                    <p className="mt-1 truncate text-sm font-medium text-foreground/82">
+                      {file.name}
+                    </p>
+                  </div>
+                </div>
+                {useDedicatedDarkIcon &&
+                darkFile &&
+                darkSourceFilePreviewUrl ? (
+                  <div className="flex min-w-0 items-center gap-3 rounded-2xl bg-secondary/60 p-3 dark:bg-[#181818]">
+                    <div
+                      aria-label={`${text.darkCurrentFile}: ${darkFile.name}`}
+                      className="h-16 w-16 shrink-0 rounded-[22%] bg-contain bg-center bg-no-repeat"
+                      role="img"
+                      style={{
+                        backgroundImage: `url(${darkSourceFilePreviewUrl})`,
+                      }}
+                    />
+                    <div className="min-w-0">
+                      <p className="text-xs font-semibold uppercase tracking-[0.08em] text-foreground/48">
+                        {text.darkPreviewLabel}
+                      </p>
+                      <p className="mt-1 truncate text-sm font-medium text-foreground/82">
+                        {darkFile.name}
+                      </p>
+                    </div>
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
+            <div className="flex min-w-0 items-center gap-2 rounded-xl border border-border/85 bg-[var(--tool-control-bg)] px-3 py-1.5 shadow-[2px_2px_0_var(--surface-shadow-color)] dark:border-white/22">
+              <ToolSwitch
+                aria-label={text.darkIconToggleLabel}
+                checked={useDedicatedDarkIcon}
+                onChange={onDedicatedDarkIconChange}
+              />
+              <span className="min-w-0 flex-1 text-xs font-medium text-foreground/75">
+                {text.darkIconToggleLabel}
+              </span>
+              {useDedicatedDarkIcon ? (
+                <ToolFileDrop
+                  accept={FAVICON_IMAGE_ACCEPT}
+                  compact
+                  currentFileText={
+                    darkFile
+                      ? `${text.darkCurrentFile}: ${darkFile.name}`
+                      : null
+                  }
+                  dropHint={text.darkDropHint}
+                  inputAriaLabel={text.darkInputLabel}
+                  label={text.darkInputLabel}
+                  onSelectFiles={onDropDarkFiles}
+                />
+              ) : null}
+            </div>
+            {darkFileError ? (
+              <p className="text-sm font-medium text-destructive" role="alert">
+                {text.fileErrors[darkFileError]}
+              </p>
+            ) : null}
+          </div>
+        ),
+      },
+      {
+        id: "identity",
+        title: guidedText.identityTitle,
+        description: guidedText.identityDescription,
+        icon: <IconPalette className="h-5 w-5" />,
+        content: (
+          <div className="mx-auto grid w-full max-w-4xl gap-4 md:grid-cols-2">
+            <ToolField
+              htmlFor="guided-favicon-app-name"
+              label={text.appNameLabel}
+            >
+              <ToolInput
+                id="guided-favicon-app-name"
+                onChange={(event) => setAppName(event.target.value)}
+                value={appName}
+              />
+            </ToolField>
+            <ToolField
+              htmlFor="guided-favicon-short-name"
+              label={text.shortNameLabel}
+            >
+              <ToolInput
+                id="guided-favicon-short-name"
+                maxLength={24}
+                onChange={(event) => setShortName(event.target.value)}
+                value={shortName}
+              />
+            </ToolField>
+            <ToolField htmlFor="guided-favicon-path" label={text.pathLabel}>
+              <ToolInput
+                id="guided-favicon-path"
+                onChange={(event) =>
+                  setFaviconPath(normalizeFaviconPath(event.target.value))
+                }
+                placeholder="/"
+                value={faviconPath}
+              />
+            </ToolField>
+            <ToolField
+              htmlFor="guided-favicon-version"
+              label={text.versionLabel}
+            >
+              <ToolInput
+                id="guided-favicon-version"
+                onChange={(event) =>
+                  setVersionTag(normalizeVersionTag(event.target.value))
+                }
+                placeholder="2026-07"
+                value={versionTag}
+              />
+            </ToolField>
+            <div className="grid gap-3 md:col-span-2 md:grid-cols-2">
+              <div className="grid gap-2 rounded-2xl bg-secondary/60 p-3 dark:bg-[#181818]">
+                <div className="flex items-center gap-2">
+                  <ToolSwitch
+                    aria-label={text.tintToggleLabel}
+                    checked={globalIconStyle.tintEnabled}
+                    onChange={(tintEnabled) =>
+                      updateGlobalIconStyle({ tintEnabled })
+                    }
+                  />
+                  <span className="text-sm font-medium">
+                    {text.tintToggleLabel}
+                  </span>
+                </div>
+                <ToolColorPicker
+                  disabled={!globalIconStyle.tintEnabled}
+                  onChange={(tintColor) => updateGlobalIconStyle({ tintColor })}
+                  value={globalIconStyle.tintColor}
+                />
+              </div>
+              <div className="grid gap-2 rounded-2xl bg-secondary/60 p-3 dark:bg-[#181818]">
+                <div className="flex items-center gap-2">
+                  <ToolSwitch
+                    aria-label={text.backgroundToggleLabel}
+                    checked={globalIconStyle.backgroundEnabled}
+                    onChange={(backgroundEnabled) =>
+                      updateGlobalIconStyle({ backgroundEnabled })
+                    }
+                  />
+                  <span className="text-sm font-medium">
+                    {text.backgroundToggleLabel}
+                  </span>
+                </div>
+                <ToolColorPicker
+                  disabled={!globalIconStyle.backgroundEnabled}
+                  onChange={(backgroundColor) =>
+                    updateGlobalIconStyle({ backgroundColor })
+                  }
+                  value={globalIconStyle.backgroundColor}
+                />
+              </div>
+            </div>
+          </div>
+        ),
+      },
+      {
+        id: "browser",
+        title: guidedText.browserTitle,
+        description: guidedText.browserDescription,
+        icon: <IconWorld className="h-5 w-5" />,
+        content: (
+          <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(340px,0.7fr)]">
+            <div className="grid gap-3">
+              <PreviewModeCard label={text.lightPreviewLabel}>
+                <BrowserPreviewMock
+                  darkIconUrl={file ? darkPreviewIconUrls.browser : null}
+                  label={normalizeShortName(shortName, projectName)}
+                  lightIconUrl={file ? previewIconUrls.browser : null}
+                  theme="light"
+                />
+              </PreviewModeCard>
+              <PreviewModeCard dark label={text.darkPreviewLabel}>
+                <BrowserPreviewMock
+                  darkIconUrl={file ? darkPreviewIconUrls.browser : null}
+                  label={normalizeShortName(shortName, projectName)}
+                  lightIconUrl={file ? previewIconUrls.browser : null}
+                  theme="dark"
+                />
+              </PreviewModeCard>
+            </div>
+            <section aria-labelledby="guided-browser-settings">
+              <div className="mb-3 flex items-center justify-between gap-3">
+                <SettingsHeading
+                  id="guided-browser-settings"
+                  label={text.previewSettingsLabel}
+                />
+                <StyleOverrideButton
+                  active={targetStyleOverrides.browser}
+                  label={
+                    targetStyleOverrides.browser
+                      ? text.useGlobalStyleLabel
+                      : text.customizeStyleLabel
+                  }
+                  onClick={() => toggleTargetStyleOverride("browser")}
+                />
+              </div>
+              <RenderSettingsFields
+                compact
+                settings={renderSettingsByTarget.browser}
+                showColorControls={targetStyleOverrides.browser}
+                text={text}
+                updateSettings={(update) =>
+                  updateRenderSettings("browser", update)
+                }
+              />
+            </section>
+          </div>
+        ),
+      },
+      {
+        id: "apple",
+        title: guidedText.appleTitle,
+        description: guidedText.appleDescription,
+        icon: <IconBrandApple className="h-5 w-5" />,
+        content: (
+          <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_300px]">
+            <div className="grid grid-cols-2 gap-3">
+              <MobilePreviewCard
+                appLabel={projectName}
+                iconUrl={file ? previewIconUrls.apple : null}
+                language={language}
+                modeLabel={text.lightPreviewLabel}
+                platform="ios"
+              />
+              <MobilePreviewCard
+                appLabel={projectName}
+                dark
+                iconUrl={file ? darkPreviewIconUrls.apple : null}
+                language={language}
+                modeLabel={text.darkPreviewLabel}
+                platform="ios"
+              />
+            </div>
+            <section aria-labelledby="guided-apple-settings">
+              <div className="mb-3 flex items-center justify-between gap-3">
+                <SettingsHeading
+                  id="guided-apple-settings"
+                  label={text.previewSettingsLabel}
+                />
+                <StyleOverrideButton
+                  active={targetStyleOverrides.apple}
+                  label={
+                    targetStyleOverrides.apple
+                      ? text.useGlobalStyleLabel
+                      : text.customizeStyleLabel
+                  }
+                  onClick={() => toggleTargetStyleOverride("apple")}
+                />
+              </div>
+              <RenderSettingsFields
+                settings={renderSettingsByTarget.apple}
+                showColorControls={targetStyleOverrides.apple}
+                text={text}
+                updateSettings={(update) =>
+                  updateRenderSettings("apple", update)
+                }
+              />
+            </section>
+          </div>
+        ),
+      },
+      {
+        id: "android",
+        title: guidedText.androidTitle,
+        description: guidedText.androidDescription,
+        icon: <IconBrandAndroid className="h-5 w-5" />,
+        content: (
+          <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_300px]">
+            <div className="grid grid-cols-2 gap-3">
+              <MobilePreviewCard
+                appLabel={projectName}
+                iconUrl={file ? previewIconUrls.android : null}
+                language={language}
+                modeLabel={text.lightPreviewLabel}
+                platform="android"
+              />
+              <MobilePreviewCard
+                appLabel={projectName}
+                dark
+                iconUrl={file ? darkPreviewIconUrls.android : null}
+                language={language}
+                modeLabel={text.darkPreviewLabel}
+                platform="android"
+              />
+            </div>
+            <section aria-labelledby="guided-android-settings">
+              <div className="mb-3 flex items-center justify-between gap-3">
+                <SettingsHeading
+                  id="guided-android-settings"
+                  label={text.previewSettingsLabel}
+                />
+                <StyleOverrideButton
+                  active={targetStyleOverrides.android}
+                  label={
+                    targetStyleOverrides.android
+                      ? text.useGlobalStyleLabel
+                      : text.customizeStyleLabel
+                  }
+                  onClick={() => toggleTargetStyleOverride("android")}
+                />
+              </div>
+              <RenderSettingsFields
+                settings={renderSettingsByTarget.android}
+                showColorControls={targetStyleOverrides.android}
+                text={text}
+                updateSettings={(update) =>
+                  updateRenderSettings("android", update)
+                }
+              />
+            </section>
+          </div>
+        ),
+      },
+      {
+        id: "export",
+        title: guidedText.exportTitle,
+        description: guidedText.exportDescription,
+        icon: <IconDownload className="h-5 w-5" />,
+        content: (
+          <div className="mx-auto grid w-full max-w-5xl gap-5">
+            <ToolActions
+              actions={[
+                {
+                  label: text.generate,
+                  onClick: () => void onGenerate(),
+                  disabled: !file || generationStatus === "processing",
+                  icon: <IconPhotoCog className="h-4 w-4" />,
+                },
+                {
+                  label: sharedText.buttons.download,
+                  onClick: () => void onDownloadZip(),
+                  disabled:
+                    exportedGenerated.length === 0 ||
+                    generationStatus === "processing",
+                  icon: <IconDownload className="h-4 w-4" />,
+                },
+              ]}
+            />
+            {generationStatus === "processing" ? (
+              <p className="text-sm text-foreground/64" role="status">
+                {text.processing}
+              </p>
+            ) : generationStatus === "error" ? (
+              <p className="text-sm font-medium text-destructive" role="alert">
+                {text.generationError}
+              </p>
+            ) : null}
+            {exportedGenerated.length === 0 ? (
+              <p className="rounded-2xl bg-secondary/55 p-5 text-sm text-foreground/64 dark:bg-[#181818]">
+                {text.empty}
+              </p>
+            ) : (
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {[...exportedGenerated, ...exportedGeneratedDark].map(
+                  (icon) => (
+                    <a
+                      className="flex items-center justify-between gap-3 rounded-xl border border-border/70 bg-background/55 p-3 text-sm shadow-[3px_3px_0_var(--surface-shadow-color)] dark:border-white/18"
+                      download={icon.fileName}
+                      href={icon.url}
+                      key={icon.fileName}
+                    >
+                      <span>
+                        {icon.size}×{icon.size}
+                      </span>
+                      <span className="truncate">{icon.fileName}</span>
+                    </a>
+                  ),
+                )}
+              </div>
+            )}
+          </div>
+        ),
+      },
+    ];
+
+    return (
+      <ToolSection
+        title={text.title}
+        titleIcon={<IconWorldWww aria-hidden size={18} />}
+      >
+        <ToolDropSurface
+          dropHint={text.dropHint}
+          label={text.inputLabel}
+          onSelectFiles={onDropFiles}
+        >
+          <GuidedToolFlow
+            backLabel={guidedText.back}
+            continueLabel={guidedText.continue}
+            exitLabel={guidedText.exit}
+            onExit={() => onExperienceModeChange("comfortable")}
+            progressLabel={guidedText.progress}
+            stepLabel={(current, total) =>
+              guidedText.step
+                .replace("{current}", String(current))
+                .replace("{total}", String(total))
+            }
+            steps={guidedSteps}
+          />
+        </ToolDropSurface>
+      </ToolSection>
+    );
+  }
+
   return (
-    <ToolSection title={text.title}>
+    <ToolSection
+      title={text.title}
+      titleIcon={<IconWorldWww aria-hidden size={18} />}
+    >
       <ToolDropSurface
         dropHint={text.dropHint}
         label={text.inputLabel}
@@ -811,7 +1037,7 @@ export function FaviconGeneratorTool({ language }: Props) {
           <div className="grid gap-6 xl:grid-cols-[minmax(320px,1.1fr)_minmax(0,2fr)] xl:items-start">
             <div className="grid gap-4">
               <ToolFileDrop
-                accept="image/*"
+                accept={FAVICON_IMAGE_ACCEPT}
                 currentFileText={
                   file ? `${text.currentFile}: ${file.name}` : null
                 }
@@ -820,12 +1046,20 @@ export function FaviconGeneratorTool({ language }: Props) {
                 label={text.inputLabel}
                 onSelectFiles={onDropFiles}
               />
+              {fileError ? (
+                <p
+                  className="text-sm font-medium text-destructive"
+                  role="alert"
+                >
+                  {text.fileErrors[fileError]}
+                </p>
+              ) : null}
 
               <div className="flex min-w-0 items-center gap-2 rounded-xl border border-border/85 bg-[var(--tool-control-bg)] px-3 py-1.5 shadow-[2px_2px_0_var(--surface-shadow-color)] dark:border-white/22">
                 <ToolSwitch
                   aria-label={text.darkIconToggleLabel}
                   checked={useDedicatedDarkIcon}
-                  onChange={setUseDedicatedDarkIcon}
+                  onChange={onDedicatedDarkIconChange}
                 />
                 <span className="min-w-0 flex-1 text-xs font-medium text-foreground/75">
                   {text.darkIconToggleLabel}
@@ -833,7 +1067,7 @@ export function FaviconGeneratorTool({ language }: Props) {
 
                 {useDedicatedDarkIcon ? (
                   <ToolFileDrop
-                    accept="image/*"
+                    accept={FAVICON_IMAGE_ACCEPT}
                     compact
                     currentFileText={
                       darkFile
@@ -847,6 +1081,14 @@ export function FaviconGeneratorTool({ language }: Props) {
                   />
                 ) : null}
               </div>
+              {darkFileError ? (
+                <p
+                  className="text-sm font-medium text-destructive"
+                  role="alert"
+                >
+                  {text.fileErrors[darkFileError]}
+                </p>
+              ) : null}
             </div>
 
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
@@ -1179,6 +1421,8 @@ export function FaviconGeneratorTool({ language }: Props) {
                       setDarkPreviewIconUrls(createEmptyPreviewUrls());
                       setFile(null);
                       setDarkFile(null);
+                      setSourceFilePreviewUrl("");
+                      setDarkSourceFilePreviewUrl("");
                     }}
                     size="sm"
                   >
@@ -1204,7 +1448,7 @@ export function FaviconGeneratorTool({ language }: Props) {
               onClick: () => {
                 void onGenerate();
               },
-              disabled: !file,
+              disabled: !file || generationStatus === "processing",
               icon: <IconPhotoCog className="h-4 w-4" />,
             },
             {
@@ -1212,7 +1456,9 @@ export function FaviconGeneratorTool({ language }: Props) {
               onClick: () => {
                 void onDownloadZip();
               },
-              disabled: generated.length === 0,
+              disabled:
+                exportedGenerated.length === 0 ||
+                generationStatus === "processing",
               icon: <IconDownload className="h-4 w-4" />,
             },
             {
@@ -1230,8 +1476,12 @@ export function FaviconGeneratorTool({ language }: Props) {
                 setDarkPreviewIconUrls(createEmptyPreviewUrls());
                 setFile(null);
                 setDarkFile(null);
+                setSourceFilePreviewUrl("");
+                setDarkSourceFilePreviewUrl("");
                 setGenerated([]);
                 setGeneratedDark([]);
+                setGeneratedFingerprint("");
+                setGenerationStatus("idle");
               },
               disabled:
                 !file &&
@@ -1242,13 +1492,22 @@ export function FaviconGeneratorTool({ language }: Props) {
             },
           ]}
         />
-        {generated.length === 0 ? (
+        {generationStatus === "processing" ? (
+          <p className="text-sm text-foreground/64" role="status">
+            {text.processing}
+          </p>
+        ) : generationStatus === "error" ? (
+          <p className="text-sm font-medium text-destructive" role="alert">
+            {text.generationError}
+          </p>
+        ) : null}
+        {exportedGenerated.length === 0 ? (
           <p className="text-sm">{text.empty}</p>
         ) : (
           <div className="space-y-3">
             <p className="text-sm">{text.result}</p>
             <AnimatedLayoutGroup className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {[...generated, ...generatedDark].map((icon) => (
+              {[...exportedGenerated, ...exportedGeneratedDark].map((icon) => (
                 <AnimatedLayoutItem className="h-full" key={icon.fileName}>
                   <a
                     className="flex h-full items-center justify-between rounded-lg border border-border/70 bg-background/45 p-3 text-sm shadow-[4px_4px_0_var(--surface-shadow-color)] transition-[transform,box-shadow,border-color,background-color] hover:-translate-y-0.5 hover:bg-background/65 hover:shadow-[5px_5px_0_var(--surface-shadow-color)] dark:border-white/18 dark:bg-white/[0.025]"
