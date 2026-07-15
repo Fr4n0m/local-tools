@@ -88,6 +88,7 @@
     "sourceBlocked": "Select an image to continue.",
     "identityTitle": "Define the app identity",
     "identityDescription": "Set names, path, and global appearance before adjusting each platform.",
+    "identityPreviewTitle": "Global icon preview",
     "browserTitle": "Review the browser",
     "browserDescription": "Check the favicon in light and dark tabs.",
     "appleTitle": "Adjust Apple",

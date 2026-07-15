@@ -110,6 +110,12 @@ describe("FaviconGeneratorTool guided experience", () => {
         name: "Define la identidad de la app",
       }),
     ).toBeInTheDocument();
+    expect(
+      screen.getByRole("complementary", { name: "Vista global del icono" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("img", { name: "Vista global del icono" }),
+    ).toBeInTheDocument();
     screen.getAllByRole("textbox").forEach((input, index) => {
       fireEvent.change(input, { target: { value: `valor-${index}` } });
     });

@@ -53,11 +53,7 @@ export function MobilePreviewCard({
   compact?: boolean;
 }) {
   return (
-    <PreviewModeCard
-      className={dark ? "dark:bg-[#202020]" : "dark:bg-[#1b1b1b]"}
-      dark={dark}
-      label={modeLabel}
-    >
+    <PreviewModeCard dark={dark} label={modeLabel}>
       <MobileHomeMock
         appIconUrl={iconUrl}
         appName={appLabel}
@@ -86,14 +82,18 @@ export function PreviewModeCard({
   return (
     <article
       className={`grid min-w-0 grid-rows-[auto_1fr] gap-3 rounded-2xl p-3 ${
-        dark ? "bg-secondary/70" : "bg-secondary/45"
+        dark
+          ? "bg-secondary/70 dark:bg-[#202020]"
+          : "bg-secondary/45 dark:bg-[#1b1b1b]"
       } ${className ?? ""}`}
     >
       <header className="flex items-center justify-center gap-2 text-sm font-semibold tracking-[-0.01em] text-foreground/85">
         <ModeIcon aria-hidden="true" className="h-4 w-4" strokeWidth={1.8} />
         <span>{label}</span>
       </header>
-      {children}
+      <div className="flex h-full min-h-0 w-full items-center justify-center [&>*]:w-full">
+        {children}
+      </div>
     </article>
   );
 }
@@ -121,4 +121,36 @@ export function PreviewSubtleStack({ children }: { children: ReactNode }) {
 
 export function PreviewSettingsPanel({ children }: { children: ReactNode }) {
   return <div className="p-0 lg:pl-2">{children}</div>;
+}
+
+export function GlobalIdentityPreview({
+  fallbackUrl,
+  iconUrl,
+  shortName,
+  title,
+}: {
+  fallbackUrl: string;
+  iconUrl: string | null;
+  shortName: string;
+  title: string;
+}) {
+  return (
+    <aside
+      aria-label={title}
+      className="grid content-center gap-4 rounded-2xl bg-secondary/45 p-5 dark:bg-[#181818]"
+    >
+      <header className="min-w-0 text-center">
+        <h3 className="text-sm font-semibold">{title}</h3>
+      </header>
+      <div className="grid justify-items-center gap-3 rounded-2xl bg-background/72 p-5 dark:bg-[#101010]">
+        <div
+          aria-label={title}
+          className="h-28 w-28 bg-contain bg-center bg-no-repeat"
+          role="img"
+          style={{ backgroundImage: `url(${iconUrl ?? fallbackUrl})` }}
+        />
+        <p className="max-w-full truncate text-sm font-semibold">{shortName}</p>
+      </div>
+    </aside>
+  );
 }

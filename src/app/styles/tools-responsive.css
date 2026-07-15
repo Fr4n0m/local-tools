@@ -19,7 +19,7 @@
 
 @media (min-width: 1500px) {
   .tools-index-grid {
-    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
   }
 
   .tools-index-card {
@@ -35,6 +35,21 @@
   .tools-index-card-icon svg {
     width: 1.36rem;
     height: 1.36rem;
+  }
+}
+
+@media (min-width: 2200px) {
+  .guided-tool-content {
+    max-width: 112rem;
+  }
+
+  .tools-index-grid {
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  }
+
+  .tools-index-card {
+    min-height: 15rem;
+    max-width: 28rem;
   }
 }
 

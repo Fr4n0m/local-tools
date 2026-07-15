@@ -88,6 +88,7 @@
     "sourceBlocked": "Selecciona una imagen para continuar.",
     "identityTitle": "Define la identidad de la app",
     "identityDescription": "Configura nombres, ruta y apariencia general antes de ajustar cada plataforma.",
+    "identityPreviewTitle": "Vista global del icono",
     "browserTitle": "Revisa el navegador",
     "browserDescription": "Comprueba el favicon en pestañas claras y oscuras.",
     "appleTitle": "Ajusta Apple",

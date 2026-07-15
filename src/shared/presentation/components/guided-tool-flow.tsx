@@ -72,11 +72,11 @@ function GuidedScrollArea({ children }: { children: ReactNode }) {
 
   const maskImage =
     overflow.top && overflow.bottom
-      ? "linear-gradient(to bottom, transparent 0, black 1.25rem, black calc(100% - 1.25rem), transparent 100%)"
+      ? "linear-gradient(to bottom, transparent 0, black 0.75rem, black calc(100% - 0.75rem), transparent 100%)"
       : overflow.top
-        ? "linear-gradient(to bottom, transparent 0, black 1.25rem, black 100%)"
+        ? "linear-gradient(to bottom, transparent 0, black 0.75rem, black 100%)"
         : overflow.bottom
-          ? "linear-gradient(to bottom, black 0, black calc(100% - 1.25rem), transparent 100%)"
+          ? "linear-gradient(to bottom, black 0, black calc(100% - 0.75rem), transparent 100%)"
           : undefined;
 
   return (
@@ -86,7 +86,9 @@ function GuidedScrollArea({ children }: { children: ReactNode }) {
       ref={viewportRef}
       style={{ maskImage, WebkitMaskImage: maskImage }}
     >
-      <div ref={contentRef}>{children}</div>
+      <div className="pb-6" ref={contentRef}>
+        {children}
+      </div>
     </div>
   );
 }
@@ -195,7 +197,10 @@ export function GuidedToolFlow({
           <AnimatePresence initial={false} mode="wait" custom={direction}>
             <m.div
               animate={{ opacity: 1, x: 0 }}
-              className="flex min-h-0 flex-1 flex-col overflow-hidden px-4 py-4 sm:px-6 lg:px-8"
+              className={cn(
+                "flex min-h-0 flex-1 flex-col overflow-hidden px-4 sm:px-6 lg:px-8",
+                currentStep.scrollable ? "py-2.5" : "py-4",
+              )}
               custom={direction}
               exit={
                 reducedMotion
@@ -216,8 +221,13 @@ export function GuidedToolFlow({
                 ease: [0.22, 1, 0.36, 1],
               }}
             >
-              <div className="mx-auto flex min-h-0 w-full max-w-6xl flex-1 flex-col">
-                <div className="mb-4 grid grid-cols-[2.5rem_minmax(0,1fr)] items-center gap-x-3">
+              <div className="guided-tool-content mx-auto flex min-h-0 w-full max-w-6xl flex-1 flex-col">
+                <div
+                  className={cn(
+                    "grid grid-cols-[2.5rem_minmax(0,1fr)] items-center gap-x-3",
+                    currentStep.scrollable ? "mb-2.5" : "mb-4",
+                  )}
+                >
                   {currentStep.icon ? (
                     <span
                       aria-hidden

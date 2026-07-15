@@ -67,6 +67,7 @@ import {
   SearchPreviewCard,
 } from "@/shared/presentation/components/browser-search-mocks";
 import {
+  GlobalIdentityPreview,
   MobilePreviewCard,
   PreviewHeading,
   PreviewModeCard,
@@ -720,94 +721,105 @@ export function FaviconGeneratorTool({
         title: guidedText.identityTitle,
         description: guidedText.identityDescription,
         icon: <IconPalette className="h-5 w-5" />,
+        scrollable: true,
         content: (
-          <div className="mx-auto grid w-full max-w-4xl gap-4 md:grid-cols-2">
-            <ToolField
-              htmlFor="guided-favicon-app-name"
-              label={text.appNameLabel}
-            >
-              <ToolInput
-                id="guided-favicon-app-name"
-                onChange={(event) => setAppName(event.target.value)}
-                value={appName}
-              />
-            </ToolField>
-            <ToolField
-              htmlFor="guided-favicon-short-name"
-              label={text.shortNameLabel}
-            >
-              <ToolInput
-                id="guided-favicon-short-name"
-                maxLength={24}
-                onChange={(event) => setShortName(event.target.value)}
-                value={shortName}
-              />
-            </ToolField>
-            <ToolField htmlFor="guided-favicon-path" label={text.pathLabel}>
-              <ToolInput
-                id="guided-favicon-path"
-                onChange={(event) =>
-                  setFaviconPath(normalizeFaviconPath(event.target.value))
-                }
-                placeholder="/"
-                value={faviconPath}
-              />
-            </ToolField>
-            <ToolField
-              htmlFor="guided-favicon-version"
-              label={text.versionLabel}
-            >
-              <ToolInput
-                id="guided-favicon-version"
-                onChange={(event) =>
-                  setVersionTag(normalizeVersionTag(event.target.value))
-                }
-                placeholder="2026-07"
-                value={versionTag}
-              />
-            </ToolField>
-            <div className="grid gap-3 md:col-span-2 md:grid-cols-2">
-              <div className="grid gap-2 rounded-2xl bg-secondary/60 p-3 dark:bg-[#181818]">
-                <div className="flex items-center gap-2">
-                  <ToolSwitch
-                    aria-label={text.tintToggleLabel}
-                    checked={globalIconStyle.tintEnabled}
-                    onChange={(tintEnabled) =>
-                      updateGlobalIconStyle({ tintEnabled })
-                    }
-                  />
-                  <span className="text-sm font-medium">
-                    {text.tintToggleLabel}
-                  </span>
-                </div>
-                <ToolColorPicker
-                  disabled={!globalIconStyle.tintEnabled}
-                  onChange={(tintColor) => updateGlobalIconStyle({ tintColor })}
-                  value={globalIconStyle.tintColor}
+          <div className="mx-auto grid w-full max-w-6xl gap-5 lg:grid-cols-[minmax(0,1fr)_20rem]">
+            <div className="grid content-start gap-4 md:grid-cols-2">
+              <ToolField
+                htmlFor="guided-favicon-app-name"
+                label={text.appNameLabel}
+              >
+                <ToolInput
+                  id="guided-favicon-app-name"
+                  onChange={(event) => setAppName(event.target.value)}
+                  value={appName}
                 />
-              </div>
-              <div className="grid gap-2 rounded-2xl bg-secondary/60 p-3 dark:bg-[#181818]">
-                <div className="flex items-center gap-2">
-                  <ToolSwitch
-                    aria-label={text.backgroundToggleLabel}
-                    checked={globalIconStyle.backgroundEnabled}
-                    onChange={(backgroundEnabled) =>
-                      updateGlobalIconStyle({ backgroundEnabled })
-                    }
-                  />
-                  <span className="text-sm font-medium">
-                    {text.backgroundToggleLabel}
-                  </span>
-                </div>
-                <ToolColorPicker
-                  disabled={!globalIconStyle.backgroundEnabled}
-                  onChange={(backgroundColor) =>
-                    updateGlobalIconStyle({ backgroundColor })
+              </ToolField>
+              <ToolField
+                htmlFor="guided-favicon-short-name"
+                label={text.shortNameLabel}
+              >
+                <ToolInput
+                  id="guided-favicon-short-name"
+                  maxLength={24}
+                  onChange={(event) => setShortName(event.target.value)}
+                  value={shortName}
+                />
+              </ToolField>
+              <ToolField htmlFor="guided-favicon-path" label={text.pathLabel}>
+                <ToolInput
+                  id="guided-favicon-path"
+                  onChange={(event) =>
+                    setFaviconPath(normalizeFaviconPath(event.target.value))
                   }
-                  value={globalIconStyle.backgroundColor}
+                  placeholder="/"
+                  value={faviconPath}
                 />
+              </ToolField>
+              <ToolField
+                htmlFor="guided-favicon-version"
+                label={text.versionLabel}
+              >
+                <ToolInput
+                  id="guided-favicon-version"
+                  onChange={(event) =>
+                    setVersionTag(normalizeVersionTag(event.target.value))
+                  }
+                  placeholder="2026-07"
+                  value={versionTag}
+                />
+              </ToolField>
+              <div className="grid gap-3 md:col-span-2 md:grid-cols-2">
+                <div className="grid gap-2 rounded-2xl bg-secondary/60 p-3 dark:bg-[#181818]">
+                  <div className="flex items-center gap-2">
+                    <ToolSwitch
+                      aria-label={text.tintToggleLabel}
+                      checked={globalIconStyle.tintEnabled}
+                      onChange={(tintEnabled) =>
+                        updateGlobalIconStyle({ tintEnabled })
+                      }
+                    />
+                    <span className="text-sm font-medium">
+                      {text.tintToggleLabel}
+                    </span>
+                  </div>
+                  <ToolColorPicker
+                    disabled={!globalIconStyle.tintEnabled}
+                    onChange={(tintColor) =>
+                      updateGlobalIconStyle({ tintColor })
+                    }
+                    value={globalIconStyle.tintColor}
+                  />
+                </div>
+                <div className="grid gap-2 rounded-2xl bg-secondary/60 p-3 dark:bg-[#181818]">
+                  <div className="flex items-center gap-2">
+                    <ToolSwitch
+                      aria-label={text.backgroundToggleLabel}
+                      checked={globalIconStyle.backgroundEnabled}
+                      onChange={(backgroundEnabled) =>
+                        updateGlobalIconStyle({ backgroundEnabled })
+                      }
+                    />
+                    <span className="text-sm font-medium">
+                      {text.backgroundToggleLabel}
+                    </span>
+                  </div>
+                  <ToolColorPicker
+                    disabled={!globalIconStyle.backgroundEnabled}
+                    onChange={(backgroundColor) =>
+                      updateGlobalIconStyle({ backgroundColor })
+                    }
+                    value={globalIconStyle.backgroundColor}
+                  />
+                </div>
               </div>
             </div>
+            <GlobalIdentityPreview
+              fallbackUrl={sourceFilePreviewUrl}
+              iconUrl={previewIconUrls.browser}
+              shortName={shortName || appName}
+              title={guidedText.identityPreviewTitle}
+            />
           </div>
         ),
       },
@@ -816,6 +828,7 @@ export function FaviconGeneratorTool({
         title: guidedText.browserTitle,
         description: guidedText.browserDescription,
         icon: <IconWorld className="h-5 w-5" />,
+        scrollable: true,
         content: (
           <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(340px,0.7fr)]">
             <div className="grid gap-3">
@@ -870,8 +883,9 @@ export function FaviconGeneratorTool({
         title: guidedText.appleTitle,
         description: guidedText.appleDescription,
         icon: <IconBrandApple className="h-5 w-5" />,
+        scrollable: true,
         content: (
-          <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_300px]">
+          <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_380px]">
             <div className="grid grid-cols-2 gap-3">
               <MobilePreviewCard
                 appLabel={projectName}
@@ -908,6 +922,7 @@ export function FaviconGeneratorTool({
                 />
               </div>
               <RenderSettingsFields
+                compact
                 settings={renderSettingsByTarget.apple}
                 showColorControls={targetStyleOverrides.apple}
                 text={text}
@@ -924,8 +939,9 @@ export function FaviconGeneratorTool({
         title: guidedText.androidTitle,
         description: guidedText.androidDescription,
         icon: <IconBrandAndroid className="h-5 w-5" />,
+        scrollable: true,
         content: (
-          <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_300px]">
+          <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_380px]">
             <div className="grid grid-cols-2 gap-3">
               <MobilePreviewCard
                 appLabel={projectName}
@@ -962,6 +978,7 @@ export function FaviconGeneratorTool({
                 />
               </div>
               <RenderSettingsFields
+                compact
                 settings={renderSettingsByTarget.android}
                 showColorControls={targetStyleOverrides.android}
                 text={text}
