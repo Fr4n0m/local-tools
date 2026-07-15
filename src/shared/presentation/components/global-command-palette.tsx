@@ -532,6 +532,7 @@ export function GlobalCommandPalette() {
           dialog: "lt-command-dialog",
           input: "lt-command-input",
           item: "lt-command-item",
+          list: "lt-command-list",
         }}
         messages={{
           noResults:

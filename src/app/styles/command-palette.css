@@ -127,6 +127,13 @@
   box-shadow: 2px 2px 0 var(--surface-shadow-color);
 }
 
+/* CMD-KIT keeps this element scrollable. Reserve an internal gutter for the
+   raised active-item shadow so the scroll viewport never clips it. */
+.lt-command-list {
+  padding: 2px 5px 5px 2px;
+  scroll-padding-block: 2px 5px;
+}
+
 .lt-command-item {
   border-radius: 12px !important;
   corner-shape: round;

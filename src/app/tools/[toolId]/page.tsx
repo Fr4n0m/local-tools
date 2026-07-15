@@ -237,37 +237,33 @@ function FaviconSeoContent({ language }: { language: "en" | "es" }) {
         };
 
   return (
-    <article className="grid gap-6 text-foreground md:grid-cols-2">
-      <header className="space-y-3 md:col-span-2">
-        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-foreground/55">
-          {copy.eyebrow}
-        </p>
-        <h2 className="max-w-4xl text-2xl font-semibold tracking-[-0.03em] sm:text-3xl">
-          {copy.title}
-        </h2>
-        <p className="max-w-3xl leading-7 text-foreground/68">{copy.intro}</p>
+    <article className="favicon-info-content">
+      <header>
+        <p className="favicon-info-eyebrow">{copy.eyebrow}</p>
+        <h2>{copy.title}</h2>
+        <p className="favicon-info-intro">{copy.intro}</p>
       </header>
 
-      <section className="space-y-3 rounded-2xl bg-[var(--tool-control-bg)] p-5">
-        <h3 className="text-lg font-semibold">{copy.filesTitle}</h3>
-        <ul className="grid gap-2 text-sm leading-6 text-foreground/68">
-          {copy.files.map((file) => (
-            <li key={file}>{file}</li>
-          ))}
-        </ul>
-      </section>
+      <div className="favicon-info-grid">
+        <section className="favicon-info-section">
+          <h3>{copy.filesTitle}</h3>
+          <ul>
+            {copy.files.map((file) => (
+              <li key={file}>{file}</li>
+            ))}
+          </ul>
+        </section>
 
-      <section className="space-y-3 rounded-2xl bg-[var(--tool-control-bg)] p-5">
-        <h3 className="text-lg font-semibold">{copy.projectsTitle}</h3>
-        <p className="text-sm leading-6 text-foreground/68">{copy.projects}</p>
-      </section>
+        <section className="favicon-info-section">
+          <h3>{copy.projectsTitle}</h3>
+          <p>{copy.projects}</p>
+        </section>
 
-      <section className="space-y-2 md:col-span-2">
-        <h3 className="text-lg font-semibold">{copy.privacyTitle}</h3>
-        <p className="max-w-3xl text-sm leading-6 text-foreground/68">
-          {copy.privacy}
-        </p>
-      </section>
+        <section className="favicon-info-section favicon-info-privacy">
+          <h3>{copy.privacyTitle}</h3>
+          <p>{copy.privacy}</p>
+        </section>
+      </div>
     </article>
   );
 }

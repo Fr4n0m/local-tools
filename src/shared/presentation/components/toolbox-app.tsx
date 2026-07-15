@@ -4,7 +4,6 @@ import {
   IconArrowRight,
   IconCheck,
   IconGridDots,
-  IconInfoCircle,
   IconLayoutRows,
   IconLayoutDistributeVertical,
   IconLayoutDashboard,
@@ -46,6 +45,7 @@ import {
   type Theme,
 } from "@/shared/lib/theme";
 import { ToolConstructionModal } from "@/shared/presentation/components/tool-construction-modal";
+import { ToolInfoPopover } from "@/shared/presentation/components/tool-info-popover";
 
 const toolIds = new Set<ToolId>(tools.map((tool) => tool.id));
 const AVAILABLE_TOOL_ID: ToolId = "favicon-generator";
@@ -752,27 +752,6 @@ function PrivacyInfo({ text }: PrivacyInfoProps) {
         </ul>
       </div>
     </div>
-  );
-}
-
-function ToolInfoPopover({
-  content,
-  label,
-}: {
-  content: ReactNode;
-  label: string;
-}) {
-  return (
-    <details className="tools-privacy-popover tools-info-popover">
-      <summary
-        aria-label={label}
-        className="tools-privacy-trigger tools-info-trigger"
-        title={label}
-      >
-        <IconInfoCircle aria-hidden size={15} />
-      </summary>
-      <div className="tools-privacy-card tools-info-card">{content}</div>
-    </details>
   );
 }
 
