@@ -17,6 +17,7 @@ import {
   buildInstallationGuide,
   FAVICON_INTEGRATION_TARGETS,
   type FaviconIntegrationTarget,
+  type FaviconInstallationLanguage,
 } from "@/modules/favicon-generator/domain/favicon-installation";
 import { cn } from "@/shared/lib/utils";
 import {
@@ -92,7 +93,7 @@ export function FaviconInstallationAssistant({
 }: {
   faviconPath: string;
   htmlSnippet: string;
-  language: "en" | "es";
+  language: FaviconInstallationLanguage;
   onCopy: (content: string) => void;
   onTargetChange: (target: FaviconIntegrationTarget) => void;
   target: FaviconIntegrationTarget;

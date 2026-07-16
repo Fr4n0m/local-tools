@@ -1,0 +1,130 @@
+{
+  "avatar-generator": {
+    "name": "Avatare generieren",
+    "description": "Erstellen Sie illustrierte oder auf Initialen basierende Avatare direkt in Ihrem Browser."
+  },
+  "base64-tool": {
+    "name": "Base64-Encoder/Decoder",
+    "description": "Kodieren und dekodieren Sie Text in Base64."
+  },
+  "batch-rename": {
+    "name": "Batch-Umbenennungssimulator",
+    "description": "Vorschau von Umbenennungsvorgängen, ohne Dateien zu berühren."
+  },
+  "carousel-generator": {
+    "name": "Erstellen Sie Karussells",
+    "description": "Generieren Sie ein einfaches HTML/CSS/JS-Karussell-Snippet."
+  },
+  "chord-explorer": {
+    "name": "Akkord-Explorer",
+    "description": "Entdecken Sie grundlegende Akkordnoten nach Grundton und Typ."
+  },
+  "color-range": {
+    "name": "Farbbereichsgenerator",
+    "description": "Erstellen Sie Tönungen und Schattierungen aus einer Grundfarbe."
+  },
+  "contrast-checker": {
+    "name": "Kontrastprüfer",
+    "description": "Überprüfen Sie das WCAG-Kontrastverhältnis auf Textzugänglichkeit."
+  },
+  "custom-timer": {
+    "name": "Einfacher benutzerdefinierter Timer",
+    "description": "Führen Sie einen lokalen Countdown-Timer in Ihrem Browser aus."
+  },
+  "data-to-markdown": {
+    "name": "Daten zum Markdown",
+    "description": "Konvertieren Sie CSV-, TSV-, Matrizen- oder JSON-Arrays in Markdown-Tabellen."
+  },
+  "favicon-generator": {
+    "name": "Favicon-Generator",
+    "description": "Generieren Sie Favicon-Größen aus einem Bild."
+  },
+  "fetch-colors": {
+    "name": "Farben abrufen",
+    "description": "Extrahieren Sie dominante Farben aus einem Bild."
+  },
+  "focus-reader": {
+    "name": "Fokusleser",
+    "description": "Lesen Sie lange Texte in einer ablenkungsfreien Ansicht."
+  },
+  "heic-to-jpg": {
+    "name": "HEIC zu JPG",
+    "description": "Konvertieren Sie HEIC/HEIF-Fotos lokal in Ihrem Browser in JPG."
+  },
+  "image-compressor": {
+    "name": "Bildkompressor",
+    "description": "Komprimieren Sie Bilddateien lokal und laden Sie optimierte Ergebnisse herunter."
+  },
+  "image-converter": {
+    "name": "Bildkonverter",
+    "description": "Konvertieren Sie Bilddateien vollständig im Browser."
+  },
+  "json-formatter": {
+    "name": "JSON-Formatierer und Validator",
+    "description": "Formatieren und validieren Sie JSON sofort."
+  },
+  "json-prompt-composer": {
+    "name": "JSON Prompt Composer",
+    "description": "Verfassen Sie strukturierte Eingabeaufforderungen im JSON-Format."
+  },
+  "liquid-glass": {
+    "name": "Flüssigglaseffekt",
+    "description": "Erstellen Sie CSS-Blöcke aus Milchglas."
+  },
+  "llms-txt": {
+    "name": "llms.txt-Generator",
+    "description": "Generieren Sie eine saubere llms.txt-Datei für Ihr Projekt."
+  },
+  "loader-maker": {
+    "name": "Laderhersteller",
+    "description": "Generieren Sie sofort CSS-Loader."
+  },
+  "mesh-gradient": {
+    "name": "Gradientengenerator",
+    "description": "Erstellen Sie organische Farbverläufe als CSS und herunterladbare Assets."
+  },
+  "pdf-compressor": {
+    "name": "Komprimieren Sie PDFs",
+    "description": "Komprimieren Sie PDF-Dateien lokal, indem Sie Seiten neu kodieren."
+  },
+  "pdf-to-images": {
+    "name": "PDF zu Bildern",
+    "description": "Konvertieren Sie jede PDF-Seite lokal in PNG-Bilder."
+  },
+  "placeholder-text": {
+    "name": "Platzhaltertextgenerator",
+    "description": "Generieren Sie schnell Dummy-Text für Layouts und UI-Inhalte."
+  },
+  "progressive-blur": {
+    "name": "Progressiver Unschärfeeffekt",
+    "description": "Generieren Sie CSS für progressive Unschärfe-Overlays."
+  },
+  "qr-generator": {
+    "name": "QR-Code-Generator",
+    "description": "Generieren Sie QR-Codes im Browser und exportieren Sie PNG/SVG."
+  },
+  "svg-to-file": {
+    "name": "SVG in Datei",
+    "description": "SVG-Quelle lokal als SVG oder PNG exportieren."
+  },
+  "test-colors": {
+    "name": "Testfarben",
+    "description": "Testen Sie mehrere Palettenpaare auf WCAG-Kontrast."
+  },
+  "text-transformer": {
+    "name": "Texttransformator",
+    "description": "Wenden Sie schnelle Texttransformationen an."
+  },
+  "url-encoder": {
+    "name": "URL-Encoder/Decoder",
+    "description": "Escape- und Unescape-URL-Inhalte."
+  },
+  "uuid-generator": {
+    "name": "UUID-Generator",
+    "description": "Generieren Sie sofort UUID v4-, v7- oder Nullwerte."
+  },
+  "video-compressor": {
+    "name": "Komprimieren Sie Videos",
+    "description": "Experimenteller lokaler Video-Reencoder."
+  }
+}

@@ -6,6 +6,7 @@ import {
   buildInstallationGuide,
   FAVICON_INTEGRATION_TARGETS,
 } from "@/modules/favicon-generator/domain/favicon-installation";
+import type { FaviconInstallationLanguage } from "@/modules/favicon-generator/domain/favicon-installation";
 
 const htmlSnippet = [
   '<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />',
@@ -15,6 +16,14 @@ const htmlSnippet = [
 ].join("\n");
 
 describe("favicon installation guidance", () => {
+  const languages: readonly FaviconInstallationLanguage[] = [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+  ];
+
   it.each(FAVICON_INTEGRATION_TARGETS)(
     "builds complete guidance for %s",
     (target) => {
@@ -41,6 +50,30 @@ describe("favicon installation guidance", () => {
     expect(prompt).toContain("android-chrome-maskable-512x512.png");
     expect(prompt).not.toContain("realfavicongenerator.net/files");
   });
+
+  it.each(languages)(
+    "preserves paths, snippets and package files in the %s catalog",
+    (language) => {
+      const options = {
+        target: "nextjs" as const,
+        language,
+        htmlSnippet,
+        faviconPath: "/icons/",
+      };
+
+      const guide = buildInstallationGuide(options);
+      const prompt = buildAiInstallationPrompt(options);
+
+      expect(guide).toContain("`public/icons`");
+      expect(guide).toContain("`src/app/layout.tsx`");
+      for (const line of htmlSnippet.split("\n")) {
+        expect(guide).toContain(line);
+      }
+      expect(prompt).toContain("favicon.ico");
+      expect(prompt).toContain("android-chrome-maskable-512x512.png");
+      expect(prompt).toContain(guide);
+    },
+  );
 });
 
 describe("favicon markup inspection", () => {

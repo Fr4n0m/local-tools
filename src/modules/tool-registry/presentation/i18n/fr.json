@@ -1,0 +1,130 @@
+{
+  "avatar-generator": {
+    "name": "Générer des avatars",
+    "description": "Créez des avatars illustrés ou basés sur des initiales directement dans votre navigateur."
+  },
+  "base64-tool": {
+    "name": "Encodeur/décodeur Base64",
+    "description": "Encodez et décodez le texte en Base64."
+  },
+  "batch-rename": {
+    "name": "Simulateur de renommage par lots",
+    "description": "Prévisualisez les opérations de renommage sans toucher aux fichiers."
+  },
+  "carousel-generator": {
+    "name": "Créer des carrousels",
+    "description": "Générez un extrait de carrousel HTML/CSS/JS léger."
+  },
+  "chord-explorer": {
+    "name": "Explorateur d'accords",
+    "description": "Explorez les notes d'accords de base par racine et par type."
+  },
+  "color-range": {
+    "name": "Générateur de gamme de couleurs",
+    "description": "Créez des teintes et des nuances à partir d’une couleur de base."
+  },
+  "contrast-checker": {
+    "name": "Vérificateur de contraste",
+    "description": "Vérifiez le rapport de contraste WCAG pour l’accessibilité du texte."
+  },
+  "custom-timer": {
+    "name": "Minuterie personnalisée simple",
+    "description": "Exécutez un compte à rebours local dans votre navigateur."
+  },
+  "data-to-markdown": {
+    "name": "Données à démarquer",
+    "description": "Convertissez des tableaux CSV, TSV, matrices ou JSON en tableaux Markdown."
+  },
+  "favicon-generator": {
+    "name": "Générateur de favicon",
+    "description": "Générez des tailles de favicon à partir d'une image."
+  },
+  "fetch-colors": {
+    "name": "Récupérer les couleurs",
+    "description": "Extrayez les couleurs dominantes d’une image."
+  },
+  "focus-reader": {
+    "name": "Lecteur ciblé",
+    "description": "Lisez un long texte sans distraction."
+  },
+  "heic-to-jpg": {
+    "name": "HEIC en JPG",
+    "description": "Convertissez les photos HEIC/HEIF en JPG localement dans votre navigateur."
+  },
+  "image-compressor": {
+    "name": "Compresseur d'images",
+    "description": "Compressez les fichiers image localement et téléchargez des résultats optimisés."
+  },
+  "image-converter": {
+    "name": "Convertisseur d'images",
+    "description": "Convertissez entièrement les fichiers image dans le navigateur."
+  },
+  "json-formatter": {
+    "name": "Formateur et validateur JSON",
+    "description": "Formatez et validez JSON instantanément."
+  },
+  "json-prompt-composer": {
+    "name": "Compositeur d'invite JSON",
+    "description": "Composez des invites structurées au format JSON."
+  },
+  "liquid-glass": {
+    "name": "Effet Verre Liquide",
+    "description": "Créez des blocs CSS en verre dépoli."
+  },
+  "llms-txt": {
+    "name": "Générateur llms.txt",
+    "description": "Générez un fichier llms.txt propre pour votre projet."
+  },
+  "loader-maker": {
+    "name": "Fabricant de chargeur",
+    "description": "Générez instantanément des chargeurs CSS."
+  },
+  "mesh-gradient": {
+    "name": "Générateur de dégradé",
+    "description": "Créez des dégradés organiques sous forme de ressources CSS et téléchargeables."
+  },
+  "pdf-compressor": {
+    "name": "Compresser des PDF",
+    "description": "Compressez les fichiers PDF localement en réencodant les pages."
+  },
+  "pdf-to-images": {
+    "name": "PDF en images",
+    "description": "Convertissez chaque page PDF en images PNG localement."
+  },
+  "placeholder-text": {
+    "name": "Générateur de texte d'espace réservé",
+    "description": "Générez rapidement du texte factice pour les mises en page et le contenu de l'interface utilisateur."
+  },
+  "progressive-blur": {
+    "name": "Effet de flou progressif",
+    "description": "Générez du CSS pour les superpositions de flou progressif."
+  },
+  "qr-generator": {
+    "name": "Générateur de codes QR",
+    "description": "Générez des codes QR dans le navigateur et exportez PNG/SVG."
+  },
+  "svg-to-file": {
+    "name": "SVG dans un fichier",
+    "description": "Exportez la source SVG au format SVG ou PNG localement."
+  },
+  "test-colors": {
+    "name": "Tester les couleurs",
+    "description": "Testez plusieurs paires de palettes pour le contraste WCAG."
+  },
+  "text-transformer": {
+    "name": "Transformateur de texte",
+    "description": "Appliquez des transformations de texte rapides."
+  },
+  "url-encoder": {
+    "name": "Encodeur/décodeur d'URL",
+    "description": "Échapper et annuler l'échappement du contenu de l'URL."
+  },
+  "uuid-generator": {
+    "name": "Générateur d'UUID",
+    "description": "Générez instantanément des valeurs UUID v4, v7 ou nulles."
+  },
+  "video-compressor": {
+    "name": "Compresser des vidéos",
+    "description": "Ré-encodeur vidéo local expérimental."
+  }
+}

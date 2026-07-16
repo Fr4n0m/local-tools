@@ -29,6 +29,9 @@ import {
 import type { FaviconIntegrationTarget } from "@/modules/favicon-generator/domain/favicon-installation";
 import en from "@/modules/favicon-generator/presentation/i18n/en.json";
 import es from "@/modules/favicon-generator/presentation/i18n/es.json";
+import fr from "@/modules/favicon-generator/presentation/i18n/fr.json";
+import de from "@/modules/favicon-generator/presentation/i18n/de.json";
+import it from "@/modules/favicon-generator/presentation/i18n/it.json";
 import {
   validateFaviconImageFile,
   type FaviconImageValidationError,
@@ -140,12 +143,14 @@ const DEFAULT_PWA_THEME_COLOR = "#111111";
 const FAVICON_IMAGE_ACCEPT =
   "image/png,image/jpeg,image/webp,image/gif,image/bmp,image/svg+xml";
 
+const FAVICON_MESSAGES = { de, en, es, fr, it } as const;
+
 export function FaviconGeneratorTool({
   language,
   experienceMode,
   onExperienceModeChange,
 }: Props) {
-  const text = useMemo(() => (language === "es" ? es : en), [language]);
+  const text = useMemo(() => FAVICON_MESSAGES[language], [language]);
   const sharedText = sharedMessages[language];
   const [file, setFile] = useState<File | null>(null);
   const [darkFile, setDarkFile] = useState<File | null>(null);

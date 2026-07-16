@@ -1,0 +1,376 @@
+{
+  "appTitle": "LocalTools",
+  "searchPlaceholder": "Tools suchen...",
+  "privacy": "Alles läuft lokal in Ihrem Browser. Keine Uploads, kein Tracking.",
+  "privacyTitle": "Datenschutz-Checkliste",
+  "privacyItems": {
+    "local": "Die gesamte Verarbeitung läuft in Ihrem Browser",
+    "upload": "Kein Datei-Upload oder externe Bearbeitung",
+    "tracking": "Keine Analyse oder Benutzerverfolgung",
+    "auth": "Kein Konto oder Login erforderlich"
+  },
+  "language": "Sprache",
+  "theme": "Design",
+  "density": "Schnittstellenmodus",
+  "comfortable": "Normal",
+  "compact": "Kompakt",
+  "light": "Hell",
+  "dark": "Dunkel",
+  "emptySearch": "Zu Ihrer Suche passen keine Tools.",
+  "emptySearchTitle": "Wir haben dieses Tool noch nicht.",
+  "emptySearchText": "Sagen Sie uns, was Sie brauchen, und wir werden es für zukünftige Versionen überprüfen.",
+  "emptySearchCta": "Auf GitHub vorschlagen",
+  "menu": "Menü",
+  "skipToContent": "Zum Hauptinhalt springen",
+  "toolsNavigation": "Tools-Navigation",
+  "homeNav": "Startseite",
+  "toolsIndexNav": "Alle Tools",
+  "toolsIndexEyebrow": "WERKZEUGKASTEN / INDEX",
+  "toolsIndexTitle": "Finden Sie das Dienstprogramm, das Sie benötigen.",
+  "toolsIndexSubtitle": "Suchen Sie nach Aufgabe, öffnen Sie das richtige Tool und beenden Sie den Vorgang, ohne Ihren Browser zu verlassen.",
+  "toolsIndexStatsLabel": "Zusammenfassung der Toolbox",
+  "toolsIndexStatTools": "Tools",
+  "toolsIndexStatCategories": "Gruppen",
+  "toolsIndexSearchHint": "{count} Tools stimmen mit der aktuellen Suche überein.",
+  "toolsIndexOpenLabel": "Tool öffnen",
+  "toolsIndexEmptyTitle": "Keine Werkzeuge gefunden",
+  "toolsIndexEmptyText": "Löschen Sie die Suche oder versuchen Sie es mit einem anderen Begriff.",
+  "toolConstruction": {
+    "eyebrow": "IN ARBEIT",
+    "title": "Tool in Entwicklung",
+    "description": "{tool} ist noch nicht verfügbar. Wir verfeinern es noch, bevor wir es zur Verwendung öffnen.",
+    "action": "Zurück zum Favicon-Generator",
+    "closeLabel": "Bauhinweis schließen"
+  },
+  "support": "Unterstützung",
+  "supportCta": "Unterstützen Sie LocalTools",
+  "supportHint": "Halten Sie das Projekt kostenlos und Open Source",
+  "footer": {
+    "suggestTitle": "Open Source. Kein Tracking. Nur Tools.",
+    "suggestCta": "Stern auf GitHub geben",
+    "suggestUrl": "https://github.com/Fr4n0m/local-tools",
+    "logoPlaceholder": "LocalTools-Logo (ausstehend)",
+    "newsletterTitle": "Abonnement aktualisieren",
+    "newsletterHint": "Erhalten Sie konkrete Benachrichtigungen, wenn neue Tools oder wichtige Versionen ausgeliefert werden.",
+    "tagsTitle": "Entdecken Sie beliebte Tools",
+    "supportTitle": "Kostenlos und Open Source. Halte es am Leben.",
+    "brandLine": "© 2026 LocalTools",
+    "privacyLink": "Privatsphäre",
+    "termsLink": "Bedingungen",
+    "reportLink": "Problem melden",
+    "reportUrl": "https://github.com/Fr4n0m/local-tools/issues/new",
+    "tags": [
+      {
+        "label": "Bildkonverter",
+        "href": "/tools?tool=image-converter"
+      },
+      {
+        "label": "Bildkompressor",
+        "href": "/tools?tool=image-compressor"
+      },
+      {
+        "label": "JSON-Formatierer",
+        "href": "/tools?tool=json-formatter"
+      },
+      {
+        "label": "QR-Generator",
+        "href": "/tools?tool=qr-generator"
+      },
+      {
+        "label": "UUID-Generator",
+        "href": "/tools?tool=uuid-generator"
+      },
+      {
+        "label": "Base64-Tool",
+        "href": "/tools?tool=base64-tool"
+      }
+    ]
+  },
+  "categories": {
+    "files-media": "Dateien und Medien",
+    "data-encoding": "Daten und Verschlüsselung",
+    "text-code": "Text & Code",
+    "advanced": "Erweiterte Dienstprogramme"
+  },
+  "overview": {
+    "heroLead": "Von Natur aus privat. Alles in Ihrem Browser.",
+    "heroLeadLine1": "Von Natur aus privat.",
+    "heroLeadLine2": "Alles in Ihrem Browser.",
+    "heroTitle": "Entwicklertools. Keine Konten. Keine Telemetrie.",
+    "heroText": "LocalTools ist eine kuratierte Sammlung von Entwicklerdienstprogrammen, die vollständig in Ihrem Browser ausgeführt werden. Keine Konten. Keine Telemetrie. Nur zuverlässige Tools, die Ihren Arbeitsablauf und Ihre Daten respektieren.",
+    "heroCtaPrimary": "Abonnieren Sie Updates",
+    "heroCtaSecondary": "Schnellstart",
+    "heroTrustItems": [
+      {
+        "title": "100 % lokal",
+        "description": "Alles läuft in Ihrem Browser."
+      },
+      {
+        "title": "Open Source",
+        "description": "Durchsichtiges Design. Im Freien gebaut."
+      },
+      {
+        "title": "Entwickler zuerst",
+        "description": "Schnell, fokussiert und für echte Arbeitsabläufe konzipiert."
+      },
+      {
+        "title": "Plattformübergreifend",
+        "description": "macOS, Windows und Linux."
+      }
+    ],
+    "trust": "Scrollen",
+    "storyKickerPrimary": "WERKZEUGFLUSS",
+    "storyKickerSecondary": "REISE",
+    "storyHeadingLine1": "Gebaut für Entwickler.",
+    "storyHeadingLine2": "Sich mit der Gemeinschaft weiterentwickeln.",
+    "storyLead": "Kostenlos, werbefrei und ohne Konto. Eine saubere Umgebung, um technische Mikroaufgaben ohne Reibung und Lärm zu lösen.",
+    "storyMetaLine": "100 % BROWSER · KEINE UPLOADS · KEIN KONTO",
+    "storyTimelineAria": "Werkzeug-Workflow",
+    "storyItems": [
+      {
+        "titlePrimary": "Dateien",
+        "titleSecondary": "Medien",
+        "bodyPrimary": "Konvertieren Sie Formate und bereiten Sie Ergebnisse in Sekundenschnelle vor.",
+        "bodySecondary": "Komprimieren Sie Bilder, PDFs oder Videos, ohne den Browser zu verlassen."
+      },
+      {
+        "titlePrimary": "Daten",
+        "titleSecondary": "Codierung",
+        "bodyPrimary": "Validieren Sie Strukturen und bereinigen Sie Nutzlasten vor dem Senden.",
+        "bodySecondary": "Kodieren und dekodieren Sie Werte für APIs fehlerfrei."
+      },
+      {
+        "titlePrimary": "Text",
+        "titleSecondary": "Code",
+        "bodyPrimary": "Transformieren Sie Inhalte, um schneller zu schreiben.",
+        "bodySecondary": "Generieren Sie saubere, kopierfertige Ausgaben für die tägliche Arbeit."
+      },
+      {
+        "titlePrimary": "Dienstprogramme",
+        "titleSecondary": "Visuell",
+        "bodyPrimary": "Erledigen Sie alltägliche technische Mikroaufgaben mit weniger Reibung.",
+        "bodySecondary": "Validieren Sie Farbe, Kontrast und Farbverläufe mit direkten Steuerelementen."
+      },
+      {
+        "titlePrimary": "Ausgabe",
+        "titleSecondary": "Kontinuität",
+        "bodyPrimary": "Kopieren Sie die Ergebnisse oder laden Sie sie herunter, um sie weiterzugeben.",
+        "bodySecondary": "Kettenschritte ohne Konten und ohne Uploads."
+      }
+    ],
+    "storyCuePrimary": "ENTDECKEN SIE MEHR",
+    "storyCueSecondary": "/ CATEGORIES AND CAPABILITIES",
+    "section3EyebrowPrimary": "PRODUKT",
+    "section3EyebrowSecondary": "FÄHIGKEITEN",
+    "section3Rows": [
+      {
+        "key": "data-encoding",
+        "titlePrimary": "Daten",
+        "titleSecondary": "",
+        "descriptionPrimary": "Formatieren, validieren und konvertieren Sie Daten direkt in Ihrem Browser.",
+        "descriptionSecondary": "Perfekt zum Bereinigen von Eingaben vor dem Senden an APIs.",
+        "cta": "Entdecken Sie Datentools"
+      },
+      {
+        "key": "web",
+        "titlePrimary": "Web",
+        "titleSecondary": "",
+        "descriptionPrimary": "Debuggen, prüfen und interagieren Sie mit Webdiensten und Inhalten, ohne Ihren Computer zu verlassen.",
+        "descriptionSecondary": "Ideal zum Validieren von URLs, Payloads und Antworten.",
+        "cta": "Entdecken Sie Web-Tools"
+      },
+      {
+        "key": "dev",
+        "titlePrimary": "Entwicklung",
+        "titleSecondary": "",
+        "descriptionPrimary": "Versenden Sie besseren Code mit Helfern, die Ihre täglichen Entwicklungsaufgaben beschleunigen.",
+        "descriptionSecondary": "Entwickelt für Dokumentation, Texttransformationen und praktische kopierfertige Snippets.",
+        "cta": "Entdecken Sie Entwicklungstools"
+      },
+      {
+        "key": "advanced",
+        "titlePrimary": "Dienstprogramme",
+        "titleSecondary": "",
+        "descriptionPrimary": "Kleine Dienstprogramme mit großer Auswirkung auf Ihre Produktivität, jeden Tag.",
+        "descriptionSecondary": "Für die Momente, in denen Sie eine Mikroaufgabe in Sekundenschnelle und ohne zusätzliche Software lösen müssen.",
+        "cta": "Entdecken Sie Utils-Tools"
+      }
+    ],
+    "storyTitle": "Wie dieses Produkt verwendet werden soll",
+    "storyP1": "Die meisten Teams verlieren Zeit mit winzigen Vorgängen, die für dedizierte Software zu klein, aber zu häufig sind, um ignoriert zu werden: Diese Nutzlast formatieren, diese Datei konvertieren, diesen Code-sicheren Wert generieren, den Farbkontrast überprüfen, das PDF vor dem Senden komprimieren.",
+    "storyP2": "Auf dieser Seite wird die Plattform als Erzählung und nicht als Dashboard-Raster erläutert. Sie können es schnell scannen, zu relevanten Kategorien springen und verstehen, wo jedes Tool in eine echte Lieferpipeline passt.",
+    "chapterTitle": "Kapitel über Fähigkeiten",
+    "chapterIntro": "Jedes Kapitel gruppiert Werkzeuge nach Zweck und bietet Kontext, der über einzeilige Beschreibungen hinausgeht.",
+    "why": "Warum dieses Kapitel existiert",
+    "what": "Was Sie tun können",
+    "fit": "Optimale Nutzung",
+    "horizontalTitle": "Jedes aktive Werkzeug in einem beweglichen Streifen",
+    "horizontalHint": "Scrollen Sie, um alle aktuellen Module zu erkunden.",
+    "discoverEyebrowPrimary": "ERKUNDEN",
+    "discoverEyebrowSecondary": "EINIGE WERKZEUGE",
+    "discoverTitle": "Entdecken. Versuchen. Bleiben Sie vor Ort.",
+    "discoverSubtitle": "Entdecken Sie nützliche Tools für Entwickler.",
+    "discoverMetaLine": "PRIVAT · ZUVERLÄSSIG · 100 % LOKAL",
+    "carouselOpenLabel": "Werkzeug öffnen →",
+    "carouselCuePrimary": "WEITERMACHEN",
+    "carouselCueSecondary": "/ PRIVACY AND COMMUNITY",
+    "carouselHighlights": [
+      {
+        "title": "100 % lokal",
+        "description": "Ihre Daten verlassen niemals den Browser."
+      },
+      {
+        "title": "Keine Telemetrie",
+        "description": "Kein Tracking, keine Analyse, keine Überwachung."
+      },
+      {
+        "title": "Keine Konten",
+        "description": "Keine Anmeldung und kein Login erforderlich."
+      },
+      {
+        "title": "Open Source und überprüfbar",
+        "description": "Transparenter Code, offen eingebaut."
+      }
+    ],
+    "discoverTools": [
+      {
+        "id": "json-formatter",
+        "name": "JSON-Formatierer",
+        "description": "Formatieren und validieren Sie JSON sofort. Ideal für das Debuggen von API-Payloads.",
+        "badge": "DATEN"
+      },
+      {
+        "id": "url-encoder",
+        "name": "URL-Encoder",
+        "description": "Codieren und decodieren Sie URLs sicher für Routen, Abfragezeichenfolgen und Anforderungen.",
+        "badge": "WEB"
+      },
+      {
+        "id": "text-transformer",
+        "name": "Texttransformator",
+        "description": "Transformieren Sie Text in Sekundenschnelle für Dokumente, Snippets und Entwicklungsworkflows.",
+        "badge": "CODE"
+      },
+      {
+        "id": "uuid-generator",
+        "name": "UUID-Generator",
+        "description": "Generieren Sie eindeutige UUID v4-Werte für Datenbanken, Tests und Systeme.",
+        "badge": "UTILS"
+      },
+      {
+        "id": "base64-tool",
+        "name": "Base64-Encoder",
+        "description": "Kodieren und dekodieren Sie Base64-Daten schnell für Integrationen und Tests.",
+        "badge": "DATEN"
+      },
+      {
+        "id": "contrast-checker",
+        "name": "Kontrastprüfer",
+        "description": "Validieren Sie den WCAG-Farbkontrast für zugängliche und lesbare Schnittstellen.",
+        "badge": "WEB"
+      },
+      {
+        "id": "qr-generator",
+        "name": "QR-Generator",
+        "description": "Generieren Sie lokale QR-Codes und exportieren Sie sie schnell für Links oder den Datenaustausch.",
+        "badge": "UTILS"
+      },
+      {
+        "id": "custom-timer",
+        "name": "Benutzerdefinierter Timer",
+        "description": "Stellen Sie schnelle Timer für konzentrierte Arbeitssitzungen und praktische Überprüfungen ein.",
+        "badge": "CODE"
+      }
+    ],
+    "trustEyebrow": "DATENSCHUTZ / IHNEN VERTRAUEN KÖNNEN",
+    "trustTitle": "Ihre Daten verlassen niemals Ihren Browser.",
+    "trustSubtitle": "Arbeiten Sie mit Dateien, Texten und Daten, ohne sie an externe Server zu senden.",
+    "trustBodyPrimary": "LocalTools basiert auf einem einfachen Prinzip: Sie behalten die Kontrolle. Aufgaben werden in Ihrem Browser ausgeführt, ohne dass Ihre Daten an externe Server gesendet werden.",
+    "trustBodySecondary": "",
+    "trustChecks": [
+      "100 % lokale Ausführung",
+      "Keine Telemetrie oder Nachverfolgung",
+      "Keine Konten oder Anmeldungen",
+      "Open Source und überprüfbar"
+    ],
+    "bottomCards": [
+      {
+        "eyebrow": "COMMUNITY / OPEN SOURCE",
+        "title": "Von Entwicklern für Entwickler entwickelt.",
+        "subtitle": "Offene Community, echtes Feedback und sichtbare Entscheidungen.",
+        "bodyPrimary": "Bei LocalTools handelt es sich um kleine Aufgaben, die sich jeden Tag wiederholen: Vorbereiten von Dateien, Überprüfen von Nutzlasten oder Validieren einer Schnittstelle.",
+        "bodySecondary": "Wenn etwas kaputt geht oder klarer sein könnte, öffnen Sie ein Problem mit echtem Kontext.",
+        "cta": "Auf GitHub ansehen"
+      },
+      {
+        "eyebrow": "ROADMAP / PLAN",
+        "title": "Was kommt als nächstes?",
+        "subtitle": "Eine praktische Roadmap ohne leere Versprechungen.",
+        "bodyPrimary": "Die Priorität besteht darin, Tools hinzuzufügen, die zur tatsächlichen Produktnutzung passen: mehr Konverter, bessere Voreinstellungen, schnellere Abläufe und kleine Verbesserungen, die wiederholte Schritte reduzieren.",
+        "bodySecondary": "Die Roadmap bleibt am Leben und passt sich an, je nachdem, was der täglichen Arbeit einen Mehrwert bringt. Wenn eine Idee den Ablauf verbessert oder das Öffnen einer anderen App vermeidet, verdient sie eine Überprüfung.",
+        "bullets": [
+          "Neue Funktion oder Kategorie",
+          "Workflow- oder Schnittstellenverbesserung",
+          "Anwendungsfall aus der Praxis",
+          "Allgemeines Produktfeedback"
+        ],
+        "cta": "Vorschlag senden"
+      },
+      {
+        "eyebrow": "Bleiben Sie auf dem Laufenden",
+        "title": "Neue Werkzeuge. Kein Lärm.",
+        "subtitle": "Klare Benachrichtigungen, wenn wichtige Versionen versendet werden.",
+        "bodyPrimary": "Das Abonnement hilft Ihnen dabei, sich über neue Tools, relevante Änderungen, UX-Verbesserungen und Versionshinweise zu informieren, wenn das Projekt etwas Nützliches mitzuteilen hat.",
+        "bodySecondary": "Kein Spam und keine Füll-E-Mails. Nur konkrete Updates für Leute, die das Projekt verfolgen möchten, ohne jede Woche das Repository zu überprüfen.",
+        "cta": "Abonnieren"
+      }
+    ],
+    "finalTitle": "Offenes Produkt, sichtbare Richtung",
+    "finalText": "Funktionsanfragen, UX-Kritiken, Namensentscheidungen und Fehlerberichte sind Teil des Entwicklungsprozesses. Die Roadmap bleibt praxisorientiert und umsetzungsorientiert.",
+    "subscribe": "Vorschau der Versionshinweise",
+    "subscribeText": "Abonnieren Sie, um Versionsaktualisierungen zu erhalten.",
+    "subscribeButton": "Benachrichtigen Sie mich",
+    "subscribePlaceholder": "you@example.com",
+    "subscribeConsentPrefix": "Ich stimme dem Erhalt von LocalTools-Updates zu und habe die gelesen",
+    "subscribePrivacyLink": "Datenschutzrichtlinie",
+    "subscribeConsentJoin": "Und",
+    "subscribeTermsLink": "Bedingungen",
+    "subscribeLoadingTitle": "Senden",
+    "subscribeLoadingDescription": "Bestätigungs-E-Mail wird vorbereitet...",
+    "subscribeSuccessTitle": "Überprüfen Sie Ihren Posteingang",
+    "subscribeSuccessDescription": "Bestätigen Sie Ihr Abonnement in Ihrem Posteingang.",
+    "subscribeAlreadyPendingTitle": "Überprüfen Sie Ihren Posteingang",
+    "subscribeAlreadyPendingDescription": "Wir haben Ihnen bereits eine Bestätigungs-E-Mail gesendet. Überprüfen Sie Ihren Posteingang und bestätigen Sie.",
+    "subscribeAlreadyActiveTitle": "Bereits abonniert",
+    "subscribeAlreadyActiveDescription": "Diese E-Mail erhält bereits LocalTools-Updates.",
+    "subscribeInvalidEmail": "Geben Sie eine gültige E-Mail-Adresse ein.",
+    "subscribeTermsRequired": "Stimmen Sie zu, Updates zu erhalten, bevor Sie fortfahren.",
+    "subscribeErrorTitle": "Fehler senden",
+    "subscribeErrorDescription": "Das Abonnement konnte nicht abgeschlossen werden.",
+    "subscriptionModal": {
+      "confirmedEyebrow": "ABO BESTÄTIGT",
+      "confirmedTitle": "Abonnement bestätigt",
+      "confirmedDescription": "Willkommen bei LocalTools. Sie erhalten neue Tools, relevante Verbesserungen und Versionshinweise, wenn Sie etwas Nützliches mitzuteilen haben.",
+      "confirmedAction": "Zurück zu LocalTools",
+      "errorEyebrow": "BESTÄTIGUNG FEHLGESCHLAGEN",
+      "errorTitle": "Wir konnten es nicht bestätigen",
+      "errorDescription": "Der Link ist ungültig, abgelaufen oder konnte nicht verarbeitet werden. Fordern Sie eine weitere Bestätigungs-E-Mail an.",
+      "errorAction": "Fordern Sie eine weitere E-Mail an",
+      "closeLabel": "Bestätigung schließen"
+    }
+  },
+  "buttons": {
+    "clear": "Klar",
+    "copy": "Kopie",
+    "download": "Herunterladen",
+    "generate": "Erzeugen"
+  },
+  "notifications": {
+    "copySuccess": "In die Zwischenablage kopiert",
+    "copyError": "Konnte nicht in die Zwischenablage kopieren",
+    "downloadSuccess": "Datei heruntergeladen",
+    "downloadError": "Der Download ist fehlgeschlagen",
+    "processSuccess": "Erledigt",
+    "processError": "Etwas ist schief gelaufen"
+  }
+}

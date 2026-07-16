@@ -58,6 +58,55 @@ const copy = {
     errorTitle: "Could not unsubscribe",
     errorDescription: "Could not complete the unsubscribe. Try again.",
   },
+  fr: {
+    eyebrow: "ABONNEMENT / LOCALTOOLS",
+    title: "Se désabonner des actualités",
+    description:
+      "Confirmez votre désabonnement pour ne plus recevoir d’e-mails sur les nouveaux outils, les améliorations UX et les notes de version.",
+    invalidTitle: "Lien non valide",
+    invalid: "Ce lien de désabonnement n’est pas valide ou a expiré.",
+    button: "Confirmer le désabonnement",
+    back: "Retour à LocalTools",
+    loadingTitle: "Traitement en cours",
+    loadingDescription: "Désabonnement en cours...",
+    successTitle: "Désabonnement confirmé",
+    successDescription: "Votre abonnement a bien été annulé.",
+    errorTitle: "Échec du désabonnement",
+    errorDescription: "Impossible de vous désabonner. Réessayez.",
+  },
+  de: {
+    eyebrow: "ABONNEMENT / LOCALTOOLS",
+    title: "Neuigkeiten abbestellen",
+    description:
+      "Bestätigen Sie die Abmeldung, um keine E-Mails mehr über neue Tools, UX-Verbesserungen und Versionshinweise zu erhalten.",
+    invalidTitle: "Ungültiger Link",
+    invalid: "Dieser Abmeldelink ist ungültig oder abgelaufen.",
+    button: "Abmeldung bestätigen",
+    back: "Zurück zu LocalTools",
+    loadingTitle: "Wird verarbeitet",
+    loadingDescription: "Abmeldung wird verarbeitet...",
+    successTitle: "Abgemeldet",
+    successDescription: "Ihr Abonnement wurde erfolgreich beendet.",
+    errorTitle: "Abmeldung fehlgeschlagen",
+    errorDescription:
+      "Die Abmeldung konnte nicht abgeschlossen werden. Versuchen Sie es erneut.",
+  },
+  it: {
+    eyebrow: "ISCRIZIONE / LOCALTOOLS",
+    title: "Annulla gli aggiornamenti",
+    description:
+      "Conferma la disiscrizione per non ricevere più e-mail su nuovi strumenti, miglioramenti UX e note di versione.",
+    invalidTitle: "Link non valido",
+    invalid: "Questo link di disiscrizione non è valido o è scaduto.",
+    button: "Conferma disiscrizione",
+    back: "Torna a LocalTools",
+    loadingTitle: "Elaborazione in corso",
+    loadingDescription: "Disiscrizione in corso...",
+    successTitle: "Disiscrizione completata",
+    successDescription: "La tua iscrizione è stata annullata correttamente.",
+    errorTitle: "Disiscrizione non riuscita",
+    errorDescription: "Impossibile completare la disiscrizione. Riprova.",
+  },
 } satisfies Record<Language, Record<string, string>>;
 
 export function UnsubscribeClient({ token }: Props) {

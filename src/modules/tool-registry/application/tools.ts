@@ -130,8 +130,17 @@ import urlEs from "@/modules/url-encoder/presentation/i18n/es.json";
 import { UuidGeneratorTool } from "@/modules/uuid-generator/presentation/components/uuid-generator-tool";
 import uuidEn from "@/modules/uuid-generator/presentation/i18n/en.json";
 import uuidEs from "@/modules/uuid-generator/presentation/i18n/es.json";
+import registryFr from "@/modules/tool-registry/presentation/i18n/fr.json";
+import registryDe from "@/modules/tool-registry/presentation/i18n/de.json";
+import registryIt from "@/modules/tool-registry/presentation/i18n/it.json";
+import type { Language } from "@/shared/presentation/i18n";
 
-export const tools: Tool[] = [
+type SourceTool = Omit<Tool, "name" | "description"> & {
+  name: Pick<Record<Language, string>, "en" | "es">;
+  description: Pick<Record<Language, string>, "en" | "es">;
+};
+
+const sourceTools: SourceTool[] = [
   {
     id: "avatar-generator",
     category: "files-media",
@@ -411,3 +420,19 @@ export const tools: Tool[] = [
     description: { en: batchEn.description, es: batchEs.description },
   },
 ];
+
+export const tools: Tool[] = sourceTools.map((tool) => ({
+  ...tool,
+  name: {
+    ...tool.name,
+    fr: registryFr[tool.id].name,
+    de: registryDe[tool.id].name,
+    it: registryIt[tool.id].name,
+  },
+  description: {
+    ...tool.description,
+    fr: registryFr[tool.id].description,
+    de: registryDe[tool.id].description,
+    it: registryIt[tool.id].description,
+  },
+}));

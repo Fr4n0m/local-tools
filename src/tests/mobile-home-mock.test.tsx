@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import { MobileHomeMock } from "@/shared/presentation/components/mobile-home-mock";
@@ -45,5 +45,23 @@ describe("MobileHomeMock fallback shape", () => {
     expect(fallbackImage(container).className).toContain(
       "androidFallbackImage",
     );
+  });
+
+  it.each([
+    ["de", "Mittwoch, 7. Aug."],
+    ["en", "Wednesday, Aug 7"],
+    ["es", "Miércoles, 7 ago"],
+    ["fr", "Mercredi 7 août"],
+    ["it", "Mercoledì 7 ago"],
+  ] as const)("renders Android system copy in %s", (language, date) => {
+    render(
+      <MobileHomeMock
+        appName="Example"
+        language={language}
+        platform="android"
+      />,
+    );
+
+    expect(screen.getByText(date)).toBeInTheDocument();
   });
 });

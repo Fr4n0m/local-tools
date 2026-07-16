@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { IconMoonStars, IconSunHigh } from "@tabler/icons-react";
 
 import { MobileHomeMock } from "@/shared/presentation/components/mobile-home-mock";
+import type { Language } from "@/shared/presentation/i18n";
 
 type PreviewIcon = React.ComponentType<{ className?: string }>;
 
@@ -49,7 +50,7 @@ export function MobilePreviewCard({
   modeLabel: string;
   platform: "ios" | "android";
   dark?: boolean;
-  language: "en" | "es";
+  language: Language;
   compact?: boolean;
 }) {
   return (

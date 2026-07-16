@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { LanguageSelector } from "@/shared/presentation/components/language-selector";
 import {
   resolveInitialLanguage,
+  sharedMessages,
   type Language,
 } from "@/shared/presentation/i18n";
 import {
@@ -18,6 +19,7 @@ export function PageDisplayControls() {
   const [language, setLanguage] = useState<Language>("en");
   const [theme, setTheme] = useState<Theme>("light");
   const isReadyRef = useRef(false);
+  const text = sharedMessages[language];
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
@@ -61,20 +63,20 @@ export function PageDisplayControls() {
   return (
     <div className="page-display-control-group flex items-center rounded-lg border border-border/55 bg-background/65 p-1">
       <Link
-        aria-label="Open tools"
+        aria-label={text.toolsIndexOpenLabel}
         className="lt-button lt-button--ghost lt-button--icon page-display-control-button page-display-control-button--icon"
         href="/tools?view=grid"
       >
         <IconGridDots aria-hidden className="page-display-control-theme-icon" />
       </Link>
       <LanguageSelector
-        label={language === "es" ? "Idioma" : "Language"}
+        label={text.language}
         language={language}
         onSelect={setLanguage}
         variant="header"
       />
       <button
-        aria-label="Theme"
+        aria-label={text.theme}
         className="lt-button lt-button--ghost lt-button--icon page-display-control-button page-display-control-button--icon"
         onClick={() =>
           setThemeWithTransition(setTheme, theme === "light" ? "dark" : "light")

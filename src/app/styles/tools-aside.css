@@ -130,10 +130,12 @@
 
 .aside-language-menu {
   position: absolute;
-  right: 0;
+  /* Keep the raised edge inside the sidebar scroll/mask clipping area. */
+  right: 0.4rem;
   top: calc(100% + 0.35rem);
   z-index: 30;
-  width: min(15rem, calc(100vw - 2rem));
+  width: min(13.5rem, calc(100vw - 2rem));
+  max-width: calc(100vw - 2rem);
   overflow: hidden;
   margin: 0;
   border-radius: var(--radius-squircle);

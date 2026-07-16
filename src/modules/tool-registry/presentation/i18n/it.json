@@ -1,0 +1,130 @@
+{
+  "avatar-generator": {
+    "name": "Genera avatar",
+    "description": "Crea avatar illustrati o basati su iniziali direttamente nel tuo browser."
+  },
+  "base64-tool": {
+    "name": "Codificatore/decodificatore Base64",
+    "description": "Codifica e decodifica il testo in Base64."
+  },
+  "batch-rename": {
+    "name": "Simulatore di ridenominazione batch",
+    "description": "Anteprima delle operazioni di ridenominazione senza toccare i file."
+  },
+  "carousel-generator": {
+    "name": "Crea caroselli",
+    "description": "Genera uno snippet carosello HTML/CSS/JS leggero."
+  },
+  "chord-explorer": {
+    "name": "Esploratore di accordi",
+    "description": "Esplora le note degli accordi di base per fondamentale e tipo."
+  },
+  "color-range": {
+    "name": "Generatore di gamme di colori",
+    "description": "Crea tinte e sfumature da un colore base."
+  },
+  "contrast-checker": {
+    "name": "Controllo del contrasto",
+    "description": "Controlla il rapporto di contrasto WCAG per l'accessibilità del testo."
+  },
+  "custom-timer": {
+    "name": "Semplice timer personalizzato",
+    "description": "Esegui un timer per il conto alla rovescia locale nel tuo browser."
+  },
+  "data-to-markdown": {
+    "name": "Dati da ridurre",
+    "description": "Converti CSV, TSV, matrici o array JSON in tabelle Markdown."
+  },
+  "favicon-generator": {
+    "name": "Generatore di favicon",
+    "description": "Genera dimensioni di favicon da un'immagine."
+  },
+  "fetch-colors": {
+    "name": "Recupera i colori",
+    "description": "Estrai i colori dominanti da un'immagine."
+  },
+  "focus-reader": {
+    "name": "Focus Lettore",
+    "description": "Leggi testi lunghi senza distrazioni."
+  },
+  "heic-to-jpg": {
+    "name": "Da HEIC a JPG",
+    "description": "Converti foto HEIC/HEIF in JPG localmente nel tuo browser."
+  },
+  "image-compressor": {
+    "name": "Compressore di immagini",
+    "description": "Comprimi i file di immagine localmente e scarica risultati ottimizzati."
+  },
+  "image-converter": {
+    "name": "Convertitore di immagini",
+    "description": "Converti i file di immagine completamente nel browser."
+  },
+  "json-formatter": {
+    "name": "Formattatore e validatore JSON",
+    "description": "Formatta e convalida istantaneamente JSON."
+  },
+  "json-prompt-composer": {
+    "name": "Compositore prompt JSON",
+    "description": "Componi prompt strutturati in formato JSON."
+  },
+  "liquid-glass": {
+    "name": "Effetto vetro liquido",
+    "description": "Crea blocchi CSS in vetro smerigliato."
+  },
+  "llms-txt": {
+    "name": "Generatore llms.txt",
+    "description": "Genera un file llms.txt pulito per il tuo progetto."
+  },
+  "loader-maker": {
+    "name": "Creatore di caricatori",
+    "description": "Genera istantaneamente caricatori CSS."
+  },
+  "mesh-gradient": {
+    "name": "Generatore di gradienti",
+    "description": "Crea gradienti organici come CSS e risorse scaricabili."
+  },
+  "pdf-compressor": {
+    "name": "Comprimi PDF",
+    "description": "Comprimi i file PDF localmente ricodificando le pagine."
+  },
+  "pdf-to-images": {
+    "name": "PDF in immagini",
+    "description": "Converti localmente ogni pagina PDF in immagini PNG."
+  },
+  "placeholder-text": {
+    "name": "Generatore di testo segnaposto",
+    "description": "Genera rapidamente testo fittizio per layout e contenuti dell'interfaccia utente."
+  },
+  "progressive-blur": {
+    "name": "Effetto di sfocatura progressiva",
+    "description": "Genera CSS per sovrapposizioni di sfocatura progressiva."
+  },
+  "qr-generator": {
+    "name": "Generatore di codici QR",
+    "description": "Genera codici QR nel browser ed esporta PNG/SVG."
+  },
+  "svg-to-file": {
+    "name": "SVG su file",
+    "description": "Esporta l'origine SVG come SVG o PNG localmente."
+  },
+  "test-colors": {
+    "name": "Prova i colori",
+    "description": "Testare più coppie di tavolozze per il contrasto WCAG."
+  },
+  "text-transformer": {
+    "name": "Trasformatore di testo",
+    "description": "Applicare trasformazioni rapide del testo."
+  },
+  "url-encoder": {
+    "name": "Codificatore/decodificatore URL",
+    "description": "Escape e non escape del contenuto dell'URL."
+  },
+  "uuid-generator": {
+    "name": "Generatore UUID",
+    "description": "Genera istantaneamente valori UUID v4, v7 o nulli."
+  },
+  "video-compressor": {
+    "name": "Comprimi video",
+    "description": "Ricodificatore video locale sperimentale."
+  }
+}

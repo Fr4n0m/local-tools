@@ -1,0 +1,138 @@
+{
+  "lastUpdatedLabel": "Dernière mise à jour",
+  "lastUpdated": "30 juin 2026",
+  "back": "Dos",
+  "privacy": {
+    "title": "politique de confidentialité",
+    "sections": [
+      {
+        "title": "1. Responsable du traitement des données",
+        "paragraphs": [
+          "Le responsable du traitement des données personnelles traitées via LocalTools est Francisco Rodríguez. Contact confidentialité et droits sur les données : fran11799@outlook.com."
+        ]
+      },
+      {
+        "title": "2. Outils locaux et données du navigateur",
+        "paragraphs": [
+          "Le texte, les fichiers et autres contenus saisis dans les outils sont traités localement dans le navigateur et ne sont pas téléchargés sur un serveur LocalTools.",
+          "Le navigateur stocke les préférences fonctionnelles dans localStorage, notamment la langue, le thème, l'outil sélectionné et les couleurs récentes ou enregistrées. Ces informations restent sur l'appareil et ne sont pas utilisées à des fins d'analyse, de publicité, de suivi intersites ou de profilage."
+        ]
+      },
+      {
+        "title": "3. Abonnement par courrier électronique",
+        "paragraphs": [
+          "L'abonnement est facultatif et utilise le double opt-in. Une demande traite l'adresse e-mail, les paramètres régionaux, la source du formulaire, la date et la version du consentement, l'adresse IP, l'agent utilisateur, l'état de l'abonnement, les horodatages et les hachages des jetons de vérification et de désabonnement.",
+          "Ces données sont utilisées pour envoyer une confirmation, communiquer les mises à jour pertinentes de LocalTools, démontrer le consentement, sécuriser le service et traiter les demandes de désabonnement."
+        ]
+      },
+      {
+        "title": "4. Base juridique",
+        "paragraphs": [
+          "Les e-mails de mise à jour reposent sur un consentement explicite. Le consentement peut être retiré à tout moment sans affecter le traitement effectué avant le retrait.",
+          "Les données strictement nécessaires à la sécurité, à la prévention des abus, à la preuve du consentement ou aux obligations légales peuvent être traitées dans le cadre d'intérêts légitimes ou de conformité légale, le cas échéant."
+        ]
+      },
+      {
+        "title": "5. Fournisseurs et destinataires",
+        "paragraphs": [
+          "Le site est hébergé par Vercel. Les abonnements sont gérés via le pont codebyfran.es, l'infrastructure de base de données Supabase et le fournisseur de transport de courrier électronique configuré. Ces prestataires traitent uniquement les données nécessaires à la fourniture de leurs services.",
+          "Nous ne vendons pas de données personnelles et ne les partageons pas à des fins publicitaires. Les liens externes sont régis par leurs propres politiques."
+        ]
+      },
+      {
+        "title": "6. Rétention",
+        "paragraphs": [
+          "Les données d'abonnement actif sont conservées tant que l'abonnement reste actif. Les dossiers en attente et désabonnés ainsi que les preuves associées ne sont conservés que le temps nécessaire pour confirmer les demandes, honorer les désinscriptions, traiter les réclamations et respecter les obligations ; ils sont ensuite supprimés ou anonymisés le cas échéant."
+        ]
+      },
+      {
+        "title": "7. Cookies et stockage local",
+        "paragraphs": [
+          "LocalTools n'utilise pas de cookies d'analyse, de publicité ou de suivi et n'installe actuellement aucun cookie non essentiel.",
+          "Le stockage local fonctionnel décrit ici est utilisé uniquement pour mémoriser les choix d'interface ou les données que l'utilisateur choisit de sauvegarder. Aucune bannière de consentement n’est donc affichée. Cette décision sera examinée avant d'ajouter des analyses, de la publicité, des intégrations de suivi ou du stockage à des fins non liées."
+        ]
+      },
+      {
+        "title": "8. Vos droits",
+        "items": [
+          "Demander l'accès, la correction, l'effacement, la restriction, l'objection et la portabilité, le cas échéant.",
+          "Retirez votre consentement via le lien de désabonnement présent dans chaque e-mail ou en contactant fran11799@outlook.com.",
+          "Déposez une plainte auprès de l'Agence espagnole de protection des données (www.aepd.es)."
+        ]
+      },
+      {
+        "title": "9. Sécurité",
+        "paragraphs": [
+          "Nous utilisons des garanties techniques et organisationnelles raisonnables, notamment des jetons à usage unique stockés sous forme de hachages, une validation des entrées et des limites de requêtes. Aucun système connecté à Internet ne peut garantir une sécurité absolue."
+        ]
+      },
+      {
+        "title": "10. Changements de politique",
+        "paragraphs": [
+          "Nous pouvons mettre à jour cette politique pour des raisons techniques ou juridiques. La version actuelle est toujours publiée avec sa date de mise à jour."
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "title": "Conditions d'utilisation",
+    "sections": [
+      {
+        "title": "1. Acceptation",
+        "paragraphs": [
+          "En utilisant LocalTools, vous acceptez ces conditions. Si vous n'êtes pas d'accord, arrêtez d'utiliser le site."
+        ]
+      },
+      {
+        "title": "2. Utilisation autorisée",
+        "items": [
+          "Utilisation personnelle ou professionnelle d'outils basés sur un navigateur.",
+          "L'utilisation illégale, l'automatisation abusive et les tentatives d'accès non autorisées sont interdites."
+        ]
+      },
+      {
+        "title": "3. Mettre à jour l'abonnement",
+        "paragraphs": [
+          "L'abonnement est volontaire, nécessite une confirmation par e-mail via double opt-in et peut couvrir de nouveaux outils, fonctionnalités, améliorations UX pertinentes et modifications importantes du site Web.",
+          "Aucune fréquence de livraison n'est garantie. Vous pouvez retirer votre consentement gratuitement à tout moment via le lien de désabonnement inclus dans chaque message."
+        ]
+      },
+      {
+        "title": "4. Contenu soumis par l'utilisateur",
+        "paragraphs": [
+          "Si vous soumettez des suggestions ou des commentaires, vous confirmez que vous avez le droit de partager ce contenu. Les données saisies dans les outils locaux ne sont pas envoyées à LocalTools."
+        ]
+      },
+      {
+        "title": "5. Liens tiers",
+        "paragraphs": [
+          "Nous ne contrôlons pas les sites externes liés et ne garantissons pas leur disponibilité, leur contenu ou leur sécurité."
+        ]
+      },
+      {
+        "title": "6. Sécurité et disponibilité",
+        "paragraphs": [
+          "Nous appliquons des garanties raisonnables mais ne garantissons pas une disponibilité ininterrompue, un fonctionnement sans erreur ou une compatibilité avec chaque appareil ou format."
+        ]
+      },
+      {
+        "title": "7. Exclusion de garantie",
+        "paragraphs": [
+          "Le service est fourni tel quel et selon sa disponibilité, dans les limites de la loi applicable. Examinez les résultats avant de les utiliser dans des contextes critiques."
+        ]
+      },
+      {
+        "title": "8. Modifications des services",
+        "paragraphs": [
+          "Nous pouvons modifier les fonctionnalités ou ces conditions. La version actuelle est publiée avec sa date de mise à jour."
+        ]
+      },
+      {
+        "title": "9. Droit applicable et contact",
+        "paragraphs": [
+          "Ces termes sont interprétés selon la loi espagnole et les règles impératives applicables. Contact : Francisco Rodríguez, fran11799@outlook.com."
+        ]
+      }
+    ]
+  }
+}

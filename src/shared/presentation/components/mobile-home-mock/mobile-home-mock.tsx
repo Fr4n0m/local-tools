@@ -137,6 +137,25 @@ const ANDROID_HOME_APPS = [
 ] as const;
 
 const MOCK_APP_LABELS = {
+  de: {
+    appStore: "App Store",
+    calendar: "Kalender",
+    camera: "Kamera",
+    chrome: "Chrome",
+    clock: "Uhr",
+    facetime: "FaceTime",
+    mail: "Mail",
+    maps: "Karten",
+    messages: "Nachrichten",
+    music: "Musik",
+    notes: "Notizen",
+    phone: "Telefon",
+    photos: "Fotos",
+    play: "Play Store",
+    safari: "Safari",
+    settings: "Einstellungen",
+    weather: "Wetter",
+  },
   en: {
     appStore: "App Store",
     calendar: "Calendar",
@@ -175,7 +194,56 @@ const MOCK_APP_LABELS = {
     settings: "Ajustes",
     weather: "Tiempo",
   },
+  fr: {
+    appStore: "App Store",
+    calendar: "Calendrier",
+    camera: "Appareil photo",
+    chrome: "Chrome",
+    clock: "Horloge",
+    facetime: "FaceTime",
+    mail: "Mail",
+    maps: "Plans",
+    messages: "Messages",
+    music: "Musique",
+    notes: "Notes",
+    phone: "Téléphone",
+    photos: "Photos",
+    play: "Play Store",
+    safari: "Safari",
+    settings: "Réglages",
+    weather: "Météo",
+  },
+  it: {
+    appStore: "App Store",
+    calendar: "Calendario",
+    camera: "Fotocamera",
+    chrome: "Chrome",
+    clock: "Orologio",
+    facetime: "FaceTime",
+    mail: "Mail",
+    maps: "Mappe",
+    messages: "Messaggi",
+    music: "Musica",
+    notes: "Note",
+    phone: "Telefono",
+    photos: "Foto",
+    play: "Play Store",
+    safari: "Safari",
+    settings: "Impostazioni",
+    weather: "Meteo",
+  },
 } as const;
+
+const MOCK_SYSTEM_COPY: Record<
+  MobileHomeMockLanguage,
+  { androidDate: string; search: string }
+> = {
+  de: { androidDate: "Mittwoch, 7. Aug.", search: "Suchen" },
+  en: { androidDate: "Wednesday, Aug 7", search: "Search" },
+  es: { androidDate: "Miércoles, 7 ago", search: "Buscar" },
+  fr: { androidDate: "Mercredi 7 août", search: "Rechercher" },
+  it: { androidDate: "Mercoledì 7 ago", search: "Cerca" },
+};
 
 const IPHONE_DOCK_APPS = [
   {
@@ -278,7 +346,7 @@ function IPhonePreviewMock({
   iconUrl: string | null;
   appLabel: string;
   dark?: boolean;
-  language: "en" | "es";
+  language: MobileHomeMockLanguage;
 }) {
   return (
     <TelephoneFrame platform="ios">
@@ -341,7 +409,7 @@ function IPhonePreviewMock({
             <circle cx="11" cy="11" r="6.5" />
             <path d="m16 16 4 4" />
           </svg>
-          <span>{language === "es" ? "Buscar" : "Search"}</span>
+          <span>{MOCK_SYSTEM_COPY[language].search}</span>
         </div>
       </div>
     </TelephoneFrame>
@@ -357,7 +425,7 @@ function AndroidPreviewMock({
   iconUrl: string | null;
   appLabel: string;
   dark?: boolean;
-  language: "en" | "es";
+  language: MobileHomeMockLanguage;
 }) {
   return (
     <TelephoneFrame platform="android">
@@ -367,9 +435,7 @@ function AndroidPreviewMock({
         }`}
       >
         <div className={styles.androidDate}>
-          <span>
-            {language === "es" ? "Miércoles, 7 ago" : "Wednesday, Aug 7"}
-          </span>
+          <span>{MOCK_SYSTEM_COPY[language].androidDate}</span>
           <span className={styles.androidWeather}>
             <i aria-hidden className={styles.androidWeatherIcon} />
             <span>21°C</span>
@@ -431,7 +497,7 @@ function AndroidPreviewMock({
 
 export type MobileHomeMockPlatform = "ios" | "android";
 export type MobileHomeMockTheme = "light" | "dark";
-export type MobileHomeMockLanguage = "en" | "es";
+export type MobileHomeMockLanguage = "de" | "en" | "es" | "fr" | "it";
 
 export interface MobileHomeMockProps {
   appIconUrl?: string | null;

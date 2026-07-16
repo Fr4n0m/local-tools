@@ -9,6 +9,9 @@ import { SimplePageHeader } from "@/shared/presentation/components/simple-page-h
 import { PageDisplayControls } from "@/shared/presentation/components/page-display-controls";
 import en from "@/shared/presentation/i18n/legal/en.json";
 import es from "@/shared/presentation/i18n/legal/es.json";
+import fr from "@/shared/presentation/i18n/legal/fr.json";
+import de from "@/shared/presentation/i18n/legal/de.json";
+import it from "@/shared/presentation/i18n/legal/it.json";
 
 type LegalDocumentType = "privacy" | "terms";
 
@@ -16,7 +19,7 @@ type LegalPageProps = {
   docType: LegalDocumentType;
 };
 
-const legalMessages = { en, es } as const;
+const legalMessages = { en, es, fr, de, it } as const;
 
 export function LegalPage({ docType }: LegalPageProps) {
   const [language, setLanguage] = useState<Language>("en");

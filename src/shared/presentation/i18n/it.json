@@ -1,0 +1,376 @@
+{
+  "appTitle": "LocalTools",
+  "searchPlaceholder": "Cerca strumenti...",
+  "privacy": "Tutto viene eseguito localmente nel tuo browser. Nessun caricamento, nessun tracciamento.",
+  "privacyTitle": "Lista di controllo sulla privacy",
+  "privacyItems": {
+    "local": "Tutta l'elaborazione viene eseguita nel tuo browser",
+    "upload": "Nessun caricamento di file o elaborazione esterna",
+    "tracking": "Nessuna analisi o tracciamento degli utenti",
+    "auth": "Nessun account o accesso richiesto"
+  },
+  "language": "Lingua",
+  "theme": "Tema",
+  "density": "Modalità interfaccia",
+  "comfortable": "Normale",
+  "compact": "Compatto",
+  "light": "Chiaro",
+  "dark": "Scuro",
+  "emptySearch": "Nessuno strumento corrisponde alla tua ricerca.",
+  "emptySearchTitle": "Non disponiamo ancora di quello strumento.",
+  "emptySearchText": "Dicci di cosa hai bisogno e lo esamineremo per le prossime versioni.",
+  "emptySearchCta": "Suggerisci su GitHub",
+  "menu": "Menu",
+  "skipToContent": "Passa al contenuto principale",
+  "toolsNavigation": "Navigazione degli strumenti",
+  "homeNav": "Home",
+  "toolsIndexNav": "Tutti gli strumenti",
+  "toolsIndexEyebrow": "CASSETTA DEGLI ATTREZZI/INDICE",
+  "toolsIndexTitle": "Trova l'utilità di cui hai bisogno.",
+  "toolsIndexSubtitle": "Cerca per attività, apri lo strumento giusto e completa il flusso senza uscire dal browser.",
+  "toolsIndexStatsLabel": "Riepilogo della casella degli strumenti",
+  "toolsIndexStatTools": "Strumenti",
+  "toolsIndexStatCategories": "Gruppi",
+  "toolsIndexSearchHint": "Gli strumenti {count} corrispondono alla ricerca corrente.",
+  "toolsIndexOpenLabel": "Apri strumento",
+  "toolsIndexEmptyTitle": "Nessuno strumento trovato",
+  "toolsIndexEmptyText": "Cancella la ricerca o prova un altro termine.",
+  "toolConstruction": {
+    "eyebrow": "LAVORI IN CORSO",
+    "title": "Strumento in costruzione",
+    "description": "{tool} non è ancora disponibile. Lo stiamo ancora perfezionando prima di aprirlo per l'uso.",
+    "action": "Torniamo al generatore di favicon",
+    "closeLabel": "Avviso di costruzione chiuso"
+  },
+  "support": "Supporto",
+  "supportCta": "Supporta LocalTools",
+  "supportHint": "Mantieni il progetto gratuito e open source",
+  "footer": {
+    "suggestTitle": "Open source. Nessun tracciamento. Solo strumenti.",
+    "suggestCta": "Aggiungi una stella su GitHub",
+    "suggestUrl": "https://github.com/Fr4n0m/local-tools",
+    "logoPlaceholder": "Logo LocalTools (in attesa)",
+    "newsletterTitle": "Aggiorna abbonamento",
+    "newsletterHint": "Ricevi avvisi concreti quando vengono spediti nuovi strumenti o versioni importanti.",
+    "tagsTitle": "Esplora gli strumenti più diffusi",
+    "supportTitle": "Gratuito e open source. Mantienilo vivo.",
+    "brandLine": "© 2026 LocalTools",
+    "privacyLink": "Privacy",
+    "termsLink": "Termini",
+    "reportLink": "Segnala il problema",
+    "reportUrl": "https://github.com/Fr4n0m/local-tools/issues/new",
+    "tags": [
+      {
+        "label": "Convertitore di immagini",
+        "href": "/tools?tool=image-converter"
+      },
+      {
+        "label": "Compressore di immagini",
+        "href": "/tools?tool=image-compressor"
+      },
+      {
+        "label": "Formattatore JSON",
+        "href": "/tools?tool=json-formatter"
+      },
+      {
+        "label": "Generatore QR",
+        "href": "/tools?tool=qr-generator"
+      },
+      {
+        "label": "Generatore UUID",
+        "href": "/tools?tool=uuid-generator"
+      },
+      {
+        "label": "Strumento Base64",
+        "href": "/tools?tool=base64-tool"
+      }
+    ]
+  },
+  "categories": {
+    "files-media": "File e contenuti multimediali",
+    "data-encoding": "Dati e codifica",
+    "text-code": "Testo e codice",
+    "advanced": "Utilità avanzate"
+  },
+  "overview": {
+    "heroLead": "Privato per progettazione. Tutto nel tuo browser.",
+    "heroLeadLine1": "Privato per progettazione.",
+    "heroLeadLine2": "Tutto nel tuo browser.",
+    "heroTitle": "Strumenti per sviluppatori. Nessun account. Nessuna telemetria.",
+    "heroText": "LocalTools è una raccolta curata di utilità per sviluppatori che vengono eseguite interamente nel tuo browser. Nessun account. Nessuna telemetria. Solo strumenti affidabili che rispettano il tuo flusso di lavoro e i tuoi dati.",
+    "heroCtaPrimary": "Iscriviti per gli aggiornamenti",
+    "heroCtaSecondary": "Avvio rapido",
+    "heroTrustItems": [
+      {
+        "title": "100% locale",
+        "description": "Tutto funziona nel tuo browser."
+      },
+      {
+        "title": "Open Source",
+        "description": "Trasparente per progettazione. Costruito all'aperto."
+      },
+      {
+        "title": "Prima lo sviluppatore",
+        "description": "Veloce, mirato e costruito per flussi di lavoro reali."
+      },
+      {
+        "title": "Piattaforma incrociata",
+        "description": "macOS, Windows e Linux."
+      }
+    ],
+    "trust": "Scorri",
+    "storyKickerPrimary": "FLUSSO DEGLI UTENSILI",
+    "storyKickerSecondary": "VIAGGIO",
+    "storyHeadingLine1": "Costruito per gli sviluppatori.",
+    "storyHeadingLine2": "Evolvere con la comunità.",
+    "storyLead": "Gratuito, senza pubblicità e senza account. Un ambiente pulito per risolvere microcompiti tecnici senza attriti o rumore.",
+    "storyMetaLine": "BROWSER AL 100% · NESSUN CARICAMENTO · NESSUN ACCOUNT",
+    "storyTimelineAria": "Flusso di lavoro dello strumento",
+    "storyItems": [
+      {
+        "titlePrimary": "File",
+        "titleSecondary": "Media",
+        "bodyPrimary": "Converti formati e prepara risultati finali in pochi secondi.",
+        "bodySecondary": "Comprimi immagini, PDF o video senza uscire dal browser."
+      },
+      {
+        "titlePrimary": "Dati",
+        "titleSecondary": "Codifica",
+        "bodyPrimary": "Convalida le strutture e pulisci i payload prima dell'invio.",
+        "bodySecondary": "Codifica e decodifica i valori per le API senza errori."
+      },
+      {
+        "titlePrimary": "Testo",
+        "titleSecondary": "Codice",
+        "bodyPrimary": "Trasforma i contenuti per scrivere più velocemente.",
+        "bodySecondary": "Genera output puliti e pronti per la copia per il lavoro quotidiano."
+      },
+      {
+        "titlePrimary": "Utilità",
+        "titleSecondary": "Visivo",
+        "bodyPrimary": "Gestisci le microattività tecniche quotidiane con meno attriti.",
+        "bodySecondary": "Convalida colore, contrasto e sfumature con controlli diretti."
+      },
+      {
+        "titlePrimary": "Produzione",
+        "titleSecondary": "Continuità",
+        "bodyPrimary": "Copia o scarica i risultati pronti per essere condivisi.",
+        "bodySecondary": "Passaggi a catena senza account e senza caricamenti."
+      }
+    ],
+    "storyCuePrimary": "ESPLORA DI PIÙ",
+    "storyCueSecondary": "/ CATEGORIES AND CAPABILITIES",
+    "section3EyebrowPrimary": "PRODOTTO",
+    "section3EyebrowSecondary": "CAPACITÀ",
+    "section3Rows": [
+      {
+        "key": "data-encoding",
+        "titlePrimary": "Dati",
+        "titleSecondary": "",
+        "descriptionPrimary": "Formatta, convalida e converti i dati direttamente nel tuo browser.",
+        "descriptionSecondary": "Perfetto per pulire gli input prima di inviarli alle API.",
+        "cta": "Esplora gli strumenti dati"
+      },
+      {
+        "key": "web",
+        "titlePrimary": "Rete",
+        "titleSecondary": "",
+        "descriptionPrimary": "Esegui il debug, ispeziona e interagisci con servizi web e contenuti senza lasciare il tuo computer.",
+        "descriptionSecondary": "Ideale per convalidare URL, payload e risposte.",
+        "cta": "Esplora gli strumenti Web"
+      },
+      {
+        "key": "dev",
+        "titlePrimary": "Sviluppo",
+        "titleSecondary": "",
+        "descriptionPrimary": "Fornisci codice migliore con assistenti che velocizzano le tue attività di sviluppo quotidiane.",
+        "descriptionSecondary": "Costruito per documentazione, trasformazioni di testo e pratici snippet pronti per la copia.",
+        "cta": "Esplora gli strumenti di sviluppo"
+      },
+      {
+        "key": "advanced",
+        "titlePrimary": "Utilità",
+        "titleSecondary": "",
+        "descriptionPrimary": "Piccole utilità con un grande impatto sulla tua produttività, ogni singolo giorno.",
+        "descriptionSecondary": "Per quei momenti in cui hai bisogno di risolvere una microattività in pochi secondi, senza software aggiuntivo.",
+        "cta": "Esplora gli strumenti Utilis"
+      }
+    ],
+    "storyTitle": "Come deve essere utilizzato questo prodotto",
+    "storyP1": "La maggior parte dei team perde tempo in operazioni minuscole che sono troppo piccole per un software dedicato ma troppo frequenti per essere ignorate: formattare questo carico utile, convertire quel file, generare questo valore sicuro per il codice, verificare il contrasto di colore, comprimere quel PDF prima di inviarlo.",
+    "storyP2": "Questa pagina spiega la piattaforma come una narrazione, non come una griglia del dashboard. Puoi scansionarlo rapidamente, passare alle categorie pertinenti e capire dove si inserisce ciascuno strumento in una pipeline di consegna reale.",
+    "chapterTitle": "Capitoli sulle capacità",
+    "chapterIntro": "Ogni capitolo raggruppa gli strumenti in base all'intento e fornisce il contesto oltre le descrizioni di una riga.",
+    "why": "Perché esiste questo capitolo",
+    "what": "Cosa puoi fare",
+    "fit": "Utilizzo ottimale",
+    "horizontalTitle": "Ogni strumento attivo, in una striscia mobile",
+    "horizontalHint": "Scorri per esplorare tutti i moduli attuali.",
+    "discoverEyebrowPrimary": "ESPLORARE",
+    "discoverEyebrowSecondary": "ALCUNI STRUMENTI",
+    "discoverTitle": "Scoprire. Tentativo. Rimani locale.",
+    "discoverSubtitle": "Scopri strumenti utili creati per gli sviluppatori.",
+    "discoverMetaLine": "PRIVATO · AFFIDABILE · 100% LOCALE",
+    "carouselOpenLabel": "Apri strumento →",
+    "carouselCuePrimary": "CONTINUARE",
+    "carouselCueSecondary": "/ PRIVACY AND COMMUNITY",
+    "carouselHighlights": [
+      {
+        "title": "100% locale",
+        "description": "I tuoi dati non lasciano mai il browser."
+      },
+      {
+        "title": "Nessuna telemetria",
+        "description": "Nessun tracciamento, nessuna analisi, nessun monitoraggio."
+      },
+      {
+        "title": "Nessun account",
+        "description": "Nessuna registrazione e nessun accesso richiesto."
+      },
+      {
+        "title": "Open source e verificabile",
+        "description": "Codice trasparente, costruito allo scoperto."
+      }
+    ],
+    "discoverTools": [
+      {
+        "id": "json-formatter",
+        "name": "Formattatore JSON",
+        "description": "Formatta e convalida istantaneamente JSON. Ideale per il debug del payload API.",
+        "badge": "DATI"
+      },
+      {
+        "id": "url-encoder",
+        "name": "Codificatore URL",
+        "description": "Codifica e decodifica gli URL in modo sicuro per percorsi, stringhe di query e richieste.",
+        "badge": "WEB"
+      },
+      {
+        "id": "text-transformer",
+        "name": "Trasformatore di testo",
+        "description": "Trasforma il testo in pochi secondi per documenti, snippet e flussi di lavoro di sviluppo.",
+        "badge": "CODICE"
+      },
+      {
+        "id": "uuid-generator",
+        "name": "Generatore UUID",
+        "description": "Genera valori UUID v4 univoci per database, test e sistemi.",
+        "badge": "UTILITÀ"
+      },
+      {
+        "id": "base64-tool",
+        "name": "Codificatore Base64",
+        "description": "Codifica e decodifica rapidamente i dati Base64 per integrazioni e test.",
+        "badge": "DATI"
+      },
+      {
+        "id": "contrast-checker",
+        "name": "Controllo del contrasto",
+        "description": "Convalida il contrasto dei colori WCAG per interfacce accessibili e leggibili.",
+        "badge": "WEB"
+      },
+      {
+        "id": "qr-generator",
+        "name": "Generatore QR",
+        "description": "Genera codici QR locali ed esporta rapidamente per collegamenti o condivisione di dati.",
+        "badge": "UTILITÀ"
+      },
+      {
+        "id": "custom-timer",
+        "name": "Temporizzatore personalizzato",
+        "description": "Imposta timer rapidi per sessioni di lavoro mirate e verifiche pratiche.",
+        "badge": "CODICE"
+      }
+    ],
+    "trustEyebrow": "PRIVACY / DI CUI PUOI FIDARTI",
+    "trustTitle": "I tuoi dati non lasciano mai il tuo browser.",
+    "trustSubtitle": "Lavora con file, testo e dati senza inviarli a server esterni.",
+    "trustBodyPrimary": "LocalTools si basa su un principio semplice: mantieni il controllo. Le attività vengono eseguite nel tuo browser senza inviare i tuoi dati a server esterni.",
+    "trustBodySecondary": "",
+    "trustChecks": [
+      "Esecuzione locale al 100%.",
+      "Nessuna telemetria o tracciamento",
+      "Nessun account o accesso",
+      "Open source e verificabile"
+    ],
+    "bottomCards": [
+      {
+        "eyebrow": "COMUNITÀ/OPEN SOURCE",
+        "title": "Costruito dagli sviluppatori, per gli sviluppatori.",
+        "subtitle": "Comunità aperta, feedback reale e decisioni visibili.",
+        "bodyPrimary": "LocalTools deriva da piccole attività che si ripetono ogni giorno: preparazione di file, revisione di payload o convalida di un'interfaccia.",
+        "bodySecondary": "Se qualcosa si rompe o potrebbe essere più chiaro, apri un problema con il contesto reale.",
+        "cta": "Visualizza su GitHub"
+      },
+      {
+        "eyebrow": "ROADMAP/PIANO",
+        "title": "Cosa verrà dopo",
+        "subtitle": "Una tabella di marcia pratica, senza promesse vuote.",
+        "bodyPrimary": "La priorità è aggiungere strumenti che si adattino all'utilizzo reale del prodotto: più convertitori, preimpostazioni migliori, flussi più veloci e piccoli miglioramenti che riducono i passaggi ripetuti.",
+        "bodySecondary": "La tabella di marcia rimane viva e si adegua in base a ciò che apporta valore al lavoro quotidiano. Se un'idea migliora il flusso o evita l'apertura di un'altra app, merita di essere esaminata.",
+        "bullets": [
+          "Nuova funzionalità o categoria",
+          "Miglioramento del flusso di lavoro o dell'interfaccia",
+          "Caso d'uso nel mondo reale",
+          "Feedback generale sul prodotto"
+        ],
+        "cta": "Invia suggerimento"
+      },
+      {
+        "eyebrow": "RIMANI / NEL CICLO",
+        "title": "Nuovi strumenti. Nessun rumore.",
+        "subtitle": "Avvisi chiari quando vengono spedite versioni importanti.",
+        "bodyPrimary": "L'abbonamento ti aiuterà a conoscere nuovi strumenti, modifiche rilevanti, miglioramenti UX e note di rilascio quando il progetto ha qualcosa di utile da condividere.",
+        "bodySecondary": "Niente spam e niente email di riempimento. Solo aggiornamenti concreti, per chi vuole seguire il progetto senza controllare settimanalmente il repository.",
+        "cta": "Iscriviti"
+      }
+    ],
+    "finalTitle": "Prodotto aperto, direzione visibile",
+    "finalText": "Richieste di funzionalità, critiche UX, decisioni sui nomi e segnalazioni di bug fanno parte del processo di evoluzione. La tabella di marcia resta pratica e orientata all’implementazione.",
+    "subscribe": "Anteprima della nota di rilascio",
+    "subscribeText": "Iscriviti per ricevere gli aggiornamenti della versione.",
+    "subscribeButton": "Avvisami",
+    "subscribePlaceholder": "you@example.com",
+    "subscribeConsentPrefix": "Acconsento a ricevere gli aggiornamenti di LocalTools e di aver letto il",
+    "subscribePrivacyLink": "politica sulla riservatezza",
+    "subscribeConsentJoin": "E",
+    "subscribeTermsLink": "termini",
+    "subscribeLoadingTitle": "Invio",
+    "subscribeLoadingDescription": "Preparazione dell'e-mail di verifica...",
+    "subscribeSuccessTitle": "Controlla la tua casella di posta",
+    "subscribeSuccessDescription": "Conferma la tua iscrizione dalla tua casella di posta.",
+    "subscribeAlreadyPendingTitle": "Controlla la tua casella di posta",
+    "subscribeAlreadyPendingDescription": "Ti abbiamo già inviato un'e-mail di conferma. Controlla la tua casella di posta e conferma.",
+    "subscribeAlreadyActiveTitle": "Già iscritto",
+    "subscribeAlreadyActiveDescription": "Questa email riceve già gli aggiornamenti di LocalTools.",
+    "subscribeInvalidEmail": "Inserisci un'e-mail valida.",
+    "subscribeTermsRequired": "Acconsentire a ricevere aggiornamenti prima di proseguire.",
+    "subscribeErrorTitle": "Invia errore",
+    "subscribeErrorDescription": "Impossibile completare l'abbonamento.",
+    "subscriptionModal": {
+      "confirmedEyebrow": "ABBONAMENTO CONFERMATO",
+      "confirmedTitle": "Abbonamento confermato",
+      "confirmedDescription": "Benvenuti in LocalTools. Riceverai nuovi strumenti, miglioramenti rilevanti e note di rilascio quando c'è qualcosa di utile da condividere.",
+      "confirmedAction": "Torniamo a LocalTools",
+      "errorEyebrow": "CONFERMA FALLITA",
+      "errorTitle": "Non abbiamo potuto confermarlo",
+      "errorDescription": "Il collegamento non è valido, è scaduto o non è stato possibile elaborarlo. Richiedi un'altra email di conferma.",
+      "errorAction": "Richiedi un'altra email",
+      "closeLabel": "Chiudi conferma"
+    }
+  },
+  "buttons": {
+    "clear": "Chiaro",
+    "copy": "Copia",
+    "download": "Scaricamento",
+    "generate": "Generare"
+  },
+  "notifications": {
+    "copySuccess": "Copiato negli appunti",
+    "copyError": "Impossibile copiare negli appunti",
+    "downloadSuccess": "File scaricato",
+    "downloadError": "Download non riuscito",
+    "processSuccess": "Fatto",
+    "processError": "Qualcosa è andato storto"
+  }
+}

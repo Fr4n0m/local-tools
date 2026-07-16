@@ -2,40 +2,7 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import Image from "next/image";
-import type { Language } from "@/shared/presentation/i18n";
-
-const LANGUAGE_OPTIONS = [
-  {
-    code: "es",
-    label: "Español",
-    flag: "/assets/flags/es.svg",
-    available: true,
-  },
-  {
-    code: "en",
-    label: "English",
-    flag: "/assets/flags/gb.svg",
-    available: true,
-  },
-  {
-    code: "fr",
-    label: "Français",
-    flag: "/assets/flags/fr.svg",
-    available: false,
-  },
-  {
-    code: "de",
-    label: "Deutsch",
-    flag: "/assets/flags/de.svg",
-    available: false,
-  },
-  {
-    code: "it",
-    label: "Italiano",
-    flag: "/assets/flags/it.svg",
-    available: false,
-  },
-] as const;
+import { LANGUAGE_OPTIONS, type Language } from "@/shared/presentation/i18n";
 
 type LanguageSelectorProps = {
   language: Language;
@@ -106,11 +73,9 @@ export function LanguageSelector({
               <button
                 aria-pressed={isActive}
                 className={`${prefix}-option`}
-                disabled={!option.available}
                 key={option.code}
                 onClick={() => {
-                  if (!option.available) return;
-                  onSelect(option.code as Language);
+                  onSelect(option.code);
                   setIsOpen(false);
                 }}
                 type="button"
@@ -124,11 +89,6 @@ export function LanguageSelector({
                   width={16}
                 />
                 <span>{option.label}</span>
-                {!option.available ? (
-                  <span className={`${prefix}-pending`}>
-                    {language === "es" ? "próximamente" : "soon"}
-                  </span>
-                ) : null}
               </button>
             );
           })}
