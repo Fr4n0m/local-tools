@@ -80,7 +80,7 @@ export function SegmentedControl<TValue extends string>({
     <div
       aria-label={ariaLabel}
       className={cn(
-        "relative grid overflow-hidden rounded-lg border border-border/85 bg-[var(--tool-control-bg)] p-1.5 shadow-[4px_4px_0_var(--surface-shadow-color)] transition-[border-color,box-shadow,background-color] focus-within:border-foreground/45 focus-within:shadow-[2px_2px_0_var(--surface-shadow-color)] dark:border-white/22 dark:focus-within:border-white/38",
+        "relative grid overflow-hidden rounded-lg border border-border/85 bg-[var(--tool-control-bg)] p-1.5 shadow-[4px_4px_0_var(--surface-shadow-color)] transition-[border-color,background-color] focus-within:border-foreground/45 dark:border-white/22 dark:focus-within:border-white/38",
         className,
       )}
       role="radiogroup"

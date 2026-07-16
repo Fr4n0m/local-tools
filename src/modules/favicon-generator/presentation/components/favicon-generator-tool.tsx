@@ -26,6 +26,7 @@ import {
   normalizeShortName,
   normalizeVersionTag,
 } from "@/modules/favicon-generator/domain/favicon-generator";
+import type { FaviconIntegrationTarget } from "@/modules/favicon-generator/domain/favicon-installation";
 import en from "@/modules/favicon-generator/presentation/i18n/en.json";
 import es from "@/modules/favicon-generator/presentation/i18n/es.json";
 import {
@@ -81,6 +82,7 @@ import {
   StyleOverrideButton,
 } from "./favicon-render-settings-fields";
 import { FaviconGeneratedResults } from "./favicon-generated-results";
+import { FaviconInstallationAssistant } from "./favicon-installation-assistant";
 
 type Props = {
   language: Language;
@@ -185,6 +187,8 @@ export function FaviconGeneratorTool({
     useState<FaviconPreviewUrlsByTarget>(() => createEmptyPreviewUrls());
   const [faviconPath, setFaviconPath] = useState("/");
   const [versionTag, setVersionTag] = useState("");
+  const [integrationTarget, setIntegrationTarget] =
+    useState<FaviconIntegrationTarget>("html");
   const [renderSettingsByTarget, setRenderSettingsByTarget] =
     useState<FaviconRenderSettingsByTarget>(() =>
       createDefaultFaviconRenderSettingsByTarget(),
@@ -885,7 +889,7 @@ export function FaviconGeneratorTool({
         icon: <IconBrandApple className="h-5 w-5" />,
         scrollable: true,
         content: (
-          <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_380px]">
+          <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(340px,0.7fr)]">
             <div className="grid grid-cols-2 gap-3">
               <MobilePreviewCard
                 appLabel={projectName}
@@ -941,7 +945,7 @@ export function FaviconGeneratorTool({
         icon: <IconBrandAndroid className="h-5 w-5" />,
         scrollable: true,
         content: (
-          <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_380px]">
+          <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(340px,0.7fr)]">
             <div className="grid grid-cols-2 gap-3">
               <MobilePreviewCard
                 appLabel={projectName}
@@ -1058,6 +1062,19 @@ export function FaviconGeneratorTool({
                   content: htmlSnippet,
                   label: text.snippet,
                 }}
+                installationAssistant={
+                  <FaviconInstallationAssistant
+                    faviconPath={faviconPath}
+                    htmlSnippet={htmlSnippet}
+                    language={language}
+                    onCopy={(content) => {
+                      void copyTextToClipboard(content);
+                    }}
+                    onTargetChange={setIntegrationTarget}
+                    target={integrationTarget}
+                    text={text.installation}
+                  />
+                }
                 technicalFilesDescription={text.technicalFilesDescription}
                 technicalFilesLabel={text.technicalFiles}
                 downloadPackageHint={text.downloadPackageHint}
@@ -1516,6 +1533,7 @@ export function FaviconGeneratorTool({
           </div>
         </div>
         <ToolActions
+          align="end"
           actions={[
             {
               label: text.generate,
@@ -1524,6 +1542,7 @@ export function FaviconGeneratorTool({
               },
               disabled: !file || generationStatus === "processing",
               icon: <IconPhotoCog className="h-4 w-4" />,
+              variant: "default",
             },
             {
               label: sharedText.buttons.clear,
@@ -1553,6 +1572,7 @@ export function FaviconGeneratorTool({
                 generated.length === 0 &&
                 generatedDark.length === 0,
               icon: <IconTrash className="h-4 w-4" />,
+              variant: "outline",
             },
           ]}
         />
@@ -1605,6 +1625,19 @@ export function FaviconGeneratorTool({
               content: htmlSnippet,
               label: text.snippet,
             }}
+            installationAssistant={
+              <FaviconInstallationAssistant
+                faviconPath={faviconPath}
+                htmlSnippet={htmlSnippet}
+                language={language}
+                onCopy={(content) => {
+                  void copyTextToClipboard(content);
+                }}
+                onTargetChange={setIntegrationTarget}
+                target={integrationTarget}
+                text={text.installation}
+              />
+            }
             technicalFilesDescription={text.technicalFilesDescription}
             technicalFilesLabel={text.technicalFiles}
             downloadPackageHint={text.downloadPackageHint}

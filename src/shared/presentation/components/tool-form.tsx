@@ -569,7 +569,7 @@ export function ToolInput({ className, ...props }: ToolInputProps) {
   return (
     <input
       className={cn(
-        "w-full rounded-lg border border-border/85 bg-[var(--tool-control-bg)] px-3 py-2 text-sm shadow-[4px_4px_0_var(--surface-shadow-color)] outline-none transition-[border-color,box-shadow,background-color] focus-visible:border-foreground/45 focus-visible:shadow-[2px_2px_0_var(--surface-shadow-color)] dark:border-white/22 dark:focus-visible:border-white/38",
+        "lt-tool-input w-full rounded-lg border border-border/85 bg-[var(--tool-control-bg)] px-3 py-2 text-sm shadow-[4px_4px_0_var(--surface-shadow-color)] outline-none transition-colors focus-visible:bg-[var(--tool-control-hover-bg)] dark:border-white/22",
         className,
       )}
       {...props}

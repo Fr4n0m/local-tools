@@ -45,6 +45,10 @@
   align-items: center;
 }
 
+.mockViewportCompact .telephoneFrame.telephoneFrame {
+  filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.28));
+}
+
 .mockViewportCompact .telephoneFrameIphone.telephoneFrameIphone {
   --telephone-width: clamp(146px, min(38cqi, 14.5dvh), 174px);
 }

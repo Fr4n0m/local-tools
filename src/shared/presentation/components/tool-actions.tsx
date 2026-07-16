@@ -19,17 +19,23 @@ import {
   IconWand,
 } from "@tabler/icons-react";
 
-import { Button } from "@/shared/presentation/components/ui/button";
+import { cn } from "@/shared/lib/utils";
+import {
+  Button,
+  type ButtonProps,
+} from "@/shared/presentation/components/ui/button";
 
 type ToolAction = {
   label: string;
   onClick: () => void;
   disabled?: boolean;
   icon?: ReactNode;
+  variant?: ButtonProps["variant"];
 };
 
 type Props = {
   actions: ToolAction[];
+  align?: "start" | "end";
 };
 
 function inferActionIcon(label: string): ReactNode {
@@ -90,9 +96,12 @@ function inferActionIcon(label: string): ReactNode {
   return <IconRefresh className={iconClassName} />;
 }
 
-export function ToolActions({ actions }: Props) {
+export function ToolActions({ actions, align = "start" }: Props) {
   return (
-    <div className="flex flex-wrap gap-3" data-tool-actions>
+    <div
+      className={cn("flex flex-wrap gap-3", align === "end" && "justify-end")}
+      data-tool-actions
+    >
       {actions.map((action) => {
         const icon = action.icon ?? inferActionIcon(action.label);
 
@@ -100,7 +109,7 @@ export function ToolActions({ actions }: Props) {
           <Button
             disabled={action.disabled}
             size="sm"
-            variant="outline"
+            variant={action.variant ?? "outline"}
             key={action.label}
             onClick={action.onClick}
             type="button"

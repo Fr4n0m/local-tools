@@ -49,6 +49,7 @@ type Props = {
   onDownloadManifest: () => void;
   onDownloadBrowserConfig: () => void;
   onDownloadPackage: () => void;
+  installationAssistant?: ReactNode;
   compact?: boolean;
 };
 
@@ -239,6 +240,7 @@ export function FaviconGeneratedResults({
   onDownloadManifest,
   onDownloadBrowserConfig,
   onDownloadPackage,
+  installationAssistant,
   compact = false,
 }: Props) {
   const groups: IconGroup[] = [
@@ -329,6 +331,8 @@ export function FaviconGeneratedResults({
           />
         </div>
       </section>
+
+      {installationAssistant}
 
       <footer className="flex flex-col gap-4 rounded-3xl bg-[var(--tool-control-bg)] p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
         <div className="min-w-0">

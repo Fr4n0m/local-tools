@@ -83,6 +83,21 @@
   transform: none;
 }
 
+.lt-button.favicon-check-button,
+.lt-button.favicon-check-button:hover:not(:disabled),
+.lt-button.favicon-check-button:focus-visible,
+.lt-button.favicon-check-button:active:not(:disabled),
+.lt-button.favicon-check-button:disabled {
+  transform: none;
+  transform-origin: center;
+  transition-duration: 110ms;
+  box-shadow: 4px 4px 0 var(--surface-shadow-color);
+}
+
+.lt-button.favicon-check-button:active:not(:disabled) {
+  transform: scale(0.94);
+}
+
 .lt-button--sm {
   min-height: 2.25rem;
   padding: 0.55rem 0.8rem;
